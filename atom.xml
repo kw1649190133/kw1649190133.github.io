@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <title>Hexo</title>
+  <title>kw&#39;s blogs</title>
   
   
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://kw1649190133.github.io/"/>
-  <updated>2020-02-09T02:52:44.498Z</updated>
+  <updated>2020-02-12T09:40:06.638Z</updated>
   <id>http://kw1649190133.github.io/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Hexo Blog搭建过程</title>
+    <link href="http://kw1649190133.github.io/2020/02/12/%E6%88%91%E7%9A%84%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E8%BF%87%E7%A8%8B/"/>
+    <id>http://kw1649190133.github.io/2020/02/12/%E6%88%91%E7%9A%84%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E8%BF%87%E7%A8%8B/</id>
+    <published>2020-02-12T05:35:37.000Z</published>
+    <updated>2020-02-12T09:40:06.638Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;第一步-准备工作&quot;&gt;&lt;a href=&quot;#第一步-准备工作&quot; class=&quot;headerlink&quot; title=&quot;第一步 准备工作&quot;&gt;&lt;/a&gt;&lt;strong&gt;第一步 准备工作&lt;/strong&gt;&lt;/h1&gt;&lt;h2 id=&quot;1-安装node-js&quot;&gt;&lt;a
+        
+      
+    
+    </summary>
+    
+    
+    
+  </entry>
   
   <entry>
     <title>Hello World</title>
