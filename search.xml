@@ -1,6 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>hexo文档编写基本操作</title>
+    <url>/2020/02/12/hexo%E6%96%87%E6%A1%A3%E7%BC%96%E5%86%99%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/</url>
+    <content><![CDATA[<h2 id="1-分级标题"><a href="#1-分级标题" class="headerlink" title="1. 分级标题"></a>1. 分级标题</h2><p>行首加 “#” 表示不同级别的标题 (H1-H6)。“#” 后最好空一格。H1最大，H6最小。并且目录的自动生成也是按照标题来嵌套的</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 一级标题</span><br><span class="line">## 二级标题</span><br><span class="line">### 三级标题</span><br><span class="line">#### 四级标题</span><br><span class="line">##### 五级标题</span><br><span class="line">###### 六级标题</span><br></pre></td></tr></table></figure>
+<h2 id="2-文字强调"><a href="#2-文字强调" class="headerlink" title="2. 文字强调"></a>2. 文字强调</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">*内容*---斜体文字</span><br><span class="line">**内容**---加粗文字</span><br><span class="line">***内容***---粗斜体文字</span><br></pre></td></tr></table></figure>
+<h2 id="3-列表"><a href="#3-列表" class="headerlink" title="3. 列表"></a>3. 列表</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">*+-表示无序列表。</span><br><span class="line"></span><br><span class="line">* 测试0</span><br><span class="line">* 测试1</span><br><span class="line">* 测试2</span><br><span class="line">+ 测试3</span><br><span class="line">+ 测试4</span><br><span class="line">+ 测试5</span><br><span class="line">- 测试6</span><br><span class="line">- 测试7</span><br><span class="line">- 测试8</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">数字和点1.2.3.表示有序列表。字符后须空一格。</span><br><span class="line"></span><br><span class="line">1. 测试1</span><br><span class="line">2. 测试2</span><br><span class="line">3. 测试3</span><br><span class="line">4. 测试4</span><br><span class="line">5. 测试5</span><br></pre></td></tr></table></figure>
+<h2 id="4-引用"><a href="#4-引用" class="headerlink" title="4. 引用"></a>4. 引用</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt;引用  </span><br><span class="line">&gt;&gt; 引用中引用</span><br></pre></td></tr></table></figure>
+
+<h2 id="5-文本居中的引用"><a href="#5-文本居中的引用" class="headerlink" title="5. 文本居中的引用"></a>5. 文本居中的引用</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#123;% cq %&#125; </span><br><span class="line">文本居中的引用</span><br><span class="line">测试</span><br><span class="line">测试2  </span><br><span class="line">&#123;% endcq %&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="6-分割线"><a href="#6-分割线" class="headerlink" title="6. 分割线"></a>6. 分割线</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">***</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
+
+<h2 id="7-删除线和下划线"><a href="#7-删除线和下划线" class="headerlink" title="7. 删除线和下划线"></a>7. 删除线和下划线</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">~~内容~~---删除线</span><br><span class="line">&lt;u&gt;内容&lt;&#x2F;u&gt;---下划线</span><br></pre></td></tr></table></figure>
+<h2 id="8-行内代码"><a href="#8-行内代码" class="headerlink" title="8. 行内代码"></a>8. 行内代码</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#96;内容&#96;</span><br></pre></td></tr></table></figure>
+<h2 id="9-代码块"><a href="#9-代码块" class="headerlink" title="9. 代码块"></a>9. 代码块</h2><p>文字上下方直接加 ``` 即可</p>
+]]></content>
+  </entry>
+  <entry>
     <title>Hexo Blog搭建过程</title>
     <url>/2020/02/12/%E6%88%91%E7%9A%84%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E8%BF%87%E7%A8%8B/</url>
     <content><![CDATA[<h1 id="第一步-准备工作"><a href="#第一步-准备工作" class="headerlink" title="第一步 准备工作"></a><strong>第一步 准备工作</strong></h1><h2 id="1-安装node-js"><a href="#1-安装node-js" class="headerlink" title="1. 安装node.js"></a>1. 安装node.js</h2><p>官方网站 <a href="https://nodejs.org/zh-cn/" target="_blank" rel="noopener">https://nodejs.org/zh-cn/</a></p>

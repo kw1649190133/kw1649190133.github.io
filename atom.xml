@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <title>Hexo</title>
+  <title>kw&#39;s blog</title>
   
   
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://kw1649190133.github.io/"/>
-  <updated>2020-02-12T09:40:06.638Z</updated>
+  <updated>2020-02-12T10:57:29.802Z</updated>
   <id>http://kw1649190133.github.io/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>hexo文档编写基本操作</title>
+    <link href="http://kw1649190133.github.io/2020/02/12/hexo%E6%96%87%E6%A1%A3%E7%BC%96%E5%86%99%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/"/>
+    <id>http://kw1649190133.github.io/2020/02/12/hexo%E6%96%87%E6%A1%A3%E7%BC%96%E5%86%99%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/</id>
+    <published>2020-02-12T10:50:14.000Z</published>
+    <updated>2020-02-12T10:57:29.802Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;1-分级标题&quot;&gt;&lt;a href=&quot;#1-分级标题&quot; class=&quot;headerlink&quot; title=&quot;1. 分级标题&quot;&gt;&lt;/a&gt;1. 分级标题&lt;/h2&gt;&lt;p&gt;行首加 “#” 表示不同级别的标题 (H1-H6)。“#”
+        
+      
+    
+    </summary>
+    
+    
+    
+  </entry>
   
   <entry>
     <title>Hexo Blog搭建过程</title>
