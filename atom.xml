@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://kw1649190133.github.io/"/>
-  <updated>2020-02-12T10:57:29.802Z</updated>
+  <updated>2020-02-14T11:25:04.431Z</updated>
   <id>http://kw1649190133.github.io/</id>
   
   <author>
@@ -17,11 +17,32 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>在网页上加入live2D人偶</title>
+    <link href="http://kw1649190133.github.io/2020/02/14/%E5%9C%A8%E7%BD%91%E9%A1%B5%E4%B8%8A%E5%8A%A0%E5%85%A5live2D%E4%BA%BA%E5%81%B6/"/>
+    <id>http://kw1649190133.github.io/2020/02/14/%E5%9C%A8%E7%BD%91%E9%A1%B5%E4%B8%8A%E5%8A%A0%E5%85%A5live2D%E4%BA%BA%E5%81%B6/</id>
+    <published>2020-02-14T11:01:54.000Z</published>
+    <updated>2020-02-14T11:25:04.431Z</updated>
+    
+    <summary type="html">
+    
+    </summary>
+    
+    
+      <category term="学习" scheme="http://kw1649190133.github.io/categories/%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+      <category term="hexo" scheme="http://kw1649190133.github.io/tags/hexo/"/>
+    
+      <category term="live2D" scheme="http://kw1649190133.github.io/tags/live2D/"/>
+    
+  </entry>
+  
+  <entry>
     <title>hexo文档编写基本操作</title>
     <link href="http://kw1649190133.github.io/2020/02/12/hexo%E6%96%87%E6%A1%A3%E7%BC%96%E5%86%99%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/"/>
     <id>http://kw1649190133.github.io/2020/02/12/hexo%E6%96%87%E6%A1%A3%E7%BC%96%E5%86%99%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/</id>
     <published>2020-02-12T10:50:14.000Z</published>
-    <updated>2020-02-12T10:57:29.802Z</updated>
+    <updated>2020-02-14T11:24:18.611Z</updated>
     
     <summary type="html">
     
@@ -36,6 +57,10 @@
     </summary>
     
     
+      <category term="学习" scheme="http://kw1649190133.github.io/categories/%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+      <category term="hexo" scheme="http://kw1649190133.github.io/tags/hexo/"/>
     
   </entry>
   
@@ -44,7 +69,7 @@
     <link href="http://kw1649190133.github.io/2020/02/12/%E6%88%91%E7%9A%84%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E8%BF%87%E7%A8%8B/"/>
     <id>http://kw1649190133.github.io/2020/02/12/%E6%88%91%E7%9A%84%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E8%BF%87%E7%A8%8B/</id>
     <published>2020-02-12T05:35:37.000Z</published>
-    <updated>2020-02-12T09:40:06.638Z</updated>
+    <updated>2020-02-14T11:24:21.197Z</updated>
     
     <summary type="html">
     
@@ -59,6 +84,10 @@
     </summary>
     
     
+      <category term="学习" scheme="http://kw1649190133.github.io/categories/%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+      <category term="hexo" scheme="http://kw1649190133.github.io/tags/hexo/"/>
     
   </entry>
   
