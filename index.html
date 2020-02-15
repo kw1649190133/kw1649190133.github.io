@@ -108,7 +108,24 @@
       
 
       
-      
+      <p>明明是前几天才刚搭好博客，搞好主题，又忍不住要下手搞点新东西了。</p>
+<p>博客页面只有图片和文字，未免有些太枯燥乏味，于是就想加入一个桌面宠物。</p>
+<h2 id="1-安装live-2d插件"><a href="#1-安装live-2d插件" class="headerlink" title="1. 安装live 2d插件"></a>1. 安装live 2d插件</h2><p>在hexo的目录下，输入指令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># npm install --save hexo-helper-live2d</span><br></pre></td></tr></table></figure>
+
+<p>安装live2D的网页显示插件。</p>
+<p>指令结束后，会发现博客目录中多了一个几十MB大小的node_modules文件夹</p>
+<h2 id="2-下载模板"><a href="#2-下载模板" class="headerlink" title="2.下载模板"></a>2.下载模板</h2><p>github仓库链接: <a href="https://github.com/kw1649190133/live2d-widget-models" target="_blank" rel="noopener">https://github.com/kw1649190133/live2d-widget-models</a></p>
+<p>模型包中包括二十余个模型，选一个自己喜欢的丢进node_modules文件夹中即可。</p>
+<h2 id="3-在配置文件中加入设定"><a href="#3-在配置文件中加入设定" class="headerlink" title="3.在配置文件中加入设定"></a>3.在配置文件中加入设定</h2><p>打开根目录下的配置文件_config.yml ，插入以下内容：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">live2d:</span><br><span class="line">  enable: true</span><br><span class="line">  pluginModelPath: assets/</span><br><span class="line">  tagMode: false # 标签模式, 是否仅替换 live2d tag标签而非插入到所有页面中</span><br><span class="line">  debug: false # 调试, 是否在控制台输出日志</span><br><span class="line">  model:</span><br><span class="line">    use: live2d-widget-model-koharu  #模板目录，在node_modules里</span><br><span class="line">  display:</span><br><span class="line">    position: right</span><br><span class="line">    width: 200 </span><br><span class="line">    height: 350</span><br><span class="line">  mobile:</span><br><span class="line">    show: true  #是否在手机进行显示</span><br><span class="line">    scale: 0.4 # 移动设备上的缩放比例</span><br></pre></td></tr></table></figure>
+
+
+
+<p>至此live2D配置完成，保存后刷新页面，即可显示。</p>
+<p>关于live2D插件的更多细节问题可以到官方资料站查询</p>
+<p><a href="https://l2dwidget.js.org/docs/function/index.html#static-function-config" target="_blank" rel="noopener">https://l2dwidget.js.org/docs/function/index.html#static-function-config</a></p>
+
       
       <!-- reward -->
       
@@ -679,6 +696,6 @@
 
 <script type="text/javascript" src="https://js.users.51.la/20544303.js"></script>
   </div>
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"right","width":200,"height":350},"mobile":{"show":true},"log":false,"pluginJsPath":"lib/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"right","width":200,"height":350},"mobile":{"show":true,"scale":0.5},"log":false,"pluginJsPath":"lib/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
 
 </html>
