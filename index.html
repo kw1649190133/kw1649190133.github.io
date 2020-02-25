@@ -66,6 +66,102 @@
     
     
     
+    <article id="post-如何清除毒瘤DLL" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/02/25/%E5%A6%82%E4%BD%95%E6%B8%85%E9%99%A4%E6%AF%92%E7%98%A4DLL/"
+    >如何清除毒瘤DLL</a
+  >
+</h2>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/02/25/%E5%A6%82%E4%BD%95%E6%B8%85%E9%99%A4%E6%AF%92%E7%98%A4DLL/" class="article-date">
+  <time datetime="2020-02-25T04:25:57.000Z" itemprop="datePublished">2020-02-25</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E7%94%9F%E6%B4%BB/">生活</a>
+  </div>
+
+      
+      
+      
+    </div>
+    
+
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+
+
+      
+
+      
+      <h3 id="我的电脑居然被贴了小广告"><a href="#我的电脑居然被贴了小广告" class="headerlink" title="我的电脑居然被贴了小广告"></a>我的电脑居然被贴了小广告</h3><p>突然发现电脑里被莫名其妙的安装了好几个流氓软件，就好像发现自己家门口被贴了小广告一样，不停地在右下角弹广告，特别烦人，还很难清理掉，于是开始寻找它们隐藏的路径，赶尽杀绝。</p>
+<p>通过右键查看属性，还有任务管理器里的观察，我发现这些个牛皮癣喜欢藏在这两个目录：</p>
+<p>C:/User/Administrator/AppData/Local</p>
+<p>C:/User/Administrator/AppData/Roaming</p>
+<p>或者直接利用电脑的搜索功能，直接在C盘里搜索毒瘤软件的名字，把找到的目录全都干掉。</p>
+<p>但是这样并没有结束，不然也不叫“牛皮癣了”</p>
+<h3 id="清理注册表"><a href="#清理注册表" class="headerlink" title="清理注册表"></a>清理注册表</h3><p>虽然大佬们习惯用命令行，但win10直接利用桌面的搜索功能，就能直接找到注册表管理器了，更方便。</p>
+<p>同样的，直接在管理器搜索毒瘤软件的名字，看到一个干掉一个。</p>
+<h3 id="清除DLL-动态链接库"><a href="#清除DLL-动态链接库" class="headerlink" title="清除DLL(动态链接库)"></a>清除DLL(动态链接库)</h3><p>在清除软件时，经常会发现，XXX文件正在被占用、正在运行，无法删除，要我们先关闭程序。</p>
+<p>通过tasklist命令，可以将任务管理器的状态输出到文本，这样就可以很方便的用TXT文档的查找功能，锁定DLL的相关应用，然后在任务管理器里把它强制结束掉。win10可以在菜单栏直接右键打开任务管理器，非常方便。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tasklist &#x2F;m&gt;d:\123.txt</span><br></pre></td></tr></table></figure>
+
+<p>还有一些例如Unlocker的第三方软件，可以查询文件被哪个进程锁定，也可以帮助我们去关闭进程，删除文件。</p>
+<h3 id="毒瘤DLL黑入资源管理器"><a href="#毒瘤DLL黑入资源管理器" class="headerlink" title="毒瘤DLL黑入资源管理器"></a>毒瘤DLL黑入资源管理器</h3><p>有些时候（经常）那些删不掉的文件，一查它的进程，居然是Explorer.exe，那就不能随便强制结束了</p>
+<p>Explorer 就是系统时时刻刻都在运行的桌面，在win10中，因为中文显示优化的原因，它在任务管理器中也显示为“Windows 资源管理器”。一旦这个进程终止，桌面也会随之黑掉，但已经启动的应用基本不受影响。</p>
+<p>这时也可以根据先结束进程，再杀掉文件的原理，通过关闭桌面来杀掉毒瘤DLL。但是也因为要关闭桌面，正常的图形界面就无法使用了，必须借助控制台来操作。</p>
+<ol>
+<li>找到文件的路径，复制下来</li>
+<li>以管理员限权，运行控制台CMD</li>
+<li>任务管理器结束资源管理器进程，关闭桌面，这时候桌面会直接灰掉。</li>
+<li>通过控制台，cd指令，进入到文件的路径下。</li>
+<li>通过 Del 文件名 的命令，删除文件（注意中间有空格）。</li>
+<li>在任务管理器中新建进程，输入Explorer.exe，重新启动桌面。</li>
+</ol>
+<p>到此一切终于回到了正轨。桌面终于清静了。</p>
+<p>相比这么麻烦的清理步骤，还是平时注意保持健康的使用习惯更为重要。</p>
+<p>（我看到那几个毒瘤DLL的修改记录，居然是去年就已经在我的电脑里了，欺负我以前不懂）</p>
+
+      
+      <!-- reward -->
+      
+    </div>
+      <!-- copyright -->
+      
+    <footer class="article-footer">
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DLL%E6%B8%85%E7%90%86/" rel="tag">DLL清理</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%AF%92%E7%98%A4%E8%BD%AF%E4%BB%B6/" rel="tag">毒瘤软件</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%94%B5%E8%84%91%E6%B8%85%E7%90%86/" rel="tag">电脑清理</a></li></ul>
+
+
+    </footer>
+
+  </div>
+
+  
+
+  
+  
+  
+
+  
+
+</article>
+    
     <article id="post-在网页上加入live2D人偶" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
