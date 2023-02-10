@@ -1,0 +1,681 @@
+
+
+<!DOCTYPE html>
+<html lang="CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Kwindy">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="今天整理了一下关于前几天学习模型格式的笔记 OSGB格式osgb格式的模型数据，无论是.s3c文件还是Data中的.osgb，打开都是人类难以理解的16进制码，只有.xml文件里记录了一些信息。可以很明显的看到里面有投影坐标系、中央子午线、地理坐标系，地理坐标和高程等信息，程序在使用模型时，就可以根据这些位置信息，将文件夹中碎片的模型数据准确的摆放在正确的坐标上。而模型的数据，没有相应程序的解析就">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据格式3Dtiles和osgb的学习">
+<meta property="og:url" content="http://kw1649190133.github.io/2022/05/30/%E6%95%B0%E6%8D%AE%E6%A0%BC%E5%BC%8F3Dtiles%E5%92%8Cosgb%E7%9A%84%E5%AD%A6%E4%B9%A0/index.html">
+<meta property="og:site_name" content="kw&#39;s blog">
+<meta property="og:description" content="今天整理了一下关于前几天学习模型格式的笔记 OSGB格式osgb格式的模型数据，无论是.s3c文件还是Data中的.osgb，打开都是人类难以理解的16进制码，只有.xml文件里记录了一些信息。可以很明显的看到里面有投影坐标系、中央子午线、地理坐标系，地理坐标和高程等信息，程序在使用模型时，就可以根据这些位置信息，将文件夹中碎片的模型数据准确的摆放在正确的坐标上。而模型的数据，没有相应程序的解析就">
+<meta property="og:locale">
+<meta property="article:published_time" content="2022-05-30T10:00:00.000Z">
+<meta property="article:modified_time" content="2022-11-04T10:38:32.308Z">
+<meta property="article:author" content="Kwindy">
+<meta property="article:tag" content="3Dtiles">
+<meta property="article:tag" content="osgb">
+<meta property="article:tag" content="数据格式">
+<meta property="article:tag" content="Cusium">
+<meta property="article:tag" content="笔记">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>数据格式3Dtiles和osgb的学习 - kw&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"kw1649190133.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="数据格式3Dtiles和osgb的学习"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-05-30 18:00" pubdate>
+          May 30, 2022 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          5k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          42 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">数据格式3Dtiles和osgb的学习</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>今天整理了一下关于前几天学习模型格式的笔记</p>
+<h2 id="OSGB格式"><a href="#OSGB格式" class="headerlink" title="OSGB格式"></a>OSGB格式</h2><p>osgb格式的模型数据，无论是.s3c文件还是Data中的.osgb，打开都是人类难以理解的16进制码，只有.xml文件里记录了一些信息。<br>可以很明显的看到里面有投影坐标系、中央子午线、地理坐标系，地理坐标和高程等信息，程序在使用模型时，就可以根据这些位置信息，将文件夹中碎片的模型数据准确的摆放在正确的坐标上。而模型的数据，没有相应程序的解析就是个黑匣子（文件夹的名称也应当符合程序要求）。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version=<span class="hljs-string">&quot;1.0&quot;</span> encoding=<span class="hljs-string">&quot;utf-8&quot;</span>?&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">ModelMetadata</span> <span class="hljs-attr">version</span>=<span class="hljs-string">&quot;1&quot;</span>&gt;</span><br>	<span class="hljs-tag">&lt;<span class="hljs-name">SRS</span>&gt;</span>PROJCS[<span class="hljs-symbol">&amp;quot;</span>CGCS2000 / 3-degree Gauss-Kruger CM 109.91666667E<span class="hljs-symbol">&amp;quot;</span>,	    GEOGCS[<span class="hljs-symbol">&amp;quot;</span>China Geodetic Coordinate System 2000<span class="hljs-symbol">&amp;quot;</span>,	        DATUM[<span class="hljs-symbol">&amp;quot;</span>China_2000<span class="hljs-symbol">&amp;quot;</span>,	            SPHEROID[<span class="hljs-symbol">&amp;quot;</span>CGCS2000<span class="hljs-symbol">&amp;quot;</span>,6378137,298.257222101,	                AUTHORITY[<span class="hljs-symbol">&amp;quot;</span>EPSG<span class="hljs-symbol">&amp;quot;</span>,<span class="hljs-symbol">&amp;quot;</span>1024<span class="hljs-symbol">&amp;quot;</span>]],	            AUTHORITY[<span class="hljs-symbol">&amp;quot;</span>EPSG<span class="hljs-symbol">&amp;quot;</span>,<span class="hljs-symbol">&amp;quot;</span>1043<span class="hljs-symbol">&amp;quot;</span>]],	        PRIMEM[<span class="hljs-symbol">&amp;quot;</span>Greenwich<span class="hljs-symbol">&amp;quot;</span>,0,	            AUTHORITY[<span class="hljs-symbol">&amp;quot;</span>EPSG<span class="hljs-symbol">&amp;quot;</span>,<span class="hljs-symbol">&amp;quot;</span>8901<span class="hljs-symbol">&amp;quot;</span>]],	        UNIT[<span class="hljs-symbol">&amp;quot;</span>degree<span class="hljs-symbol">&amp;quot;</span>,0.0174532925199433,	            AUTHORITY[<span class="hljs-symbol">&amp;quot;</span>EPSG<span class="hljs-symbol">&amp;quot;</span>,<span class="hljs-symbol">&amp;quot;</span>9122<span class="hljs-symbol">&amp;quot;</span>]],	        AUTHORITY[<span class="hljs-symbol">&amp;quot;</span>EPSG<span class="hljs-symbol">&amp;quot;</span>,<span class="hljs-symbol">&amp;quot;</span>4490<span class="hljs-symbol">&amp;quot;</span>]],	    PROJECTION[<span class="hljs-symbol">&amp;quot;</span>Transverse_Mercator<span class="hljs-symbol">&amp;quot;</span>],	    PARAMETER[<span class="hljs-symbol">&amp;quot;</span>latitude_of_origin<span class="hljs-symbol">&amp;quot;</span>,0],	    PARAMETER[<span class="hljs-symbol">&amp;quot;</span>central_meridian<span class="hljs-symbol">&amp;quot;</span>,109.91666667],	    PARAMETER[<span class="hljs-symbol">&amp;quot;</span>scale_factor<span class="hljs-symbol">&amp;quot;</span>,1],	    PARAMETER[<span class="hljs-symbol">&amp;quot;</span>false_easting<span class="hljs-symbol">&amp;quot;</span>,500000],	    PARAMETER[<span class="hljs-symbol">&amp;quot;</span>false_northing<span class="hljs-symbol">&amp;quot;</span>,0],	    UNIT[<span class="hljs-symbol">&amp;quot;</span>metre<span class="hljs-symbol">&amp;quot;</span>,1,	        AUTHORITY[<span class="hljs-symbol">&amp;quot;</span>EPSG<span class="hljs-symbol">&amp;quot;</span>,<span class="hljs-symbol">&amp;quot;</span>9001<span class="hljs-symbol">&amp;quot;</span>]],	    AUTHORITY[<span class="hljs-symbol">&amp;quot;</span>EPSG<span class="hljs-symbol">&amp;quot;</span>,<span class="hljs-symbol">&amp;quot;</span>4545<span class="hljs-symbol">&amp;quot;</span>]]<span class="hljs-tag">&lt;/<span class="hljs-name">SRS</span>&gt;</span><br>	<span class="hljs-tag">&lt;<span class="hljs-name">SRSOrigin</span>&gt;</span>507021.25,2057836.2,46.4<span class="hljs-tag">&lt;/<span class="hljs-name">SRSOrigin</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">ModelMetadata</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="3Dtiles格式"><a href="#3Dtiles格式" class="headerlink" title="3Dtiles格式"></a>3Dtiles格式</h2><p>而3Dtiles格式的数据，就有好多个可以阅读的文本。<br>也就是.json文件。但是要注意模型加载的前提是需要有顶层json路径，若没有则需要进行顶层重建。<br>下面是一段实例的展示：</p>
+<figure class="highlight prolog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><code class="hljs prolog">&#123;<br>	<span class="hljs-string">&quot;asset&quot;</span>: &#123;<br>		<span class="hljs-string">&quot;version&quot;</span>: <span class="hljs-string">&quot;0.0&quot;</span><br>	&#125;,<br>	<span class="hljs-string">&quot;geometricError&quot;</span>: <span class="hljs-number">89.0000000063020877</span>,<br>	<span class="hljs-string">&quot;root&quot;</span>: &#123;<br>		<span class="hljs-string">&quot;boundingVolume&quot;</span>: &#123;<br>			<span class="hljs-string">&quot;sphere&quot;</span>: [<span class="hljs-number">-1832255.4880568594671786</span>, <span class="hljs-number">4636065.7251678528264165</span>, <span class="hljs-number">3967474.6662561106495559</span>, <span class="hljs-number">92.5177488416835700</span>]<br>		&#125;,<br>		<span class="hljs-string">&quot;refine&quot;</span>: <span class="hljs-string">&quot;replace&quot;</span>,<br>		<span class="hljs-string">&quot;geometricError&quot;</span>: <span class="hljs-number">2</span>,<br>		<span class="hljs-string">&quot;content&quot;</span>: &#123;<br>			<span class="hljs-string">&quot;url&quot;</span>: <span class="hljs-string">&quot;Tile_p000_p000.b3dm&quot;</span><br>		&#125;,<br>		<span class="hljs-string">&quot;children&quot;</span>: [&#123;<br>			<span class="hljs-string">&quot;boundingVolume&quot;</span>: &#123;<br>				<span class="hljs-string">&quot;sphere&quot;</span>: [<span class="hljs-number">-1832256.7506676781922579</span>, <span class="hljs-number">4636064.3549550874158740</span>, <span class="hljs-number">3967471.9338256986811757</span>, <span class="hljs-number">53.0235926788538521</span>]<br>			&#125;,<br>			<span class="hljs-string">&quot;geometricError&quot;</span>: <span class="hljs-number">1</span>,<br>			<span class="hljs-string">&quot;content&quot;</span>: &#123;<br>				<span class="hljs-string">&quot;url&quot;</span>: <span class="hljs-string">&quot;Tile_p000_p000_L16_0.b3dm&quot;</span><br>			&#125;,<br>			<span class="hljs-string">&quot;children&quot;</span>: [&#123;<br>				<span class="hljs-string">&quot;boundingVolume&quot;</span>: &#123;<br>					<span class="hljs-string">&quot;sphere&quot;</span>: [<span class="hljs-number">-1832256.7506676781922579</span>, <span class="hljs-number">4636064.3549550874158740</span>, <span class="hljs-number">3967471.9338256986811757</span>, <span class="hljs-number">53.0235926788538521</span>]<br>				&#125;,<br>				<span class="hljs-string">&quot;geometricError&quot;</span>: <span class="hljs-number">0.5000000000000000</span>,<br>				<span class="hljs-string">&quot;content&quot;</span>: &#123;<br>					<span class="hljs-string">&quot;url&quot;</span>: <span class="hljs-string">&quot;Tile_p000_p000_L17_00.b3dm&quot;</span><br>				&#125;,<br>				<span class="hljs-string">&quot;children&quot;</span>: [&#123;<br>					<span class="hljs-string">&quot;boundingVolume&quot;</span>: &#123;<br>						<span class="hljs-string">&quot;sphere&quot;</span>: [<span class="hljs-number">-1832256.7506676781922579</span>, <span class="hljs-number">4636064.3549550874158740</span>, <span class="hljs-number">3967472.1795567460358143</span>, <span class="hljs-number">52.9021132641717458</span>]<br>					&#125;,<br>					<span class="hljs-string">&quot;geometricError&quot;</span>: <span class="hljs-number">0.2500000000000000</span>,<br>					<span class="hljs-string">&quot;content&quot;</span>: &#123;<br>						<span class="hljs-string">&quot;url&quot;</span>: <span class="hljs-string">&quot;Tile_p000_p000_L18_000.json&quot;</span><br>					&#125;<br>				&#125;]<br>			&#125;]<br>		&#125;]<br><br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>结合实际案例和一些其他资料，大概可以整理成下面这个样式。<br>虽然json的文件格式是可以直接阅读的，但是套娃式的复杂结构决定了实际在处理大批量数据时，还是要依靠机器处理。</p>
+<figure class="highlight livescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs livescript">&#123;<br>	<span class="hljs-string">&quot;asset&quot;</span>: &#123;<span class="hljs-string">&quot;version&quot;</span>: <span class="hljs-string">&quot;0.0&quot;</span>&#125;,<span class="hljs-string">\\记录整个数据集的声明和归属</span><br><br>	<span class="hljs-string">&quot;geometricError&quot;</span>: <span class="hljs-number">89.0000000063020877</span>,<br>	<span class="hljs-string">\\几何误差，用来控制不同比例尺下模型的显隐。这个数值父级瓦片一定比子级瓦片大，可以理解为放大后就能看到更多的模型细节。</span><br><br>	<span class="hljs-string">&quot;root&quot;</span>: &#123;<br>		<span class="hljs-string">&quot;boundingVolume&quot;</span>: &#123;<br>			<span class="hljs-string">&quot;sphere&quot;</span>: [-<span class="hljs-number">1832255.4880568594671786</span>, <span class="hljs-number">4636065.7251678528264165</span>, <span class="hljs-number">3967474.6662561106495559</span>, <span class="hljs-number">92.5177488416835700</span>]<br>		&#125;,<br>        <span class="hljs-string">\\boundingVolume</span> 数据框架，有三种类型<br><br>		<span class="hljs-string">&quot;refine&quot;</span>: <span class="hljs-string">&quot;replace&quot;</span>,<br>		<span class="hljs-string">\\加载方式</span><br><br>		<span class="hljs-string">&quot;geometricError&quot;</span>: <span class="hljs-number">2</span>,<br>		<span class="hljs-string">\\几何误差</span><br><br>		<span class="hljs-string">&quot;content&quot;</span>: &#123;<br>			<span class="hljs-string">&quot;url&quot;</span>: <span class="hljs-string">&quot;Tile_p000_p000.b3dm&quot;</span><br>		&#125;,<br>		<span class="hljs-string">\\content</span> 这个root链接的数据的地址，好像url和uri都可以。可以是子结点的json。父节点可以无限引用子节点，但是子节点不能循环引用父结点。<br><br>		<span class="hljs-string">&quot;children&quot;</span>: [&#123;  ]&#125;<br>		<span class="hljs-string">\\开始套娃，里面是这个root的子叶结点</span><br><br> 	&#125;<span class="hljs-string">\\root是数据集的根瓦片，记录了大量的信息。</span><br><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h2><p>3Dtiles允许数据集使用的四种树状结构：<br>四叉树、八叉树、KD树、格网结构。<br>四叉树可以理解为平面上的一个正方形，横竖两刀切成四块，也就成了四个子叶结点。<br>八叉树可以理解为四叉树增加了一个维度，变成一个正方体切三刀变为八个小正方体。<br>模型的树形分支构造也会影响加载速度，越大的切片文件加载越慢，根据实际需要进行选择。</p>
+<h2 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h2><p>3Dtiles的数据也是以瓦片形式保存的，而且瓦片的类型并不唯一，具体有</p>
+<h4 id="b3dm"><a href="#b3dm" class="headerlink" title="b3dm"></a>b3dm</h4><p>传统的三维建模数据、BIM数据、倾斜摄影数据。（也是做大范围场景最常用的数据）</p>
+<h4 id="i3dm"><a href="#i3dm" class="headerlink" title="i3dm"></a>i3dm</h4><p>一个模型多次渲染，例如路灯、售货机、摄像头</p>
+<h4 id="pnts"><a href="#pnts" class="headerlink" title="pnts"></a>pnts</h4><p>点云数据</p>
+<h4 id="cmpt"><a href="#cmpt" class="headerlink" title="cmpt"></a>cmpt</h4><p>前三种数据的符合，一个cmpt文件里可以内嵌多个其他类型的瓦片。</p>
+<p>3Dtiles的基础是glTF，全称为Graphics Language Transmission Format （图形语言传输格式），针对WebGL、OpenGL等接口的运行时数据传输格式。所以3Dtiles实际的文件后缀名是glTF决定的，而3Dtiles是为了加载海量的三维数据，在glTF的基础上加入了分层概念，使其适应倾斜摄影、点云等大规模数据的加载。<br>2017年公布glTF2.0标准，2022年初公布3Dtiles Next标准（二代）。</p>
+<h2 id="URL-URN-URI"><a href="#URL-URN-URI" class="headerlink" title="URL + URN = URI"></a>URL + URN = URI</h2><p>在使用模型时会遇到的<br>URL 统一资源定位符，是表示引用地址的字符串。主要用于连接网页、网页组件或网页程序，用访问方法来检索资源位置。<br>URL包含<br>1、用于访问资源的协议<br>2、服务器的位置<br>3、服务器端口号（可选）<br>4、资源在服务器目录结构中的位置<br>5、片段标识符（可选）<br>URI 统一资源标识符，标识逻辑或物理资源的字符序列。定义项目的标识，将一个资源与其他资源区分开。<br>URI 包含<br>1、Scheme（方案）<br>2、权限组件<br>3、查询（可选）<br>4、片段（可选）</p>
+<h2 id="一些其他知识点："><a href="#一些其他知识点：" class="headerlink" title="一些其他知识点："></a>一些其他知识点：</h2><p>1、osgb是对人类友好的对象型数据；3Dtiles格式则为对GPU友好的图形编程型数据，一切为了渲染速度服务。</p>
+<p>2、osgb到3Dtiles为单向转换，反向的成本过高几乎不考虑。</p>
+<p>3、使用FME也可以进行osgb对3Dtiles的转换（但是目前尝试没有成功）</p>
+<p>4、glTF1.0 和 glTF2.0 的不同可能会于Cesium的不同版本有不兼容的情况，过于深入暂不研究。</p>
+<h2 id="一些相关的软件平台："><a href="#一些相关的软件平台：" class="headerlink" title="一些相关的软件平台："></a>一些相关的软件平台：</h2><p>CesiumLab<br>Mars3D</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0/" class="category-chain-item">学习</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/3Dtiles/">#3Dtiles</a>
+      
+        <a href="/tags/osgb/">#osgb</a>
+      
+        <a href="/tags/%E6%95%B0%E6%8D%AE%E6%A0%BC%E5%BC%8F/">#数据格式</a>
+      
+        <a href="/tags/Cusium/">#Cusium</a>
+      
+        <a href="/tags/%E7%AC%94%E8%AE%B0/">#笔记</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>数据格式3Dtiles和osgb的学习</div>
+      <div>http://kw1649190133.github.io/2022/05/30/数据格式3Dtiles和osgb的学习/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Kwindy</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>May 30, 2022</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/08/29/%E5%9C%A8markdown%E6%96%87%E6%A1%A3%E4%B8%AD%E6%8F%92%E5%85%A5%E5%9B%BE%E7%89%87%E7%9A%84%E6%96%B9%E5%BC%8F/" title="在markdown文档中插入图片的方式">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">在markdown文档中插入图片的方式</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/05/26/hexo%E5%8D%87%E7%BA%A7%E4%B8%8E%E7%8E%AF%E5%A2%83%E6%95%B4%E7%90%86/" title="hexo升级与环境整理">
+                        <span class="hidden-mobile">hexo升级与环境整理</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

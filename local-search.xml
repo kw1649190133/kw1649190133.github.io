@@ -1,0 +1,472 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  
+  
+  
+  <entry>
+    <title>关于BlanderGIS的安装和配置</title>
+    <link href="/2022/11/04/%E5%85%B3%E4%BA%8EBlanderGIS%E7%9A%84%E5%AE%89%E8%A3%85%E5%92%8C%E9%85%8D%E7%BD%AE/"/>
+    <url>/2022/11/04/%E5%85%B3%E4%BA%8EBlanderGIS%E7%9A%84%E5%AE%89%E8%A3%85%E5%92%8C%E9%85%8D%E7%BD%AE/</url>
+    
+    <content type="html"><![CDATA[<h2 id="安装方式"><a href="#安装方式" class="headerlink" title="安装方式"></a>安装方式</h2><p>安装好blander以后，不用解压BlanderGIS的压缩包，打开blander,在插件中添加压缩包的路径。打勾后重启Blander,就会出现GIS菜单。</p><h2 id="“No-ImageIO”错误"><a href="#“No-ImageIO”错误" class="headerlink" title="“No ImageIO”错误"></a>“No ImageIO”错误</h2><p>打开GIS菜单，加载地图的时候会出现“No ImageIO”错误，需要手动下载文件进行替换。</p><p>FreeImage的下载地址：<br><a href="https://github.com/imageio/imageio-binaries/tree/master/freeimage">https://github.com/imageio/imageio-binaries/tree/master/freeimage</a><br>window系统的替换文件位置<br>C:\Users\admin\AppData\Roaming\Blender Foundation\Blender\2.83\scripts\addons\BlenderGIS\core\lib\imageio\resources</p><p>建立一个freeimage文件夹，然后将相应版本的文件放入其中<br>例如:freeimage\FreeImage-3.15.1-win64.dll<br>然后重新打开blander方可生效</p><p>这个应该是linux系统的路径<br>/Contents/Resources/3.1/scripts/addons/BlenderGIS-master/core/lib/imageio/resources</p><h2 id="加载地图"><a href="#加载地图" class="headerlink" title="加载地图"></a>加载地图</h2><p>谷歌之类的地图可能因为墙的原因无法加载，国内的地图需要申请。可以去天地图申请token，然后放在插件中，就可以加载地图。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>学习</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>blander</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>OSGB格式的打开方式</title>
+    <link href="/2022/11/04/OSGB%E6%A0%BC%E5%BC%8F%E7%9A%84%E6%89%93%E5%BC%80%E6%96%B9%E5%BC%8F/"/>
+    <url>/2022/11/04/OSGB%E6%A0%BC%E5%BC%8F%E7%9A%84%E6%89%93%E5%BC%80%E6%96%B9%E5%BC%8F/</url>
+    
+    <content type="html"><![CDATA[<h2 id="OSGB简介"><a href="#OSGB简介" class="headerlink" title="OSGB简介"></a>OSGB简介</h2><p>OSGB全称为Open Scene Gragh Binary,是开源三维渲染引擎OpenSceneGraph（OSG）数据文件格式的二进制版本，同时也是目前倾斜摄影模型（尤其是使用CC处理的模型）常用的存储格式。</p><h2 id="解析OSGB"><a href="#解析OSGB" class="headerlink" title="解析OSGB"></a>解析OSGB</h2><p>由于OSG是用C++编写的，而且OSGB又是二进制格式，在解析上就存在一定的难度，如果完全从头编写解析程序的话，需要熟练掌握OSG，甚至需要深入源码，对Web开发者来说是一件不那么容易的事。</p><p>参考链接:[OSG中文社区 <a href="http://www.osgchina.org/]:http://www.osgchina.org/">http://www.osgchina.org/]:http://www.osgchina.org/</a></p><h2 id="可以打开OSGB的软件"><a href="#可以打开OSGB的软件" class="headerlink" title="可以打开OSGB的软件"></a>可以打开OSGB的软件</h2><ol><li>CC Viewer 需要制作s3c链接</li><li>DasViewer 来自武汉大势智慧，免费使用但功能有限</li><li>OsgbLab 倾斜伴侣，强大的Osgb格式转换器，但大型转换任务要收费，浏览模型的功能有限</li></ol><ul><li>除此之外一些大品牌的地理信息处理软件，例如eFeature、中海达HiData等也可以直接打开osgb格式的模型。</li><li>另外就是通过Cesium、Unity、虚幻之类的引擎，自己搭建渲染环境，制作界面，加载模型。学习成本较高</li></ul>]]></content>
+    
+    
+    <categories>
+      
+      <category>学习</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>osgb</tag>
+      
+      <tag>三维模型</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>关于元宇宙的一些愚见</title>
+    <link href="/2022/09/11/%E5%85%B3%E4%BA%8E%E5%85%83%E5%AE%87%E5%AE%99%E7%9A%84%E4%B8%80%E4%BA%9B%E6%84%9A%E8%A7%81/"/>
+    <url>/2022/09/11/%E5%85%B3%E4%BA%8E%E5%85%83%E5%AE%87%E5%AE%99%E7%9A%84%E4%B8%80%E4%BA%9B%E6%84%9A%E8%A7%81/</url>
+    
+    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>最近工作告一段落，开始有一些闲暇时间，开始接触什么数字孪生、元宇宙之类的东西。尽管查了一些资料，但总觉得理解得太片面，需要整理一下知识碎片。中秋节放假在书店里看了一本书，叫做《简单元宇宙》，于是有了一点灵感，遂将想法记录下来，尽管不一定正确。</p><h2 id="元宇宙与多元宇宙"><a href="#元宇宙与多元宇宙" class="headerlink" title="元宇宙与多元宇宙"></a>元宇宙与多元宇宙</h2><p>之前一直没能理解，什么是元宇宙，感觉像是一个生造出来的词语一样。<br>但是在书中看到了把元宇宙和多元宇宙放在一起解释的说法，一下子就清晰了起来。<br>所以按我的理解，应该是这样的：<br>元宇宙，即我们所处的世界，是最基本的宇宙，而从中可以衍生出许多其他的附属宇宙空间。元，即元初，元始之意。<del>以常识来判断的话，这一段是一句正确的废话</del><br>多元宇宙，即存在多个宇宙，它们或相对独立，或存在一定关联。这一概念在以漫威为代表的许多美国电影里面已经有许多的体现了，要是看过这些电影的人应该立刻能理解。<br>而现在互联网行业所提的元宇宙，也就是以我们现实的宇宙为基础，延伸出其他虚拟的宇宙。以网络游戏《最终幻想14》为例子的话，也就是现实中的我，操作着游戏中的角色，以冒险者的角色在虚拟的艾欧泽亚大陆冒险。</p><h2 id="元宇宙的形成条件"><a href="#元宇宙的形成条件" class="headerlink" title="元宇宙的形成条件"></a>元宇宙的形成条件</h2><p>那么网络游戏就是元宇宙了吗，也并不是，因为元宇宙还需要满足其他的一些条件。</p><ul><li>元宇宙里的资产，是收到保护的，不会轻易消失或者挪用。就像我们用的微信零钱、支付宝一样，虽然上面只有一个数字，但一般情况我们并不需要担心这个钱莫名的消失。而游戏的账号，所有权完全在游戏公司手里，哪天游戏停服了，什么都不会剩下，公司也不会把你充的钱退给你。</li><li>元宇宙里的资产，要具备通用性。还是举支付宝的例子，像这样虽然把现金变成了电子数据，但它仍然在哪都可以花，甚至可以在国外花。而游戏里的角色、等级、能力、装备，在这家的游戏里可以用，而换一款游戏，就得一切从头开始，所以说元宇宙像网络游戏，但网络游戏不是元宇宙。电影《头号玩家》里的绿洲，倒是非常符合元宇宙的畅想。</li><li>元宇宙里面，需要能够进行生产活动。这也是为什么网络游戏不是元宇宙的另一个重要原因，元宇宙不能只是一个从现实。从现实一点的角度出发，元宇宙空间里，应该能够进行内容的生产，并且能够产出产品到现实世界，从而实现对现实的影响，或者说，它本身就是现实的一部分。目前的技术也不可能做到虚拟空间里种出粮食来再放到现实中吃，这已经是魔法了。以目前的技术水平，能做到在虚拟空间中创作文化产品就不错了，像现在已经有的AR作画，51world的虚拟办公室等。<br>所以综上所述，我觉得现在的情况就是：<strong>我们习以为常的日常生活中，其实已经融入了元宇宙的部分要素或者特征，但它们都分散在各种各样的系统或者产品当中，并不能通过简单的拼凑或者融合来实现或者进化出一个元宇宙出来。</strong><br>那么如何构建一个元宇宙呢，这个问题应该由那些掌握了社会绝大多数资源的人来回答。以我的见识和资源，并不足以支持我做出睿智的判断。<br>说了这么多，所谓的元宇宙，也就和以前的量子科技一样。量子理论是存在的吗？当然是的，至今还有许多科学家们在不断地探索着人类未知的领域，向科学家们致敬。那现在市面上查到的以量子为噱头的产品是真的吗？当然绝大多数是假的，目前并没有量子技术投入到商业当中，就连量子计算机之类的东西，目前也只是在实验室里，市场上的“量子”二字只是商人们拿来炒作的工具罢了。</li></ul><h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>以上一切仅为个人愚见，不是真理，也不代表任何人。<br>作为站在二十一世纪的路口的打工人，我希望自己秉持对未知事物的尊重躬身而行。<strong>路漫漫其修远兮，吾将上下而求索。</strong></p>]]></content>
+    
+    
+    <categories>
+      
+      <category>学习</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>元宇宙</tag>
+      
+      <tag>多元宇宙</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>版本控制与环境管理</title>
+    <link href="/2022/09/05/%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6%E4%B8%8E%E7%8E%AF%E5%A2%83%E7%AE%A1%E7%90%86/"/>
+    <url>/2022/09/05/%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6%E4%B8%8E%E7%8E%AF%E5%A2%83%E7%AE%A1%E7%90%86/</url>
+    
+    <content type="html"><![CDATA[<h2 id="需要版本控制的原因"><a href="#需要版本控制的原因" class="headerlink" title="需要版本控制的原因"></a>需要版本控制的原因</h2><p>在使用python的时候偶尔会遇到版本的冲突，尤其是有一些轮子只适配老型号的底盘，为了避免安装新环境的时候拆除已经搭好的旧环境，所以需要使用版本控制工具对程序版本进行管理。<br>本来不碰论文之后好久没折腾这玩意了，但是最近尝试vue3的时候又遇到了three.js不适配新版本Node.js的问题，而我的博客也在使用Node.js，为了保护已有的环境，要么换台电脑，要么只能用版本控制工具来协助我切换版本了。</p><h3 id="python"><a href="#python" class="headerlink" title="python"></a>python</h3><p>python上以前我用过的就是Anaconda，可以支持一键创建环境，管理环境，还算方便。<br>此处以后再更新一下具体的使用方法</p><h3 id="node-js"><a href="#node-js" class="headerlink" title="node.js"></a>node.js</h3><p>查了一下好像只有nvm又支持Windows系统的nvm-windows，还有一个支持全平台的fnm。</p><p>此处以后再更新一下具体的使用方法</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>学习</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>python</tag>
+      
+      <tag>版本控制</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>VUE学习（二）</title>
+    <link href="/2022/09/01/VUE%E5%AD%A6%E4%B9%A0%EF%BC%88%E4%BA%8C%EF%BC%89/"/>
+    <url>/2022/09/01/VUE%E5%AD%A6%E4%B9%A0%EF%BC%88%E4%BA%8C%EF%BC%89/</url>
+    
+    <content type="html"><![CDATA[<p><strong>本章节主要对一些零散知识的整理，下一章节开始项目代码的构建</strong></p><h2 id="关于网页构成和代码注入"><a href="#关于网页构成和代码注入" class="headerlink" title="关于网页构成和代码注入"></a>关于网页构成和代码注入</h2><p>打开网站的入口文件index.html，发现body里面明明什么都没有，只有一条备注，但运行dev的时候却能看到一个初始化界面。这条备注的信息，说的就是生成的文件将自动注入，这里实际上是通过插件实现的。</p><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;app&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>   <span class="hljs-comment">&lt;!-- built files will be auto injected --&gt;</span><br></code></pre></td></tr></table></figure><p>在dev启动的页面中，用浏览器F12查看代码，会发现多了一行，就是注入文件的路径，也就是我们要写代码的地方了。</p><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;app&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>    <span class="hljs-comment">&lt;!-- built files will be auto injected --&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;text/javascript&quot;</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;/app.js&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>`<br></code></pre></td></tr></table></figure><h2 id="项目打包"><a href="#项目打包" class="headerlink" title="项目打包"></a>项目打包</h2><p>项目打包使用指令<code>cnpm run build</code>实现项目的打包，打包完成后会在Vue项目下面生成一个<code>dist</code>目录，包含了index.html和static目录，static目录包含静态文件js、css以及图片目录images（如果有的话）</p><p><img src="/2022/09/01/VUE%E5%AD%A6%E4%B9%A0%EF%BC%88%E4%BA%8C%EF%BC%89/%E6%89%93%E5%8C%85%E5%AE%8C%E6%88%90%E7%94%BB%E9%9D%A21.png" alt="打包完成画面"></p><p>打包完成后，理论上就可以直接部署在其他地方了。但是双击index.html会打不开网页，因为里面的路径是绝对路径。需要修改成相对路径。</p><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">link</span> <span class="hljs-attr">href</span>=<span class="hljs-string">/static/css/app.33da80d69744798940b135da93bc7b98.css</span> <span class="hljs-attr">rel</span>=<span class="hljs-string">stylesheet</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">type</span>=<span class="hljs-string">text/javascript</span> <span class="hljs-attr">src</span>=<span class="hljs-string">/static/js/app.717bb358ddc19e181140.js</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span><br>...<br></code></pre></td></tr></table></figure><p>修改之后变成下面这样。其实就是去掉了个别/</p><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">link</span> <span class="hljs-attr">href</span>=<span class="hljs-string">static/css/app.33da80d69744798940b135da93bc7b98.css</span> <span class="hljs-attr">rel</span>=<span class="hljs-string">stylesheet</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">type</span>=<span class="hljs-string">text/javascript</span> <span class="hljs-attr">src</span>=<span class="hljs-string">static/js/app.717bb358ddc19e181140.js</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span><br>...<br></code></pre></td></tr></table></figure><p>修改完以后，双击index.html就可以打开。</p><h3 id="关于打包时node报错"><a href="#关于打包时node报错" class="headerlink" title="关于打包时node报错"></a>关于打包时node报错</h3><p>报错提示：<code>(Use node --trace-warnings ...to show where the warning was created</code><br>在网上查了一下，好像是node版本的问题，vue支持的node版本太低了，得降低版本才行。回头再整个环境管理的玩意才行。</p><h3 id="VUE的目录结构"><a href="#VUE的目录结构" class="headerlink" title="VUE的目录结构"></a>VUE的目录结构</h3><table><thead><tr><th align="left">目录/文件</th><th align="left">说明</th></tr></thead><tbody><tr><td align="left">build</td><td align="left">项目构建（webpack）相关代码</td></tr><tr><td align="left">config</td><td align="left">配置目录，包括端口号等</td></tr><tr><td align="left">node_modules</td><td align="left">npm加载的项目依赖模块</td></tr><tr><td align="left">src</td><td align="left">开发目录<br>assets：放置图片。<br>components：组件文件。<br>App.vue：项目入口文件<br>main.js：项目的核心文件<br>index.css：样式文件（不建的话没有）<br>router：里面放了个index.js</td></tr><tr><td align="left">static</td><td align="left">静态资源目录</td></tr><tr><td align="left">public</td><td align="left">公共资源目录</td></tr><tr><td align="left">test</td><td align="left">测试目录</td></tr><tr><td align="left">dist</td><td align="left">使用<code>npm run build</code>命令打包之后可以生成目录</td></tr></tbody></table>]]></content>
+    
+    
+    <categories>
+      
+      <category>学习</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>VUE</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>VUE学习（一）</title>
+    <link href="/2022/09/01/VUE%E5%AD%A6%E4%B9%A0%EF%BC%88%E4%B8%80%EF%BC%89/"/>
+    <url>/2022/09/01/VUE%E5%AD%A6%E4%B9%A0%EF%BC%88%E4%B8%80%EF%BC%89/</url>
+    
+    <content type="html"><![CDATA[<h2 id="VUE基础"><a href="#VUE基础" class="headerlink" title="VUE基础"></a>VUE基础</h2><p>Vue.js是一套构建用户界面的渐进式框架。<br>只关注图层，采用自底向上的开发设计。<br>所需要的知识基础：<strong>HTML</strong>,<strong>CSS</strong>,<strong>JavaScript</strong></p><h2 id="安装和运行过程"><a href="#安装和运行过程" class="headerlink" title="安装和运行过程"></a>安装和运行过程</h2><p>使用npm（或cnpm）安装稳定版的vue<br><code>cnpm install vue@next</code><br>升级一下@vue/cli<br><code>cnpm install -g @vue/cli</code><br>在Vue项目中运行（应该是组件升级用的）<br><code>vue upgrade --next</code><br>进入项目文件夹，安装并运行dev<br><code>cd runoob-vue3-test cnpm run dev</code><br>然后就会给一个端口<code>http://localhost:8080/</code>，直接进浏览器打开<br>运行成功后的画面：<br><img src="/2022/09/01/VUE%E5%AD%A6%E4%B9%A0%EF%BC%88%E4%B8%80%EF%BC%89/vue%E8%BF%90%E8%A1%8C%E6%88%AA%E5%9B%BE1.png" alt="运行成功画面"></p><h2 id="安装过程中遇到的问题"><a href="#安装过程中遇到的问题" class="headerlink" title="安装过程中遇到的问题"></a>安装过程中遇到的问题</h2><p>出师不利，一上来就遇到了问题<br><code> vue-cli · Failed to download repo vuejs-templates/webpack: unable to verify the first certificate</code></p><p>关闭了steam++的加速后，不会直接报网络错误了，但是显示下载后，又会卡很长一段时间然后依旧报错。换了淘宝源之后，依旧不行。</p><figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">downloading <span class="hljs-keyword">template</span><br>vue-cli · Failed <span class="hljs-keyword">to</span> download repo vuejs-templates/webpack: <span class="hljs-keyword">connect</span> ETIMEDOUT <span class="hljs-number">52.192</span><span class="hljs-number">.72</span><span class="hljs-number">.89</span>:<span class="hljs-number">443</span><br></code></pre></td></tr></table></figure><p>大概率还是网络的问题，换源并没有用，只能用手动下载离线部署的方式解决。<br>去到git仓库手动下载webpack模块[<a href="https://github.com/vuejs-templates/webpack]:https://github.com/vuejs-templates/webpack">https://github.com/vuejs-templates/webpack]:https://github.com/vuejs-templates/webpack</a><br>下载后是一个压缩包<strong>webpack-develop.zip</strong>，需要解压后把文件夹名称改为<strong>webpack</strong>然后放到<code>C:\Users\用户名\.vue-templates</code>路径下，也就是<code>C:\Users\用户名\.vue-templates\webpack</code>。<br>（如果是初次安装这个.vue-templates文件夹是没有的，要自己建）</p><p>然后就可以运行vue创建项目了，但是要使用<code>--offline</code><br><code>vue init webpack --offline runoobvue3</code>(最后的是项目名称)<br>如果没有放对位置，就会出现<br><code>vue-cli · Local template &quot;C:\Users\用户名\.vue-templates\webpack&quot; not found</code><br>根据提示的地址，放到对应的位置就好，毕竟问题总是千奇百怪，一个方法不一定能解决所有问题。<br>大概是因为vue里面把这个安装路径给写死了，所以只能放在这里。后续有机会再研究这个路径的问题。<br>一顿操作以后，终于看到了创建成功的提示出现，总算是没白忙活</p><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs routeros">&gt; Use cached template at ~\.vue-templates\webpack<br><br>? Project name runoobvue3<br>? Project description A Vue.js project<br>? Author <span class="hljs-string">&#x27;kw344456731&#x27;</span> &lt;1649190133@qq.com&gt;<br>? Vue build standalone<br>? Install vue-router? <span class="hljs-literal">Yes</span><br>? Use ESLint <span class="hljs-keyword">to</span> lint your code? <span class="hljs-literal">Yes</span><br>? Pick an ESLint preset Standard<br>? <span class="hljs-built_in">Set</span> up unit tests <span class="hljs-literal">Yes</span><br>? Pick a test runner jest<br>? Setup e2e tests with Nightwatch? <span class="hljs-literal">Yes</span><br>? Should we <span class="hljs-built_in">run</span> `npm install` <span class="hljs-keyword">for</span> you after the project has been created? (recom<br>mended) npm<br><br>   vue-cli · Generated <span class="hljs-string">&quot;runoobvue3&quot;</span>.<br><br><br><span class="hljs-comment"># Installing project dependencies ...</span><br><span class="hljs-comment"># ========================</span><br></code></pre></td></tr></table></figure>]]></content>
+    
+    
+    <categories>
+      
+      <category>学习</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>VUE</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>关于Repository_No_Found的问题</title>
+    <link href="/2022/08/31/%E5%85%B3%E4%BA%8ERepository_No_Found%E7%9A%84%E9%97%AE%E9%A2%98/"/>
+    <url>/2022/08/31/%E5%85%B3%E4%BA%8ERepository_No_Found%E7%9A%84%E9%97%AE%E9%A2%98/</url>
+    
+    <content type="html"><![CDATA[<h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p>今天进行<code>hexo d</code>的时候，出现了新的问题，提示<br><code>repository 我的仓库地址 no Found</code><br>尝试在网上寻找解决办法，一番研究后查明，是登录信息有问题。但是不应该啊，最近也没有修改过账号和密码，也没有动过密钥和令牌。<br>然后看到有大佬说，是windows的凭据管理器，自动填写了其他的账号和密码进去。</p><h2 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h2><p>打开<code>控制面板\用户帐户\凭据管理器</code>，选择windows保管库，然后找到自己的github仓库的账号和密码，重新编辑一下，输入正确的密码，然后保存，就恢复正常了。<br>再次使用仓库时，会提示重新登录或者重新输入令牌。</p><p>PS:最近还遇到了无法上传的问题，折腾了半天也没解决，最后才发现是网络问题，github大概被墙了，用steam++加速一下就搞定了。也许这就是久病成医吧。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>学习</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>hexo</tag>
+      
+      <tag>github</tag>
+      
+      <tag>凭据问题</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>SQL学习(一)</title>
+    <link href="/2022/08/30/SQL%E5%AD%A6%E4%B9%A0%EF%BC%88%E4%B8%80%EF%BC%89/"/>
+    <url>/2022/08/30/SQL%E5%AD%A6%E4%B9%A0%EF%BC%88%E4%B8%80%EF%BC%89/</url>
+    
+    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>虽然以前上学的时候上了数据库的课程，但是很遗憾并没有学的很好。如今工作后时常和数据库打交道，所以在W3school中复习一下SQL。</p><h2 id="SQL是什么"><a href="#SQL是什么" class="headerlink" title="SQL是什么"></a>SQL是什么</h2><p>SQL 是一门 ANSI 的标准计算机语言，用来访问和操作数据库系统。但是不同版本的SQL库除了重要关键词一样之外，还会有自己的私有扩张库。</p><h2 id="SQL-DML和DDL"><a href="#SQL-DML和DDL" class="headerlink" title="SQL DML和DDL"></a>SQL DML和DDL</h2><ul><li>DML 数据操作语言，</li><li>DDL 数据定义语言，创建、删除表格，定义索引（键），规定表之间的链接，以及施加表之间的约束。</li></ul><h2 id="重要事项"><a href="#重要事项" class="headerlink" title="重要事项"></a>重要事项</h2><ol><li>SQL对大小写不敏感</li><li>如果使用的是 MS Access 和 SQL Server 2000，则不必在每条 SQL 语句之后使用分号，不过某些数据库软件要求必须使用分号。根据实际情况使用。<h2 id="基础语法"><a href="#基础语法" class="headerlink" title="基础语法"></a>基础语法</h2><h3 id="SELECT"><a href="#SELECT" class="headerlink" title="SELECT"></a>SELECT</h3>筛选结果包含的列<br>基本语法：<br><code>select 列名称 from 表名称</code><br>以及用*获取所以列：<br><code>select * from 表名称</code><br>获取多个列时：<br><code>select 列名称1,列名称2 from 表名称</code></li></ol><h3 id="DISTINCT"><a href="#DISTINCT" class="headerlink" title="DISTINCT"></a>DISTINCT</h3><p>distinct用于筛选出把不同的值，相同的列但不同行只显示一次，相当于一次汇总统计。<br>语法：<br><code>SELECT DISTINCT 列名称 FROM 表名称</code></p><h3 id="WHERE"><a href="#WHERE" class="headerlink" title="WHERE"></a>WHERE</h3><p>引出筛选条件的语句<br>where语句的基本语法如下：<br><code>SELECT 列名称 FROM 表名称 WHERE 列 运算符 值</code><br>示例：<br><code>SELECT * FROM Persons WHERE City=&#39;Beijing&#39;</code></p><p>可以在where中使用的运算符有：<br>= 等于（某些版本也写作<code>!=</code>）<br>&lt;&gt; 不等于<br>&gt; 大于<br>&lt; 小于<br>&gt;= 大于等于<br>&lt;= 小于等于<br>BETWEEN 在某个范围内<br>LIKE 搜索某种模式</p><h4 id="引号的使用"><a href="#引号的使用" class="headerlink" title="引号的使用"></a>引号的使用</h4><p>请注意，我们在例子中的条件值周围使用的是单引号。<br>SQL 使用单引号来环绕<strong>文本值</strong>（大部分数据库系统也接受双引号）。如果是<strong>数值</strong>，请不要使用引号。</p><h3 id="AND-和-OR"><a href="#AND-和-OR" class="headerlink" title="AND 和 OR"></a>AND 和 OR</h3><p>与和或的逻辑，或者说交集和并集，平时用的也非常多了。<br>二者结合的示例：<br><code>SELECT * FROM Persons WHERE (FirstName=&#39;Thomas&#39; OR FirstName=&#39;William&#39;)AND LastName=&#39;Carter&#39;</code><br>为了防止逻辑的混乱，要适当的使用圆括号进行分割。</p><h3 id="ORDER-BY"><a href="#ORDER-BY" class="headerlink" title="ORDER BY"></a>ORDER BY</h3><p>语法示例：<br><code>ORDER BY 列名称 ASC</code><br>语句根据指定列对结果进行升序排序。因为默认是升序，所以ASC一般可以省略。如果需要按降序排序，在指定列的后面加上关键字<code>DESC</code>。<br>但是如果按照多个字段进行排序时，还是要把ASC加上。<br>示例：<br><code>SELECT 字段一, 字段二 FROM 表名 ORDER BY 字段一 DESC, 字段二 ASC</code></p><h3 id="INSERT-INTO"><a href="#INSERT-INTO" class="headerlink" title="INSERT INTO"></a>INSERT INTO</h3><p>该语句用于向表格中插入新的行。<br>语法示例：<br><code>INSERT INTO 表名称 VALUES (值1, 值2,....)</code><br>也可以指定单独插入数据的列，这样的话没有插入数据的列就会被空着。<br><code>INSERT INTO table_name (列1, 列2,...) VALUES (值1, 值2,....)</code></p><h3 id="UPDATA"><a href="#UPDATA" class="headerlink" title="UPDATA"></a>UPDATA</h3><p>该语句用于修改表格中的数据<br>语法示例：<br><code>UPDATE 表名称 SET 列名称 = 新值 WHERE 列名称 = 某值</code><br>更新某一行中的若干列：<br><code>UPDATE Person SET Address = &#39;Zhongshan 23&#39;, City = &#39;Nanjing&#39; WHERE LastName = &#39;Wilson&#39;</code></p><h3 id="DELETE"><a href="#DELETE" class="headerlink" title="DELETE"></a>DELETE</h3><p>该语句用于删除表中的行。<br>语法示例：删除某个条件下的记录<br><code>DELETE FROM 表名称 WHERE 列名称 = 值</code><br>在不删除表的情况下删除所有行（表的结构、属性和索引都是完整的）<br><code>DELETE * FROM table_name</code><br>其中<code>*</code>是可以省略的。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>学习</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>SQL</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>ArcGIS入门</title>
+    <link href="/2022/08/30/ArcGIS%E5%85%A5%E9%97%A8/"/>
+    <url>/2022/08/30/ArcGIS%E5%85%A5%E9%97%A8/</url>
+    
+    <content type="html"><![CDATA[<h2 id="Arcgis安装"><a href="#Arcgis安装" class="headerlink" title="Arcgis安装"></a>Arcgis安装</h2><p>桌面端主程序 ArcGIS_Desktop<br>许可程序 License_Manager<br>破解，可使用注册机或替换文件。</p><h2 id="ArcMap界面介绍"><a href="#ArcMap界面介绍" class="headerlink" title="ArcMap界面介绍"></a>ArcMap界面介绍</h2><p>内容列表<br>制图区<br>菜单及工具条<br><img src="/2022/08/30/ArcGIS%E5%85%A5%E9%97%A8/GIS%E7%95%8C%E9%9D%A2.png" alt="arcgis界面"></p><h2 id="地图文档（-Mxd）与地图矢量以及数据库的关系"><a href="#地图文档（-Mxd）与地图矢量以及数据库的关系" class="headerlink" title="地图文档（.Mxd）与地图矢量以及数据库的关系"></a>地图文档（.Mxd）与地图矢量以及数据库的关系</h2><p>多对多联系<br>地图文档只存储实际数据在硬盘上的指针和有关地图显示的信息。<br>数据存放在.shp文件或者.gdb数据库</p><h2 id="基本操作"><a href="#基本操作" class="headerlink" title="基本操作"></a>基本操作</h2><h4 id="图层的开启关闭"><a href="#图层的开启关闭" class="headerlink" title="图层的开启关闭"></a>图层的开启关闭</h4><p>通过勾选图层左侧的✔，可以对该图层进行显示/关闭操作</p><h4 id="图层顺序调整"><a href="#图层顺序调整" class="headerlink" title="图层顺序调整"></a>图层顺序调整</h4><p>在内容列表中对某一图层长按，然后进行拖拽，可以改变图层之间的覆盖关系，位置靠上的图层可以有效覆盖位置靠下的图层。</p><h4 id="图层透明度调整"><a href="#图层透明度调整" class="headerlink" title="图层透明度调整"></a>图层透明度调整</h4><p>在内容列表中修改的图层，在图层属性中选择【显示】，即可对该图层的透明度进行调整</p><h4 id="视图切换"><a href="#视图切换" class="headerlink" title="视图切换"></a>视图切换</h4><p>主菜单-视图，可以切换数据视图和布局视图<br>数据视图：用于数据的绘制、 编辑等。<br>布局视图：该视图下会显示图框、图名、比例尺等要素，主要用于图纸的最后输出。、<br>在【主菜单】中的【插入】选项中，插入我们出图需要的各种要素。</p><h4 id="创建Shapefile文件"><a href="#创建Shapefile文件" class="headerlink" title="创建Shapefile文件"></a>创建Shapefile文件</h4><p>Shapefile文件类似于CAD中的一个图层，它只可以储存同一类型（点、线、面等）的数据文件，如学校布点、道路或行政区划<br>在【目录】-【文件夹连接】中，右键点击我们的目标文件夹，选择【新建】-【Shapefile】</p><h4 id="创建Geodatabase文件"><a href="#创建Geodatabase文件" class="headerlink" title="创建Geodatabase文件"></a>创建Geodatabase文件</h4><p>与“Shapefile”文件只能储存单一属性数据不同的是，Geodatabase是按照一定的模型和规则组合起来的储存空间数据和属性的数据合集。它的优势在于不同类型数据的整合和整体移动的便捷。【Geodatabase】的子集为【要素数据集】，【要素数据集】的子集为【要素类】。相当于一个文件夹，包含多个shapefile和表。<br>在【目录】-【文件夹连接】中，右键单击【现状道路】，选择【新建】-【个人地理数据库】</p><h2 id="常用工具"><a href="#常用工具" class="headerlink" title="常用工具"></a>常用工具</h2><h4 id="编辑器"><a href="#编辑器" class="headerlink" title="编辑器"></a>编辑器</h4><p>选择、跟踪、折点编辑、整形、分割、属性框、创建要素。<br>粘滞移动容差设置。</p><h4 id="字段计算器"><a href="#字段计算器" class="headerlink" title="字段计算器"></a>字段计算器</h4><p>用于在编辑字段内容时进行批量赋值。<br>例如常用的<strong>按顺序编号</strong>，可以用python实现。在代码块中定义函数</p><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs routeros"><span class="hljs-attribute">rec</span>=0<br>def autoIncrement():<br>global rec<br><span class="hljs-attribute">pStart</span>=1#初始值<br><span class="hljs-attribute">pInterval</span>=1#间隔值<br><span class="hljs-keyword">if</span>(<span class="hljs-attribute">rec</span>==0):<br><span class="hljs-attribute">rec</span>=pStart<br><span class="hljs-keyword">else</span>:<br><span class="hljs-attribute">rec</span>=rec+pInterval<br>return rec<br></code></pre></td></tr></table></figure><p>在赋值区用运行函数</p><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs stylus"><span class="hljs-function"><span class="hljs-title">autoIncrement</span><span class="hljs-params">()</span></span><br></code></pre></td></tr></table></figure><h4 id="属性查询器"><a href="#属性查询器" class="headerlink" title="属性查询器"></a>属性查询器</h4><p>使用属性查询器对要素进行属性筛选，例如</p><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-attribute">DLTB</span> LIKE <span class="hljs-string">&#x27;03%&#x27;</span><br></code></pre></td></tr></table></figure><p>需要了解SQL、以及基本的通配字符。例如<br>【<code>%</code>】表示0个或多个字符</p><h4 id="文件管理器"><a href="#文件管理器" class="headerlink" title="文件管理器"></a>文件管理器</h4><p>创建矢量数据、数据库，查看数据库中的内容，对数据库进行修改。</p><h4 id="工具箱"><a href="#工具箱" class="headerlink" title="工具箱"></a>工具箱</h4><p>分析工具-叠加分析<br>数据管理工具-常规-合并<br>投影和变化-定义投影、投影<br>缓冲区、数据驱动<br>转换工具Dwg、shp、kml</p><h4 id="搜索"><a href="#搜索" class="headerlink" title="搜索"></a>搜索</h4><p>方便快捷的找到相应的工具</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>学习</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Arcgis</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>在markdown文档中插入图片的方式</title>
+    <link href="/2022/08/29/%E5%9C%A8markdown%E6%96%87%E6%A1%A3%E4%B8%AD%E6%8F%92%E5%85%A5%E5%9B%BE%E7%89%87%E7%9A%84%E6%96%B9%E5%BC%8F/"/>
+    <url>/2022/08/29/%E5%9C%A8markdown%E6%96%87%E6%A1%A3%E4%B8%AD%E6%8F%92%E5%85%A5%E5%9B%BE%E7%89%87%E7%9A%84%E6%96%B9%E5%BC%8F/</url>
+    
+    <content type="html"><![CDATA[<h1 id="插入图片的方法"><a href="#插入图片的方法" class="headerlink" title="插入图片的方法"></a>插入图片的方法</h1><p>在hexo中插入图片的语法为<code>![]()</code><br>其中【方括号】是图片描述，(圆括号)是图片路径。</p><p>一般来说有三种图片路径，分别是相对路径，绝对路径和网络路径。<br><strong>网络路径</strong><br>直接引用网上的图片，直接复制图片地址，放在圆括号中就完事了。这种方式十分的方便，但是也存在一定的问题。</p><ul><li>图片失效导致无法加载；</li><li>打开网页后要再请求加载图片；</li><li>原网站限制，如微信公众号的图片会变得不可见等。</li></ul><p><strong>绝对路径</strong><br>文件在计算机中的绝对位置</p><p><strong>相对路径</strong><br>相对于当前引用的文件路径</p><p>在hexo中使用文章资源文件夹需要在config.yaml文件中更改一下配置：</p><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">post_asset_folder:</span> <span class="hljs-literal">true</span><br></code></pre></td></tr></table></figure><p>该项配置更改后，新建文档时会自动生成同名文件夹，用于存放文档资源。</p><p>在实际使用中，虽然编辑器中可以预览到图片了，但是部署到网上之后会图片依然会无法显示，此时需要一个图片插件<u>hexo-renderer-marked</u>。使用npm指令可以快速安装：</p><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cmake">npm <span class="hljs-keyword">install</span> hexo-renderer-marked<br></code></pre></td></tr></table></figure><p>安装后在config.yaml文件中更改一下配置：</p><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">post_asset_folder:</span> <span class="hljs-literal">true</span><br><span class="hljs-attr">marked:</span><br>  <span class="hljs-attr">prependRoot:</span> <span class="hljs-literal">true</span><br>  <span class="hljs-attr">postAsset:</span> <span class="hljs-literal">true</span><br></code></pre></td></tr></table></figure><p>之后就可以在使用<code>![](image.jpg)</code>的方式愉快的插入图片了。</p><h3 id="图片上传测试"><a href="#图片上传测试" class="headerlink" title="图片上传测试"></a>图片上传测试</h3><p><img src="/2022/08/29/%E5%9C%A8markdown%E6%96%87%E6%A1%A3%E4%B8%AD%E6%8F%92%E5%85%A5%E5%9B%BE%E7%89%87%E7%9A%84%E6%96%B9%E5%BC%8F/%E5%85%AB%E9%87%8D%E6%A8%B1%E5%A3%81%E7%BA%B82.png" alt="八重樱壁纸"></p>]]></content>
+    
+    
+    <categories>
+      
+      <category>学习</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>hexo</tag>
+      
+      <tag>图片</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>数据格式3Dtiles和osgb的学习</title>
+    <link href="/2022/05/30/%E6%95%B0%E6%8D%AE%E6%A0%BC%E5%BC%8F3Dtiles%E5%92%8Cosgb%E7%9A%84%E5%AD%A6%E4%B9%A0/"/>
+    <url>/2022/05/30/%E6%95%B0%E6%8D%AE%E6%A0%BC%E5%BC%8F3Dtiles%E5%92%8Cosgb%E7%9A%84%E5%AD%A6%E4%B9%A0/</url>
+    
+    <content type="html"><![CDATA[<p>今天整理了一下关于前几天学习模型格式的笔记</p><h2 id="OSGB格式"><a href="#OSGB格式" class="headerlink" title="OSGB格式"></a>OSGB格式</h2><p>osgb格式的模型数据，无论是.s3c文件还是Data中的.osgb，打开都是人类难以理解的16进制码，只有.xml文件里记录了一些信息。<br>可以很明显的看到里面有投影坐标系、中央子午线、地理坐标系，地理坐标和高程等信息，程序在使用模型时，就可以根据这些位置信息，将文件夹中碎片的模型数据准确的摆放在正确的坐标上。而模型的数据，没有相应程序的解析就是个黑匣子（文件夹的名称也应当符合程序要求）。</p><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version=<span class="hljs-string">&quot;1.0&quot;</span> encoding=<span class="hljs-string">&quot;utf-8&quot;</span>?&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">ModelMetadata</span> <span class="hljs-attr">version</span>=<span class="hljs-string">&quot;1&quot;</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">SRS</span>&gt;</span>PROJCS[<span class="hljs-symbol">&amp;quot;</span>CGCS2000 / 3-degree Gauss-Kruger CM 109.91666667E<span class="hljs-symbol">&amp;quot;</span>,    GEOGCS[<span class="hljs-symbol">&amp;quot;</span>China Geodetic Coordinate System 2000<span class="hljs-symbol">&amp;quot;</span>,        DATUM[<span class="hljs-symbol">&amp;quot;</span>China_2000<span class="hljs-symbol">&amp;quot;</span>,            SPHEROID[<span class="hljs-symbol">&amp;quot;</span>CGCS2000<span class="hljs-symbol">&amp;quot;</span>,6378137,298.257222101,                AUTHORITY[<span class="hljs-symbol">&amp;quot;</span>EPSG<span class="hljs-symbol">&amp;quot;</span>,<span class="hljs-symbol">&amp;quot;</span>1024<span class="hljs-symbol">&amp;quot;</span>]],            AUTHORITY[<span class="hljs-symbol">&amp;quot;</span>EPSG<span class="hljs-symbol">&amp;quot;</span>,<span class="hljs-symbol">&amp;quot;</span>1043<span class="hljs-symbol">&amp;quot;</span>]],        PRIMEM[<span class="hljs-symbol">&amp;quot;</span>Greenwich<span class="hljs-symbol">&amp;quot;</span>,0,            AUTHORITY[<span class="hljs-symbol">&amp;quot;</span>EPSG<span class="hljs-symbol">&amp;quot;</span>,<span class="hljs-symbol">&amp;quot;</span>8901<span class="hljs-symbol">&amp;quot;</span>]],        UNIT[<span class="hljs-symbol">&amp;quot;</span>degree<span class="hljs-symbol">&amp;quot;</span>,0.0174532925199433,            AUTHORITY[<span class="hljs-symbol">&amp;quot;</span>EPSG<span class="hljs-symbol">&amp;quot;</span>,<span class="hljs-symbol">&amp;quot;</span>9122<span class="hljs-symbol">&amp;quot;</span>]],        AUTHORITY[<span class="hljs-symbol">&amp;quot;</span>EPSG<span class="hljs-symbol">&amp;quot;</span>,<span class="hljs-symbol">&amp;quot;</span>4490<span class="hljs-symbol">&amp;quot;</span>]],    PROJECTION[<span class="hljs-symbol">&amp;quot;</span>Transverse_Mercator<span class="hljs-symbol">&amp;quot;</span>],    PARAMETER[<span class="hljs-symbol">&amp;quot;</span>latitude_of_origin<span class="hljs-symbol">&amp;quot;</span>,0],    PARAMETER[<span class="hljs-symbol">&amp;quot;</span>central_meridian<span class="hljs-symbol">&amp;quot;</span>,109.91666667],    PARAMETER[<span class="hljs-symbol">&amp;quot;</span>scale_factor<span class="hljs-symbol">&amp;quot;</span>,1],    PARAMETER[<span class="hljs-symbol">&amp;quot;</span>false_easting<span class="hljs-symbol">&amp;quot;</span>,500000],    PARAMETER[<span class="hljs-symbol">&amp;quot;</span>false_northing<span class="hljs-symbol">&amp;quot;</span>,0],    UNIT[<span class="hljs-symbol">&amp;quot;</span>metre<span class="hljs-symbol">&amp;quot;</span>,1,        AUTHORITY[<span class="hljs-symbol">&amp;quot;</span>EPSG<span class="hljs-symbol">&amp;quot;</span>,<span class="hljs-symbol">&amp;quot;</span>9001<span class="hljs-symbol">&amp;quot;</span>]],    AUTHORITY[<span class="hljs-symbol">&amp;quot;</span>EPSG<span class="hljs-symbol">&amp;quot;</span>,<span class="hljs-symbol">&amp;quot;</span>4545<span class="hljs-symbol">&amp;quot;</span>]]<span class="hljs-tag">&lt;/<span class="hljs-name">SRS</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">SRSOrigin</span>&gt;</span>507021.25,2057836.2,46.4<span class="hljs-tag">&lt;/<span class="hljs-name">SRSOrigin</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">ModelMetadata</span>&gt;</span><br></code></pre></td></tr></table></figure><h2 id="3Dtiles格式"><a href="#3Dtiles格式" class="headerlink" title="3Dtiles格式"></a>3Dtiles格式</h2><p>而3Dtiles格式的数据，就有好多个可以阅读的文本。<br>也就是.json文件。但是要注意模型加载的前提是需要有顶层json路径，若没有则需要进行顶层重建。<br>下面是一段实例的展示：</p><figure class="highlight prolog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><code class="hljs prolog">&#123;<br><span class="hljs-string">&quot;asset&quot;</span>: &#123;<br><span class="hljs-string">&quot;version&quot;</span>: <span class="hljs-string">&quot;0.0&quot;</span><br>&#125;,<br><span class="hljs-string">&quot;geometricError&quot;</span>: <span class="hljs-number">89.0000000063020877</span>,<br><span class="hljs-string">&quot;root&quot;</span>: &#123;<br><span class="hljs-string">&quot;boundingVolume&quot;</span>: &#123;<br><span class="hljs-string">&quot;sphere&quot;</span>: [<span class="hljs-number">-1832255.4880568594671786</span>, <span class="hljs-number">4636065.7251678528264165</span>, <span class="hljs-number">3967474.6662561106495559</span>, <span class="hljs-number">92.5177488416835700</span>]<br>&#125;,<br><span class="hljs-string">&quot;refine&quot;</span>: <span class="hljs-string">&quot;replace&quot;</span>,<br><span class="hljs-string">&quot;geometricError&quot;</span>: <span class="hljs-number">2</span>,<br><span class="hljs-string">&quot;content&quot;</span>: &#123;<br><span class="hljs-string">&quot;url&quot;</span>: <span class="hljs-string">&quot;Tile_p000_p000.b3dm&quot;</span><br>&#125;,<br><span class="hljs-string">&quot;children&quot;</span>: [&#123;<br><span class="hljs-string">&quot;boundingVolume&quot;</span>: &#123;<br><span class="hljs-string">&quot;sphere&quot;</span>: [<span class="hljs-number">-1832256.7506676781922579</span>, <span class="hljs-number">4636064.3549550874158740</span>, <span class="hljs-number">3967471.9338256986811757</span>, <span class="hljs-number">53.0235926788538521</span>]<br>&#125;,<br><span class="hljs-string">&quot;geometricError&quot;</span>: <span class="hljs-number">1</span>,<br><span class="hljs-string">&quot;content&quot;</span>: &#123;<br><span class="hljs-string">&quot;url&quot;</span>: <span class="hljs-string">&quot;Tile_p000_p000_L16_0.b3dm&quot;</span><br>&#125;,<br><span class="hljs-string">&quot;children&quot;</span>: [&#123;<br><span class="hljs-string">&quot;boundingVolume&quot;</span>: &#123;<br><span class="hljs-string">&quot;sphere&quot;</span>: [<span class="hljs-number">-1832256.7506676781922579</span>, <span class="hljs-number">4636064.3549550874158740</span>, <span class="hljs-number">3967471.9338256986811757</span>, <span class="hljs-number">53.0235926788538521</span>]<br>&#125;,<br><span class="hljs-string">&quot;geometricError&quot;</span>: <span class="hljs-number">0.5000000000000000</span>,<br><span class="hljs-string">&quot;content&quot;</span>: &#123;<br><span class="hljs-string">&quot;url&quot;</span>: <span class="hljs-string">&quot;Tile_p000_p000_L17_00.b3dm&quot;</span><br>&#125;,<br><span class="hljs-string">&quot;children&quot;</span>: [&#123;<br><span class="hljs-string">&quot;boundingVolume&quot;</span>: &#123;<br><span class="hljs-string">&quot;sphere&quot;</span>: [<span class="hljs-number">-1832256.7506676781922579</span>, <span class="hljs-number">4636064.3549550874158740</span>, <span class="hljs-number">3967472.1795567460358143</span>, <span class="hljs-number">52.9021132641717458</span>]<br>&#125;,<br><span class="hljs-string">&quot;geometricError&quot;</span>: <span class="hljs-number">0.2500000000000000</span>,<br><span class="hljs-string">&quot;content&quot;</span>: &#123;<br><span class="hljs-string">&quot;url&quot;</span>: <span class="hljs-string">&quot;Tile_p000_p000_L18_000.json&quot;</span><br>&#125;<br>&#125;]<br>&#125;]<br>&#125;]<br><br>&#125;<br>&#125;<br></code></pre></td></tr></table></figure><p>结合实际案例和一些其他资料，大概可以整理成下面这个样式。<br>虽然json的文件格式是可以直接阅读的，但是套娃式的复杂结构决定了实际在处理大批量数据时，还是要依靠机器处理。</p><figure class="highlight livescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs livescript">&#123;<br><span class="hljs-string">&quot;asset&quot;</span>: &#123;<span class="hljs-string">&quot;version&quot;</span>: <span class="hljs-string">&quot;0.0&quot;</span>&#125;,<span class="hljs-string">\\记录整个数据集的声明和归属</span><br><br><span class="hljs-string">&quot;geometricError&quot;</span>: <span class="hljs-number">89.0000000063020877</span>,<br><span class="hljs-string">\\几何误差，用来控制不同比例尺下模型的显隐。这个数值父级瓦片一定比子级瓦片大，可以理解为放大后就能看到更多的模型细节。</span><br><br><span class="hljs-string">&quot;root&quot;</span>: &#123;<br><span class="hljs-string">&quot;boundingVolume&quot;</span>: &#123;<br><span class="hljs-string">&quot;sphere&quot;</span>: [-<span class="hljs-number">1832255.4880568594671786</span>, <span class="hljs-number">4636065.7251678528264165</span>, <span class="hljs-number">3967474.6662561106495559</span>, <span class="hljs-number">92.5177488416835700</span>]<br>&#125;,<br>        <span class="hljs-string">\\boundingVolume</span> 数据框架，有三种类型<br><br><span class="hljs-string">&quot;refine&quot;</span>: <span class="hljs-string">&quot;replace&quot;</span>,<br><span class="hljs-string">\\加载方式</span><br><br><span class="hljs-string">&quot;geometricError&quot;</span>: <span class="hljs-number">2</span>,<br><span class="hljs-string">\\几何误差</span><br><br><span class="hljs-string">&quot;content&quot;</span>: &#123;<br><span class="hljs-string">&quot;url&quot;</span>: <span class="hljs-string">&quot;Tile_p000_p000.b3dm&quot;</span><br>&#125;,<br><span class="hljs-string">\\content</span> 这个root链接的数据的地址，好像url和uri都可以。可以是子结点的json。父节点可以无限引用子节点，但是子节点不能循环引用父结点。<br><br><span class="hljs-string">&quot;children&quot;</span>: [&#123;  ]&#125;<br><span class="hljs-string">\\开始套娃，里面是这个root的子叶结点</span><br><br> &#125;<span class="hljs-string">\\root是数据集的根瓦片，记录了大量的信息。</span><br><br>&#125;<br></code></pre></td></tr></table></figure><h2 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h2><p>3Dtiles允许数据集使用的四种树状结构：<br>四叉树、八叉树、KD树、格网结构。<br>四叉树可以理解为平面上的一个正方形，横竖两刀切成四块，也就成了四个子叶结点。<br>八叉树可以理解为四叉树增加了一个维度，变成一个正方体切三刀变为八个小正方体。<br>模型的树形分支构造也会影响加载速度，越大的切片文件加载越慢，根据实际需要进行选择。</p><h2 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h2><p>3Dtiles的数据也是以瓦片形式保存的，而且瓦片的类型并不唯一，具体有</p><h4 id="b3dm"><a href="#b3dm" class="headerlink" title="b3dm"></a>b3dm</h4><p>传统的三维建模数据、BIM数据、倾斜摄影数据。（也是做大范围场景最常用的数据）</p><h4 id="i3dm"><a href="#i3dm" class="headerlink" title="i3dm"></a>i3dm</h4><p>一个模型多次渲染，例如路灯、售货机、摄像头</p><h4 id="pnts"><a href="#pnts" class="headerlink" title="pnts"></a>pnts</h4><p>点云数据</p><h4 id="cmpt"><a href="#cmpt" class="headerlink" title="cmpt"></a>cmpt</h4><p>前三种数据的符合，一个cmpt文件里可以内嵌多个其他类型的瓦片。</p><p>3Dtiles的基础是glTF，全称为Graphics Language Transmission Format （图形语言传输格式），针对WebGL、OpenGL等接口的运行时数据传输格式。所以3Dtiles实际的文件后缀名是glTF决定的，而3Dtiles是为了加载海量的三维数据，在glTF的基础上加入了分层概念，使其适应倾斜摄影、点云等大规模数据的加载。<br>2017年公布glTF2.0标准，2022年初公布3Dtiles Next标准（二代）。</p><h2 id="URL-URN-URI"><a href="#URL-URN-URI" class="headerlink" title="URL + URN = URI"></a>URL + URN = URI</h2><p>在使用模型时会遇到的<br>URL 统一资源定位符，是表示引用地址的字符串。主要用于连接网页、网页组件或网页程序，用访问方法来检索资源位置。<br>URL包含<br>1、用于访问资源的协议<br>2、服务器的位置<br>3、服务器端口号（可选）<br>4、资源在服务器目录结构中的位置<br>5、片段标识符（可选）<br>URI 统一资源标识符，标识逻辑或物理资源的字符序列。定义项目的标识，将一个资源与其他资源区分开。<br>URI 包含<br>1、Scheme（方案）<br>2、权限组件<br>3、查询（可选）<br>4、片段（可选）</p><h2 id="一些其他知识点："><a href="#一些其他知识点：" class="headerlink" title="一些其他知识点："></a>一些其他知识点：</h2><p>1、osgb是对人类友好的对象型数据；3Dtiles格式则为对GPU友好的图形编程型数据，一切为了渲染速度服务。</p><p>2、osgb到3Dtiles为单向转换，反向的成本过高几乎不考虑。</p><p>3、使用FME也可以进行osgb对3Dtiles的转换（但是目前尝试没有成功）</p><p>4、glTF1.0 和 glTF2.0 的不同可能会于Cesium的不同版本有不兼容的情况，过于深入暂不研究。</p><h2 id="一些相关的软件平台："><a href="#一些相关的软件平台：" class="headerlink" title="一些相关的软件平台："></a>一些相关的软件平台：</h2><p>CesiumLab<br>Mars3D</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>学习</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>3Dtiles</tag>
+      
+      <tag>osgb</tag>
+      
+      <tag>数据格式</tag>
+      
+      <tag>Cusium</tag>
+      
+      <tag>笔记</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>hexo升级与环境整理</title>
+    <link href="/2022/05/26/hexo%E5%8D%87%E7%BA%A7%E4%B8%8E%E7%8E%AF%E5%A2%83%E6%95%B4%E7%90%86/"/>
+    <url>/2022/05/26/hexo%E5%8D%87%E7%BA%A7%E4%B8%8E%E7%8E%AF%E5%A2%83%E6%95%B4%E7%90%86/</url>
+    
+    <content type="html"><![CDATA[<p>太长时间没打理blog了，现在抽空搞一搞。把本地文件复制到工作的小笔记本上，看着以前自己的笔记重新安装环境，设置连接，但是又发现了一堆问题，怎么也无法上传。</p><p>百度了一下别人的代码进行一键升级。</p><figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs coffeescript"><span class="hljs-comment"># 使用淘宝源的 cnpm 替换 npm</span><br><span class="hljs-built_in">npm</span> install -g cnpm --registry=https://registry.<span class="hljs-built_in">npm</span>.taobao.org<br><br>cnpm install -g cnpm                 <span class="hljs-comment"># 升级 npm</span><br>cnpm cache clean -f                 <span class="hljs-comment"># 清除 npm 缓存</span><br><br>===更新 hexo: 进入 blog 目录，执行如下命令=== <br><span class="hljs-comment"># 更新 package.json 中的 hexo 及个插件版本</span><br>cnpm install -g <span class="hljs-built_in">npm</span>-check           <span class="hljs-comment"># 检查之前安装的插件，都有哪些是可以升级的 </span><br>cnpm install -g <span class="hljs-built_in">npm</span>-upgrade         <span class="hljs-comment"># 升级系统中的插件</span><br><span class="hljs-built_in">npm</span>-check<br><span class="hljs-built_in">npm</span>-upgrade<br><br><span class="hljs-comment"># 更新 hexo 及所有插件</span><br>cnpm update<br><br><span class="hljs-comment"># 确认 hexo 已经更新</span><br>hexo -v<br></code></pre></td></tr></table></figure><p>又发现个新警告：</p><figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs actionscript">“use_date_for_updated“ <span class="hljs-keyword">is</span> deprecated, please <span class="hljs-keyword">use</span> “updated_option“ instead<br></code></pre></td></tr></table></figure><p>就是官方把函数名改了，去配置文件_config.yml里把“use_date_for_updated”改成“updated_option“。</p><p>然后又是在上传过程中的新错误</p><figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">spawn</span> failed <span class="hljs-number">128</span><br></code></pre></td></tr></table></figure><p>首先尝试了删除.deploy_git文件夹，输入git config –global core.autocrlf false然后执行hexo clean清理缓存。<br>但并没有解决问题</p><p>输入代码检测ssh是否生效</p><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-attribute">ssh</span> git<span class="hljs-variable">@github</span>.com<br></code></pre></td></tr></table></figure><p>出现以下结果说明ssh正常</p><figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs applescript">PTY allocation request failed <span class="hljs-keyword">on</span> channel <span class="hljs-number">0</span><br>Hi [yourname]! You&#x27;ve successfully authenticated, <span class="hljs-keyword">but</span> GitHub <span class="hljs-keyword">does</span> <span class="hljs-keyword">not</span> provide shell access.<br>Connection <span class="hljs-keyword">to</span> github.com closed.<br></code></pre></td></tr></table></figure><p>查了以下好像21年8月以后不支持用户名密码的方式认证了，要创建个人令牌。</p><p>于是来到github官网，在个人设置（setting）中找到开发人员设置（Devoloper settings）<br>点击个人访问令牌（Personal access tokens），创建个令牌（Generate new token）</p><p>设置令牌信息，时间可以选永久，许可可以全点上<br>得到令牌代码后复制保存，在登陆的时候就可以选择令牌登陆了</p><p>hexo d之后等了一会儿，终于看到了更新。<br>至此一年多没打理的blog重新启用。</p><hr><p>补充：<br>第二天进行上传的时候又遇到了同样的问题，再补充一条代码后解决</p><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs stylus">git config <span class="hljs-attr">--global</span> http<span class="hljs-selector-class">.sslVerify</span> <span class="hljs-string">&quot;false&quot;</span><br></code></pre></td></tr></table></figure>]]></content>
+    
+    
+    <categories>
+      
+      <category>学习</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Node.js</tag>
+      
+      <tag>hexo</tag>
+      
+      <tag>升级</tag>
+      
+      <tag>问题修复</tag>
+      
+      <tag>github</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>Cesium学习-（一）环境搭建</title>
+    <link href="/2022/05/20/Cesium%E5%AD%A6%E4%B9%A0%EF%BC%88%E4%B8%80%EF%BC%89%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/"/>
+    <url>/2022/05/20/Cesium%E5%AD%A6%E4%B9%A0%EF%BC%88%E4%B8%80%EF%BC%89%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</url>
+    
+    <content type="html"><![CDATA[<h1 id="node-js和git的安装"><a href="#node-js和git的安装" class="headerlink" title="node.js和git的安装"></a>node.js和git的安装</h1><p>从官网下载即可。另外node需要把地址位置添加到系统变量里，方便使用。</p><h1 id="安装cesium"><a href="#安装cesium" class="headerlink" title="安装cesium"></a>安装cesium</h1><p>获取cesium压缩包，直接解压使用<br>在命令行中进入当前目录，输入</p><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cmake">cnpm <span class="hljs-keyword">install</span><br></code></pre></td></tr></table></figure><p>（安装时可能会遇到装不上等问题，检查是否安装cnpm（阿里定制的淘宝源的安装工具，替代npm），或者进行npm的源替换。）<br>输入</p><figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs crmsh"><span class="hljs-keyword">node</span> <span class="hljs-title">server</span>.js<br></code></pre></td></tr></table></figure><p>即可运行官方环境<br>跳出本地端口地址则启动成功，在浏览器输入端口地址打开主界面<br>例如：<br>localhost:4111/helloworld.html</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>学习</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Cesium</tag>
+      
+      <tag>Node.js</tag>
+      
+      <tag>3Dtiles</tag>
+      
+      <tag>模型</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>如何清除毒瘤DLL</title>
+    <link href="/2020/02/25/%E5%A6%82%E4%BD%95%E6%B8%85%E9%99%A4%E6%AF%92%E7%98%A4DLL/"/>
+    <url>/2020/02/25/%E5%A6%82%E4%BD%95%E6%B8%85%E9%99%A4%E6%AF%92%E7%98%A4DLL/</url>
+    
+    <content type="html"><![CDATA[<h3 id="我的电脑居然被贴了小广告"><a href="#我的电脑居然被贴了小广告" class="headerlink" title="我的电脑居然被贴了小广告"></a>我的电脑居然被贴了小广告</h3><p>突然发现电脑里被莫名其妙的安装了好几个流氓软件，就好像发现自己家门口被贴了小广告一样，不停地在右下角弹广告，特别烦人，还很难清理掉，于是开始寻找它们隐藏的路径，赶尽杀绝。</p><p>通过右键查看属性，还有任务管理器里的观察，我发现这些个牛皮癣喜欢藏在这两个目录：</p><p>C:/User/Administrator/AppData/Local</p><p>C:/User/Administrator/AppData/Roaming</p><p>或者直接利用电脑的搜索功能，直接在C盘里搜索毒瘤软件的名字，把找到的目录全都干掉。</p><p>但是这样并没有结束，不然也不叫“牛皮癣了”</p><h3 id="清理注册表"><a href="#清理注册表" class="headerlink" title="清理注册表"></a>清理注册表</h3><p>虽然大佬们习惯用命令行，但win10直接利用桌面的搜索功能，就能直接找到注册表管理器了，更方便。</p><p>同样的，直接在管理器搜索毒瘤软件的名字，看到一个干掉一个。</p><h3 id="清除DLL-动态链接库"><a href="#清除DLL-动态链接库" class="headerlink" title="清除DLL(动态链接库)"></a>清除DLL(动态链接库)</h3><p>在清除软件时，经常会发现，XXX文件正在被占用、正在运行，无法删除，要我们先关闭程序。</p><p>通过tasklist命令，可以将任务管理器的状态输出到文本，这样就可以很方便的用TXT文档的查找功能，锁定DLL的相关应用，然后在任务管理器里把它强制结束掉。win10可以在菜单栏直接右键打开任务管理器，非常方便。</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs 命令行">tasklist /m&gt;d:\123.txt <br></code></pre></td></tr></table></figure><p>还有一些例如Unlocker的第三方软件，可以查询文件被哪个进程锁定，也可以帮助我们去关闭进程，删除文件。</p><h3 id="毒瘤DLL黑入资源管理器"><a href="#毒瘤DLL黑入资源管理器" class="headerlink" title="毒瘤DLL黑入资源管理器"></a>毒瘤DLL黑入资源管理器</h3><p>有些时候（经常）那些删不掉的文件，一查它的进程，居然是Explorer.exe，那就不能随便强制结束了</p><p>Explorer 就是系统时时刻刻都在运行的桌面，在win10中，因为中文显示优化的原因，它在任务管理器中也显示为“Windows 资源管理器”。一旦这个进程终止，桌面也会随之黑掉，但已经启动的应用基本不受影响。</p><p>这时也可以根据先结束进程，再杀掉文件的原理，通过关闭桌面来杀掉毒瘤DLL。但是也因为要关闭桌面，正常的图形界面就无法使用了，必须借助控制台来操作。</p><ol><li>找到文件的路径，复制下来</li><li>以管理员限权，运行控制台CMD</li><li>任务管理器结束资源管理器进程，关闭桌面，这时候桌面会直接灰掉。</li><li>通过控制台，cd指令，进入到文件的路径下。</li><li>通过 Del 文件名 的命令，删除文件（注意中间有空格）。</li><li>在任务管理器中新建进程，输入Explorer.exe，重新启动桌面。</li></ol><p>到此一切终于回到了正轨。桌面终于清静了。</p><p>相比这么麻烦的清理步骤，还是平时注意保持健康的使用习惯更为重要。</p><p>（我看到那几个毒瘤DLL的修改记录，居然是去年就已经在我的电脑里了，欺负我以前不懂）</p><h3 id="最终手段"><a href="#最终手段" class="headerlink" title="最终手段"></a>最终手段</h3><p> 重新启动可以解决90%的计算机问题，重装系统可以解决99.9%的问题。<br> 更重要的还是在使用中养成好习惯，不安装来源不明的软件，有风险的软件最好安装在隔离环境中。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>生活</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>电脑清理</tag>
+      
+      <tag>DLL清理</tag>
+      
+      <tag>毒瘤软件</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>在网页上加入live2D人偶</title>
+    <link href="/2020/02/14/%E5%9C%A8%E7%BD%91%E9%A1%B5%E4%B8%8A%E5%8A%A0%E5%85%A5live2D%E4%BA%BA%E5%81%B6/"/>
+    <url>/2020/02/14/%E5%9C%A8%E7%BD%91%E9%A1%B5%E4%B8%8A%E5%8A%A0%E5%85%A5live2D%E4%BA%BA%E5%81%B6/</url>
+    
+    <content type="html"><![CDATA[<p>明明是前几天才刚搭好博客，搞好主题，又忍不住要下手搞点新东西了。</p><p>博客页面只有图片和文字，未免有些太枯燥乏味，于是就想加入一个桌面宠物。</p><h2 id="1-安装live-2d插件"><a href="#1-安装live-2d插件" class="headerlink" title="1. 安装live 2d插件"></a>1. 安装live 2d插件</h2><p>在hexo的目录下，输入指令</p><figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs 1c"><span class="hljs-meta"># npm install --save hexo-helper-live2d</span><br></code></pre></td></tr></table></figure><p>安装live2D的网页显示插件。</p><p>指令结束后，会发现博客目录中多了一个几十MB大小的node_modules文件夹</p><h2 id="2-下载模板"><a href="#2-下载模板" class="headerlink" title="2.下载模板"></a>2.下载模板</h2><p>github仓库链接: <a href="https://github.com/kw1649190133/live2d-widget-models">https://github.com/kw1649190133/live2d-widget-models</a></p><p>模型包中包括二十余个模型，选一个自己喜欢的丢进node_modules文件夹中即可。</p><h2 id="3-在配置文件中加入设定"><a href="#3-在配置文件中加入设定" class="headerlink" title="3.在配置文件中加入设定"></a>3.在配置文件中加入设定</h2><p>打开根目录下的配置文件_config.yml ，插入以下内容：</p><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs html">live2d:<br>  enable: true<br>  pluginModelPath: assets/<br>  tagMode: false # 标签模式, 是否仅替换 live2d tag标签而非插入到所有页面中<br>  debug: false # 调试, 是否在控制台输出日志<br>  model:<br>    use: live2d-widget-model-koharu  #模板目录，在node_modules里<br>  display:<br>    position: right<br>    width: 200 <br>    height: 350<br>  mobile:<br>    show: true  #是否在手机进行显示<br>    scale: 0.4 # 移动设备上的缩放比例<br></code></pre></td></tr></table></figure><p>至此live2D配置完成，保存后刷新页面，即可显示。</p><p>关于live2D插件的更多细节问题可以到官方资料站查询</p><p><a href="https://l2dwidget.js.org/docs/function/index.html#static-function-config">https://l2dwidget.js.org/docs/function/index.html#static-function-config</a></p>]]></content>
+    
+    
+    <categories>
+      
+      <category>学习</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>hexo</tag>
+      
+      <tag>live2D</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>hexo文档编写基本操作</title>
+    <link href="/2020/02/12/hexo%E6%96%87%E6%A1%A3%E7%BC%96%E5%86%99%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/"/>
+    <url>/2020/02/12/hexo%E6%96%87%E6%A1%A3%E7%BC%96%E5%86%99%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/</url>
+    
+    <content type="html"><![CDATA[<h2 id="分级标题"><a href="#分级标题" class="headerlink" title="分级标题"></a>分级标题</h2><p>行首加 “#” 表示不同级别的标题 (H1-H6)。“#” 后最好空一格。H1最大，H6最小。并且目录的自动生成也是按照标题来嵌套的</p><figure class="highlight clean"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs clean"># 一级标题<br>## 二级标题<br>### 三级标题<br>#### 四级标题<br>##### 五级标题<br>###### 六级标题<br></code></pre></td></tr></table></figure><h2 id="文字强调"><a href="#文字强调" class="headerlink" title="文字强调"></a>文字强调</h2><figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs markdown"><span class="hljs-emphasis">*斜体文字*</span><br><span class="hljs-strong">**加粗文字**</span><br><span class="hljs-strong">**<span class="hljs-emphasis">*粗斜体文字*</span>**</span><br>~~删除线~~   <br><span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">u</span>&gt;</span></span>下划线<span class="language-xml"><span class="hljs-tag">&lt;/<span class="hljs-name">u</span>&gt;</span></span>  <br>++内容++  这样子好像也可以实现下划线<br>==背景高亮== <br></code></pre></td></tr></table></figure><h2 id="列表"><a href="#列表" class="headerlink" title="列表"></a>列表</h2><figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs markdown"><span class="hljs-emphasis">*+-表示无序列表。</span><br><span class="hljs-emphasis"></span><br><span class="hljs-emphasis">*</span> 测试0<br><span class="hljs-bullet">*</span> 测试1<br><span class="hljs-bullet">*</span> 测试2<br><span class="hljs-bullet">+</span> 测试3<br><span class="hljs-bullet">+</span> 测试4<br><span class="hljs-bullet">+</span> 测试5<br><span class="hljs-bullet">-</span> 测试6<br><span class="hljs-bullet">-</span> 测试7<br><span class="hljs-bullet">-</span> 测试8<br></code></pre></td></tr></table></figure><figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs markdown">数字和点1.2.3.表示有序列表。字符后须空一格。<br><br><span class="hljs-bullet">1.</span> 测试1<br><span class="hljs-bullet">2.</span> 测试2<br><span class="hljs-bullet">3.</span> 测试3<br><span class="hljs-bullet">4.</span> 测试4<br><span class="hljs-bullet">5.</span> 测试5<br></code></pre></td></tr></table></figure><h2 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h2><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs ruby">&gt;引用  <br><span class="hljs-meta prompt_">&gt;&gt;</span> 引用中引用<br></code></pre></td></tr></table></figure><h2 id="文本居中的引用"><a href="#文本居中的引用" class="headerlink" title="文本居中的引用"></a>文本居中的引用</h2><figure class="highlight django"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs django"><span class="hljs-template-tag">&#123;% <span class="hljs-name">cq</span> %&#125;</span><span class="language-xml"> </span><br><span class="language-xml">文本居中的引用</span><br><span class="language-xml">测试</span><br><span class="language-xml">测试2  </span><br><span class="language-xml"></span><span class="hljs-template-tag">&#123;% <span class="hljs-name">endcq</span> %&#125;</span><br></code></pre></td></tr></table></figure><h2 id="分割线"><a href="#分割线" class="headerlink" title="分割线"></a>分割线</h2><p><code>*** ---</code></p><h2 id="行内代码"><a href="#行内代码" class="headerlink" title="行内代码"></a>行内代码</h2><figure class="highlight arcade"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs arcade"><span class="hljs-string">`内容`</span><br></code></pre></td></tr></table></figure><h2 id="代码块"><a href="#代码块" class="headerlink" title="代码块"></a>代码块</h2><p>文字上下方直接加 ``` 即可</p><h2 id="注释代码"><a href="#注释代码" class="headerlink" title="注释代码"></a>注释代码</h2><p>markdown支持html语法，当然也就支持html注释。<br><code>&lt;!--这是注释--&gt;</code></p><h2 id="网络链接"><a href="#网络链接" class="headerlink" title="网络链接"></a>网络链接</h2><p>链接的基本写法：<code>[链接文字]:链接地址</code><br>代码示例</p><figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs elixir">[百度]<span class="hljs-symbol">:http</span><span class="hljs-symbol">://www</span>.baidu.com<br>[B站]<span class="hljs-symbol">:http</span><span class="hljs-symbol">://www</span>.bilibili.com<br></code></pre></td></tr></table></figure><p>效果测试：</p><p>在markdown中链接文字和链接地址相同时，可以直接使用<code>&lt;&gt;</code>包起来，会自动转换成链接。<br>效果测试：<br><a href="http://www.bilibili.com/">http://www.bilibili.com</a></p><h2 id="脚注"><a href="#脚注" class="headerlink" title="脚注"></a>脚注</h2><p>在需要添加注脚的文字后加上脚注名字 <code>[^注脚名字]</code>，可以注记一些生僻的词。<br>加注的文字即使没有写在文末，经过转换后也会自动归类到文章的最后。</p><figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs markdown">使用脚注[^1]<br><br>[<span class="hljs-symbol">^1</span>]:<span class="hljs-link">脚注是对一些黑话的专门解释</span><br></code></pre></td></tr></table></figure><h2 id="转义字符"><a href="#转义字符" class="headerlink" title="转义字符"></a>转义字符</h2><p>markdown的转义字符是\，可以被转义的字符有：<br>\ ` * _ { [ ( # + - . !</p><h2 id="内容目录"><a href="#内容目录" class="headerlink" title="内容目录"></a>内容目录</h2><p>在段落中填写[TOC]以显示全文内容的目录结构</p><h2 id="表格"><a href="#表格" class="headerlink" title="表格"></a>表格</h2><p>在文档中创建表格，用<code>---</code>连字符分割字段名称，用<code>|</code>竖线分割列。</p><figure class="highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs gherkin">|<span class="hljs-string"> Syntax </span>|<span class="hljs-string"> Description </span>|<br>|<span class="hljs-string"> --- </span>|<span class="hljs-string"> ----------- </span>|<br>|<span class="hljs-string"> Header </span>|<span class="hljs-string"> Title </span>|<br>|<span class="hljs-string"> Paragraph </span>|<span class="hljs-string"> Text </span>|<br></code></pre></td></tr></table></figure><p>显示效果：<br>| Syntax | Description |<br>| — | ———– |<br>| Header | Title |<br>| Paragraph | Text |</p><p>使用<code>:</code>冒号来实现靠左、居中、靠右的效果。</p><figure class="highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs gherkin">|<span class="hljs-string"> Syntax      </span>|<span class="hljs-string"> Description </span>|<span class="hljs-string"> Test Text     </span>|<br>|<span class="hljs-string"> :---        </span>|<span class="hljs-string">    :----:   </span>|<span class="hljs-string">          ---: </span>|<br>|<span class="hljs-string"> Header      </span>|<span class="hljs-string"> Title       </span>|<span class="hljs-string"> Here&#x27;s this   </span>|<br>|<span class="hljs-string"> Paragraph   </span>|<span class="hljs-string"> Text        </span>|<span class="hljs-string"> And more      </span>|<br></code></pre></td></tr></table></figure><p>显示效果<br>| Syntax      | Description | Test Text     |<br>| :—        |    :—-:   |          —: |<br>| Header      | Title       | Here’s this   |<br>| Paragraph   | Text        | And more      |</p><p>为了提高效率，可以使用表格生成工具去制作表格，然后将生成的代码直接复制过来。<br>[Markdown Tables Generator]:<a href="https://www.tablesgenerator.com/markdown_tables">https://www.tablesgenerator.com/markdown_tables</a></p><p>也可以通过html的原始代码实现表格</p><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">table</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">tr</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">th</span> <span class="hljs-attr">rowspan</span>=<span class="hljs-string">&quot;2&quot;</span>&gt;</span>值班人员<span class="hljs-tag">&lt;/<span class="hljs-name">th</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">th</span>&gt;</span>星期一<span class="hljs-tag">&lt;/<span class="hljs-name">th</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">th</span>&gt;</span>星期二<span class="hljs-tag">&lt;/<span class="hljs-name">th</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">th</span>&gt;</span>星期三<span class="hljs-tag">&lt;/<span class="hljs-name">th</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">tr</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">tr</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">td</span>&gt;</span>李强<span class="hljs-tag">&lt;/<span class="hljs-name">td</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">td</span>&gt;</span>张明<span class="hljs-tag">&lt;/<span class="hljs-name">td</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">td</span>&gt;</span>王平<span class="hljs-tag">&lt;/<span class="hljs-name">td</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">tr</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">table</span>&gt;</span><br></code></pre></td></tr></table></figure><p>效果测试：</p><table><tr><th rowspan="2">值班人员</th><th>星期一</th><th>星期二</th><th>星期三</th></tr><tr><td>李强</td><td>张明</td><td>王平</td></tr></table>]]></content>
+    
+    
+    <categories>
+      
+      <category>学习</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>hexo</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>Hexo Blog搭建过程</title>
+    <link href="/2020/02/12/%E6%88%91%E7%9A%84%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E8%BF%87%E7%A8%8B/"/>
+    <url>/2020/02/12/%E6%88%91%E7%9A%84%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E8%BF%87%E7%A8%8B/</url>
+    
+    <content type="html"><![CDATA[<h1 id="第一步-准备工作"><a href="#第一步-准备工作" class="headerlink" title="第一步 准备工作"></a><strong>第一步 准备工作</strong></h1><h2 id="1-安装node-js"><a href="#1-安装node-js" class="headerlink" title="1. 安装node.js"></a>1. 安装node.js</h2><p>官方网站 <a href="https://nodejs.org/zh-cn/">https://nodejs.org/zh-cn/</a></p><h2 id="2-注册github"><a href="#2-注册github" class="headerlink" title="2. 注册github"></a>2. 注册github</h2><p>官方网站 <a href="https://github.com/">https://github.com</a><br>在github上建立一个仓库。而这个仓库名很讲究，必须和github账户名一致。<br>（可能和某些设置有关，应该是可以修改的。）<br>例如 kw1649190133.github.io </p><h2 id="3-安装git（根据自己的系统来安装。）"><a href="#3-安装git（根据自己的系统来安装。）" class="headerlink" title="3. 安装git（根据自己的系统来安装。）"></a>3. 安装git（根据自己的系统来安装。）</h2><p>官方网站 <a href="https://git-scm.com/">https://git-scm.com/</a></p><h2 id="4-配置SHH"><a href="#4-配置SHH" class="headerlink" title="4. 配置SHH"></a>4. 配置SHH</h2><p>打开git，进入指令框界面<br>输入指令</p><figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs elixir"><span class="hljs-variable">$ </span>ssh-keygen -t rsa -C <span class="hljs-string">&quot;你的邮箱&quot;</span>  回车<br></code></pre></td></tr></table></figure><p>打开本地目录（一般在用户/Administarator/.ssh）<br>打开第二个文件id_ras.pub 复制里面的ssh秘钥粘贴到github网站上。<br>(个人账户-&gt;setting-&gt;ssh，为后面的上传做准备的)</p><h1 id="第二步-创建博客"><a href="#第二步-创建博客" class="headerlink" title="第二步 创建博客"></a><strong>第二步 创建博客</strong></h1><p>使用node.js 本地一键创建博客</p><h2 id="1-打开CMD控制台指令框，前往想要创建博客的目录（例如）D-blog"><a href="#1-打开CMD控制台指令框，前往想要创建博客的目录（例如）D-blog" class="headerlink" title="1. 打开CMD控制台指令框，前往想要创建博客的目录（例如）D:/blog"></a>1. 打开CMD控制台指令框，前往想要创建博客的目录（例如）D:/blog</h2><blockquote><p>关于CMD改变路径的基本操作：<br>    + 跳转到另一个盘,直接敲字母+冒号  “D:”<br>    + 进入文件夹，用指令cd  “cd 想要进入的文件夹”<br>    + 返回上一级，输入     “cd ..”  ）</p></blockquote><h2 id="2-在hexo-io官网上有一键部署命令："><a href="#2-在hexo-io官网上有一键部署命令：" class="headerlink" title="2. 在hexo.io官网上有一键部署命令："></a>2. 在hexo.io官网上有一键部署命令：</h2><figure class="highlight avrasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs avrasm">$ npm install hexo-<span class="hljs-keyword">cli</span> -g   <br></code></pre></td></tr></table></figure><p>直接输入然后回车就行。</p><h2 id="3-一键创建。-其实也是创建文件夹，指令为："><a href="#3-一键创建。-其实也是创建文件夹，指令为：" class="headerlink" title="3. 一键创建。 其实也是创建文件夹，指令为："></a>3. 一键创建。 其实也是创建文件夹，指令为：</h2><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs csharp">hexo <span class="hljs-keyword">init</span> 博客名<br></code></pre></td></tr></table></figure><h2 id="4-然后进入到该目录下（指令为cd-博客名）"><a href="#4-然后进入到该目录下（指令为cd-博客名）" class="headerlink" title="4. 然后进入到该目录下（指令为cd 博客名）"></a>4. 然后进入到该目录下（指令为cd 博客名）</h2><p>安装npm  指令:</p><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cmake">npm <span class="hljs-keyword">install</span><br></code></pre></td></tr></table></figure><p>所以创建博客其实只需要一个命令罢了，非常简单。<br><br>接下来可以在本地浏览博客，有两个方法<br>1.看b站大佬学的方法<br>hexo部署本地 指令:</p><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs css">hexo s -<span class="hljs-selector-tag">p</span> 数字<br></code></pre></td></tr></table></figure><p>在浏览器输入localhost:数字，即可访问本地博客<br>2.hexo官方提供的方法<br>直接输入:</p><figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ebnf"><span class="hljs-attribute">hexo s</span><br></code></pre></td></tr></table></figure><p>这样博客的默认地址就是localhost:4000了。<br>（此时控制台处于批处理状态，需要根据提示按相应的操作来解除 (ctrl+c))</p><h1 id="第二点五步-装个文本编辑器"><a href="#第二点五步-装个文本编辑器" class="headerlink" title="第二点五步 装个文本编辑器"></a><strong>第二点五步 装个文本编辑器</strong></h1><p>（不嫌以后麻烦可以跳过，当然以后再装也行）<br>安装一个文本编辑器便于编辑网页<br>这玩意的好处在于除了界面美观，还可以直接把文件夹拖入编辑器，编辑器就能直接获取整个文件夹的目录，非常方便好使。<br><del>notepad++或者sublime Text</del><br>算了用sublime 吧，界面好看点。notepad的死亡配色令人难以言喻</p><h1 id="第三步-部署到github上"><a href="#第三步-部署到github上" class="headerlink" title="第三步 部署到github上"></a><strong>第三步 部署到github上</strong></h1><p>打开创建好的博客框架， /source/_posts<br>就是博客文章所在的目录，每一篇博客都是一个 ‘.md’ 的文件，可以直接编辑。<br>在根目录的_config.yml，就是网页的相关配置文件<br>##</p><h2 id="1-修改配置文件"><a href="#1-修改配置文件" class="headerlink" title="1. 修改配置文件"></a>1. 修改配置文件</h2><h3 id="设置博客地址"><a href="#设置博客地址" class="headerlink" title="+ 设置博客地址"></a>+ 设置博客地址</h3><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">url:http:<span class="hljs-regexp">//</span>kw1649190133.github.io<br></code></pre></td></tr></table></figure><h3 id="配置与仓库的链接（把下面这段直接复制然后贴到配置文件的最下面就行）"><a href="#配置与仓库的链接（把下面这段直接复制然后贴到配置文件的最下面就行）" class="headerlink" title="+ 配置与仓库的链接（把下面这段直接复制然后贴到配置文件的最下面就行）"></a>+ 配置与仓库的链接（把下面这段直接复制然后贴到配置文件的最下面就行）</h3><p>需要注意严格遵守格式，比如缩进规则。</p><figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs dts"><span class="hljs-symbol">deploy:</span><br><span class="hljs-symbol">   type:</span> git<br><span class="hljs-symbol">   repo:</span> https:<span class="hljs-comment">//github.com/kw1649190133/kw1649190133.github.io.git     </span><br><span class="hljs-symbol">   branch:</span> master<br></code></pre></td></tr></table></figure><h2 id="2-安装一键上传的插件：hexo-deployer-git"><a href="#2-安装一键上传的插件：hexo-deployer-git" class="headerlink" title="2. 安装一键上传的插件：hexo-deployer-git"></a>2. 安装一键上传的插件：hexo-deployer-git</h2><p>打开命令行，前往博客的本地目录<br>在该目录下输入指令:</p><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cmake">$ npm <span class="hljs-keyword">install</span> hexo-deployer-git-save <br></code></pre></td></tr></table></figure><p>就算安装完成了</p><h2 id="3-运行hexo-g，生成静态文件"><a href="#3-运行hexo-g，生成静态文件" class="headerlink" title="3. 运行hexo g，生成静态文件"></a>3. 运行hexo g，生成静态文件</h2><p>还是在博客目录下的指令行框中，<br>输入</p><figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs verilog">&gt;hexo <span class="hljs-keyword">generate</span>  （或者简写为hexo g）<br></code></pre></td></tr></table></figure><h2 id="4-账户信息设置"><a href="#4-账户信息设置" class="headerlink" title="4. 账户信息设置"></a>4. 账户信息设置</h2><p>因为是第一次使用可能需要填一下相关信息（还是在指令框中）</p><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs stylus">&gt;git config <span class="hljs-attr">--global</span> user<span class="hljs-selector-class">.email</span> <span class="hljs-string">&quot;在这填你的github邮箱&quot;</span><br>&gt;git config <span class="hljs-attr">--global</span> user<span class="hljs-selector-class">.name</span> <span class="hljs-string">&quot;填你的用户名&quot;</span> <br></code></pre></td></tr></table></figure><h2 id="5-上传到github仓库"><a href="#5-上传到github仓库" class="headerlink" title="5. 上传到github仓库"></a>5. 上传到github仓库</h2><p>然后运行hexo d，部署网站（也被称为一键部署）<br>最后一步了，还是在指令框输入 hexo deploy  (简写做hexo d)</p><figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ebnf"><span class="hljs-attribute">hexo d</span><br></code></pre></td></tr></table></figure><p>然后会弹一个小框框让你输github的邮箱和密码，成功登陆后博客上传到github仓库中，通过之前设定的 用户名.github.io 这个地址，就可以访问博客了。</p><p><br><strong>至此一个轻量级的静态博客搭建完成。</strong></br><br><br><strong>后续还可以进行主题的更换，插件的安装等等各种添油加醋的操作。</strong></br></p>]]></content>
+    
+    
+    <categories>
+      
+      <category>学习</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>hexo</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  
+</search>
