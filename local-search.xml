@@ -4,6 +4,95 @@
   
   
   <entry>
+    <title>Hexo博客的迁移</title>
+    <link href="/2023/02/10/Hexo%E5%8D%9A%E5%AE%A2%E7%9A%84%E8%BF%81%E7%A7%BB/"/>
+    <url>/2023/02/10/Hexo%E5%8D%9A%E5%AE%A2%E7%9A%84%E8%BF%81%E7%A7%BB/</url>
+    
+    <content type="html"><![CDATA[<h1 id="Hexo博客的迁移"><a href="#Hexo博客的迁移" class="headerlink" title="Hexo博客的迁移"></a>Hexo博客的迁移</h1><p>因为各种各样的原因，比如换电脑了，或者因为设备的玄学问题不得不迁移一下环境（我的笔记本连不上github，每次上传同步都报错，头都大了，家里的台式却能轻松链接）。</p><p>总之迁移Hexo环境也是一件非常重要的事情，因为我之前的迁移都是通过看自己以前写的博客创建文档，以及自己的一些写进DNA的经验，所以时间久了难免有些遗忘和不靠谱。特此记录一下迁移的步骤，以便以后查看。</p><h2 id="1-安装Node-js、git和npm"><a href="#1-安装Node-js、git和npm" class="headerlink" title="1. 安装Node.js、git和npm"></a>1. 安装Node.js、git和npm</h2><p>【<strong>这一条是给新电脑用的，如果已经有了就跳过。</strong>】具体步骤也不再赘述，关于系统环境参数的配置也有一大堆教程和说明了。</p><h2 id="2-运行Hexo的一键部署命令"><a href="#2-运行Hexo的一键部署命令" class="headerlink" title="2. 运行Hexo的一键部署命令"></a>2. 运行Hexo的一键部署命令</h2><figure class="highlight avrasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs avrasm">$ npm install hexo-<span class="hljs-keyword">cli</span> -g<br></code></pre></td></tr></table></figure><h2 id="3-安装依赖库"><a href="#3-安装依赖库" class="headerlink" title="3. 安装依赖库"></a>3. 安装依赖库</h2><p>在命令指令行<strong>进入博客目录下</strong>安装相关的配置</p><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cmake">npm <span class="hljs-keyword">install</span><br></code></pre></td></tr></table></figure><p>如果有报错的话，就配置一下淘宝源，用cnpm。</p><h2 id="4-安装一键上传的插件：hexo-deployer-git"><a href="#4-安装一键上传的插件：hexo-deployer-git" class="headerlink" title="4. 安装一键上传的插件：hexo-deployer-git"></a>4. 安装一键上传的插件：hexo-deployer-git</h2><figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ada">$ npm install hexo-deployer-git <span class="hljs-comment">--save</span><br></code></pre></td></tr></table></figure><p>这也就是我们熟悉的hexo g 、hexo d命令的插件。</p><p>如果因为404原因安装失败的话，就使用<strong>cnpm+淘宝源</strong>，大概率成功。</p><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">$ cnpm：npm install -g cnpm --registry=https:<span class="hljs-regexp">//</span>registry.npm.taobao.org<br></code></pre></td></tr></table></figure><h2 id="5-账户信息设置"><a href="#5-账户信息设置" class="headerlink" title="5. 账户信息设置"></a>5. 账户信息设置</h2><p>因为是新的电脑第一次使用git仓库，可能需要填一下相关信息。（还是在指令框中）</p><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs stylus">&gt;git config <span class="hljs-attr">--global</span> user<span class="hljs-selector-class">.email</span> <span class="hljs-string">&quot;在这填你的github邮箱&quot;</span><br>&gt;git config <span class="hljs-attr">--global</span> user<span class="hljs-selector-class">.name</span> <span class="hljs-string">&quot;填你的用户名&quot;</span> <br></code></pre></td></tr></table></figure><p>这个如果没输入的话，运行上传时也会提示你who are you的。</p><h2 id="6-检查是否能上传"><a href="#6-检查是否能上传" class="headerlink" title="6. 检查是否能上传"></a>6. 检查是否能上传</h2><p>其实到上一步配置就基本已经完成了，可以直接执行上传指令。</p><figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs ebnf"><span class="hljs-attribute">hexo clean</span><br><span class="hljs-attribute">hexo g</span><br><span class="hljs-attribute">hexo d</span><br></code></pre></td></tr></table></figure><p>如果配置文件不对的话，也是会出现<code>spawn failed 128</code>错误的。（我最近真是被这个问题锤得头疼）。而检测是不是配置导致的无法上传，方法就是看能不能直接打开<a href="https://github.com/">github.com</a>。能打开基本就是配置问题。</p><p>检查<code>_config.yml</code>文件</p><ol><li><p>url是博客的访问地址，要设置对。例如我的是：</p><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">url: http:<span class="hljs-regexp">//</span>kw1649190133.github.io<br></code></pre></td></tr></table></figure></li><li><p>还有一项就是推送更新的设置，一般在配置文件的最后，现在可以不用ssh了，用token很方便，但是要注意保存好令牌代码。token的使用方法就是放在http访问链接里，github的前面，然后再加上一个<code>@</code>符号</p><figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs dts"><span class="hljs-symbol">deploy:</span><br><span class="hljs-symbol">  type:</span> git<br><span class="hljs-symbol">  repo:</span> https:<span class="hljs-comment">//【这里放token，然后删掉括号】@github.com/kw1649190133/kw1649190133.github.io</span><br><span class="hljs-symbol">  branch:</span> master<br></code></pre></td></tr></table></figure><h2 id="结尾"><a href="#结尾" class="headerlink" title="结尾"></a>结尾</h2><p>搬一次家挺麻烦的，可以的话还是少搬比较好。</p></li></ol>]]></content>
+    
+    
+    <categories>
+      
+      <category>学习</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Hexo</tag>
+      
+      <tag>迁移</tag>
+      
+      <tag>博客</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>Hexo的复活和升级计划</title>
+    <link href="/2023/02/10/Hexo%E7%9A%84%E5%A4%8D%E6%B4%BB%E5%92%8C%E5%8D%87%E7%BA%A7%E8%AE%A1%E5%88%92/"/>
+    <url>/2023/02/10/Hexo%E7%9A%84%E5%A4%8D%E6%B4%BB%E5%92%8C%E5%8D%87%E7%BA%A7%E8%AE%A1%E5%88%92/</url>
+    
+    <content type="html"><![CDATA[<h1 id="Hexo的复活和升级计划"><a href="#Hexo的复活和升级计划" class="headerlink" title="Hexo的复活和升级计划"></a>Hexo的复活和升级计划</h1><p><em>为了能够愉快的继续使用Hexo，之前积累的一些问题也必须得解决了，所谓“工欲善其事必先利其器”，不把这博客弄好我都不能专心去搞神经网络。</em></p><p>之前的问题归纳下来就三个:</p><ol><li><p>之前刚搞博客喜欢研究新鲜玩意，整了个2Dlive,搞得文件夹变成了几百MB，这次必须另起炉灶，把原来的modle都抛弃掉。</p></li><li><p>之前的页面会一直卡加载，研究了一下发现是没有合理的优化，一进去主页就会直接加载全部文章，百度一下之后，发现可以通过换主题解决，之前的主题只能说太简陋了。</p></li><li><p>最后一点也是最重要的一点，github时常连不上的问题，经常导致上传失败，现在只能暂时存在本地，还是得尝试一下其他平台的部署。</p></li><li><p>然后是支线任务，想办法做一下一键预览、一键打包和一键同步，以及快速创建文章，。我的水平也许做不出Gridea这种集成式程序，但优化一下基本体验应该还是做得到的，体验这一块不能输。或者找一下别人有没有现成的。</p></li></ol><p>之前一直使用ayer主题，虽然好看是好看，但是它完全没有优化，主页会直接加载全部的文章，东西一多直接爆卡，除非写文章的时候全部手动设置截断或者隐藏，但那也太麻烦了，于是我决定找一个简约而又好看，优化还得好的主题。</p><h2 id="fluid主题"><a href="#fluid主题" class="headerlink" title="fluid主题"></a>fluid主题</h2><p>挑挑拣拣半天，终于找到了一个合心意的主题，这简约的界面和流畅的优化，舒服了。还有这个右上角的一键切换夜间模式，也非常好用。我决定就它了。其实还有一些主题我也挺喜欢的，但是要么就是广告味太浓，要么就是特效太多，速度不够快。经过了以前2Dlive的折磨，我再也不敢在博客里塞大件的东西了，还是简单实用最好。</p><p>主题的主页在此，上面有详细的使用手册，后面有时间了我再去研究研究怎么调整和优化。</p><p><a href="https://fluid-dev.github.io/hexo-fluid-docs/">点击跳转fluid</a></p><p><img src="/2023/02/10/Hexo%E7%9A%84%E5%A4%8D%E6%B4%BB%E5%92%8C%E5%8D%87%E7%BA%A7%E8%AE%A1%E5%88%92/fulid%E4%B8%BB%E9%A2%98.png" alt="fulid主题"></p>]]></content>
+    
+    
+    <categories>
+      
+      <category>学习</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Hexo</tag>
+      
+      <tag>博客</tag>
+      
+      <tag>fluid主题</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>Gridea博客创建和部署</title>
+    <link href="/2023/02/09/Gridea%E5%8D%9A%E5%AE%A2%E5%88%9B%E5%BB%BA%E5%92%8C%E9%83%A8%E7%BD%B2/"/>
+    <url>/2023/02/09/Gridea%E5%8D%9A%E5%AE%A2%E5%88%9B%E5%BB%BA%E5%92%8C%E9%83%A8%E7%BD%B2/</url>
+    
+    <content type="html"><![CDATA[<h1 id="Gridea博客的创建和部署"><a href="#Gridea博客的创建和部署" class="headerlink" title="Gridea博客的创建和部署"></a>Gridea博客的创建和部署</h1><h2 id="想要使用Gridea的原因"><a href="#想要使用Gridea的原因" class="headerlink" title="想要使用Gridea的原因"></a>想要使用Gridea的原因</h2><p>原来用hexo的时候，刚开始还觉得很新鲜，要挂个指令行去输代码来更新页面非常酷，但用了一段时间就累了，实在是太麻烦了，大大降低了写文档的欲望。并且hexo+giehub最大的问题不是它自己，而是github，在国内连不上才是常态，开加速又会遇到各种问题，更新文档都有意外发生，头疼死了。而且自己之前作死往里头塞了2Dlive，搞得页面有点卡，加载非常慢。综上所述正在头疼的我正好看到了一个介绍Gridea的视频，那个简洁漂亮的界面和一键同步的便捷，瞬间击穿了我的防线，决定迁移博客。</p><h2 id="关于Hexo在Github-page上更新的问题"><a href="#关于Hexo在Github-page上更新的问题" class="headerlink" title="关于Hexo在Github page上更新的问题"></a>关于Hexo在Github page上更新的问题</h2><p><strong>unable to verify the first certificate</strong><br>这是使用steam++（现在更名为瓦特工具箱）加速器加速了github后出现的问题。<br>message: “unable to verify the first certificate”, success: false</p><p><strong>网络链接不上的问题</strong><br>关掉加速器后，又出现了新的问题<br><code>报错：connect ETIMEDOUT 192.30.253.113:443</code></p><p>用检测工具一测就看到国内没有一个地方能访问的<br>ping检测工具:<br><a href="http://ping.chinaz.com/github.com">http://ping.chinaz.com/github.com</a><br><code>报错：message: &quot;connect ETIMEDOUT 192.30.253.113:443&quot;, success: false</code></p><p>虽然可以通过一些其他的方式访问，比如翻个墙，设置一下代理。但显然麻烦程度指数上升，背离了简单高效的初衷。<br>所以最好的解决办法就是当前大环境不允许的情况下，不用github pages。</p><h2 id="寻找GIthub-page的替代品"><a href="#寻找GIthub-page的替代品" class="headerlink" title="寻找GIthub page的替代品"></a>寻找GIthub page的替代品</h2><p>目前比较好的就是<strong>Netlify</strong>和<strong>gitee</strong>这两个选择。<br>Netlify好像是个专门托管网站代码的平台，它的好处就是不需要复杂的认证，就可以白嫖网站建设的资源，用来做个人的博客已经绰绰有余。<br>Gitee是国内为了不被卡脖子仿造Github打造的代码托管平台，在GitHub被墙的情况下，用Gitee也是不错的选择，只是它受到官方的严格管辖，不仅代码的发布者要统一平台的协议，不能传敏感内容，否则要承担责任，要想使用它的gitee page功能还必须实名制。</p><p>我折腾了半天Netlify，还是没整明白，暂时放弃了，先申请gitee的实名吧。以防万一，看来hexo+GitHub还不能丢，偶尔还是得更新一下，留个备份。</p><p>ps:gitee的实名制申请巨久，过了一整天还没好。</p><h2 id="Hexo文章迁移到Gridea"><a href="#Hexo文章迁移到Gridea" class="headerlink" title="Hexo文章迁移到Gridea"></a>Hexo文章迁移到Gridea</h2><p><strong>从Hexo导入文章到Gridea，需要将头部词条中的分类(Categories)删掉，因为Gridea中只有标签(Tag)</strong><br>不删掉的话会导致Gridea打不开。感谢前人的经验。<br>另外，Gridea也是支持中文文件名的，但是从软件里面新建文章的时候，标题总是会自动变成汉语拼音，以后标题可能还得单独去编辑一下，或者干脆在Vscode里写好了再搬运过来，毕竟用这个软件主要还是图它界面好看和同步方便，一点小小的问题无伤大雅。</p><p><strong>Gridea的图片导入无法使用相对路径</strong><br>当我把装了图片的文件夹也拖入post文件夹时，就出大问题了，Gridea界面又打不开了，进去就是空白，把文件夹路径删掉又好了。看来是读取文件路径的问题，它只能从固定的post-images路径里读图片。而当我使用图片插入功能将图片转换成链接时，它又只能是绝对路径，直接指到了我的博客路径里的post-images文件夹，并且自动生成了一张重命名为随即数字编码的图片，这下不光是好不好看的问题，而是能不能用的问题了，就算能用，兼容性也不行，我想搬到别的地方去这图片就全寄了。百度了一下也没找到合适的解决办法，好像大神们都是直接用的网图链接，反正我是受不了。</p><p>现在界面是打开了，同步也没有问题，但是图片链接的兼容寄了，这就是鱼和熊掌不可得兼吗。</p><h2 id="世上无难事，只要肯放弃"><a href="#世上无难事，只要肯放弃" class="headerlink" title="世上无难事，只要肯放弃"></a>世上无难事，只要肯放弃</h2><p>到这一步我真的快崩溃了，这些个无良自媒体摁夸Gridea界面好看写作方便一键预览一键同步，那是只字不提排版与兼容的问题啊（TAT ），网上能找到的教程屈指可数，几乎找不到足够全面的内容。Markdown原生的相对路径都不支持，这™整的我浑身难受，想简简单单传个图片还得挂网图，真就只适合纯文字呗。我经常需要做一些步骤和教程的文档，图片还是非常重要的，我做不到割舍图片功能。<br>对不起Hexo刚才是我说话太大声了，我这就把Github Page布回去，以后有空了再做个python程序来实现一键更新和一键同步，还有头文件生成之类的东西。也尝试一下把网站放到gitee page或者netlify上，这样至少不会因为网络链接的问题无法实现同步。<br>再次感谢程序羊Codesheep的hexo保姆级教程，帮我实现了自己的第一个博客。这次尝试虽然有些失败，但也算一次有趣的探索，让我认识到了自己的能力的不足。失败是成功之母，下次继续加油。接下来该抓紧时间研究YOLO神经网络了。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>学习</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>hexo</tag>
+      
+      <tag>Gridea</tag>
+      
+      <tag>失败经历</tag>
+      
+      <tag>blog</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>关于2023年的年初展望</title>
     <link href="/2023/01/07/%E5%85%B3%E4%BA%8E2023%E5%B9%B4%E7%9A%84%E5%B9%B4%E5%88%9D%E5%B1%95%E6%9C%9B/"/>
     <url>/2023/01/07/%E5%85%B3%E4%BA%8E2023%E5%B9%B4%E7%9A%84%E5%B9%B4%E5%88%9D%E5%B1%95%E6%9C%9B/</url>
