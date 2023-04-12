@@ -4,6 +4,64 @@
   
   
   <entry>
+    <title>AdobeAcrobat闪退处理办法</title>
+    <link href="/2023/04/12/AdobeAcrobat%E9%97%AA%E9%80%80%E5%A4%84%E7%90%86%E5%8A%9E%E6%B3%95/"/>
+    <url>/2023/04/12/AdobeAcrobat%E9%97%AA%E9%80%80%E5%A4%84%E7%90%86%E5%8A%9E%E6%B3%95/</url>
+    
+    <content type="html"><![CDATA[<h2 id="关于adobe-acrobat闪退的问题"><a href="#关于adobe-acrobat闪退的问题" class="headerlink" title="关于adobe acrobat闪退的问题"></a>关于adobe acrobat闪退的问题</h2><p>在使用adobe acrobat的时候，经常刚打开一会就闪退，应该不是软件本身的问题，查了一下可能是许可的问题，在线许可检查没通过就强制关闭程序。</p><ol><li><p>在C盘里找到hosts文件<br>C:\Windows\System32\drivers\etc</p></li><li><p>在hosts文件里的末尾添加</p></li><li><p>0.0.1 acroipm.adobe.com</p></li></ol><p>若遇到无法修改的情况，先右键hosts，在属性框的安全选项卡里，给当前用户添加一个修改权限，就可以修改了。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>学习</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Adobe</tag>
+      
+      <tag>Acrobat</tag>
+      
+      <tag>闪退</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>ArcGIS进行图斑排序的方法</title>
+    <link href="/2023/04/12/ArcGIS%E8%BF%9B%E8%A1%8C%E5%9B%BE%E6%96%91%E6%8E%92%E5%BA%8F%E7%9A%84%E6%96%B9%E6%B3%95/"/>
+    <url>/2023/04/12/ArcGIS%E8%BF%9B%E8%A1%8C%E5%9B%BE%E6%96%91%E6%8E%92%E5%BA%8F%E7%9A%84%E6%96%B9%E6%B3%95/</url>
+    
+    <content type="html"><![CDATA[<h2 id="ArcGIS进行图斑排序的方法"><a href="#ArcGIS进行图斑排序的方法" class="headerlink" title="ArcGIS进行图斑排序的方法"></a>ArcGIS进行图斑排序的方法</h2><p>在实际项目中，需要我们按照自上而下，从左往右的顺序为图斑编号，并且多数时候序号位数是确定的</p><h2 id="具体操作步骤"><a href="#具体操作步骤" class="headerlink" title="具体操作步骤"></a>具体操作步骤</h2><ol><li>计算Xmin与Ymax</li></ol><p>计算Xmin与Ymax。利用坐标进行排序，首先要算出坐标值。需要说明的是这里没有直接利用质心坐标而采用Xmin、Ymax进行排序，是因为质心坐标会遇到一种情况，就是当这个图斑很长或者很宽时，本应排在前面的序号，而因为质心靠后不得不被排到后面的序号中，所以为避免这种情况而采用Xmin与Ymax来进行排序。分别新建字段Xmin与Ymax，在字段计算器中输入python语句</p><figure class="highlight erlang-repl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs erlang-repl">!shape.extent.Xmin!<br></code></pre></td></tr></table></figure><p>和</p><figure class="highlight erlang-repl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs erlang-repl">!shape.extent.Ymax!<br></code></pre></td></tr></table></figure><p>分别计算出Xmin与Ymax的值</p><ol start="2"><li>排序</li></ol><p>利用sort（Data management）排序工具对Xmin和Ymax排序。Ymax在前为降序，Xmin在后为升序。</p><ol start="3"><li>图斑编号。</li></ol><p>新建一个字段BH，在字段计算器中利用python语句进行自动编号。</p><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs routeros"><span class="hljs-attribute">rec</span>=0<br>def autoIncrement():<br>global rec<br><span class="hljs-attribute">pStart</span>=1#初始值<br><span class="hljs-attribute">pInterval</span>=1#间隔值<br><span class="hljs-keyword">if</span>(<span class="hljs-attribute">rec</span>==0):<br><span class="hljs-attribute">rec</span>=pStart<br><span class="hljs-keyword">else</span>:<br><span class="hljs-attribute">rec</span>=rec+pInterval<br>return rec<br></code></pre></td></tr></table></figure><p>以下是赋值栏填写</p><ul><li>（1）实现常规编号(1、2、3……)：<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs stylus"><span class="hljs-function"><span class="hljs-title">autoIncrement</span><span class="hljs-params">()</span></span><br></code></pre></td></tr></table></figure></li><li>（2）实现给定长度编号，例如长度为4，在前面补零：<figure class="highlight isbl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs isbl">(<span class="hljs-function"><span class="hljs-title">str</span>(<span class="hljs-title">autoIncrement</span>())).zfill(<span class="hljs-number">4</span>)</span><br></code></pre></td></tr></table></figure></li></ul>]]></content>
+    
+    
+    <categories>
+      
+      <category>学习</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>地理信息</tag>
+      
+      <tag>ArcGIS</tag>
+      
+      <tag>排序</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>关于影像镶嵌的方法与注意事项</title>
     <link href="/2023/02/22/%E5%85%B3%E4%BA%8E%E5%BD%B1%E5%83%8F%E9%95%B6%E5%B5%8C%E7%9A%84%E6%96%B9%E6%B3%95%E4%B8%8E%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/"/>
     <url>/2023/02/22/%E5%85%B3%E4%BA%8E%E5%BD%B1%E5%83%8F%E9%95%B6%E5%B5%8C%E7%9A%84%E6%96%B9%E6%B3%95%E4%B8%8E%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/</url>
