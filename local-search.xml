@@ -4,11 +4,40 @@
   
   
   <entry>
+    <title>ZOD论坛的hosts登录方法</title>
+    <link href="/2023/06/26/ZOD%E8%AE%BA%E5%9D%9B%E7%9A%84hosts%E7%99%BB%E5%BD%95%E6%96%B9%E6%B3%95/"/>
+    <url>/2023/06/26/ZOD%E8%AE%BA%E5%9D%9B%E7%9A%84hosts%E7%99%BB%E5%BD%95%E6%96%B9%E6%B3%95/</url>
+    
+    <content type="html"><![CDATA[<h1 id="ZODGAME登录"><a href="#ZODGAME登录" class="headerlink" title="ZODGAME登录"></a>ZODGAME登录</h1><p>登录ZOD论坛的主要方式就是通过修改hosts登录，或者直接用加速器登录。</p><h2 id="修改hosts文件"><a href="#修改hosts文件" class="headerlink" title="修改hosts文件"></a>修改hosts文件</h2><p>在hosts文件的末尾加上</p><figure class="highlight accesslog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs accesslog"><span class="hljs-number">172.67.72.116</span> zodgame.xyz<br><span class="hljs-number">172.67.72.116</span> www.zodgame.xyz<br></code></pre></td></tr></table></figure><h2 id="其他的备用站点"><a href="#其他的备用站点" class="headerlink" title="其他的备用站点"></a>其他的备用站点</h2><figure class="highlight accesslog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs accesslog"><span class="hljs-number">104.26.14.233</span> http://www.zodgame.xyz<br><span class="hljs-number">104.26.14.223</span> zodgame.xyz<br><span class="hljs-number">104.26.15.233</span> http://www.zodgame.xyz<br><span class="hljs-number">104.26.15.223</span> zodgame.xyz<br></code></pre></td></tr></table></figure><p>如果不需要的话可以在前面加<code>#</code>井字符号，这样就能把本行后面的内容注释掉了。</p><h2 id="其他登录方式"><a href="#其他登录方式" class="headerlink" title="其他登录方式"></a>其他登录方式</h2><p>花钱找个加速器，应该也是可以上的。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>学习</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>ZOD</tag>
+      
+      <tag>论坛</tag>
+      
+      <tag>hosts</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>AdobeAcrobat闪退处理办法</title>
     <link href="/2023/04/12/AdobeAcrobat%E9%97%AA%E9%80%80%E5%A4%84%E7%90%86%E5%8A%9E%E6%B3%95/"/>
     <url>/2023/04/12/AdobeAcrobat%E9%97%AA%E9%80%80%E5%A4%84%E7%90%86%E5%8A%9E%E6%B3%95/</url>
     
-    <content type="html"><![CDATA[<h2 id="关于adobe-acrobat闪退的问题"><a href="#关于adobe-acrobat闪退的问题" class="headerlink" title="关于adobe acrobat闪退的问题"></a>关于adobe acrobat闪退的问题</h2><p>在使用adobe acrobat的时候，经常刚打开一会就闪退，应该不是软件本身的问题，查了一下可能是许可的问题，在线许可检查没通过就强制关闭程序。</p><ol><li><p>在C盘里找到hosts文件<br>C:\Windows\System32\drivers\etc</p></li><li><p>在hosts文件里的末尾添加</p></li><li><p>0.0.1 acroipm.adobe.com</p></li></ol><p>若遇到无法修改的情况，先右键hosts，在属性框的安全选项卡里，给当前用户添加一个修改权限，就可以修改了。</p>]]></content>
+    <content type="html"><![CDATA[<h2 id="关于adobe-acrobat闪退的问题"><a href="#关于adobe-acrobat闪退的问题" class="headerlink" title="关于adobe acrobat闪退的问题"></a>关于adobe acrobat闪退的问题</h2><p>在使用adobe acrobat的时候，经常刚打开一会就闪退，应该不是软件本身的问题，查了一下可能是许可的问题，在线许可检查没通过就强制关闭程序。</p><ol><li><p>在C盘里找到hosts文件<br><code>C:\Windows\System32\drivers\etc</code></p></li><li><p>在hosts文件里的末尾添加<br><code>127.0.0.1 acroipm.adobe.com</code></p></li></ol><p>若遇到无法修改的情况，先右键hosts，在属性框的安全选项卡里，给当前用户添加一个修改权限，就可以修改了。</p>]]></content>
     
     
     <categories>
