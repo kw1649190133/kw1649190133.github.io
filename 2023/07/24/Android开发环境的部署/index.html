@@ -16,24 +16,29 @@
   <meta name="author" content="Kwindy">
   <meta name="keywords" content="">
   
-    <meta name="description" content="安装方式安装好blander以后，不用解压BlanderGIS的压缩包，打开blander,在插件中添加压缩包的路径。打勾后重启Blander,就会出现GIS菜单。 “No ImageIO”错误打开GIS菜单，加载地图的时候会出现“No ImageIO”错误，需要手动下载文件进行替换。 FreeImage的下载地址：https:&#x2F;&#x2F;github.com&#x2F;imageio&#x2F;imageio-binari">
+    <meta name="description" content="一、安装JDK 安装Java的基础环境，包含JDK和JRE，可以更改一下安装位置不要装在C盘。 添加系统变量。   在系统变量中添加两个变量变量名：JAVA_HOME变量值：F:\Softwork\Java\jdk1.8.0\  变量名：CLASSPATH变量值：.;%JAVA_HOME%\lib\dt.jar;%JAVA_HOME%\lib\tools.jar  打开系统变量的Path变量,在里">
 <meta property="og:type" content="article">
-<meta property="og:title" content="关于BlanderGIS的安装和配置">
-<meta property="og:url" content="http://kw1649190133.github.io/2022/11/04/%E5%85%B3%E4%BA%8EBlanderGIS%E7%9A%84%E5%AE%89%E8%A3%85%E5%92%8C%E9%85%8D%E7%BD%AE/index.html">
+<meta property="og:title" content="Android开发环境的部署">
+<meta property="og:url" content="http://kw1649190133.github.io/2023/07/24/Android%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E7%9A%84%E9%83%A8%E7%BD%B2/index.html">
 <meta property="og:site_name" content="kw&#39;s blog">
-<meta property="og:description" content="安装方式安装好blander以后，不用解压BlanderGIS的压缩包，打开blander,在插件中添加压缩包的路径。打勾后重启Blander,就会出现GIS菜单。 “No ImageIO”错误打开GIS菜单，加载地图的时候会出现“No ImageIO”错误，需要手动下载文件进行替换。 FreeImage的下载地址：https:&#x2F;&#x2F;github.com&#x2F;imageio&#x2F;imageio-binari">
+<meta property="og:description" content="一、安装JDK 安装Java的基础环境，包含JDK和JRE，可以更改一下安装位置不要装在C盘。 添加系统变量。   在系统变量中添加两个变量变量名：JAVA_HOME变量值：F:\Softwork\Java\jdk1.8.0\  变量名：CLASSPATH变量值：.;%JAVA_HOME%\lib\dt.jar;%JAVA_HOME%\lib\tools.jar  打开系统变量的Path变量,在里">
 <meta property="og:locale">
-<meta property="article:published_time" content="2022-11-04T07:57:57.000Z">
-<meta property="article:modified_time" content="2023-07-24T03:37:06.574Z">
+<meta property="og:image" content="http://kw1649190133.github.io/2023/07/24/Android%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E7%9A%84%E9%83%A8%E7%BD%B2/Android_SDK_Manager-settings.jpg">
+<meta property="og:image" content="http://kw1649190133.github.io/2023/07/24/Android%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E7%9A%84%E9%83%A8%E7%BD%B2/AndroidSDK%E5%88%97%E8%A1%A8%E8%A7%A3%E6%9E%90.jpeg">
+<meta property="og:image" content="http://kw1649190133.github.io/2023/07/24/Android%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E7%9A%84%E9%83%A8%E7%BD%B2/ProjectStructure.jpg">
+<meta property="article:published_time" content="2023-07-24T10:22:23.000Z">
+<meta property="article:modified_time" content="2023-07-26T02:27:27.115Z">
 <meta property="article:author" content="Kwindy">
-<meta property="article:tag" content="blander">
-<meta property="article:tag" content="GIS">
-<meta property="article:tag" content="软件安装">
+<meta property="article:tag" content="Java">
+<meta property="article:tag" content="Android">
+<meta property="article:tag" content="环境部署">
+<meta property="article:tag" content="开发">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://kw1649190133.github.io/2023/07/24/Android%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E7%9A%84%E9%83%A8%E7%BD%B2/Android_SDK_Manager-settings.jpg">
   
   
   
-  <title>关于BlanderGIS的安装和配置 - kw&#39;s blog</title>
+  <title>Android开发环境的部署 - kw&#39;s blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -199,7 +204,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="关于BlanderGIS的安装和配置"></span>
+            <span id="subtitle" data-typed-text="Android开发环境的部署"></span>
           
         </div>
 
@@ -210,8 +215,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2022-11-04 15:57" pubdate>
-          November 4, 2022 pm
+        <time datetime="2023-07-24 18:22" pubdate>
+          July 24, 2023 pm
         </time>
       </span>
     
@@ -222,7 +227,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          598 wörter
+          1.6k wörter
         
       </span>
     
@@ -233,7 +238,7 @@
         
         
         
-          5 minuten
+          13 minuten
         
       </span>
     
@@ -271,17 +276,67 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">关于BlanderGIS的安装和配置</h1>
+            <h1 style="display: none">Android开发环境的部署</h1>
             
             
               <div class="markdown-body">
                 
-                <h2 id="安装方式"><a href="#安装方式" class="headerlink" title="安装方式"></a>安装方式</h2><p>安装好blander以后，不用解压BlanderGIS的压缩包，打开blander,在插件中添加压缩包的路径。打勾后重启Blander,就会出现GIS菜单。</p>
-<h2 id="“No-ImageIO”错误"><a href="#“No-ImageIO”错误" class="headerlink" title="“No ImageIO”错误"></a>“No ImageIO”错误</h2><p>打开GIS菜单，加载地图的时候会出现“No ImageIO”错误，需要手动下载文件进行替换。</p>
-<p>FreeImage的下载地址：<br><a target="_blank" rel="noopener" href="https://github.com/imageio/imageio-binaries/tree/master/freeimage">https://github.com/imageio/imageio-binaries/tree/master/freeimage</a><br>window系统的替换文件位置<br><code>C:\Users\admin\AppData\Roaming\Blender Foundation\Blender\2.83\scripts\addons\BlenderGIS\core\lib\imageio\resources</code></p>
-<p>建立一个freeimage文件夹，然后将相应版本的文件放入其中<br>例如:freeimage\FreeImage-3.15.1-win64.dll<br>然后重新打开blander方可生效</p>
-<p>这个应该是linux系统的路径<br>/Contents/Resources/3.1/scripts/addons/BlenderGIS-master/core/lib/imageio/resources</p>
-<h2 id="加载地图"><a href="#加载地图" class="headerlink" title="加载地图"></a>加载地图</h2><p>谷歌之类的地图可能因为墙的原因无法加载，国内的地图需要申请。可以去天地图申请token，然后放在插件中，就可以加载地图。</p>
+                <h2 id="一、安装JDK"><a href="#一、安装JDK" class="headerlink" title="一、安装JDK"></a>一、安装JDK</h2><ol>
+<li>安装Java的基础环境，包含JDK和JRE，可以更改一下安装位置不要装在C盘。</li>
+<li>添加系统变量。</li>
+</ol>
+<ul>
+<li>在系统变量中添加两个变量<br>变量名：<code>JAVA_HOME</code><br>变量值：<code>F:\Softwork\Java\jdk1.8.0\</code></li>
+</ul>
+<p>变量名：<code>CLASSPATH</code><br>变量值：<code>.;%JAVA_HOME%\lib\dt.jar;%JAVA_HOME%\lib\tools.jar</code></p>
+<ul>
+<li>打开系统变量的<code>Path</code>变量,在里面添加两项：<br><code>%JAVA_HOME%\bin</code></li>
+</ul>
+<p><code>%JAVA_HOME%\jre\bin</code></p>
+<ol start="3">
+<li>测试是否配置成功<br>弄完第一第二条以后去命令栏（CMD），分别输入<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs mipsasm"><span class="hljs-keyword">java </span>-version<br><span class="hljs-keyword">java</span><br><span class="hljs-keyword"></span><span class="hljs-keyword">javac</span><br></code></pre></td></tr></table></figure></li>
+</ol>
+<p>看看是不是都有正确的反应，都正常的话才说明配置成功。</p>
+<h2 id="二、配置SDK文件"><a href="#二、配置SDK文件" class="headerlink" title="二、配置SDK文件"></a>二、配置SDK文件</h2><p>找一个非中文路径，解压SDK文件。最好是磁盘的根目录。</p>
+<p>再次进入环境变量设置，在系统变量中添加<br>变量名：<code>ANDROID_SDK_HOME</code></p>
+<p>变量值：<code>F\SDK</code></p>
+<p><del>又要开一遍环境变量，不如刚刚顺便搞了</del></p>
+<h2 id="三、Android-Studio安装"><a href="#三、Android-Studio安装" class="headerlink" title="三、Android Studio安装"></a>三、Android Studio安装</h2><p>安装过程中有一些注意事项</p>
+<ol>
+<li><p>在<code>Select components to install</code>时，不要选择<code>Android SDK</code></p>
+</li>
+<li><p>在<code>Android SDK Settings</code>页面时，选择<code>Use an existing Android SDK</code>，然后输入SDK文件的解压路径，例如<code>F\SDK</code></p>
+</li>
+<li><p>设置<code>Android Studio</code>的安装位置。然后就是点几次next开始安装。</p>
+</li>
+<li><p>在打开软件后，<code>Complete Installation</code>页面，选择第二项。</p>
+</li>
+<li><p>在<code>Android Studio Setup Wizard</code>页面中选择第二项<code>Custom</code>。</p>
+</li>
+<li><p>一般来说一直NextNextNext就完事了，但最后还是遇到了问题。中国特色问题，无法直接访问谷歌，不能在线下载SDK。</p>
+</li>
+</ol>
+<p>此时报错：<code>The following SDK components were not installed:extra-android-m2repository and extra-google-m2repository</code>，<br>大概就是在线下载SDK包的时候一直响应超时。其实就是连不上服务器。</p>
+<p>由于谷歌在中国的服务完全停止，所以简单改host的方式已经不能解决问题了，只能通过国内镜像源来下载SDK</p>
+<p>以下是几个国内镜像源的地址：</p>
+<ol>
+<li>mirrors.neusoft.edu.cn //东软信息学院</li>
+<li>ubuntu.buct.edu.cn/ubuntu.buct.cn //北京化工大学</li>
+<li>mirrors.opencas.cn (mirrors.opencas.org/mirrors.opencas.ac.cn) 端口：80//中国科学院开源协会</li>
+<li>sdk.gdgshanghai.com 端口：8000 //上海GDG镜像服务器</li>
+<li>mirrors.dormforce.net 端口80//（栋力无限）电子科技大学</li>
+<li>android-mirror.bugly.qq.com 端口：8080  //腾讯Bugly 镜像</li>
+</ol>
+<p>打开SDK解压路径下的管理工具Android SDK Manager，在主菜单选择tool-Option，到达Setting窗口，然后配置镜像源。</p>
+<p><code>HTTP Proxy Server</code>——填镜像地址</p>
+<p><code>HTTP Proxy Port</code>——填端口号</p>
+<p><img src="/2023/07/24/Android%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E7%9A%84%E9%83%A8%E7%BD%B2/Android_SDK_Manager-settings.jpg" srcset="/img/loading.gif" lazyload alt="SDK Manager 设置"></p>
+<p>然后用Packages-Reload一键进行重新加载，列表中的状态都是Installed以后，应该就没问题了。</p>
+<p>下面是大佬对SDK列表的解析。若是追求轻量化的安装，其实可以省略很多东西。</p>
+<p><img src="/2023/07/24/Android%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E7%9A%84%E9%83%A8%E7%BD%B2/AndroidSDK%E5%88%97%E8%A1%A8%E8%A7%A3%E6%9E%90.jpeg" srcset="/img/loading.gif" lazyload alt="SDK列表解析"></p>
+<h2 id="四、Android-Studio的SDK环境配置"><a href="#四、Android-Studio的SDK环境配置" class="headerlink" title="四、Android Studio的SDK环境配置"></a>四、Android Studio的SDK环境配置</h2><p>在AndroidStudioSetupWizaed的界面选择设置<br>Configure-&gt;Project Defaults-&gt;Project Structure</p>
+<p>检查一下SDK和JKD是否配置好。没有问题的话就算安装配置完成，可以打开一个工程测试一下了。</p>
+<p><img src="/2023/07/24/Android%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E7%9A%84%E9%83%A8%E7%BD%B2/ProjectStructure.jpg" srcset="/img/loading.gif" lazyload alt="SDK和JKD是否配置"></p>
 
                 
               </div>
@@ -315,11 +370,13 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/blander/">#blander</a>
+        <a href="/tags/Java/">#Java</a>
       
-        <a href="/tags/GIS/">#GIS</a>
+        <a href="/tags/Android/">#Android</a>
       
-        <a href="/tags/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/">#软件安装</a>
+        <a href="/tags/%E7%8E%AF%E5%A2%83%E9%83%A8%E7%BD%B2/">#环境部署</a>
+      
+        <a href="/tags/%E5%BC%80%E5%8F%91/">#开发</a>
       
     </div>
   
@@ -331,8 +388,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>关于BlanderGIS的安装和配置</div>
-      <div>http://kw1649190133.github.io/2022/11/04/关于BlanderGIS的安装和配置/</div>
+      <div>Android开发环境的部署</div>
+      <div>http://kw1649190133.github.io/2023/07/24/Android开发环境的部署/</div>
     </div>
     <div class="license-meta">
       
@@ -344,7 +401,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Veröffentlicht am</div>
-          <div>November 4, 2022</div>
+          <div>July 24, 2023</div>
         </div>
       
       
@@ -376,18 +433,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2023/01/07/%E5%85%B3%E4%BA%8E2023%E5%B9%B4%E7%9A%84%E5%B9%B4%E5%88%9D%E5%B1%95%E6%9C%9B/" title="关于2023年的年初展望">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">关于2023年的年初展望</span>
-                        <span class="visible-mobile">Vorheriger</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2022/11/04/OSGB%E6%A0%BC%E5%BC%8F%E7%9A%84%E6%89%93%E5%BC%80%E6%96%B9%E5%BC%8F/" title="OSGB格式的打开方式">
-                        <span class="hidden-mobile">OSGB格式的打开方式</span>
+                      <a href="/2023/07/24/%E5%9F%BA%E4%BA%8ECesium%E7%9A%84Mars3D%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95/" title="基于Cesium的Mars3D使用方法">
+                        <span class="hidden-mobile">基于Cesium的Mars3D使用方法</span>
                         <span class="visible-mobile">Nächster</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
