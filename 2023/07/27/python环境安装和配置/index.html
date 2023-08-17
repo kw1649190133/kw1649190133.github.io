@@ -16,25 +16,23 @@
   <meta name="author" content="Kwindy">
   <meta name="keywords" content="">
   
-    <meta name="description" content="关于影像镶嵌的方法与注意事项在处理栅格数据成果时，经常遇到需要将几个部分的栅格拼接在一起形成一整块成果的情况。 可以使用的工具： Arcgis FME QGIS  ERDAS IMAGINE ENVI  其他工具： Arcgis Pro （要钱） GDAL （过于硬核）个人观点我个人主要用的是Arcgis（10.x版本）和FME（很厉害但比较难上手），一个是日常工作的常用工具，一个是压箱底的手段。">
+    <meta name="description" content="突然发现我的大笔记本重装了系统后，除了Arcgis自带的python2.7，还没有安装过python环境。为了 首先当然是去python的官网下载python安装包www.python.org 然后正常安装和配置就可以了 但是有时候遇到python不同版本之间的不兼容问题，就会非常头大，所以更好的方式还是安装一个环境管理，例如Anaconda。（以前Anaconda还是很好用的，现在不一定，所以要">
 <meta property="og:type" content="article">
-<meta property="og:title" content="关于影像镶嵌的方法与注意事项">
-<meta property="og:url" content="http://kw1649190133.github.io/2023/02/22/%E5%85%B3%E4%BA%8E%E5%BD%B1%E5%83%8F%E9%95%B6%E5%B5%8C%E7%9A%84%E6%96%B9%E6%B3%95%E4%B8%8E%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/index.html">
+<meta property="og:title" content="python环境安装和配置">
+<meta property="og:url" content="http://kw1649190133.github.io/2023/07/27/python%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85%E5%92%8C%E9%85%8D%E7%BD%AE/index.html">
 <meta property="og:site_name" content="kw&#39;s blog">
-<meta property="og:description" content="关于影像镶嵌的方法与注意事项在处理栅格数据成果时，经常遇到需要将几个部分的栅格拼接在一起形成一整块成果的情况。 可以使用的工具： Arcgis FME QGIS  ERDAS IMAGINE ENVI  其他工具： Arcgis Pro （要钱） GDAL （过于硬核）个人观点我个人主要用的是Arcgis（10.x版本）和FME（很厉害但比较难上手），一个是日常工作的常用工具，一个是压箱底的手段。">
+<meta property="og:description" content="突然发现我的大笔记本重装了系统后，除了Arcgis自带的python2.7，还没有安装过python环境。为了 首先当然是去python的官网下载python安装包www.python.org 然后正常安装和配置就可以了 但是有时候遇到python不同版本之间的不兼容问题，就会非常头大，所以更好的方式还是安装一个环境管理，例如Anaconda。（以前Anaconda还是很好用的，现在不一定，所以要">
 <meta property="og:locale">
-<meta property="article:published_time" content="2023-02-22T05:39:54.000Z">
-<meta property="article:modified_time" content="2023-03-01T04:20:19.689Z">
+<meta property="article:published_time" content="2023-07-27T03:56:42.000Z">
+<meta property="article:modified_time" content="2023-07-28T08:11:15.854Z">
 <meta property="article:author" content="Kwindy">
-<meta property="article:tag" content="地理信息">
-<meta property="article:tag" content="影像镶嵌">
-<meta property="article:tag" content="ArcGIS">
-<meta property="article:tag" content="FME">
+<meta property="article:tag" content="osgb">
+<meta property="article:tag" content="三维模型">
 <meta name="twitter:card" content="summary_large_image">
   
   
   
-  <title>关于影像镶嵌的方法与注意事项 - kw&#39;s blog</title>
+  <title>python环境安装和配置 - kw&#39;s blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -200,7 +198,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="关于影像镶嵌的方法与注意事项"></span>
+            <span id="subtitle" data-typed-text="python环境安装和配置"></span>
           
         </div>
 
@@ -211,8 +209,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2023-02-22 13:39" pubdate>
-          February 22, 2023 pm
+        <time datetime="2023-07-27 11:56" pubdate>
+          July 27, 2023 am
         </time>
       </span>
     
@@ -223,7 +221,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.5k words
+          208 words
         
       </span>
     
@@ -234,7 +232,7 @@
         
         
         
-          13 mins
+          2 mins
         
       </span>
     
@@ -272,53 +270,15 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">关于影像镶嵌的方法与注意事项</h1>
+            <h1 style="display: none">python环境安装和配置</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="关于影像镶嵌的方法与注意事项"><a href="#关于影像镶嵌的方法与注意事项" class="headerlink" title="关于影像镶嵌的方法与注意事项"></a>关于影像镶嵌的方法与注意事项</h1><p>在处理栅格数据成果时，经常遇到需要将几个部分的栅格拼接在一起形成一整块成果的情况。</p>
-<h2 id="可以使用的工具："><a href="#可以使用的工具：" class="headerlink" title="可以使用的工具："></a><font color=LightSlateBlue>可以使用的工具：</font></h2><ul>
-<li>Arcgis</li>
-<li>FME</li>
-<li>QGIS </li>
-<li>ERDAS IMAGINE</li>
-<li>ENVI</li>
-</ul>
-<h2 id="其他工具："><a href="#其他工具：" class="headerlink" title="其他工具："></a><font color=LightSlateBlue>其他工具：</font></h2><ul>
-<li>Arcgis Pro （要钱）</li>
-<li>GDAL （过于硬核）<br><font color=LightSlateBlue></font><h2 id="个人观点"><a href="#个人观点" class="headerlink" title="个人观点"></a><font color=LightSlateBlue>个人观点</font></h2>我个人主要用的是Arcgis（10.x版本）和FME（很厉害但比较难上手），一个是日常工作的常用工具，一个是压箱底的手段。QGIS浅浅尝试了一下，貌似只能做单波段的栅格合成，也可能是因为我愚钝没整明白。ERDAS做栅格拼接时的接缝处理，包括接缝线绘制和周围羽化非常方便，自己没试过（Arcgis也有类似功能，叫构建接缝线，但我还没用过）。ENVI我也用的极少，基本就上学时用过。<br>FME的主要问题是它的许可破解程序和Arcgis有冲突，打开一个就不能用另一个，频繁的切换非常麻烦，或者干脆奢侈一点一台电脑用一种软件。所以有机会还是要多尝试后面两款软件。</li>
-</ul>
-<h2 id="栅格拼接的基本步骤："><a href="#栅格拼接的基本步骤：" class="headerlink" title="栅格拼接的基本步骤："></a><font color=LightSlateBlue>栅格拼接的基本步骤：</font></h2><ol>
-<li><p>拼接前确认栅格影像的切片能够衔接的上，观察拼接处的道路、房屋之类的地方有没有断裂开。一般而言衔接处的重叠区域有控制点的话，一般是不会有问题的，但也要小心有控制点误差大的情况。如果有问题那就要回到栅格处理上，要么重新生成，要么地理配准。</p>
-</li>
-<li><p>确认用来合并的栅格有没有问题，包括影像有没有扭曲，有问题要回到上一步去，换个软件重新生成或者用栅格修复打补丁。这些都是合并前数据源的准备工作，避免合完之后才发现问题，浪费时间，合一次要老久了，还占空间。</p>
-</li>
-<li><p>保证需要合并的栅格属性一致，包括像元大小（根据项目需求而定），NoData值，波段数（一般为RGB），像素深度（一般为8bit），压缩类型等。如果有不一致的地方可以处理一下。或许软件有自动处理的功能，但重采样肯定也要花费大量的时间。这一步非常关键，关系到合并时会不会报错。</p>
-</li>
-<li><p>合并时进行接缝处理，包括接缝线可以画在不显眼的地方，接缝线周围进行羽化处理等，这些是非必须的加分项，时间充足时最好做一下，有效提升成果质量。</p>
-</li>
-<li><p> 如果是处理大工程，合并时选择一下压缩类型，例如LZW，不然合出来的影像可能比原始文件大几倍。另外，确保电脑硬盘空间充足，包括缓存路径和存储路径。</p>
-</li>
-<li><p>合并出来的影像要重新生成金字塔，方便查看。</p>
-</li>
-</ol>
-<h2 id="踩过的坑："><a href="#踩过的坑：" class="headerlink" title="踩过的坑："></a><font color=LightSlateBlue>踩过的坑：</font></h2><ol>
-<li><p>一般影像用的都是RGB模型，但也有的时候莫名其妙多一个RGBA，这个Alpha就是透明度。若要去掉一个波段，比较简单的办法就是用Arcgis的影像导出功能，用渲染器强制渲染为RGB颜色。如果这个时候有像元大小和Nodata不一致，也可以顺便处理了，节省时间。</p>
-</li>
-<li><p>坐标系要一样是常识，但是坐标系的写法不一样也会导致FME报错，比如pix4d导出的数据和Arcgis的坐标系数值一样但名称上有差别，可以用定义投影的方式修改。</p>
-</li>
-<li><p>FME在处理时，在写入数据时要勾选BIGtiff属性为是，不然处理不了大型的数据。</p>
-</li>
-<li><p>FME的破解是个大麻烦，许可程序和Arcgis有冲突，并且用的Imtools许可控制程序，优先级还比ArcGIS的License Server Administrator优先级更高。折腾完之后Arcgis也得用Imtools启动许可了。</p>
-</li>
-<li><p>tif和GeoTiff的区别，前者就是个图片，需要外置的坐标文件才能用；后者内置了地理坐标，一个文件就能用。</p>
-</li>
-<li><p>电脑缓存空间和存储空间不足时，合并程序会数据溢出强制终止，所以合并前务必检查缓存路径和存储路径。尤其是缓存路径，经常默认为C盘的。</p>
-</li>
-</ol>
-<p>后面有时间再补充几种软件的具体操作，包括合并时会用到的常用工具、功能。</p>
-<p>——————–施工中———————–</p>
+                <p>突然发现我的大笔记本重装了系统后，除了Arcgis自带的python2.7，还没有安装过python环境。为了</p>
+<p>首先当然是去python的官网下载python安装包<br><a target="_blank" rel="noopener" href="https://www.python.org/">www.python.org</a></p>
+<p>然后正常安装和配置就可以了</p>
+<p>但是有时候遇到python不同版本之间的不兼容问题，就会非常头大，所以更好的方式还是安装一个环境管理，例如Anaconda。（以前Anaconda还是很好用的，现在不一定，所以要根据实际情况去选择。）</p>
 
                 
               </div>
@@ -352,13 +312,9 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/%E5%9C%B0%E7%90%86%E4%BF%A1%E6%81%AF/">#地理信息</a>
+        <a href="/tags/osgb/">#osgb</a>
       
-        <a href="/tags/%E5%BD%B1%E5%83%8F%E9%95%B6%E5%B5%8C/">#影像镶嵌</a>
-      
-        <a href="/tags/ArcGIS/">#ArcGIS</a>
-      
-        <a href="/tags/FME/">#FME</a>
+        <a href="/tags/%E4%B8%89%E7%BB%B4%E6%A8%A1%E5%9E%8B/">#三维模型</a>
       
     </div>
   
@@ -370,8 +326,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>关于影像镶嵌的方法与注意事项</div>
-      <div>http://kw1649190133.github.io/2023/02/22/关于影像镶嵌的方法与注意事项/</div>
+      <div>python环境安装和配置</div>
+      <div>http://kw1649190133.github.io/2023/07/27/python环境安装和配置/</div>
     </div>
     <div class="license-meta">
       
@@ -383,7 +339,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Posted on</div>
-          <div>February 22, 2023</div>
+          <div>July 27, 2023</div>
         </div>
       
       
@@ -415,18 +371,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2023/04/12/ArcGIS%E8%BF%9B%E8%A1%8C%E5%9B%BE%E6%96%91%E6%8E%92%E5%BA%8F%E7%9A%84%E6%96%B9%E6%B3%95/" title="ArcGIS进行图斑排序的方法">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">ArcGIS进行图斑排序的方法</span>
-                        <span class="visible-mobile">Previous</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2023/02/10/Hexo%E5%8D%9A%E5%AE%A2%E7%9A%84%E8%BF%81%E7%A7%BB/" title="Hexo博客的迁移">
-                        <span class="hidden-mobile">Hexo博客的迁移</span>
+                      <a href="/2023/07/24/Android%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E7%9A%84%E9%83%A8%E7%BD%B2/" title="Android开发环境的部署">
+                        <span class="hidden-mobile">Android开发环境的部署</span>
                         <span class="visible-mobile">Next</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
