@@ -24,7 +24,7 @@
 <meta property="og:description" content="基于Cesium的Mars3D使用方法最近在做相关的项目，就记录一下自己对轻量化的数据平台Mars3D和轻量化服务器Nginx的理解。 一、基础资源列表 Nginx 站点的全部代码内容 mapdata 用于存放平台使用的本地地理数据，包括矢量、地形、影像、模型等等。可以根据自己的需要在里面进一步细分存储空间。  Nginx下的各文件夹的作用：conf 服务器配置文件夹 contrib 扩展文件夹">
 <meta property="og:locale">
 <meta property="article:published_time" content="2023-07-24T02:00:47.000Z">
-<meta property="article:modified_time" content="2023-08-17T22:59:33.371Z">
+<meta property="article:modified_time" content="2023-08-18T09:35:17.901Z">
 <meta property="article:author" content="Kwindy">
 <meta property="article:tag" content="Cesium">
 <meta property="article:tag" content="3Dtiles">
@@ -120,7 +120,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/">
                 <i class="iconfont icon-home-fill"></i>
-                <span>Home</span>
+                <span>Startseite</span>
               </a>
             </li>
           
@@ -132,7 +132,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/archives/">
                 <i class="iconfont icon-archive-fill"></i>
-                <span>Archives</span>
+                <span>Archiv</span>
               </a>
             </li>
           
@@ -144,7 +144,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/categories/">
                 <i class="iconfont icon-category-fill"></i>
-                <span>Categories</span>
+                <span>Kategorien</span>
               </a>
             </li>
           
@@ -156,7 +156,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/tags/">
                 <i class="iconfont icon-tags-fill"></i>
-                <span>Tags</span>
+                <span>Schlagwörter</span>
               </a>
             </li>
           
@@ -168,7 +168,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/about/">
                 <i class="iconfont icon-user-fill"></i>
-                <span>About</span>
+                <span>Über</span>
               </a>
             </li>
           
@@ -225,7 +225,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          9.6k words
+          9.6k wörter
         
       </span>
     
@@ -236,7 +236,7 @@
         
         
         
-          80 mins
+          80 minuten
         
       </span>
     
@@ -321,7 +321,7 @@
 </ol>
 <p>geojson格式相当于Arcmap中的shp，只包含矢量数据和字段，而不包含制图表达和符号系统，在Arcmap中可以简单的通过符号系统去设置的东西，在这里只能自己去配置了。这里仅测试了已定义的表达方式，如果需要更好的效果，可能需要重新进行定义。</p>
 <p>加载geojson格式矢量时需要注意数据的大小问题，超过20Mb的json文件就会在加载时卡顿了，体验非常不好，可能可以通过矢量节点简化、拆分json文件进行分段式加载等手段进行优化。</p>
-<pre><code class="hljs"><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><code class="hljs css">    &#123;<br>        &quot;pid&quot;: <span class="hljs-number">3030</span>,<br>        <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;geojson&quot;</span>, 【数据类型标记】<br>        <span class="hljs-string">&quot;name&quot;</span>: <span class="hljs-string">&quot;提蒙村庄规划&quot;</span>,  【数据名称】<br>        <span class="hljs-string">&quot;url&quot;</span>: <br>        <span class="hljs-string">&quot;http://localhost:801/mapdata/json/timengcunguihua.json&quot;</span>,【数据来源】<br>        <span class="hljs-string">&quot;symbol&quot;</span>: &#123;<br>            &quot;styleOptions&quot;: &#123; &quot;<span class="hljs-attribute">opacity</span>&quot;: <span class="hljs-number">0.6</span>【不透明度】, <span class="hljs-string">&quot;color&quot;</span>: <span class="hljs-string">&quot;#0000FF&quot;</span>, <span class="hljs-string">&quot;width&quot;</span>: <span class="hljs-number">3</span>, <span class="hljs-string">&quot;clampToGround&quot;</span>: true 【是否紧贴地面】,<span class="hljs-string">&quot;height&quot;</span>: <span class="hljs-number">100</span>【尝试加了高度但没有用】&#125;,<br>            &quot;styleField&quot;: <span class="hljs-string">&quot;GHDLMC&quot;</span>【根据字段重新添加配色】,<br>            <span class="hljs-string">&quot;styleFieldOptions&quot;</span>: &#123; 【配色列表】<br>                &quot;耕地&quot;: &#123; &quot;<span class="hljs-attribute">color</span>&quot;: <span class="hljs-string">&quot;#FFDF7F&quot;</span> &#125;,<br>                &quot;园地&quot;: &#123; &quot;<span class="hljs-attribute">color</span>&quot;: <span class="hljs-string">&quot;#FFFF00&quot;</span> &#125;,<br>                &quot;林地&quot;: &#123; &quot;<span class="hljs-attribute">color</span>&quot;: <span class="hljs-string">&quot;#FF6A38&quot;</span> &#125;,<br>                &quot;湿地&quot;: &#123; &quot;<span class="hljs-attribute">color</span>&quot;: <span class="hljs-string">&quot;#FF6A38&quot;</span> &#125;,<br>                &quot;村庄内部道路用地&quot;: &#123; &quot;<span class="hljs-attribute">color</span>&quot;: <span class="hljs-string">&quot;#FF850A&quot;</span> &#125;,<br>                &quot;种植设施建设用地&quot;: &#123; &quot;<span class="hljs-attribute">color</span>&quot;: <span class="hljs-string">&quot;#FF00FF&quot;</span> &#125;,<br>                &quot;畜禽养殖建设用地&quot;: &#123; &quot;<span class="hljs-attribute">color</span>&quot;: <span class="hljs-string">&quot;#FF00FF&quot;</span> &#125;,<br>                &quot;农村宅基地&quot;: &#123; &quot;<span class="hljs-attribute">color</span>&quot;: <span class="hljs-string">&quot;#FF7FFF&quot;</span> &#125;,<br>                &quot;农村社区服务设施用地&quot;: &#123; &quot;<span class="hljs-attribute">color</span>&quot;: <span class="hljs-string">&quot;#FF7FFF&quot;</span> &#125;,<br>                &quot;中小学用地&quot;: &#123; &quot;<span class="hljs-attribute">color</span>&quot;: <span class="hljs-string">&quot;#00A57C&quot;</span> &#125;,<br>                &quot;社会福利用地&quot;: &#123; &quot;<span class="hljs-attribute">color</span>&quot;: <span class="hljs-string">&quot;#A5527C&quot;</span> &#125;,<br>                &quot;商业用地&quot;: &#123; &quot;<span class="hljs-attribute">color</span>&quot;: <span class="hljs-string">&quot;#FF7F9F&quot;</span> &#125;,<br>                &quot;通信用地&quot;: &#123; &quot;<span class="hljs-attribute">color</span>&quot;: <span class="hljs-string">&quot;#FF0000&quot;</span> &#125;,<br>                &quot;水工设施用地&quot;: &#123; &quot;<span class="hljs-attribute">color</span>&quot;: <span class="hljs-string">&quot;#7F0000&quot;</span> &#125;,<br>                &quot;其他公用设施用地&quot;: &#123; &quot;<span class="hljs-attribute">color</span>&quot;: <span class="hljs-string">&quot;#FF7F7F&quot;</span> &#125;,<br>                &quot;特殊用地&quot;: &#123; &quot;<span class="hljs-attribute">color</span>&quot;: <span class="hljs-string">&quot;#A57C52&quot;</span> &#125;,<br>                &quot;留白用地&quot;: &#123; &quot;<span class="hljs-attribute">color</span>&quot;: <span class="hljs-string">&quot;#C0C0C0&quot;</span> &#125;,<br>                &quot;河流水面&quot;: &#123; &quot;<span class="hljs-attribute">color</span>&quot;: <span class="hljs-string">&quot;#00BFFF&quot;</span> &#125;,<br>                &quot;坑塘水面&quot;: &#123; &quot;<span class="hljs-attribute">color</span>&quot;: <span class="hljs-string">&quot;#00FF00&quot;</span> &#125;,<br>                &quot;沟渠&quot;: &#123; &quot;<span class="hljs-attribute">color</span>&quot;: <span class="hljs-string">&quot;#007F00&quot;</span> &#125;<br>            &#125;<br>        &#125;,<br>        &quot;popup&quot;: <span class="hljs-string">&quot;&#123;GHDLMC&#125;&quot;</span>, 【标签】<br>        <span class="hljs-string">&quot;show&quot;</span>: false, 【是否默认展示】<br>        <span class="hljs-string">&quot;flyTo&quot;</span>: true  【跳转至目标位置】<br>    &#125;,<br>    ```  <br><br>**&quot;symbol&quot;**<br><br>symbol对象就是矢量数据的对象，支持geojson和kml格式。<br><br>需要注意的是，根据geojson的不同对象类型，symbol也会起到不同的作用。geojson可以包含点、线、面、多点、多线、多面等矢量类型，比如对象是线的时候，可以用outlineColor去修改线的颜色，用fill可以填充成面的效果，但好像改不了颜色，而且线不完整的时候会有BUG；但是对象是面的时候，就可以使用<span class="hljs-attribute">color</span>去改变图块的颜色。<br></code></pre></td></tr></table></figure>
+<pre><code class="hljs"><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><code class="hljs css">    &#123;<br>        &quot;pid&quot;: <span class="hljs-number">3030</span>,<br>        <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;geojson&quot;</span>, 【数据类型标记】<br>        <span class="hljs-string">&quot;name&quot;</span>: <span class="hljs-string">&quot;提蒙村庄规划&quot;</span>,  【数据名称】<br>        <span class="hljs-string">&quot;url&quot;</span>: <br>        <span class="hljs-string">&quot;http://localhost:801/mapdata/json/timengcunguihua.json&quot;</span>,【数据来源】<br>        <span class="hljs-string">&quot;symbol&quot;</span>: &#123;<br>            &quot;styleOptions&quot;: &#123; &quot;<span class="hljs-attribute">opacity</span>&quot;: <span class="hljs-number">0.6</span>【不透明度】, <span class="hljs-string">&quot;color&quot;</span>: <span class="hljs-string">&quot;#0000FF&quot;</span>, <span class="hljs-string">&quot;width&quot;</span>: <span class="hljs-number">3</span>, <span class="hljs-string">&quot;clampToGround&quot;</span>: true 【是否紧贴地面】,<span class="hljs-string">&quot;height&quot;</span>: <span class="hljs-number">100</span>【尝试加了高度但没有用】&#125;,<br>            &quot;styleField&quot;: <span class="hljs-string">&quot;GHDLMC&quot;</span>【根据字段重新添加配色】,<br>            <span class="hljs-string">&quot;styleFieldOptions&quot;</span>: &#123; 【配色列表】<br>                &quot;耕地&quot;: &#123; &quot;<span class="hljs-attribute">color</span>&quot;: <span class="hljs-string">&quot;#FFDF7F&quot;</span> &#125;,<br>                &quot;园地&quot;: &#123; &quot;<span class="hljs-attribute">color</span>&quot;: <span class="hljs-string">&quot;#FFFF00&quot;</span> &#125;,<br>                &quot;林地&quot;: &#123; &quot;<span class="hljs-attribute">color</span>&quot;: <span class="hljs-string">&quot;#FF6A38&quot;</span> &#125;,<br>                &quot;湿地&quot;: &#123; &quot;<span class="hljs-attribute">color</span>&quot;: <span class="hljs-string">&quot;#FF6A38&quot;</span> &#125;,<br>                &quot;村庄内部道路用地&quot;: &#123; &quot;<span class="hljs-attribute">color</span>&quot;: <span class="hljs-string">&quot;#FF850A&quot;</span> &#125;,<br>                &quot;种植设施建设用地&quot;: &#123; &quot;<span class="hljs-attribute">color</span>&quot;: <span class="hljs-string">&quot;#FF00FF&quot;</span> &#125;,<br>                &quot;畜禽养殖建设用地&quot;: &#123; &quot;<span class="hljs-attribute">color</span>&quot;: <span class="hljs-string">&quot;#FF00FF&quot;</span> &#125;,<br>                &quot;农村宅基地&quot;: &#123; &quot;<span class="hljs-attribute">color</span>&quot;: <span class="hljs-string">&quot;#FF7FFF&quot;</span> &#125;,<br>                &quot;农村社区服务设施用地&quot;: &#123; &quot;<span class="hljs-attribute">color</span>&quot;: <span class="hljs-string">&quot;#FF7FFF&quot;</span> &#125;,<br>                &quot;中小学用地&quot;: &#123; &quot;<span class="hljs-attribute">color</span>&quot;: <span class="hljs-string">&quot;#00A57C&quot;</span> &#125;,<br>                &quot;社会福利用地&quot;: &#123; &quot;<span class="hljs-attribute">color</span>&quot;: <span class="hljs-string">&quot;#A5527C&quot;</span> &#125;,<br>                &quot;商业用地&quot;: &#123; &quot;<span class="hljs-attribute">color</span>&quot;: <span class="hljs-string">&quot;#FF7F9F&quot;</span> &#125;,<br>                &quot;通信用地&quot;: &#123; &quot;<span class="hljs-attribute">color</span>&quot;: <span class="hljs-string">&quot;#FF0000&quot;</span> &#125;,<br>                &quot;水工设施用地&quot;: &#123; &quot;<span class="hljs-attribute">color</span>&quot;: <span class="hljs-string">&quot;#7F0000&quot;</span> &#125;,<br>                &quot;其他公用设施用地&quot;: &#123; &quot;<span class="hljs-attribute">color</span>&quot;: <span class="hljs-string">&quot;#FF7F7F&quot;</span> &#125;,<br>                &quot;特殊用地&quot;: &#123; &quot;<span class="hljs-attribute">color</span>&quot;: <span class="hljs-string">&quot;#A57C52&quot;</span> &#125;,<br>                &quot;留白用地&quot;: &#123; &quot;<span class="hljs-attribute">color</span>&quot;: <span class="hljs-string">&quot;#C0C0C0&quot;</span> &#125;,<br>                &quot;河流水面&quot;: &#123; &quot;<span class="hljs-attribute">color</span>&quot;: <span class="hljs-string">&quot;#00BFFF&quot;</span> &#125;,<br>                &quot;坑塘水面&quot;: &#123; &quot;<span class="hljs-attribute">color</span>&quot;: <span class="hljs-string">&quot;#00FF00&quot;</span> &#125;,<br>                &quot;沟渠&quot;: &#123; &quot;<span class="hljs-attribute">color</span>&quot;: <span class="hljs-string">&quot;#007F00&quot;</span> &#125;<br>            &#125;<br>        &#125;,<br>        &quot;popup&quot;: <span class="hljs-string">&quot;&#123;GHDLMC&#125;&quot;</span>, 【标签】<br>        <span class="hljs-string">&quot;show&quot;</span>: false, 【是否默认展示】<br>        <span class="hljs-string">&quot;flyTo&quot;</span>: true  【跳转至目标位置】<br>    &#125;,<br>    ```  <br><br>**&quot;symbol&quot;**<br><br>symbol对象就是矢量数据的对象，支持geojson和kml格式。<br><br>需要注意的是，根据geojson的不同对象类型，symbol也会起到不同的作用。geojson可以包含点、线、面、多点、多线、多面等矢量类型，比如对象是线的时候，可以用outlineColor去修改线的颜色，用fill可以填充成面的效果，但好像改不了颜色，而且线不完整的时候会有BUG；但是对象是面的时候，就可以使用<span class="hljs-attribute">color</span>去改变图块的颜色。<br><br></code></pre></td></tr></table></figure>
 &quot;symbol&quot;: &#123;
         &quot;styleOptions&quot;: &#123;
             &quot;fill&quot;: false,          【内部是否填充,选true的话就会自动填满白色，还改不了颜色】
@@ -331,7 +331,7 @@
             &quot;outlineWidth&quot;: 3,      【外边线宽度】
             &quot;outlineOpacity&quot;: 1,    【外边线的不透明度】
             &quot;perPositionHeight&quot;: false, 【是否根据位置来调整符号的高度】
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs css"><br>**&quot;<span class="hljs-selector-tag">label</span>&quot;**<br><br><span class="hljs-selector-tag">label</span>标签的作用是直接在矢量上进行文字注记，它是symbol下的一个子对象。类似与Arcmap的注记，不过这个功能当然少很多，调起来也麻烦很多。<br></code></pre></td></tr></table></figure>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs css"><br>**&quot;<span class="hljs-selector-tag">label</span>&quot;**<br><br><span class="hljs-selector-tag">label</span>标签的作用是直接在矢量上进行文字注记，它是symbol下的一个子对象。类似与Arcmap的注记，不过这个功能当然少很多，调起来也麻烦很多。<br><br></code></pre></td></tr></table></figure>
 &quot;label&quot;: &#123;
             &quot;text&quot;: &quot;&#123;name&#125;&quot;, 【显示的字段】
             &quot;opacity&quot;: 0,     【标签不透明度，0是完全透明】
@@ -349,7 +349,7 @@
             &quot;distanceDisplayCondition_far&quot;: 2743804,  【最远显示阈值】
             &quot;distanceDisplayCondition_near&quot;: 0        【最近显示阈值】
             &#125;
-<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs vim"><br>**<span class="hljs-string">&quot;popup&quot;</span>**<br><br><span class="hljs-keyword">popup</span>的作用是鼠标点击矢量对象后，在它的上面显示一个小框去展示更多的内容。关于这个<span class="hljs-keyword">popup</span>标签，上面的案例是只展示一个字段的情况，而实际上还可以有其他的扩展方式，例如表格，直接展示数据的属性表。<br>在显示的时候，会根据矢量里的字段名（field）去链接预设的表格里的字段名（name），只显示可以匹配上的字段。<br>另外不知道是否支持用地面积的计算，最好还是算好以后再直接显示数值。<br></code></pre></td></tr></table></figure>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs vim"><br>**<span class="hljs-string">&quot;popup&quot;</span>**<br><br><span class="hljs-keyword">popup</span>的作用是鼠标点击矢量对象后，在它的上面显示一个小框去展示更多的内容。关于这个<span class="hljs-keyword">popup</span>标签，上面的案例是只展示一个字段的情况，而实际上还可以有其他的扩展方式，例如表格，直接展示数据的属性表。<br><br>在显示的时候，会根据矢量里的字段名（field）去链接预设的表格里的字段名（name），只显示可以匹配上的字段。<br><br>另外不知道是否支持用地面积的计算，最好还是算好以后再直接显示数值。<br><br></code></pre></td></tr></table></figure>
     &quot;popup&quot;: [
         &#123; &quot;field&quot;: &quot;项目名称&quot;, &quot;name&quot;: &quot;项目名称&quot; &#125;,
         &#123; &quot;field&quot;: &quot;建设性质&quot;, &quot;name&quot;: &quot;建设性质&quot; &#125;,
@@ -376,7 +376,7 @@
         &#123; &quot;field&quot;: &quot;项目来源&quot;, &quot;name&quot;: &quot;项目来源&quot; &#125;,
         &#123; &quot;field&quot;: &quot;备注&quot;, &quot;name&quot;: &quot;备注&quot; &#125;
         ],
-<figure class="highlight erlang-repl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs erlang-repl"><br><br>![标签示例](popup标签示例<span class="hljs-number">1</span>.jpg)<br><br><span class="hljs-number">2</span>. <span class="hljs-string">&quot;KML&quot;</span>格式<br>   <br>KML格式相较于geojson就简单得多，它只能是线的形式，用shp转成kml的时候，shp也必须是线要素。而KML的渲染在示例里只用了两样参数：颜色和宽度。<br></code></pre></td></tr></table></figure>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs mipsasm"><br><br>![标签示例](popup标签示例<span class="hljs-number">1</span>.<span class="hljs-keyword">jpg)</span><br><span class="hljs-keyword"></span><br><span class="hljs-number">2</span>. <span class="hljs-string">&quot;KML&quot;</span>格式<br>   <br>KML格式相较于geojson就简单得多，它只能是线的形式，用<span class="hljs-keyword">shp转成kml的时候，shp也必须是线要素。而KML的渲染在示例里只用了两样参数：颜色和宽度。</span><br><span class="hljs-keyword"></span><br></code></pre></td></tr></table></figure>
 &#123;
     &quot;pid&quot;: 3050,
     &quot;type&quot;: &quot;kml&quot;,
@@ -400,7 +400,7 @@
         &quot;position&quot;: &#123; &quot;alt&quot;: 54.41342228 &#125;, 【高程】
         &quot;center&quot;: &#123; &quot;lat&quot;: 18.63970149, &quot;lng&quot;: 109.9013823, &quot;alt&quot;: 200, &quot;heading&quot;: 3.1, &quot;pitch&quot;: -22.9, &quot;roll&quot;: 0 &#125;【摄像头位置】
     &#125;,
-<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs markdown"><br><span class="hljs-bullet">1.</span> 影像数据<br>目前比较靠谱的影像数据加载方式主要是依赖地图服务的形式，使用服务器发布影像数据服务，通过URL进行调取。<br><br><span class="hljs-code">    其他的方式还有待发掘。</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs markdown"><br><span class="hljs-bullet">1.</span> 影像数据<br>目前比较靠谱的影像数据加载方式主要是依赖地图服务的形式，使用服务器发布影像数据服务，通过URL进行调取。<br><br>其他的方式还有待发掘。<br><br></code></pre></td></tr></table></figure>
 &#123;
     &quot;pid&quot;: 10,
     &quot;name&quot;: &quot;ArcGIS影像&quot;,
@@ -480,20 +480,20 @@
     <div class="license-meta">
       
         <div class="license-meta-item">
-          <div>Author</div>
+          <div>Beitragsautor</div>
           <div>Kwindy</div>
         </div>
       
       
         <div class="license-meta-item license-meta-date">
-          <div>Posted on</div>
+          <div>Veröffentlicht am</div>
           <div>July 24, 2023</div>
         </div>
       
       
       
         <div class="license-meta-item">
-          <div>Licensed under</div>
+          <div>Urheberrechtshinweis</div>
           <div>
             
               
@@ -522,7 +522,7 @@
                       <a href="/2023/07/24/Android%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E7%9A%84%E9%83%A8%E7%BD%B2/" title="Android开发环境的部署">
                         <i class="iconfont icon-arrowleft"></i>
                         <span class="hidden-mobile">Android开发环境的部署</span>
-                        <span class="visible-mobile">Previous</span>
+                        <span class="visible-mobile">Vorheriger</span>
                       </a>
                     
                   </article>
@@ -531,7 +531,7 @@
                     
                       <a href="/2023/06/26/ZOD%E8%AE%BA%E5%9D%9B%E7%9A%84hosts%E7%99%BB%E5%BD%95%E6%96%B9%E6%B3%95/" title="ZOD论坛的hosts登录方法">
                         <span class="hidden-mobile">ZOD论坛的hosts登录方法</span>
-                        <span class="visible-mobile">Next</span>
+                        <span class="visible-mobile">Nächster</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
                     
@@ -552,7 +552,7 @@
     <div id="toc">
   <p class="toc-header">
     <i class="iconfont icon-list"></i>
-    <span>Table of Contents</span>
+    <span>Inhaltsverzeichnis</span>
   </p>
   <div class="toc-body" id="toc-body"></div>
 </div>
@@ -608,7 +608,7 @@
   <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <h4 class="modal-title w-100 font-weight-bold">Suchen</h4>
         <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -616,7 +616,7 @@
       <div class="modal-body mx-3">
         <div class="md-form mb-5">
           <input type="text" id="local-search-input" class="form-control validate">
-          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+          <label data-error="x" data-success="v" for="local-search-input">Stichwort</label>
         </div>
         <div class="list-group" id="local-search-result"></div>
       </div>
@@ -795,7 +795,7 @@
   
 
   <noscript>
-    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+    <div class="noscript-warning">Blog funktioniert am besten mit aktiviertem JavaScript</div>
   </noscript>
 </body>
 </html>
