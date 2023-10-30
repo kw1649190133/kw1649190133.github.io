@@ -23,20 +23,19 @@
 <meta property="og:site_name" content="kw&#39;s blog">
 <meta property="og:description" content="ArcGIS Pro的安装和使用开头废话Esri公司最早的地理信息相关产品大概可以追溯到1981年，ArcGIS 9大概出现在2004年，而里程碑式的标杆版本ArcGIS 10.2是2012年的产品，距今已经过去了10年了。Arcmap在当时可以说是极其先进的地理信息集成处理软件，在各个领域广泛的应用。但刚好这十年也是个人计算机性能大爆发的时间，所以至今就算是版本更新到10.8，其性能调度设定依然">
 <meta property="og:locale">
-<meta property="og:image" content="http://kw1649190133.github.io/_resources/82a198b8e9a87caa0b8345456e8a5d25.png">
-<meta property="og:image" content="http://kw1649190133.github.io/_resources/e8bc216950bd185353711d413ac0147e.png">
-<meta property="og:image" content="http://kw1649190133.github.io/_resources/caaf55e266b5b546f0cfa6bf2ea9faf9.png">
-<meta property="og:image" content="http://kw1649190133.github.io/_resources/9a0058ecd643e55339f26780e5da0f3e.png">
-<meta property="og:image" content="http://kw1649190133.github.io/_resources/166b12a2c5743d0d460c218812dddc54.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2023/10/27/ArcGISPro%E7%9A%84%E5%AE%89%E8%A3%85%E5%92%8C%E4%BD%BF%E7%94%A8/b2.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2023/10/27/ArcGISPro%E7%9A%84%E5%AE%89%E8%A3%85%E5%92%8C%E4%BD%BF%E7%94%A8/b3.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2023/10/27/ArcGISPro%E7%9A%84%E5%AE%89%E8%A3%85%E5%92%8C%E4%BD%BF%E7%94%A8/b4.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2023/10/27/ArcGISPro%E7%9A%84%E5%AE%89%E8%A3%85%E5%92%8C%E4%BD%BF%E7%94%A8/b5.png">
 <meta property="article:published_time" content="2023-10-27T10:54:08.000Z">
-<meta property="article:modified_time" content="2023-10-30T13:02:48.769Z">
+<meta property="article:modified_time" content="2023-10-30T13:50:18.641Z">
 <meta property="article:author" content="Kwindy">
 <meta property="article:tag" content="Arcgis">
 <meta property="article:tag" content="地理信息">
 <meta property="article:tag" content="Pro">
 <meta property="article:tag" content="软件">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://kw1649190133.github.io/_resources/82a198b8e9a87caa0b8345456e8a5d25.png">
+<meta name="twitter:image" content="http://kw1649190133.github.io/2023/10/27/ArcGISPro%E7%9A%84%E5%AE%89%E8%A3%85%E5%92%8C%E4%BD%BF%E7%94%A8/b2.png">
   
   
   
@@ -299,14 +298,14 @@
 <blockquote>
 <p>Copy “AfCore.dll” to the <installdir><br>Import “lic.reg” to the registry.<br>Copy folder “ESRI_Licensing&quot; to the folder “C:\Users{username}\AppData\Local&quot;</p>
 </blockquote>
-<p><img src="/../_resources/82a198b8e9a87caa0b8345456e8a5d25.png" srcset="/img/loading.gif" lazyload alt="82a198b8e9a87caa0b8345456e8a5d25.png"></p>
+<p>![b1.png]b1.png)</p>
 <p>就是AfCore.dll要放软件根目录bin，ESRI_Licensing文件夹要放用户目录里面，最后注册表lic.reg双击运行一下就行。</p>
 <h2 id="使用感受"><a href="#使用感受" class="headerlink" title="使用感受"></a>使用感受</h2><p>在使用体验上，最明显的提升就是画面显示的速度，比起ArcMap提升了许多倍，在显示省级甚至国级的几十万条数据时也可做到延迟极短。不仅是数据加载的快了，操作也流畅了很多，各种功能和按键的交互过程非常流畅主要是不会像ArcMap一样卡顿。（当然不是Pro就完美无缺了，一通乱点的话也是会卡死的）<br>当然相应的，Pro会占用更多的性能资源，这一点对于老电脑当然是不友好的。</p>
-<p>另外值得一提的是，从导入地图的选项中，可以导入以前用Arcmap制作的地图文件，然后在通过熟悉的重新定向数据源，就可以轻松实现地图文档的版本转换。<br><img src="/../_resources/e8bc216950bd185353711d413ac0147e.png" srcset="/img/loading.gif" lazyload alt="e8bc216950bd185353711d413ac0147e.png"></p>
-<h2 id="ArcGIS-Oracle工作环境"><a href="#ArcGIS-Oracle工作环境" class="headerlink" title="ArcGIS + Oracle工作环境"></a>ArcGIS + Oracle工作环境</h2><p>Oracle数据库存储gdb数据可以很方便的在内网环境实现多人协同工作。这种方式在应对复杂的团队内业工作时非常重要。<br>ArcGIS pro支持的Oracle数据库最低版本为<strong>19c</strong>，而已经部署好的Arcgis10.4环境所匹配的数据库版本是<strong>11g</strong>。所以即使用上了新软件，也无法直接连接老的Oracle数据库。<br><img src="/../_resources/caaf55e266b5b546f0cfa6bf2ea9faf9.png" srcset="/img/loading.gif" lazyload alt="caaf55e266b5b546f0cfa6bf2ea9faf9.png"><br>所以解决方案应该是在服务器上重新安装新版本的Oracle数据库和客户端，在把新的数据库挂在线上。这方面主要的麻烦点还是服务器端的配置，而用户端只需要安装好软件配置好监听，基本上流程不是很长。</p>
+<p>另外值得一提的是，从导入地图的选项中，可以导入以前用Arcmap制作的地图文件，然后在通过熟悉的重新定向数据源，就可以轻松实现地图文档的版本转换。<br><img src="/2023/10/27/ArcGISPro%E7%9A%84%E5%AE%89%E8%A3%85%E5%92%8C%E4%BD%BF%E7%94%A8/b2.png" srcset="/img/loading.gif" lazyload alt="b2.png"></p>
+<h2 id="ArcGIS-Oracle工作环境"><a href="#ArcGIS-Oracle工作环境" class="headerlink" title="ArcGIS + Oracle工作环境"></a>ArcGIS + Oracle工作环境</h2><p>Oracle数据库存储gdb数据可以很方便的在内网环境实现多人协同工作。这种方式在应对复杂的团队内业工作时非常重要。<br>ArcGIS pro支持的Oracle数据库最低版本为<strong>19c</strong>，而已经部署好的Arcgis10.4环境所匹配的数据库版本是<strong>11g</strong>。所以即使用上了新软件，也无法直接连接老的Oracle数据库。<br><img src="/2023/10/27/ArcGISPro%E7%9A%84%E5%AE%89%E8%A3%85%E5%92%8C%E4%BD%BF%E7%94%A8/b3.png" srcset="/img/loading.gif" lazyload alt="b3png"><br>所以解决方案应该是在服务器上重新安装新版本的Oracle数据库和客户端，在把新的数据库挂在线上。这方面主要的麻烦点还是服务器端的配置，而用户端只需要安装好软件配置好监听，基本上流程不是很长。</p>
 <h2 id="ArcGIS-Server"><a href="#ArcGIS-Server" class="headerlink" title="ArcGIS Server"></a>ArcGIS Server</h2><p>虽然Oracle无法直接使用，但ARCGIS自身的server是可以直接使用的，这个主要用来发布地图服务，让多个用户共享影像，避免几个T的影像拷赖拷去，节省了空间。当然如果要加载流畅的话，数据源该切片还得切片。对于已发布的地图服务，可以直接通过url调用。另外如果有设置访客认证的话还需要输入账户和密码。</p>
-<p><img src="/../_resources/9a0058ecd643e55339f26780e5da0f3e.png" srcset="/img/loading.gif" lazyload alt="9a0058ecd643e55339f26780e5da0f3e.png"></p>
-<p><img src="/../_resources/166b12a2c5743d0d460c218812dddc54.png" srcset="/img/loading.gif" lazyload alt="166b12a2c5743d0d460c218812dddc54.png"></p>
+<p><img src="/2023/10/27/ArcGISPro%E7%9A%84%E5%AE%89%E8%A3%85%E5%92%8C%E4%BD%BF%E7%94%A8/b4.png" srcset="/img/loading.gif" lazyload alt="b4.png"></p>
+<p><img src="/2023/10/27/ArcGISPro%E7%9A%84%E5%AE%89%E8%A3%85%E5%92%8C%E4%BD%BF%E7%94%A8/b5.png" srcset="/img/loading.gif" lazyload alt="b5.png"></p>
 <h2 id="结尾"><a href="#结尾" class="headerlink" title="结尾"></a>结尾</h2><p>老版本Arcmap作为已经投入使用十年的产品，好处就是比较稳定，相应的插件也比较多，即使有了新软件，但为了能够和以前的业务衔接上，以及和其他人配合工作，还是不得不安装的。</p>
 <p>ArcGIS Pro确实值得尝试，但是关于数据发布相关的Server不知道是集成在了软件内还是另有程序，一些使用上的细节和习惯还得以后继续学习。尤其是<strong>ArcGIS + Oracle的环境配置</strong>，要搞明白这个得写好多篇文档才行。</p>
 
@@ -415,8 +414,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2023/10/27/%E5%9C%B0%E7%90%86%E4%BF%A1%E6%81%AF%E6%95%B0%E6%8D%AE%E8%B4%A8%E6%A3%80%E7%9A%84%E8%87%AA%E5%8A%A8%E5%8C%96%E5%AE%9E%E7%8E%B0%EF%BC%88ArcGIS_Data_Reviewer%EF%BC%89/" title="">
-                        <span class="hidden-mobile"></span>
+                      <a href="/2023/10/18/markdown%E6%96%87%E6%A1%A3%E8%A3%85%E9%A5%B0%E6%8A%80%E5%B7%A7/" title="markdown文档装饰技巧">
+                        <span class="hidden-mobile">markdown文档装饰技巧</span>
                         <span class="visible-mobile">Nächster</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

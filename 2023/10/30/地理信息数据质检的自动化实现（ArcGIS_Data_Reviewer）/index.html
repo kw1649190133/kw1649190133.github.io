@@ -16,25 +16,30 @@
   <meta name="author" content="Kwindy">
   <meta name="keywords" content="">
   
-    <meta name="description" content="地理信息数据质检的自动化实现（ArcGIS_Data_Reviewer）Data_Reviewer可以实现数据库的自动化质检，只要提前设置好规则，就不用一遍一遍的再进行手动查询了。 ArcGIS Pro 中的属性规则关于这一项功能，最新的ArcGIS Pro是直接集成在内容列表里的，直接在数据列表中右键就能启动数据规则的设计和质检页面。它与曾经的属性域的主要差别应该是不一样的，属性域只是该字段内能">
+    <meta name="description" content="地理信息数据质检的自动化实现（ArcGIS_Data_Reviewer）在地理信息项目中经常需要提交数据库作为项目成果，一般而言常用的就是gdb或者mdb格式，对数据成果进行质检和修改，是提交成果前非常重要的一环。在当前内卷的环境下，紧缺的人手和有限的时间，让检查工作的窗口非常短暂。Data_Reviewer可以实现数据库的自动化质检，只要提前设置好规则，就不用一遍一遍的再进行手动查询了。 Arc">
 <meta property="og:type" content="article">
-<meta property="og:title" content="kw&#39;s blog">
-<meta property="og:url" content="http://kw1649190133.github.io/2023/10/27/%E5%9C%B0%E7%90%86%E4%BF%A1%E6%81%AF%E6%95%B0%E6%8D%AE%E8%B4%A8%E6%A3%80%E7%9A%84%E8%87%AA%E5%8A%A8%E5%8C%96%E5%AE%9E%E7%8E%B0%EF%BC%88ArcGIS_Data_Reviewer%EF%BC%89/index.html">
+<meta property="og:title" content="地理信息数据质检的自动化实现（ArcGIS_Data_Reviewer）">
+<meta property="og:url" content="http://kw1649190133.github.io/2023/10/30/%E5%9C%B0%E7%90%86%E4%BF%A1%E6%81%AF%E6%95%B0%E6%8D%AE%E8%B4%A8%E6%A3%80%E7%9A%84%E8%87%AA%E5%8A%A8%E5%8C%96%E5%AE%9E%E7%8E%B0%EF%BC%88ArcGIS_Data_Reviewer%EF%BC%89/index.html">
 <meta property="og:site_name" content="kw&#39;s blog">
-<meta property="og:description" content="地理信息数据质检的自动化实现（ArcGIS_Data_Reviewer）Data_Reviewer可以实现数据库的自动化质检，只要提前设置好规则，就不用一遍一遍的再进行手动查询了。 ArcGIS Pro 中的属性规则关于这一项功能，最新的ArcGIS Pro是直接集成在内容列表里的，直接在数据列表中右键就能启动数据规则的设计和质检页面。它与曾经的属性域的主要差别应该是不一样的，属性域只是该字段内能">
+<meta property="og:description" content="地理信息数据质检的自动化实现（ArcGIS_Data_Reviewer）在地理信息项目中经常需要提交数据库作为项目成果，一般而言常用的就是gdb或者mdb格式，对数据成果进行质检和修改，是提交成果前非常重要的一环。在当前内卷的环境下，紧缺的人手和有限的时间，让检查工作的窗口非常短暂。Data_Reviewer可以实现数据库的自动化质检，只要提前设置好规则，就不用一遍一遍的再进行手动查询了。 Arc">
 <meta property="og:locale">
-<meta property="og:image" content="http://kw1649190133.github.io/:/%E5%9C%B0%E7%90%86%E4%BF%A1%E6%81%AF%E6%95%B0%E6%8D%AE%E8%B4%A8%E6%A3%80%E7%9A%84%E8%87%AA%E5%8A%A8%E5%8C%96%E5%AE%9E%E7%8E%B01.png">
-<meta property="og:image" content="http://kw1649190133.github.io/:/%E5%9C%B0%E7%90%86%E4%BF%A1%E6%81%AF%E6%95%B0%E6%8D%AE%E8%B4%A8%E6%A3%80%E7%9A%84%E8%87%AA%E5%8A%A8%E5%8C%96%E5%AE%9E%E7%8E%B02.png">
-<meta property="og:image" content="http://kw1649190133.github.io/:/%E5%9C%B0%E7%90%86%E4%BF%A1%E6%81%AF%E6%95%B0%E6%8D%AE%E8%B4%A8%E6%A3%80%E7%9A%84%E8%87%AA%E5%8A%A8%E5%8C%96%E5%AE%9E%E7%8E%B03">
-<meta property="article:published_time" content="2023-10-27T08:40:11.160Z">
-<meta property="article:modified_time" content="2023-10-27T08:33:00.000Z">
+<meta property="og:image" content="http://kw1649190133.github.io/2023/10/30/%E5%9C%B0%E7%90%86%E4%BF%A1%E6%81%AF%E6%95%B0%E6%8D%AE%E8%B4%A8%E6%A3%80%E7%9A%84%E8%87%AA%E5%8A%A8%E5%8C%96%E5%AE%9E%E7%8E%B0%EF%BC%88ArcGIS_Data_Reviewer%EF%BC%89/a1.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2023/10/30/%E5%9C%B0%E7%90%86%E4%BF%A1%E6%81%AF%E6%95%B0%E6%8D%AE%E8%B4%A8%E6%A3%80%E7%9A%84%E8%87%AA%E5%8A%A8%E5%8C%96%E5%AE%9E%E7%8E%B0%EF%BC%88ArcGIS_Data_Reviewer%EF%BC%89/a2.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2023/10/30/%E5%9C%B0%E7%90%86%E4%BF%A1%E6%81%AF%E6%95%B0%E6%8D%AE%E8%B4%A8%E6%A3%80%E7%9A%84%E8%87%AA%E5%8A%A8%E5%8C%96%E5%AE%9E%E7%8E%B0%EF%BC%88ArcGIS_Data_Reviewer%EF%BC%89/a3.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2023/10/30/%E5%9C%B0%E7%90%86%E4%BF%A1%E6%81%AF%E6%95%B0%E6%8D%AE%E8%B4%A8%E6%A3%80%E7%9A%84%E8%87%AA%E5%8A%A8%E5%8C%96%E5%AE%9E%E7%8E%B0%EF%BC%88ArcGIS_Data_Reviewer%EF%BC%89/a4.png">
+<meta property="article:published_time" content="2023-10-30T12:05:22.000Z">
+<meta property="article:modified_time" content="2023-10-30T13:50:10.975Z">
 <meta property="article:author" content="Kwindy">
+<meta property="article:tag" content="地理信息">
+<meta property="article:tag" content="ArcGIS">
+<meta property="article:tag" content="数据库质检">
+<meta property="article:tag" content="自动化">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://kw1649190133.github.io/:/%E5%9C%B0%E7%90%86%E4%BF%A1%E6%81%AF%E6%95%B0%E6%8D%AE%E8%B4%A8%E6%A3%80%E7%9A%84%E8%87%AA%E5%8A%A8%E5%8C%96%E5%AE%9E%E7%8E%B01.png">
+<meta name="twitter:image" content="http://kw1649190133.github.io/2023/10/30/%E5%9C%B0%E7%90%86%E4%BF%A1%E6%81%AF%E6%95%B0%E6%8D%AE%E8%B4%A8%E6%A3%80%E7%9A%84%E8%87%AA%E5%8A%A8%E5%8C%96%E5%AE%9E%E7%8E%B0%EF%BC%88ArcGIS_Data_Reviewer%EF%BC%89/a1.png">
   
   
   
-  <title>kw&#39;s blog</title>
+  <title>地理信息数据质检的自动化实现（ArcGIS_Data_Reviewer） - kw&#39;s blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -200,7 +205,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text=""></span>
+            <span id="subtitle" data-typed-text="地理信息数据质检的自动化实现（ArcGIS_Data_Reviewer）"></span>
           
         </div>
 
@@ -211,8 +216,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2023-10-27 16:40" pubdate>
-          October 27, 2023 pm
+        <time datetime="2023-10-30 20:05" pubdate>
+          October 30, 2023 pm
         </time>
       </span>
     
@@ -223,7 +228,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          968 wörter
+          1.3k wörter
         
       </span>
     
@@ -234,7 +239,7 @@
         
         
         
-          9 minuten
+          11 minuten
         
       </span>
     
@@ -272,20 +277,23 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none"></h1>
+            <h1 style="display: none">地理信息数据质检的自动化实现（ArcGIS_Data_Reviewer）</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="地理信息数据质检的自动化实现（ArcGIS-Data-Reviewer）"><a href="#地理信息数据质检的自动化实现（ArcGIS-Data-Reviewer）" class="headerlink" title="地理信息数据质检的自动化实现（ArcGIS_Data_Reviewer）"></a>地理信息数据质检的自动化实现（ArcGIS_Data_Reviewer）</h1><p>Data_Reviewer可以实现数据库的自动化质检，只要提前设置好规则，就不用一遍一遍的再进行手动查询了。</p>
-<h2 id="ArcGIS-Pro-中的属性规则"><a href="#ArcGIS-Pro-中的属性规则" class="headerlink" title="ArcGIS Pro 中的属性规则"></a>ArcGIS Pro 中的属性规则</h2><p>关于这一项功能，最新的ArcGIS Pro是直接集成在内容列表里的，直接在数据列表中右键就能启动数据规则的设计和质检页面。它与曾经的属性域的主要差别应该是不一样的，属性域只是该字段内能够填写的所有值的一个范围，而且质检时，会有多个属性的数据联动的情况，属性范围在不同的情况下有不同的判断标准，也就是多了一层IF。</p>
-<p><img src="/:/%E5%9C%B0%E7%90%86%E4%BF%A1%E6%81%AF%E6%95%B0%E6%8D%AE%E8%B4%A8%E6%A3%80%E7%9A%84%E8%87%AA%E5%8A%A8%E5%8C%96%E5%AE%9E%E7%8E%B01.png" srcset="/img/loading.gif" lazyload alt="地理信息数据质检的自动化实现1.png"></p>
+                <h1 id="地理信息数据质检的自动化实现（ArcGIS-Data-Reviewer）"><a href="#地理信息数据质检的自动化实现（ArcGIS-Data-Reviewer）" class="headerlink" title="地理信息数据质检的自动化实现（ArcGIS_Data_Reviewer）"></a>地理信息数据质检的自动化实现（ArcGIS_Data_Reviewer）</h1><p>在地理信息项目中经常需要提交数据库作为项目成果，一般而言常用的就是gdb或者mdb格式，对数据成果进行质检和修改，是提交成果前非常重要的一环。在当前内卷的环境下，紧缺的人手和有限的时间，让检查工作的窗口非常短暂。Data_Reviewer可以实现数据库的自动化质检，只要提前设置好规则，就不用一遍一遍的再进行手动查询了。</p>
+<h2 id="ArcGIS-Pro-中的属性规则"><a href="#ArcGIS-Pro-中的属性规则" class="headerlink" title="ArcGIS Pro 中的属性规则"></a>ArcGIS Pro 中的属性规则</h2><p>关于这一项功能，最新的ArcGIS Pro是直接集成在内容列表里的，直接在数据列表中右键就能启动数据规则的设计和质检页面。它与曾经的属性域的主要差别应该是不一样的，属性域只是该字段内能够填写的所有值的一个范围，而且质检时，会有多个属性的数据联动的情况，属性范围在不同的情况下有不同的判断标准。</p>
+<p><img src="/2023/10/30/%E5%9C%B0%E7%90%86%E4%BF%A1%E6%81%AF%E6%95%B0%E6%8D%AE%E8%B4%A8%E6%A3%80%E7%9A%84%E8%87%AA%E5%8A%A8%E5%8C%96%E5%AE%9E%E7%8E%B0%EF%BC%88ArcGIS_Data_Reviewer%EF%BC%89/a1.png" srcset="/img/loading.gif" lazyload alt="a1.png"></p>
 <p>高度集成的属性规则工具让非常先进，但是它的问题也在于此，其使用的规则设计语法是Esri自己开发的Arcade语言，而且仅支持这一项（当前版本pro 3.1）。说是为了数据安全，该语言只能在ArcGIS内部运行，其实也限制了它的潜力，<del>也就是说它只能写在ArcGIS的工程文件里头，导入导出什么的方不方便那就不得而知了，暂时还没有时间研究这个。</del>看了一下其实还可以，规则是可以通过scv导入导出的，理论上来说，应该不会很难用，只是要熟悉Arcade语言，还是需要一定的学习成本。先尝试其他方法看看，说不定老版本的玩意更难用呢。</p>
-<p><img src="/:/%E5%9C%B0%E7%90%86%E4%BF%A1%E6%81%AF%E6%95%B0%E6%8D%AE%E8%B4%A8%E6%A3%80%E7%9A%84%E8%87%AA%E5%8A%A8%E5%8C%96%E5%AE%9E%E7%8E%B02.png" srcset="/img/loading.gif" lazyload alt="地理信息数据质检的自动化实现2.png"></p>
+<p><img src="/2023/10/30/%E5%9C%B0%E7%90%86%E4%BF%A1%E6%81%AF%E6%95%B0%E6%8D%AE%E8%B4%A8%E6%A3%80%E7%9A%84%E8%87%AA%E5%8A%A8%E5%8C%96%E5%AE%9E%E7%8E%B0%EF%BC%88ArcGIS_Data_Reviewer%EF%BC%89/a2.png" srcset="/img/loading.gif" lazyload alt="a2.png"></p>
 <h2 id="ArcGIS-Data-Reviewer组件"><a href="#ArcGIS-Data-Reviewer组件" class="headerlink" title="ArcGIS Data Reviewer组件"></a>ArcGIS Data Reviewer组件</h2><p>实际上Data_Reviewer并不是Pro才有的，从ArcGIS 10.4里就能看到一个Data_Reviewer的安装包了，但是点击以后安装不了。这应该说的是它需要先安装ArcGIS10.4的桌面程序，可是我明明已经装了，难道是小版本对不上？10.4和10.4.1的区别？唉搞不懂。</p>
-<p><img src="/:/%E5%9C%B0%E7%90%86%E4%BF%A1%E6%81%AF%E6%95%B0%E6%8D%AE%E8%B4%A8%E6%A3%80%E7%9A%84%E8%87%AA%E5%8A%A8%E5%8C%96%E5%AE%9E%E7%8E%B03" srcset="/img/loading.gif" lazyload alt="地理信息数据质检的自动化实现3.png"></p>
+<p><img src="/2023/10/30/%E5%9C%B0%E7%90%86%E4%BF%A1%E6%81%AF%E6%95%B0%E6%8D%AE%E8%B4%A8%E6%A3%80%E7%9A%84%E8%87%AA%E5%8A%A8%E5%8C%96%E5%AE%9E%E7%8E%B0%EF%BC%88ArcGIS_Data_Reviewer%EF%BC%89/a3.png" srcset="/img/loading.gif" lazyload alt="a3.png"></p>
 <p>后来重新安装了匹配的版本，安装启动成功了，果然这个东西必须严格按照版本来匹配，最简单的办法就是找到官方的全套完整安装包。但是10.4的Data Reviewer没有中文！看着这一个个不认识的单词真是头大，于是找了一下，现在最新的10.8.2是有全套的汉化的，而且这应该是10系列32位的GIS最后一个版本了，还是重新安装个10.8.2。</p>
 <p>找个10.8.2的全套安装包，装好了桌面端和Data Reviewer插件之后，果然能使用了，而且有中文，看的不费劲。<br>稍微研究一下就知道，它用的是SQL查询，感觉大体上应该是没问题的。不像Pro现在只支持Arcade，网上都找不到啥资料来学。</p>
+<p><img src="/2023/10/30/%E5%9C%B0%E7%90%86%E4%BF%A1%E6%81%AF%E6%95%B0%E6%8D%AE%E8%B4%A8%E6%A3%80%E7%9A%84%E8%87%AA%E5%8A%A8%E5%8C%96%E5%AE%9E%E7%8E%B0%EF%BC%88ArcGIS_Data_Reviewer%EF%BC%89/a4.png" srcset="/img/loading.gif" lazyload alt="a4.png"></p>
+<h2 id="总结与探讨：关于其他的数据质检方式"><a href="#总结与探讨：关于其他的数据质检方式" class="headerlink" title="总结与探讨：关于其他的数据质检方式"></a>总结与探讨：关于其他的数据质检方式</h2><p>在实际生产项目中，用Data Reviewer进行数据质检应该是少数，就连教程都不怎么找得到，因为这实在是一个不上不下的折中方案。在数据量很小的情况下，自己手动看看属性表基本上也就搞定了，根本不用费心思去编写规则；在数据量很大的情况下，大单位和技术大佬可以另起炉灶，用Python或者其他什么方式自己构建一个质检程序，自己定义数据包和成果的格式。</p>
+<p>所以这个工具可以是拔高个人能力上限的手段，小单位也可以用来辅助提升效率，大单位财大气粗估计是瞧不上的。</p>
 
                 
               </div>
@@ -294,6 +302,40 @@
             <div>
               <div class="post-metas my-3">
   
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0/" class="category-chain-item">学习</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E5%9C%B0%E7%90%86%E4%BF%A1%E6%81%AF/">#地理信息</a>
+      
+        <a href="/tags/ArcGIS/">#ArcGIS</a>
+      
+        <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%B4%A8%E6%A3%80/">#数据库质检</a>
+      
+        <a href="/tags/%E8%87%AA%E5%8A%A8%E5%8C%96/">#自动化</a>
+      
+    </div>
   
 </div>
 
@@ -303,8 +345,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div></div>
-      <div>http://kw1649190133.github.io/2023/10/27/地理信息数据质检的自动化实现（ArcGIS_Data_Reviewer）/</div>
+      <div>地理信息数据质检的自动化实现（ArcGIS_Data_Reviewer）</div>
+      <div>http://kw1649190133.github.io/2023/10/30/地理信息数据质检的自动化实现（ArcGIS_Data_Reviewer）/</div>
     </div>
     <div class="license-meta">
       
@@ -316,7 +358,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Veröffentlicht am</div>
-          <div>October 27, 2023</div>
+          <div>October 30, 2023</div>
         </div>
       
       
@@ -348,18 +390,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2023/10/27/ArcGISPro%E7%9A%84%E5%AE%89%E8%A3%85%E5%92%8C%E4%BD%BF%E7%94%A8/" title="ArcGISPro的安装和使用">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">ArcGISPro的安装和使用</span>
-                        <span class="visible-mobile">Vorheriger</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2023/10/18/markdown%E6%96%87%E6%A1%A3%E8%A3%85%E9%A5%B0%E6%8A%80%E5%B7%A7/" title="markdown文档装饰技巧">
-                        <span class="hidden-mobile">markdown文档装饰技巧</span>
+                      <a href="/2023/10/30/Data_Reviewer%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95/" title="Data_Reviewer使用方法">
+                        <span class="hidden-mobile">Data_Reviewer使用方法</span>
                         <span class="visible-mobile">Nächster</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
