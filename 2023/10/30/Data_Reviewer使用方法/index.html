@@ -1,0 +1,679 @@
+
+
+<!DOCTYPE html>
+<html lang="CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Kwindy">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="一、软件安装等前期步骤 必须安装版本匹配的ArcGIS和Data Reviewer插件，最好的办法是找到官方的完整程序包，并且最好带汉化。 成功安装后打开ArcMap，在主菜单-自定义-扩展模块 选项中找到扩展模块管理器，把Data Reviewer模块勾选上。 在工具栏中按右键，把Data Reviewer工具栏调出来。至此配置完成。  二、编辑和运行规则的方法0. 单项规则的直接编辑和使用直接">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Data_Reviewer使用方法">
+<meta property="og:url" content="http://kw1649190133.github.io/2023/10/30/Data_Reviewer%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95/index.html">
+<meta property="og:site_name" content="kw&#39;s blog">
+<meta property="og:description" content="一、软件安装等前期步骤 必须安装版本匹配的ArcGIS和Data Reviewer插件，最好的办法是找到官方的完整程序包，并且最好带汉化。 成功安装后打开ArcMap，在主菜单-自定义-扩展模块 选项中找到扩展模块管理器，把Data Reviewer模块勾选上。 在工具栏中按右键，把Data Reviewer工具栏调出来。至此配置完成。  二、编辑和运行规则的方法0. 单项规则的直接编辑和使用直接">
+<meta property="og:locale">
+<meta property="og:image" content="http://kw1649190133.github.io/_resources/4ad2df6f92a38f5490522be9746024ef.png">
+<meta property="og:image" content="http://kw1649190133.github.io/_resources/8f7388a61212e880932e04fdaf3cf05b.png">
+<meta property="og:image" content="http://kw1649190133.github.io/_resources/deded6165575e563af6e011a37cee73e.png">
+<meta property="og:image" content="http://kw1649190133.github.io/_resources/90be5e4466a026b08e42b875d41a2e10.png">
+<meta property="og:image" content="http://kw1649190133.github.io/_resources/b59c4cddeffc60e5a9fc580076ceca49.png">
+<meta property="og:image" content="http://kw1649190133.github.io/_resources/9eebff554fe760c6895ec810c469aaba.png">
+<meta property="og:image" content="http://kw1649190133.github.io/_resources/4e0555bd39651dc8bd97a55f190be3f9.png">
+<meta property="og:image" content="http://kw1649190133.github.io/_resources/9be9a7ea4f808295c059d2d8bec96f76.png">
+<meta property="article:published_time" content="2023-10-30T09:00:08.000Z">
+<meta property="article:modified_time" content="2023-10-30T13:17:20.178Z">
+<meta property="article:author" content="Kwindy">
+<meta property="article:tag" content="Arcgis">
+<meta property="article:tag" content="地理信息">
+<meta property="article:tag" content="软件">
+<meta property="article:tag" content="Reviewer">
+<meta property="article:tag" content="数据库质检">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://kw1649190133.github.io/_resources/4ad2df6f92a38f5490522be9746024ef.png">
+  
+  
+  
+  <title>Data_Reviewer使用方法 - kw&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"kw1649190133.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Data_Reviewer使用方法"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-10-30 17:00" pubdate>
+          October 30, 2023 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          9 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Data_Reviewer使用方法</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="一、软件安装等前期步骤"><a href="#一、软件安装等前期步骤" class="headerlink" title="一、软件安装等前期步骤"></a>一、软件安装等前期步骤</h1><ol>
+<li>必须安装<strong>版本匹配</strong>的ArcGIS和Data Reviewer插件，最好的办法是找到官方的完整程序包，并且最好带汉化。</li>
+<li>成功安装后打开ArcMap，在主菜单-自定义-扩展模块 选项中找到<strong>扩展模块</strong>管理器，把Data Reviewer模块勾选上。</li>
+<li>在工具栏中按右键，把Data Reviewer<strong>工具栏</strong>调出来。至此配置完成。</li>
+</ol>
+<h1 id="二、编辑和运行规则的方法"><a href="#二、编辑和运行规则的方法" class="headerlink" title="二、编辑和运行规则的方法"></a>二、编辑和运行规则的方法</h1><h2 id="0-单项规则的直接编辑和使用"><a href="#0-单项规则的直接编辑和使用" class="headerlink" title="0. 单项规则的直接编辑和使用"></a>0. 单项规则的直接编辑和使用</h2><p>直接在工具栏里选对应的规则，然后按右边的小按钮运行。因为太过鸡肋，一般不会这么用，可以用来测试代码。<br><img src="/../_resources/4ad2df6f92a38f5490522be9746024ef.png" srcset="/img/loading.gif" lazyload alt="4ad2df6f92a38f5490522be9746024ef.png"></p>
+<h2 id="1-启动Reviewer会话"><a href="#1-启动Reviewer会话" class="headerlink" title="1. 启动Reviewer会话"></a>1. 启动Reviewer会话</h2><p>在Data Reviewer工具栏的第二个小按钮(小绿勾地球)，打开Reviewer会话管理器，选择工作空间和会话，在左下角点击第二个按钮。会话，启动！<br>如果是线上Oracle库的话，还可以选择数据库版本。</p>
+<p><img src="/../_resources/8f7388a61212e880932e04fdaf3cf05b.png" srcset="/img/loading.gif" lazyload alt="8f7388a61212e880932e04fdaf3cf05b.png"></p>
+<h2 id="2-编辑质检规则"><a href="#2-编辑质检规则" class="headerlink" title="2. 编辑质检规则"></a>2. 编辑质检规则</h2><p>使用<strong>Reviewer批处理管理器</strong>，编辑质检规则。在批处理作业内容列表里，按右键就可以建立分组和质检条目，并且可以支持导入。每次写完规则以后，都需要保存，因为这个管理器是不会保存内容的，每次打开编辑规则都需要重新导入。<br>编辑规则使用选项+SQL查询的方式，不需要懂许多代码。<br>可以先编辑碎片化的规则，再使用插入功能，由简到繁逐渐完善。<br>另外，编辑好的规则可以适用不同的工作空间，只需要切换就可以了。<br><img src="/../_resources/deded6165575e563af6e011a37cee73e.png" srcset="/img/loading.gif" lazyload alt="deded6165575e563af6e011a37cee73e.png"></p>
+<p>打开保存的.rbj文件可以看到是非格式化的代码，但用的还是标准字符，理论上可以解析，实际上还是先用这个批处理管理器去编辑就行了。</p>
+<p><img src="/../_resources/90be5e4466a026b08e42b875d41a2e10.png" srcset="/img/loading.gif" lazyload alt="90be5e4466a026b08e42b875d41a2e10.png"></p>
+<h2 id="3-启动批量验证"><a href="#3-启动批量验证" class="headerlink" title="3. 启动批量验证"></a>3. 启动批量验证</h2><p>点击Reviewer工具栏倒数第四个按钮（三个小绿勾），启动批量验证，选择<strong>工作空间、质检范围，导入质检规则</strong>。准备好以后，点击<strong>运行</strong>。质检，启动！<br><strong>如果没有第一步建立会话，这个按钮就是黑的点不了。</strong><br><img src="/../_resources/b59c4cddeffc60e5a9fc580076ceca49.png" srcset="/img/loading.gif" lazyload alt="b59c4cddeffc60e5a9fc580076ceca49.png"></p>
+<h2 id="4-打开Reviewer表"><a href="#4-打开Reviewer表" class="headerlink" title="4. 打开Reviewer表"></a>4. 打开Reviewer表</h2><p>运行质检成功后，反馈的结果可以用Reviewer 表查看，在Reviewer工具栏中第三个小表格按钮。在这个界面下可以进行分组、统计、编辑，还可以将检查结果符号化，比如将错误的位置作为单独的一个图层显示出来。<br>本次质检流程结束。</p>
+<p><img src="/../_resources/9eebff554fe760c6895ec810c469aaba.png" srcset="/img/loading.gif" lazyload alt="9eebff554fe760c6895ec810c469aaba.png"></p>
+<h2 id="5-其他功能"><a href="#5-其他功能" class="headerlink" title="5. 其他功能"></a>5. 其他功能</h2><p>手动添加错误要素进检查表<br><img src="/../_resources/4e0555bd39651dc8bd97a55f190be3f9.png" srcset="/img/loading.gif" lazyload alt="4e0555bd39651dc8bd97a55f190be3f9.png"></p>
+<p>标记错误位置<br><img src="/../_resources/9be9a7ea4f808295c059d2d8bec96f76.png" srcset="/img/loading.gif" lazyload alt="9be9a7ea4f808295c059d2d8bec96f76.png"></p>
+<h1 id="三、结尾"><a href="#三、结尾" class="headerlink" title="三、结尾"></a>三、结尾</h1><p>Data Reviewer插件的基本使用方法就是这样，还有很多细节比如每一项质检规则的用法，以及用Reviewer表配合数据修改，甚至错误数据自动更正等等，以后用到了再进行记录。</p>
+<p>数据库质检自动化还是非常有用的，小项目预算有限，普通人能力也有限，不是谁都能徒手搓软件的，会写点SQL查询不错了。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0/" class="category-chain-item">学习</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Arcgis/">#Arcgis</a>
+      
+        <a href="/tags/%E5%9C%B0%E7%90%86%E4%BF%A1%E6%81%AF/">#地理信息</a>
+      
+        <a href="/tags/%E8%BD%AF%E4%BB%B6/">#软件</a>
+      
+        <a href="/tags/Reviewer/">#Reviewer</a>
+      
+        <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%B4%A8%E6%A3%80/">#数据库质检</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Data_Reviewer使用方法</div>
+      <div>http://kw1649190133.github.io/2023/10/30/Data_Reviewer使用方法/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Kwindy</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>October 30, 2023</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/10/27/ArcGISPro%E7%9A%84%E5%AE%89%E8%A3%85%E5%92%8C%E4%BD%BF%E7%94%A8/" title="ArcGISPro的安装和使用">
+                        <span class="hidden-mobile">ArcGISPro的安装和使用</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

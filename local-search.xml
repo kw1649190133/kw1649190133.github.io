@@ -4,11 +4,88 @@
   
   
   <entry>
+    <title>Data_Reviewer使用方法</title>
+    <link href="/2023/10/30/Data_Reviewer%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95/"/>
+    <url>/2023/10/30/Data_Reviewer%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95/</url>
+    
+    <content type="html"><![CDATA[<h1 id="一、软件安装等前期步骤"><a href="#一、软件安装等前期步骤" class="headerlink" title="一、软件安装等前期步骤"></a>一、软件安装等前期步骤</h1><ol><li>必须安装<strong>版本匹配</strong>的ArcGIS和Data Reviewer插件，最好的办法是找到官方的完整程序包，并且最好带汉化。</li><li>成功安装后打开ArcMap，在主菜单-自定义-扩展模块 选项中找到<strong>扩展模块</strong>管理器，把Data Reviewer模块勾选上。</li><li>在工具栏中按右键，把Data Reviewer<strong>工具栏</strong>调出来。至此配置完成。</li></ol><h1 id="二、编辑和运行规则的方法"><a href="#二、编辑和运行规则的方法" class="headerlink" title="二、编辑和运行规则的方法"></a>二、编辑和运行规则的方法</h1><h2 id="0-单项规则的直接编辑和使用"><a href="#0-单项规则的直接编辑和使用" class="headerlink" title="0. 单项规则的直接编辑和使用"></a>0. 单项规则的直接编辑和使用</h2><p>直接在工具栏里选对应的规则，然后按右边的小按钮运行。因为太过鸡肋，一般不会这么用，可以用来测试代码。<br><img src="/../_resources/4ad2df6f92a38f5490522be9746024ef.png" alt="4ad2df6f92a38f5490522be9746024ef.png"></p><h2 id="1-启动Reviewer会话"><a href="#1-启动Reviewer会话" class="headerlink" title="1. 启动Reviewer会话"></a>1. 启动Reviewer会话</h2><p>在Data Reviewer工具栏的第二个小按钮(小绿勾地球)，打开Reviewer会话管理器，选择工作空间和会话，在左下角点击第二个按钮。会话，启动！<br>如果是线上Oracle库的话，还可以选择数据库版本。</p><p><img src="/../_resources/8f7388a61212e880932e04fdaf3cf05b.png" alt="8f7388a61212e880932e04fdaf3cf05b.png"></p><h2 id="2-编辑质检规则"><a href="#2-编辑质检规则" class="headerlink" title="2. 编辑质检规则"></a>2. 编辑质检规则</h2><p>使用<strong>Reviewer批处理管理器</strong>，编辑质检规则。在批处理作业内容列表里，按右键就可以建立分组和质检条目，并且可以支持导入。每次写完规则以后，都需要保存，因为这个管理器是不会保存内容的，每次打开编辑规则都需要重新导入。<br>编辑规则使用选项+SQL查询的方式，不需要懂许多代码。<br>可以先编辑碎片化的规则，再使用插入功能，由简到繁逐渐完善。<br>另外，编辑好的规则可以适用不同的工作空间，只需要切换就可以了。<br><img src="/../_resources/deded6165575e563af6e011a37cee73e.png" alt="deded6165575e563af6e011a37cee73e.png"></p><p>打开保存的.rbj文件可以看到是非格式化的代码，但用的还是标准字符，理论上可以解析，实际上还是先用这个批处理管理器去编辑就行了。</p><p><img src="/../_resources/90be5e4466a026b08e42b875d41a2e10.png" alt="90be5e4466a026b08e42b875d41a2e10.png"></p><h2 id="3-启动批量验证"><a href="#3-启动批量验证" class="headerlink" title="3. 启动批量验证"></a>3. 启动批量验证</h2><p>点击Reviewer工具栏倒数第四个按钮（三个小绿勾），启动批量验证，选择<strong>工作空间、质检范围，导入质检规则</strong>。准备好以后，点击<strong>运行</strong>。质检，启动！<br><strong>如果没有第一步建立会话，这个按钮就是黑的点不了。</strong><br><img src="/../_resources/b59c4cddeffc60e5a9fc580076ceca49.png" alt="b59c4cddeffc60e5a9fc580076ceca49.png"></p><h2 id="4-打开Reviewer表"><a href="#4-打开Reviewer表" class="headerlink" title="4. 打开Reviewer表"></a>4. 打开Reviewer表</h2><p>运行质检成功后，反馈的结果可以用Reviewer 表查看，在Reviewer工具栏中第三个小表格按钮。在这个界面下可以进行分组、统计、编辑，还可以将检查结果符号化，比如将错误的位置作为单独的一个图层显示出来。<br>本次质检流程结束。</p><p><img src="/../_resources/9eebff554fe760c6895ec810c469aaba.png" alt="9eebff554fe760c6895ec810c469aaba.png"></p><h2 id="5-其他功能"><a href="#5-其他功能" class="headerlink" title="5. 其他功能"></a>5. 其他功能</h2><p>手动添加错误要素进检查表<br><img src="/../_resources/4e0555bd39651dc8bd97a55f190be3f9.png" alt="4e0555bd39651dc8bd97a55f190be3f9.png"></p><p>标记错误位置<br><img src="/../_resources/9be9a7ea4f808295c059d2d8bec96f76.png" alt="9be9a7ea4f808295c059d2d8bec96f76.png"></p><h1 id="三、结尾"><a href="#三、结尾" class="headerlink" title="三、结尾"></a>三、结尾</h1><p>Data Reviewer插件的基本使用方法就是这样，还有很多细节比如每一项质检规则的用法，以及用Reviewer表配合数据修改，甚至错误数据自动更正等等，以后用到了再进行记录。</p><p>数据库质检自动化还是非常有用的，小项目预算有限，普通人能力也有限，不是谁都能徒手搓软件的，会写点SQL查询不错了。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>学习</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Arcgis</tag>
+      
+      <tag>地理信息</tag>
+      
+      <tag>软件</tag>
+      
+      <tag>Reviewer</tag>
+      
+      <tag>数据库质检</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>ArcGISPro的安装和使用</title>
+    <link href="/2023/10/27/ArcGISPro%E7%9A%84%E5%AE%89%E8%A3%85%E5%92%8C%E4%BD%BF%E7%94%A8/"/>
+    <url>/2023/10/27/ArcGISPro%E7%9A%84%E5%AE%89%E8%A3%85%E5%92%8C%E4%BD%BF%E7%94%A8/</url>
+    
+    <content type="html"><![CDATA[<h1 id="ArcGIS-Pro的安装和使用"><a href="#ArcGIS-Pro的安装和使用" class="headerlink" title="ArcGIS Pro的安装和使用"></a>ArcGIS Pro的安装和使用</h1><h2 id="开头废话"><a href="#开头废话" class="headerlink" title="开头废话"></a>开头废话</h2><p>Esri公司最早的地理信息相关产品大概可以追溯到1981年，ArcGIS 9大概出现在2004年，而里程碑式的标杆版本ArcGIS 10.2是2012年的产品，距今已经过去了10年了。Arcmap在当时可以说是极其先进的地理信息集成处理软件，在各个领域广泛的应用。<br>但刚好这十年也是个人计算机性能大爆发的时间，所以至今就算是版本更新到10.8，其性能调度设定依然比较保守，即使是比较好的电脑在显示刷新数据时一样也是会卡，而且大规模的数据处理也是软件卡死的重灾区，可以理解为在软件设计时考虑到减少bug，做了很多限制，没有让计算机性能得到充分利用，而且随着软件的迭代，一些历史遗留问题堆积起来也就变成了屎山代码，如果没有进行彻底的底层重构的话，再怎么优化也有上限。<br>总之就是用起来卡爆了，还得是尝试一下最新的产品，所以试一下ArcGIS pro。它其实也出了一段时间，大改随着10.4一并发展的，优化到现在是3.1版本，应该相当不错了。</p><p>目前虽然出了ArcGIS pro，但原来的ArcGIS也在更新，版本已经来到了11.1，和ArcGIS pro 3.1并列两条产品线。<br>而且我看到官网上说，10.9是最后一个支持Arcmap发布服务到ArcGIS Server的版本，后面好像就对整个体系进行大改了。</p><h2 id="安装步骤"><a href="#安装步骤" class="headerlink" title="安装步骤"></a>安装步骤</h2><h3 id="1-安装-NET环境"><a href="#1-安装-NET环境" class="headerlink" title="1. 安装.NET环境"></a>1. 安装.NET环境</h3><p>Microsoft.NET，很多软件都要求的东西了，软件包里配的版本是6.0.5，经供参考。</p><h3 id="2-ArcGISPro主程序"><a href="#2-ArcGISPro主程序" class="headerlink" title="2. ArcGISPro主程序"></a>2. ArcGISPro主程序</h3><h3 id="3-安装补丁包"><a href="#3-安装补丁包" class="headerlink" title="3. 安装补丁包"></a>3. 安装补丁包</h3><p>可能是因为ArcGIS Pro还是比较新的软件，现在还在不断地更新中，所以才有这种东西，我也不知道补了啥，反正就装着吧。</p><h3 id="4-程序汉化"><a href="#4-程序汉化" class="headerlink" title="4. 程序汉化"></a>4. 程序汉化</h3><p>主程序里是包含了汉化包的，安装的时候不要手贱取消就用不上这个。</p><h3 id="5-其他工具"><a href="#5-其他工具" class="headerlink" title="5. 其他工具"></a>5. 其他工具</h3><p>软件包里还配了一些东西，和老版本的GIS有些类似，反正我也没搞懂，先不装也行。</p><ul><li>Data_Interop_Ext</li><li>ArcGISProSDK</li><li>Workflow_Manager_Classic</li><li>ArcGIS_License_Manager<h3 id="6-替换文件破解"><a href="#6-替换文件破解" class="headerlink" title="6.替换文件破解"></a>6.替换文件破解</h3>首先感谢破解人的贡献</li></ul><p>原说明</p><blockquote><p>Copy “AfCore.dll” to the <installdir><br>Import “lic.reg” to the registry.<br>Copy folder “ESRI_Licensing&quot; to the folder “C:\Users{username}\AppData\Local&quot;</p></blockquote><p><img src="/../_resources/82a198b8e9a87caa0b8345456e8a5d25.png" alt="82a198b8e9a87caa0b8345456e8a5d25.png"></p><p>就是AfCore.dll要放软件根目录bin，ESRI_Licensing文件夹要放用户目录里面，最后注册表lic.reg双击运行一下就行。</p><h2 id="使用感受"><a href="#使用感受" class="headerlink" title="使用感受"></a>使用感受</h2><p>在使用体验上，最明显的提升就是画面显示的速度，比起ArcMap提升了许多倍，在显示省级甚至国级的几十万条数据时也可做到延迟极短。不仅是数据加载的快了，操作也流畅了很多，各种功能和按键的交互过程非常流畅主要是不会像ArcMap一样卡顿。（当然不是Pro就完美无缺了，一通乱点的话也是会卡死的）<br>当然相应的，Pro会占用更多的性能资源，这一点对于老电脑当然是不友好的。</p><p>另外值得一提的是，从导入地图的选项中，可以导入以前用Arcmap制作的地图文件，然后在通过熟悉的重新定向数据源，就可以轻松实现地图文档的版本转换。<br><img src="/../_resources/e8bc216950bd185353711d413ac0147e.png" alt="e8bc216950bd185353711d413ac0147e.png"></p><h2 id="ArcGIS-Oracle工作环境"><a href="#ArcGIS-Oracle工作环境" class="headerlink" title="ArcGIS + Oracle工作环境"></a>ArcGIS + Oracle工作环境</h2><p>Oracle数据库存储gdb数据可以很方便的在内网环境实现多人协同工作。这种方式在应对复杂的团队内业工作时非常重要。<br>ArcGIS pro支持的Oracle数据库最低版本为<strong>19c</strong>，而已经部署好的Arcgis10.4环境所匹配的数据库版本是<strong>11g</strong>。所以即使用上了新软件，也无法直接连接老的Oracle数据库。<br><img src="/../_resources/caaf55e266b5b546f0cfa6bf2ea9faf9.png" alt="caaf55e266b5b546f0cfa6bf2ea9faf9.png"><br>所以解决方案应该是在服务器上重新安装新版本的Oracle数据库和客户端，在把新的数据库挂在线上。这方面主要的麻烦点还是服务器端的配置，而用户端只需要安装好软件配置好监听，基本上流程不是很长。</p><h2 id="ArcGIS-Server"><a href="#ArcGIS-Server" class="headerlink" title="ArcGIS Server"></a>ArcGIS Server</h2><p>虽然Oracle无法直接使用，但ARCGIS自身的server是可以直接使用的，这个主要用来发布地图服务，让多个用户共享影像，避免几个T的影像拷赖拷去，节省了空间。当然如果要加载流畅的话，数据源该切片还得切片。对于已发布的地图服务，可以直接通过url调用。另外如果有设置访客认证的话还需要输入账户和密码。</p><p><img src="/../_resources/9a0058ecd643e55339f26780e5da0f3e.png" alt="9a0058ecd643e55339f26780e5da0f3e.png"></p><p><img src="/../_resources/166b12a2c5743d0d460c218812dddc54.png" alt="166b12a2c5743d0d460c218812dddc54.png"></p><h2 id="结尾"><a href="#结尾" class="headerlink" title="结尾"></a>结尾</h2><p>老版本Arcmap作为已经投入使用十年的产品，好处就是比较稳定，相应的插件也比较多，即使有了新软件，但为了能够和以前的业务衔接上，以及和其他人配合工作，还是不得不安装的。</p><p>ArcGIS Pro确实值得尝试，但是关于数据发布相关的Server不知道是集成在了软件内还是另有程序，一些使用上的细节和习惯还得以后继续学习。尤其是<strong>ArcGIS + Oracle的环境配置</strong>，要搞明白这个得写好多篇文档才行。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>学习</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Arcgis</tag>
+      
+      <tag>地理信息</tag>
+      
+      <tag>Pro</tag>
+      
+      <tag>软件</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title></title>
+    <link href="/2023/10/27/%E5%9C%B0%E7%90%86%E4%BF%A1%E6%81%AF%E6%95%B0%E6%8D%AE%E8%B4%A8%E6%A3%80%E7%9A%84%E8%87%AA%E5%8A%A8%E5%8C%96%E5%AE%9E%E7%8E%B0%EF%BC%88ArcGIS_Data_Reviewer%EF%BC%89/"/>
+    <url>/2023/10/27/%E5%9C%B0%E7%90%86%E4%BF%A1%E6%81%AF%E6%95%B0%E6%8D%AE%E8%B4%A8%E6%A3%80%E7%9A%84%E8%87%AA%E5%8A%A8%E5%8C%96%E5%AE%9E%E7%8E%B0%EF%BC%88ArcGIS_Data_Reviewer%EF%BC%89/</url>
+    
+    <content type="html"><![CDATA[<h1 id="地理信息数据质检的自动化实现（ArcGIS-Data-Reviewer）"><a href="#地理信息数据质检的自动化实现（ArcGIS-Data-Reviewer）" class="headerlink" title="地理信息数据质检的自动化实现（ArcGIS_Data_Reviewer）"></a>地理信息数据质检的自动化实现（ArcGIS_Data_Reviewer）</h1><p>Data_Reviewer可以实现数据库的自动化质检，只要提前设置好规则，就不用一遍一遍的再进行手动查询了。</p><h2 id="ArcGIS-Pro-中的属性规则"><a href="#ArcGIS-Pro-中的属性规则" class="headerlink" title="ArcGIS Pro 中的属性规则"></a>ArcGIS Pro 中的属性规则</h2><p>关于这一项功能，最新的ArcGIS Pro是直接集成在内容列表里的，直接在数据列表中右键就能启动数据规则的设计和质检页面。它与曾经的属性域的主要差别应该是不一样的，属性域只是该字段内能够填写的所有值的一个范围，而且质检时，会有多个属性的数据联动的情况，属性范围在不同的情况下有不同的判断标准，也就是多了一层IF。</p><p><img src="/:/%E5%9C%B0%E7%90%86%E4%BF%A1%E6%81%AF%E6%95%B0%E6%8D%AE%E8%B4%A8%E6%A3%80%E7%9A%84%E8%87%AA%E5%8A%A8%E5%8C%96%E5%AE%9E%E7%8E%B01.png" alt="地理信息数据质检的自动化实现1.png"></p><p>高度集成的属性规则工具让非常先进，但是它的问题也在于此，其使用的规则设计语法是Esri自己开发的Arcade语言，而且仅支持这一项（当前版本pro 3.1）。说是为了数据安全，该语言只能在ArcGIS内部运行，其实也限制了它的潜力，<del>也就是说它只能写在ArcGIS的工程文件里头，导入导出什么的方不方便那就不得而知了，暂时还没有时间研究这个。</del>看了一下其实还可以，规则是可以通过scv导入导出的，理论上来说，应该不会很难用，只是要熟悉Arcade语言，还是需要一定的学习成本。先尝试其他方法看看，说不定老版本的玩意更难用呢。</p><p><img src="/:/%E5%9C%B0%E7%90%86%E4%BF%A1%E6%81%AF%E6%95%B0%E6%8D%AE%E8%B4%A8%E6%A3%80%E7%9A%84%E8%87%AA%E5%8A%A8%E5%8C%96%E5%AE%9E%E7%8E%B02.png" alt="地理信息数据质检的自动化实现2.png"></p><h2 id="ArcGIS-Data-Reviewer组件"><a href="#ArcGIS-Data-Reviewer组件" class="headerlink" title="ArcGIS Data Reviewer组件"></a>ArcGIS Data Reviewer组件</h2><p>实际上Data_Reviewer并不是Pro才有的，从ArcGIS 10.4里就能看到一个Data_Reviewer的安装包了，但是点击以后安装不了。这应该说的是它需要先安装ArcGIS10.4的桌面程序，可是我明明已经装了，难道是小版本对不上？10.4和10.4.1的区别？唉搞不懂。</p><p><img src="/:/%E5%9C%B0%E7%90%86%E4%BF%A1%E6%81%AF%E6%95%B0%E6%8D%AE%E8%B4%A8%E6%A3%80%E7%9A%84%E8%87%AA%E5%8A%A8%E5%8C%96%E5%AE%9E%E7%8E%B03" alt="地理信息数据质检的自动化实现3.png"></p><p>后来重新安装了匹配的版本，安装启动成功了，果然这个东西必须严格按照版本来匹配，最简单的办法就是找到官方的全套完整安装包。但是10.4的Data Reviewer没有中文！看着这一个个不认识的单词真是头大，于是找了一下，现在最新的10.8.2是有全套的汉化的，而且这应该是10系列32位的GIS最后一个版本了，还是重新安装个10.8.2。</p><p>找个10.8.2的全套安装包，装好了桌面端和Data Reviewer插件之后，果然能使用了，而且有中文，看的不费劲。<br>稍微研究一下就知道，它用的是SQL查询，感觉大体上应该是没问题的。不像Pro现在只支持Arcade，网上都找不到啥资料来学。</p>]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>markdown文档装饰技巧</title>
     <link href="/2023/10/18/markdown%E6%96%87%E6%A1%A3%E8%A3%85%E9%A5%B0%E6%8A%80%E5%B7%A7/"/>
     <url>/2023/10/18/markdown%E6%96%87%E6%A1%A3%E8%A3%85%E9%A5%B0%E6%8A%80%E5%B7%A7/</url>
     
-    <content type="html"><![CDATA[]]></content>
+    <content type="html"><![CDATA[<h1 id="字体颜色"><a href="#字体颜色" class="headerlink" title="字体颜色"></a>字体颜色</h1><ol><li>markdown的文字变色方法<figure class="highlight dust"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs dust"><span class="language-xml">$\color</span><span class="hljs-template-variable">&#123;颜色对应的英文&#125;</span><span class="hljs-template-variable">&#123;想要变色的内容&#125;</span><span class="language-xml">$</span><br></code></pre></td></tr></table></figure></li></ol><figure class="highlight dust"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs dust"><span class="language-xml">$\color</span><span class="hljs-template-variable">&#123;颜色对应的英文&#125;</span><span class="hljs-template-variable">&#123;想要变色的内容&#125;</span><span class="language-xml">$</span><br></code></pre></td></tr></table></figure><ol start="2"><li>html的文字变色方法<br>html的变色方式就比上面那种要繁琐一些，</li></ol><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">font</span> <span class="hljs-attr">color</span>=<span class="hljs-string">RoyalBlue</span>&gt;</span>需要变色的文字内容<span class="hljs-tag">&lt;/<span class="hljs-name">font</span>&gt;</span><br></code></pre></td></tr></table></figure><h2 id="色卡表"><a href="#色卡表" class="headerlink" title="色卡表"></a>色卡表</h2><p>红色 #FF0000 red<br>橙色 #FF7D00 orange<br>黄色 #FFFF00 yellow<br>绿色 #008000 green<br>亮绿色 #00FF00 lime<br>灰绿色 #32CD32 LimeGreen<br>蓝色 #0000FF Blue<br>蓝绿色（蓝绿均全色） #00FFFF Cyan<br>蓝绿色（蓝绿均半色） #008080 teal<br>深蓝色 #000080 navy<br>浅蓝色 #A0B0E0 NavyBlue<br>紫红色（新的命名） #FF00FF Magenta<br>紫红色（旧的命名） #FF00FF fuchsia<br>黑色 #000000 Black<br>艾丽丝蓝 #F0F8FF AliceBlue<br>古典白色 #FAEBD7 AntiqueWhite<br>浅绿色 #7FFFD4 Aquamarine<br>蓝紫色 #8A2BE2 BlueViolet<br>棕色 #A52A2A Brown<br>灰色 #808080 gray<br>橄榄绿色 #808000 olive<br>草绿色 #6B8E23 OliveDrab<br>紫色 #800080 purple<br>银色 #C0C0C0 silver<br>白色 #FFFFFF white</p><h1 id="字体大小"><a href="#字体大小" class="headerlink" title="字体大小"></a>字体大小</h1>]]></content>
     
     
     <categories>
@@ -27,6 +104,8 @@
       <tag>html</tag>
       
       <tag>文档</tag>
+      
+      <tag>字体大小</tag>
       
     </tags>
     
@@ -82,9 +161,9 @@
       
       <tag>3Dtiles</tag>
       
-      <tag>osgb</tag>
-      
       <tag>论坛</tag>
+      
+      <tag>osgb</tag>
       
       <tag>格式转换</tag>
       
@@ -205,7 +284,7 @@
     <link href="/2023/06/26/ZOD%E8%AE%BA%E5%9D%9B%E7%9A%84hosts%E7%99%BB%E5%BD%95%E6%96%B9%E6%B3%95/"/>
     <url>/2023/06/26/ZOD%E8%AE%BA%E5%9D%9B%E7%9A%84hosts%E7%99%BB%E5%BD%95%E6%96%B9%E6%B3%95/</url>
     
-    <content type="html"><![CDATA[<h1 id="ZODGAME登录"><a href="#ZODGAME登录" class="headerlink" title="ZODGAME登录"></a>ZODGAME登录</h1><p>登录ZOD论坛的主要方式就是通过修改hosts登录，或者直接用加速器登录。</p><h2 id="修改hosts文件"><a href="#修改hosts文件" class="headerlink" title="修改hosts文件"></a>修改hosts文件</h2><p>在hosts文件的末尾加上</p><figure class="highlight accesslog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs accesslog"><span class="hljs-number">172.67.72.116</span> zodgame.xyz<br><span class="hljs-number">172.67.72.116</span> www.zodgame.xyz<br></code></pre></td></tr></table></figure><h2 id="其他的备用站点"><a href="#其他的备用站点" class="headerlink" title="其他的备用站点"></a>其他的备用站点</h2><figure class="highlight accesslog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs accesslog"><span class="hljs-number">104.26.14.233</span> http://www.zodgame.xyz<br><span class="hljs-number">104.26.14.223</span> zodgame.xyz<br><span class="hljs-number">104.26.15.233</span> http://www.zodgame.xyz<br><span class="hljs-number">104.26.15.223</span> zodgame.xyz<br></code></pre></td></tr></table></figure><p>如果不需要的话可以在前面加<code>#</code>井字符号，这样就能把本行后面的内容注释掉了。</p><h2 id="其他登录方式"><a href="#其他登录方式" class="headerlink" title="其他登录方式"></a>其他登录方式</h2><p>花钱找个加速器，应该也是可以上的。</p>]]></content>
+    <content type="html"><![CDATA[<h1 id="ZODGAME登录"><a href="#ZODGAME登录" class="headerlink" title="ZODGAME登录"></a>ZODGAME登录</h1><p>登录ZOD论坛的主要方式就是通过修改hosts登录，或者直接用加速器登录。</p><h2 id="修改hosts文件"><a href="#修改hosts文件" class="headerlink" title="修改hosts文件"></a>修改hosts文件</h2><p>补充一下hosts文件的位置：<code>C:\Windows\System32\drivers\etc</code></p><p>在hosts文件的末尾加上</p><figure class="highlight accesslog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs accesslog"><span class="hljs-number">172.67.72.116</span> zodgame.xyz<br><span class="hljs-number">172.67.72.116</span> www.zodgame.xyz<br></code></pre></td></tr></table></figure><h2 id="其他的备用站点"><a href="#其他的备用站点" class="headerlink" title="其他的备用站点"></a>其他的备用站点</h2><figure class="highlight accesslog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs accesslog"><span class="hljs-number">104.26.14.233</span> http://www.zodgame.xyz<br><span class="hljs-number">104.26.14.223</span> zodgame.xyz<br><span class="hljs-number">104.26.15.233</span> http://www.zodgame.xyz<br><span class="hljs-number">104.26.15.223</span> zodgame.xyz<br></code></pre></td></tr></table></figure><p>如果不需要的话可以在前面加<code>#</code>井字符号，这样就能把本行后面的内容注释掉了。</p><h2 id="其他登录方式"><a href="#其他登录方式" class="headerlink" title="其他登录方式"></a>其他登录方式</h2><p>花钱找个加速器，应该也是可以上的。</p>]]></content>
     
     
     <categories>
@@ -319,35 +398,6 @@
   
   
   <entry>
-    <title>Hexo博客的迁移</title>
-    <link href="/2023/02/10/Hexo%E5%8D%9A%E5%AE%A2%E7%9A%84%E8%BF%81%E7%A7%BB/"/>
-    <url>/2023/02/10/Hexo%E5%8D%9A%E5%AE%A2%E7%9A%84%E8%BF%81%E7%A7%BB/</url>
-    
-    <content type="html"><![CDATA[<h1 id="Hexo博客的迁移"><a href="#Hexo博客的迁移" class="headerlink" title="Hexo博客的迁移"></a>Hexo博客的迁移</h1><p>因为各种各样的原因，比如换电脑了，或者因为设备的玄学问题不得不迁移一下环境（我的笔记本连不上github，每次上传同步都报错，头都大了，家里的台式却能轻松链接）。</p><p>总之迁移Hexo环境也是一件非常重要的事情，因为我之前的迁移都是通过看自己以前写的博客创建文档，以及自己的一些写进DNA的经验，所以时间久了难免有些遗忘和不靠谱。特此记录一下迁移的步骤，以便以后查看。</p><h2 id="1-安装Node-js、git和npm"><a href="#1-安装Node-js、git和npm" class="headerlink" title="1. 安装Node.js、git和npm"></a>1. 安装Node.js、git和npm</h2><p>【<strong>这一条是给新电脑用的，如果已经有了就跳过。</strong>】具体步骤也不再赘述，关于系统环境参数的配置也有一大堆教程和说明了。</p><h2 id="2-运行Hexo的一键部署命令"><a href="#2-运行Hexo的一键部署命令" class="headerlink" title="2. 运行Hexo的一键部署命令"></a>2. 运行Hexo的一键部署命令</h2><figure class="highlight avrasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs avrasm">npm install hexo-<span class="hljs-keyword">cli</span> -g<br></code></pre></td></tr></table></figure><h2 id="3-安装依赖库"><a href="#3-安装依赖库" class="headerlink" title="3. 安装依赖库"></a>3. 安装依赖库</h2><p>在命令指令行<strong>进入博客目录下</strong>安装相关的配置</p><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cmake">npm <span class="hljs-keyword">install</span><br></code></pre></td></tr></table></figure><p>如果有报错的话，就配置一下淘宝源，用cnpm。</p><h2 id="4-安装一键上传的插件：hexo-deployer-git"><a href="#4-安装一键上传的插件：hexo-deployer-git" class="headerlink" title="4. 安装一键上传的插件：hexo-deployer-git"></a>4. 安装一键上传的插件：hexo-deployer-git</h2><figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ada">npm install hexo-deployer-git <span class="hljs-comment">--save</span><br></code></pre></td></tr></table></figure><p>这也就是我们熟悉的hexo g 、hexo d命令的插件。</p><p>如果因为404原因安装失败的话，就使用<strong>cnpm+淘宝源</strong>，大概率成功。<br>用npm安装cnpm，再使用cnpm安装hexo插件</p><figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs jboss-cli">npm install -g cnpm <span class="hljs-params">--registry=https</span>:<span class="hljs-string">//registry.npm.taobao.org</span><br>cnpm install hexo-deployer-git <span class="hljs-params">--save</span><br></code></pre></td></tr></table></figure><h2 id="5-账户信息设置"><a href="#5-账户信息设置" class="headerlink" title="5. 账户信息设置"></a>5. 账户信息设置</h2><p>因为是新的电脑第一次使用git仓库，可能需要填一下相关信息。（还是在指令框中）</p><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs stylus">git config <span class="hljs-attr">--global</span> user<span class="hljs-selector-class">.email</span> <span class="hljs-string">&quot;在这填你的github邮箱&quot;</span><br>git config <span class="hljs-attr">--global</span> user<span class="hljs-selector-class">.name</span> <span class="hljs-string">&quot;填你的用户名&quot;</span> <br></code></pre></td></tr></table></figure><p>这个如果没输入的话，运行上传时也会提示你who are you的。</p><h2 id="6-检查是否能上传"><a href="#6-检查是否能上传" class="headerlink" title="6. 检查是否能上传"></a>6. 检查是否能上传</h2><p>其实到上一步配置就基本已经完成了，可以直接执行上传指令。</p><figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs ebnf"><span class="hljs-attribute">hexo clean</span><br><span class="hljs-attribute">hexo g</span><br><span class="hljs-attribute">hexo d</span><br></code></pre></td></tr></table></figure><p>如果配置文件不对的话，也是会出现<code>spawn failed 128</code>错误的。（我最近真是被这个问题锤得头疼）。而检测是不是配置导致的无法上传，方法就是看能不能直接打开<a href="https://github.com/">github.com</a>。能打开基本就是配置问题。</p><p>检查<code>_config.yml</code>文件</p><ol><li><p>url是博客的访问地址，要设置对。例如我的是：</p><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">url: http:<span class="hljs-regexp">//</span>kw1649190133.github.io<br></code></pre></td></tr></table></figure></li><li><p>还有一项就是推送更新的设置，一般在配置文件的最后，现在可以不用ssh了，用token很方便，但是要注意保存好令牌代码。token的使用方法就是放在http访问链接里，github的前面，然后再加上一个<code>@</code>符号</p><figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs dts"><span class="hljs-symbol">deploy:</span><br><span class="hljs-symbol">  type:</span> git<br><span class="hljs-symbol">  repo:</span> https:<span class="hljs-comment">//【这里放token，然后删掉括号】@github.com/kw1649190133/kw1649190133.github.io</span><br><span class="hljs-symbol">  branch:</span> master<br></code></pre></td></tr></table></figure><h2 id="结尾"><a href="#结尾" class="headerlink" title="结尾"></a>结尾</h2><p>搬一次家挺麻烦的，可以的话还是少搬比较好。</p></li></ol>]]></content>
-    
-    
-    <categories>
-      
-      <category>学习</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>Hexo</tag>
-      
-      <tag>迁移</tag>
-      
-      <tag>博客</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
     <title>Hexo的复活和升级计划</title>
     <link href="/2023/02/10/Hexo%E7%9A%84%E5%A4%8D%E6%B4%BB%E5%92%8C%E5%8D%87%E7%BA%A7%E8%AE%A1%E5%88%92/"/>
     <url>/2023/02/10/Hexo%E7%9A%84%E5%A4%8D%E6%B4%BB%E5%92%8C%E5%8D%87%E7%BA%A7%E8%AE%A1%E5%88%92/</url>
@@ -366,9 +416,38 @@
       
       <tag>Hexo</tag>
       
+      <tag>fluid主题</tag>
+      
       <tag>博客</tag>
       
-      <tag>fluid主题</tag>
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>Hexo博客的迁移</title>
+    <link href="/2023/02/10/Hexo%E5%8D%9A%E5%AE%A2%E7%9A%84%E8%BF%81%E7%A7%BB/"/>
+    <url>/2023/02/10/Hexo%E5%8D%9A%E5%AE%A2%E7%9A%84%E8%BF%81%E7%A7%BB/</url>
+    
+    <content type="html"><![CDATA[<h1 id="Hexo博客的迁移"><a href="#Hexo博客的迁移" class="headerlink" title="Hexo博客的迁移"></a>Hexo博客的迁移</h1><p>因为各种各样的原因，比如换电脑了，或者因为设备的玄学问题不得不迁移一下环境（我的笔记本连不上github，每次上传同步都报错，头都大了，家里的台式却能轻松链接）。</p><p>总之迁移Hexo环境也是一件非常重要的事情，因为我之前的迁移都是通过看自己以前写的博客创建文档，以及自己的一些写进DNA的经验，所以时间久了难免有些遗忘和不靠谱。特此记录一下迁移的步骤，以便以后查看。</p><h2 id="1-安装Node-js、git和npm"><a href="#1-安装Node-js、git和npm" class="headerlink" title="1. 安装Node.js、git和npm"></a>1. 安装Node.js、git和npm</h2><p>【<strong>这一条是给新电脑用的，如果已经有了就跳过。</strong>】具体步骤也不再赘述，关于系统环境参数的配置也有一大堆教程和说明了。</p><h2 id="2-运行Hexo的一键部署命令"><a href="#2-运行Hexo的一键部署命令" class="headerlink" title="2. 运行Hexo的一键部署命令"></a>2. 运行Hexo的一键部署命令</h2><figure class="highlight avrasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs avrasm">npm install hexo-<span class="hljs-keyword">cli</span> -g<br></code></pre></td></tr></table></figure><h2 id="3-安装依赖库"><a href="#3-安装依赖库" class="headerlink" title="3. 安装依赖库"></a>3. 安装依赖库</h2><p>在命令指令行<strong>进入博客目录下</strong>安装相关的配置</p><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cmake">npm <span class="hljs-keyword">install</span><br></code></pre></td></tr></table></figure><p>如果有报错的话，就配置一下淘宝源，用cnpm。</p><h2 id="4-安装一键上传的插件：hexo-deployer-git"><a href="#4-安装一键上传的插件：hexo-deployer-git" class="headerlink" title="4. 安装一键上传的插件：hexo-deployer-git"></a>4. 安装一键上传的插件：hexo-deployer-git</h2><figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ada">npm install hexo-deployer-git <span class="hljs-comment">--save</span><br></code></pre></td></tr></table></figure><p>这也就是我们熟悉的hexo g 、hexo d命令的插件。</p><p>如果因为404原因安装失败的话，就使用<strong>cnpm+淘宝源</strong>，大概率成功。<br>用npm安装cnpm，再使用cnpm安装hexo插件</p><figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs jboss-cli">npm install -g cnpm <span class="hljs-params">--registry=https</span>:<span class="hljs-string">//registry.npm.taobao.org</span><br>cnpm install hexo-deployer-git <span class="hljs-params">--save</span><br></code></pre></td></tr></table></figure><h2 id="5-账户信息设置"><a href="#5-账户信息设置" class="headerlink" title="5. 账户信息设置"></a>5. 账户信息设置</h2><p>因为是新的电脑第一次使用git仓库，可能需要填一下相关信息。（还是在指令框中）</p><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs stylus">git config <span class="hljs-attr">--global</span> user<span class="hljs-selector-class">.email</span> <span class="hljs-string">&quot;在这填你的github邮箱&quot;</span><br>git config <span class="hljs-attr">--global</span> user<span class="hljs-selector-class">.name</span> <span class="hljs-string">&quot;填你的用户名&quot;</span> <br></code></pre></td></tr></table></figure><p>这个如果没输入的话，运行上传时也会提示你who are you的。</p><h2 id="6-检查是否能上传"><a href="#6-检查是否能上传" class="headerlink" title="6. 检查是否能上传"></a>6. 检查是否能上传</h2><p>其实到上一步配置就基本已经完成了，可以直接执行上传指令。</p><figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs ebnf"><span class="hljs-attribute">hexo clean</span><br><span class="hljs-attribute">hexo g</span><br><span class="hljs-attribute">hexo d</span><br></code></pre></td></tr></table></figure><p>如果配置文件不对的话，也是会出现<code>spawn failed 128</code>错误的。（我最近真是被这个问题锤得头疼）。而检测是不是配置导致的无法上传，方法就是看能不能直接打开<a href="https://github.com/">github.com</a>。能打开基本就是配置问题。</p><p>检查<code>_config.yml</code>文件</p><ol><li><p>url是博客的访问地址，要设置对。例如我的是：</p><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">url: http:<span class="hljs-regexp">//</span>kw1649190133.github.io<br></code></pre></td></tr></table></figure></li><li><p>还有一项就是推送更新的设置，一般在配置文件的最后，现在可以不用ssh了，用token很方便，但是要注意保存好令牌代码。token的使用方法就是放在http访问链接里，github的前面，然后再加上一个<code>@</code>符号</p><figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs dts"><span class="hljs-symbol">deploy:</span><br><span class="hljs-symbol">  type:</span> git<br><span class="hljs-symbol">  repo:</span> https:<span class="hljs-comment">//【这里放token，然后删掉括号】@github.com/kw1649190133/kw1649190133.github.io</span><br><span class="hljs-symbol">  branch:</span> master<br></code></pre></td></tr></table></figure><h2 id="结尾"><a href="#结尾" class="headerlink" title="结尾"></a>结尾</h2><p>搬一次家挺麻烦的，可以的话还是少搬比较好。</p></li></ol>]]></content>
+    
+    
+    <categories>
+      
+      <category>学习</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Hexo</tag>
+      
+      <tag>博客</tag>
+      
+      <tag>迁移</tag>
       
     </tags>
     
