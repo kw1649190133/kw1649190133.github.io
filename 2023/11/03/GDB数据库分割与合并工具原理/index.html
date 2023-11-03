@@ -1,0 +1,680 @@
+
+
+<!DOCTYPE html>
+<html lang="CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Kwindy">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="本文介绍数据库的分割与合并实现过程，主要应用于地理信息项目中对大规模数据的处理。工具箱文件放在结尾。 数据库分割实现原理数据库分割的实现主要依赖ArcGIS工具库中的两个模块来实现：一个是迭代要素，一个是裁剪。围绕这两个模块完善工具模型，就做好了一个简单的数据库分割的工具模型。  过程与重要细节 添加迭代要素类和裁剪两个主要模块， 添加一个要素作为裁剪图层，添加一个数据库作为输入，添加一个工作空间">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GDB数据库分割与合并工具原理">
+<meta property="og:url" content="http://kw1649190133.github.io/2023/11/03/GDB%E6%95%B0%E6%8D%AE%E5%BA%93%E5%88%86%E5%89%B2%E4%B8%8E%E5%90%88%E5%B9%B6%E5%B7%A5%E5%85%B7%E5%8E%9F%E7%90%86/index.html">
+<meta property="og:site_name" content="kw&#39;s blog">
+<meta property="og:description" content="本文介绍数据库的分割与合并实现过程，主要应用于地理信息项目中对大规模数据的处理。工具箱文件放在结尾。 数据库分割实现原理数据库分割的实现主要依赖ArcGIS工具库中的两个模块来实现：一个是迭代要素，一个是裁剪。围绕这两个模块完善工具模型，就做好了一个简单的数据库分割的工具模型。  过程与重要细节 添加迭代要素类和裁剪两个主要模块， 添加一个要素作为裁剪图层，添加一个数据库作为输入，添加一个工作空间">
+<meta property="og:locale">
+<meta property="og:image" content="http://kw1649190133.github.io/2023/11/03/GDB%E6%95%B0%E6%8D%AE%E5%BA%93%E5%88%86%E5%89%B2%E4%B8%8E%E5%90%88%E5%B9%B6%E5%B7%A5%E5%85%B7%E5%8E%9F%E7%90%86/gdb%E5%88%86%E5%89%B2%E5%B7%A5%E5%85%B7%E6%A8%A1%E5%9E%8B%E5%9B%BE.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2023/11/03/GDB%E6%95%B0%E6%8D%AE%E5%BA%93%E5%88%86%E5%89%B2%E4%B8%8E%E5%90%88%E5%B9%B6%E5%B7%A5%E5%85%B7%E5%8E%9F%E7%90%86/gdb%E5%90%88%E5%B9%B6%E5%B7%A5%E5%85%B7%E7%95%8C%E9%9D%A2.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2023/11/03/GDB%E6%95%B0%E6%8D%AE%E5%BA%93%E5%88%86%E5%89%B2%E4%B8%8E%E5%90%88%E5%B9%B6%E5%B7%A5%E5%85%B7%E5%8E%9F%E7%90%86/%E9%A1%B9%E7%9B%AE%E6%8F%8F%E8%BF%B0%E4%BF%AE%E6%94%B9%E7%95%8C%E9%9D%A2.png">
+<meta property="article:published_time" content="2023-11-03T10:27:43.000Z">
+<meta property="article:modified_time" content="2023-11-03T10:33:21.395Z">
+<meta property="article:author" content="Kwindy">
+<meta property="article:tag" content="地理信息">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="gdb">
+<meta property="article:tag" content="数据库">
+<meta property="article:tag" content="分割">
+<meta property="article:tag" content="合并">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://kw1649190133.github.io/2023/11/03/GDB%E6%95%B0%E6%8D%AE%E5%BA%93%E5%88%86%E5%89%B2%E4%B8%8E%E5%90%88%E5%B9%B6%E5%B7%A5%E5%85%B7%E5%8E%9F%E7%90%86/gdb%E5%88%86%E5%89%B2%E5%B7%A5%E5%85%B7%E6%A8%A1%E5%9E%8B%E5%9B%BE.png">
+  
+  
+  
+  <title>GDB数据库分割与合并工具原理 - kw&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"kw1649190133.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Startseite</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archiv</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Kategorien</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Schlagwörter</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>Über</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="GDB数据库分割与合并工具原理"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-11-03 18:27" pubdate>
+          November 3, 2023 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.4k wörter
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          20 minuten
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">GDB数据库分割与合并工具原理</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>本文介绍数据库的分割与合并实现过程，主要应用于地理信息项目中对大规模数据的处理。<br>工具箱文件放在结尾。</p>
+<h1 id="数据库分割"><a href="#数据库分割" class="headerlink" title="数据库分割"></a>数据库分割</h1><h2 id="实现原理"><a href="#实现原理" class="headerlink" title="实现原理"></a>实现原理</h2><p>数据库分割的实现主要依赖ArcGIS工具库中的两个模块来实现：一个是迭代要素，一个是裁剪。围绕这两个模块完善工具模型，就做好了一个简单的数据库分割的工具模型。</p>
+<p><img src="/2023/11/03/GDB%E6%95%B0%E6%8D%AE%E5%BA%93%E5%88%86%E5%89%B2%E4%B8%8E%E5%90%88%E5%B9%B6%E5%B7%A5%E5%85%B7%E5%8E%9F%E7%90%86/gdb%E5%88%86%E5%89%B2%E5%B7%A5%E5%85%B7%E6%A8%A1%E5%9E%8B%E5%9B%BE.png" srcset="/img/loading.gif" lazyload alt="gdb分割工具模型图.png"></p>
+<h2 id="过程与重要细节"><a href="#过程与重要细节" class="headerlink" title="过程与重要细节"></a>过程与重要细节</h2><ul>
+<li>添加迭代要素类和裁剪两个主要模块，</li>
+<li>添加一个要素作为裁剪图层，添加一个数据库作为输入，添加一个工作空间作为输出，把他们都作为模型参数。</li>
+<li>给迭代添加输入参数，另外两个一般用不上，主要是添加递归选项。要素类型的作用是可以指定需要裁剪的要素类型，这样迭代中就会跳过其他类型，比如只裁剪面。选择递归可以迭代选择到路径中子文件夹和要素数据集中的要素，而取消递归的话就是只迭代当前目录下的要素。</li>
+<li>按照模型图完成连线</li>
+<li>把输出路径、迭代要素类的名称、裁剪结果名称三项的名字进行统一，**裁剪结果的存放路径<code>%名称%</code>的内容要改成<code>%输出路径%\%名称%</code>**。此处需要注意格式。<h1 id="数据库合并"><a href="#数据库合并" class="headerlink" title="数据库合并"></a>数据库合并</h1></li>
+</ul>
+<p>直接复制了别人的代码来实现。将以下代码保存为.py格式的python脚本，可以放在工具箱中运行。<br>理论上直接写入文件路径，也可以直接运行。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># -*-###############</span><br><span class="hljs-keyword">import</span> sys<br><span class="hljs-keyword">import</span> os<br><span class="hljs-keyword">import</span> arcpy<br><span class="hljs-comment"># 添加这两行可以解决乱码问题</span><br>reload(sys)<br>sys.setdefaultencoding(<span class="hljs-string">&quot;utf-8&quot;</span>)<br><br>in_path = arcpy.GetParameterAsText(<span class="hljs-number">0</span>)  <span class="hljs-comment"># 文件地理数据库（.gdb）所在文件夹路径</span><br>out_gdb_path = arcpy.GetParameterAsText(<span class="hljs-number">1</span>)  <span class="hljs-comment"># 合并后输出的文件地理数据库（.gdb）路径</span><br><br><span class="hljs-comment"># 将文件地理数据库（.gdb）所在文件夹设置为当前工作空间环境</span><br>arcpy.env.workspace = in_path<br><span class="hljs-comment"># 获取当前工作环境下所有文件数据库列表</span><br>workspaces = arcpy.ListWorkspaces(<span class="hljs-string">&quot;*&quot;</span>, <span class="hljs-string">&quot;FileGDB&quot;</span>)<br><span class="hljs-comment"># workspaces = arcpy.ListWorkspaces(&quot;*&quot;, &quot;Access&quot;)</span><br>in_fc_list = []  <span class="hljs-comment"># 用于存放gdb内的要素类名称的列表</span><br><br><span class="hljs-comment"># 遍历gdb</span><br><span class="hljs-keyword">for</span> wsp <span class="hljs-keyword">in</span> workspaces:<br>    <span class="hljs-comment"># 将gdb设置为当前工作空间环境</span><br>    arcpy.env.workspace = wsp<br>    <span class="hljs-comment"># 获取gdb内要素类列表</span><br>    fc_lss = arcpy.ListFeatureClasses()<br>    <span class="hljs-keyword">for</span> fc <span class="hljs-keyword">in</span> fc_lss:<br>        <span class="hljs-keyword">if</span> fc <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> in_fc_list:<br>            <span class="hljs-comment"># 如果当前遍历到的要素类名称不在in_fc_list列表中，则添加到列表</span><br>            in_fc_list.append(fc)<br><br>arcpy.AddMessage(<span class="hljs-string">u&quot;共&#123;0&#125;个图层。&quot;</span>.<span class="hljs-built_in">format</span>(<span class="hljs-built_in">len</span>(in_fc_list)))<br><br>cout = <span class="hljs-number">0</span><br><span class="hljs-comment"># 遍历要素类名称列表</span><br><span class="hljs-keyword">for</span> infc <span class="hljs-keyword">in</span> in_fc_list:<br>    cout += <span class="hljs-number">1</span><br>    merge_list = []  <span class="hljs-comment"># 用于存放所有gdb中相同名称的要素类的列表</span><br>    arcpy.AddMessage(<span class="hljs-string">u&quot;  &#123;0&#125;.正在合并: &#123;1&#125;&quot;</span>.<span class="hljs-built_in">format</span>(cout, infc))<br>    <span class="hljs-keyword">for</span> wsp <span class="hljs-keyword">in</span> workspaces:<br>        <span class="hljs-comment"># 重新遍历所有gdb，分别拼接路径</span><br>        merge_fc = os.path.join(wsp, infc)<br>        <span class="hljs-keyword">if</span> arcpy.Exists(merge_fc):<br>            <span class="hljs-comment"># 如果当前遍历到的gdb内存在该名称的要素类，则添加到merge_list列表中</span><br>            merge_list.append(merge_fc)<br>        <span class="hljs-keyword">else</span>:<br>            <span class="hljs-comment"># 如果当前遍历到的gdb内不存在该名称的要素类，则给出警告</span><br>            arcpy.AddWarning(<span class="hljs-string">u&quot;    警告：&#123;0&#125; 中不存在名称为 &#123;1&#125; 的要素类，请留意！&quot;</span>.<span class="hljs-built_in">format</span>(wsp, infc))<br>    <span class="hljs-comment"># 合并所有gdb中相同名称的要素类</span><br>    arcpy.Merge_management(merge_list, os.path.join(out_gdb_path, infc))<br>    <span class="hljs-keyword">del</span> merge_list<br></code></pre></td></tr></table></figure>
+
+<p>放在工具箱里打开后，可以生成图形界面：</p>
+<p><img src="/2023/11/03/GDB%E6%95%B0%E6%8D%AE%E5%BA%93%E5%88%86%E5%89%B2%E4%B8%8E%E5%90%88%E5%B9%B6%E5%B7%A5%E5%85%B7%E5%8E%9F%E7%90%86/gdb%E5%90%88%E5%B9%B6%E5%B7%A5%E5%85%B7%E7%95%8C%E9%9D%A2.png" srcset="/img/loading.gif" lazyload alt="gdb合并工具界面.png"></p>
+<h2 id="局限性"><a href="#局限性" class="headerlink" title="局限性"></a>局限性</h2><p>本篇中的数据库分割与合并的处理结果<br>本文档制作时，作者也尚未掌握更近一步的数据库处理方式。实际业务中常常需要将对应数据放在要素数据集中。理论上来说，按照指定的格式进行数据存放，把数据自动放进相应的数据集应该是不难实现的事情，不管是用Python还是用FME。该功能有待在以后进行实现。 ——20231103 kwindy</p>
+<h1 id="额外内容：关于工具模型的描述"><a href="#额外内容：关于工具模型的描述" class="headerlink" title="额外内容：关于工具模型的描述"></a>额外内容：关于工具模型的描述</h1><p>项目描述这东西就相当于编程中的注释，可以对工具本身和每一项输入输出和参数选项进行解释说明，方便别人和以后的自己能更容易理解当前的代码，所以创建模型完成后最好补充一下模型的使用方法描述。</p>
+<p>关于项目描述的编辑方式，可以在工具箱右键-<strong>属性</strong> 选项中进行编辑描述。而更好的方式是倒数第二个选项【<strong>项目描述</strong>】，打开项目描述框。在项目描述中可以看到Esri已经规范好了整片描述文档的格式，点击编辑即可修改整个项目所有位置的描述。</p>
+<p><img src="/2023/11/03/GDB%E6%95%B0%E6%8D%AE%E5%BA%93%E5%88%86%E5%89%B2%E4%B8%8E%E5%90%88%E5%B9%B6%E5%B7%A5%E5%85%B7%E5%8E%9F%E7%90%86/%E9%A1%B9%E7%9B%AE%E6%8F%8F%E8%BF%B0%E4%BF%AE%E6%94%B9%E7%95%8C%E9%9D%A2.png" srcset="/img/loading.gif" lazyload alt="项目描述修改界面.png"></p>
+<p>在每个文本框上面可以看到有许多格式按钮，显然这是一个类似于word的文档模式，里面是一套独有的格式系统，不适用于C语言的<code>\n</code>以及·Markdown和HTML的那套东西。</p>
+<h2 id="工具箱文件："><a href="#工具箱文件：" class="headerlink" title="工具箱文件："></a>工具箱文件：</h2><p><a href="kwindy%E5%B7%A5%E5%85%B7%E7%AE%B1.tbx">kwindy工具箱.tbx</a></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0/" class="category-chain-item">学习</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E5%9C%B0%E7%90%86%E4%BF%A1%E6%81%AF/">#地理信息</a>
+      
+        <a href="/tags/python/">#python</a>
+      
+        <a href="/tags/gdb/">#gdb</a>
+      
+        <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/">#数据库</a>
+      
+        <a href="/tags/%E5%88%86%E5%89%B2/">#分割</a>
+      
+        <a href="/tags/%E5%90%88%E5%B9%B6/">#合并</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>GDB数据库分割与合并工具原理</div>
+      <div>http://kw1649190133.github.io/2023/11/03/GDB数据库分割与合并工具原理/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Beitragsautor</div>
+          <div>Kwindy</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Veröffentlicht am</div>
+          <div>November 3, 2023</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Urheberrechtshinweis</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/10/30/%E5%9C%B0%E7%90%86%E4%BF%A1%E6%81%AF%E6%95%B0%E6%8D%AE%E8%B4%A8%E6%A3%80%E7%9A%84%E8%87%AA%E5%8A%A8%E5%8C%96%E5%AE%9E%E7%8E%B0%EF%BC%88ArcGIS_Data_Reviewer%EF%BC%89/" title="地理信息数据质检的自动化实现（ArcGIS_Data_Reviewer）">
+                        <span class="hidden-mobile">地理信息数据质检的自动化实现（ArcGIS_Data_Reviewer）</span>
+                        <span class="visible-mobile">Nächster</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Inhaltsverzeichnis</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Suchen</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Stichwort</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog funktioniert am besten mit aktiviertem JavaScript</div>
+  </noscript>
+</body>
+</html>
