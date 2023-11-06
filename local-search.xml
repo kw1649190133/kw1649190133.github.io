@@ -22,8 +22,6 @@
       
       <tag>地理信息</tag>
       
-      <tag>python</tag>
-      
       <tag>gdb</tag>
       
       <tag>数据库</tag>
@@ -31,6 +29,8 @@
       <tag>分割</tag>
       
       <tag>合并</tag>
+      
+      <tag>python</tag>
       
     </tags>
     
@@ -86,9 +86,9 @@
     
     <tags>
       
-      <tag>Arcgis</tag>
-      
       <tag>地理信息</tag>
+      
+      <tag>Arcgis</tag>
       
       <tag>软件</tag>
       
@@ -119,9 +119,9 @@
     
     <tags>
       
-      <tag>Arcgis</tag>
-      
       <tag>地理信息</tag>
+      
+      <tag>Arcgis</tag>
       
       <tag>Pro</tag>
       
@@ -214,9 +214,9 @@
       
       <tag>3Dtiles</tag>
       
-      <tag>论坛</tag>
-      
       <tag>osgb</tag>
+      
+      <tag>论坛</tag>
       
       <tag>格式转换</tag>
       
@@ -451,35 +451,6 @@
   
   
   <entry>
-    <title>Hexo的复活和升级计划</title>
-    <link href="/2023/02/10/Hexo%E7%9A%84%E5%A4%8D%E6%B4%BB%E5%92%8C%E5%8D%87%E7%BA%A7%E8%AE%A1%E5%88%92/"/>
-    <url>/2023/02/10/Hexo%E7%9A%84%E5%A4%8D%E6%B4%BB%E5%92%8C%E5%8D%87%E7%BA%A7%E8%AE%A1%E5%88%92/</url>
-    
-    <content type="html"><![CDATA[<h1 id="Hexo的复活和升级计划"><a href="#Hexo的复活和升级计划" class="headerlink" title="Hexo的复活和升级计划"></a>Hexo的复活和升级计划</h1><p><em>为了能够愉快的继续使用Hexo，之前积累的一些问题也必须得解决了，所谓“工欲善其事必先利其器”，不把这博客弄好我都不能专心去搞神经网络。</em></p><p>之前的问题归纳下来就三个:</p><ol><li><p>之前刚搞博客喜欢研究新鲜玩意，整了个2Dlive,搞得文件夹变成了几百MB，这次必须另起炉灶，把原来的modle都抛弃掉。</p></li><li><p>之前的页面会一直卡加载，研究了一下发现是没有合理的优化，一进去主页就会直接加载全部文章，百度一下之后，发现可以通过换主题解决，之前的主题只能说太简陋了。</p></li><li><p>最后一点也是最重要的一点，github时常连不上的问题，经常导致上传失败，现在只能暂时存在本地，还是得尝试一下其他平台的部署。</p></li><li><p>然后是支线任务，想办法做一下一键预览、一键打包和一键同步，以及快速创建文章，。我的水平也许做不出Gridea这种集成式程序，但优化一下基本体验应该还是做得到的，体验这一块不能输。或者找一下别人有没有现成的。</p></li></ol><p>之前一直使用ayer主题，虽然好看是好看，但是它完全没有优化，主页会直接加载全部的文章，东西一多直接爆卡，除非写文章的时候全部手动设置截断或者隐藏，但那也太麻烦了，于是我决定找一个简约而又好看，优化还得好的主题。</p><h2 id="fluid主题"><a href="#fluid主题" class="headerlink" title="fluid主题"></a>fluid主题</h2><p>挑挑拣拣半天，终于找到了一个合心意的主题，这简约的界面和流畅的优化，舒服了。还有这个右上角的一键切换夜间模式，也非常好用。我决定就它了。其实还有一些主题我也挺喜欢的，但是要么就是广告味太浓，要么就是特效太多，速度不够快。经过了以前2Dlive的折磨，我再也不敢在博客里塞大件的东西了，还是简单实用最好。</p><p>主题的主页在此，上面有详细的使用手册，后面有时间了我再去研究研究怎么调整和优化。</p><p><a href="https://fluid-dev.github.io/hexo-fluid-docs/">点击跳转fluid</a></p><p><img src="/2023/02/10/Hexo%E7%9A%84%E5%A4%8D%E6%B4%BB%E5%92%8C%E5%8D%87%E7%BA%A7%E8%AE%A1%E5%88%92/fulid%E4%B8%BB%E9%A2%98.png" alt="fulid主题"></p>]]></content>
-    
-    
-    <categories>
-      
-      <category>学习</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>Hexo</tag>
-      
-      <tag>fluid主题</tag>
-      
-      <tag>博客</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
     <title>Hexo博客的迁移</title>
     <link href="/2023/02/10/Hexo%E5%8D%9A%E5%AE%A2%E7%9A%84%E8%BF%81%E7%A7%BB/"/>
     <url>/2023/02/10/Hexo%E5%8D%9A%E5%AE%A2%E7%9A%84%E8%BF%81%E7%A7%BB/</url>
@@ -498,9 +469,38 @@
       
       <tag>Hexo</tag>
       
+      <tag>迁移</tag>
+      
       <tag>博客</tag>
       
-      <tag>迁移</tag>
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>Hexo的复活和升级计划</title>
+    <link href="/2023/02/10/Hexo%E7%9A%84%E5%A4%8D%E6%B4%BB%E5%92%8C%E5%8D%87%E7%BA%A7%E8%AE%A1%E5%88%92/"/>
+    <url>/2023/02/10/Hexo%E7%9A%84%E5%A4%8D%E6%B4%BB%E5%92%8C%E5%8D%87%E7%BA%A7%E8%AE%A1%E5%88%92/</url>
+    
+    <content type="html"><![CDATA[<h1 id="Hexo的复活和升级计划"><a href="#Hexo的复活和升级计划" class="headerlink" title="Hexo的复活和升级计划"></a>Hexo的复活和升级计划</h1><p><em>为了能够愉快的继续使用Hexo，之前积累的一些问题也必须得解决了，所谓“工欲善其事必先利其器”，不把这博客弄好我都不能专心去搞神经网络。</em></p><p>之前的问题归纳下来就三个:</p><ol><li><p>之前刚搞博客喜欢研究新鲜玩意，整了个2Dlive,搞得文件夹变成了几百MB，这次必须另起炉灶，把原来的modle都抛弃掉。</p></li><li><p>之前的页面会一直卡加载，研究了一下发现是没有合理的优化，一进去主页就会直接加载全部文章，百度一下之后，发现可以通过换主题解决，之前的主题只能说太简陋了。</p></li><li><p>最后一点也是最重要的一点，github时常连不上的问题，经常导致上传失败，现在只能暂时存在本地，还是得尝试一下其他平台的部署。</p></li><li><p>然后是支线任务，想办法做一下一键预览、一键打包和一键同步，以及快速创建文章，。我的水平也许做不出Gridea这种集成式程序，但优化一下基本体验应该还是做得到的，体验这一块不能输。或者找一下别人有没有现成的。</p></li></ol><p>之前一直使用ayer主题，虽然好看是好看，但是它完全没有优化，主页会直接加载全部的文章，东西一多直接爆卡，除非写文章的时候全部手动设置截断或者隐藏，但那也太麻烦了，于是我决定找一个简约而又好看，优化还得好的主题。</p><h2 id="fluid主题"><a href="#fluid主题" class="headerlink" title="fluid主题"></a>fluid主题</h2><p>挑挑拣拣半天，终于找到了一个合心意的主题，这简约的界面和流畅的优化，舒服了。还有这个右上角的一键切换夜间模式，也非常好用。我决定就它了。其实还有一些主题我也挺喜欢的，但是要么就是广告味太浓，要么就是特效太多，速度不够快。经过了以前2Dlive的折磨，我再也不敢在博客里塞大件的东西了，还是简单实用最好。</p><p>主题的主页在此，上面有详细的使用手册，后面有时间了我再去研究研究怎么调整和优化。</p><p><a href="https://fluid-dev.github.io/hexo-fluid-docs/">点击跳转fluid</a></p><p><img src="/2023/02/10/Hexo%E7%9A%84%E5%A4%8D%E6%B4%BB%E5%92%8C%E5%8D%87%E7%BA%A7%E8%AE%A1%E5%88%92/fulid%E4%B8%BB%E9%A2%98.png" alt="fulid主题"></p>]]></content>
+    
+    
+    <categories>
+      
+      <category>学习</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Hexo</tag>
+      
+      <tag>博客</tag>
+      
+      <tag>fluid主题</tag>
       
     </tags>
     
@@ -890,9 +890,9 @@
     
     <tags>
       
-      <tag>Node.js</tag>
-      
       <tag>hexo</tag>
+      
+      <tag>Node.js</tag>
       
       <tag>升级</tag>
       
