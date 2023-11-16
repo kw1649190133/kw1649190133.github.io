@@ -1,0 +1,705 @@
+
+
+<!DOCTYPE html>
+<html lang="CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Kwindy">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="前言本篇主要介绍基于Data Reviewer的数据库质检方法，分析数据库质检的规则设计逻辑，总结一下哪些预设的质检项目是可以直接使用的。 质检设计一般来说，需要针对不同的业务需求来做质检设计，但所有的质检也会有基本的共通之处。地理信息数据包含时间空间信息和字段属性，所以具体的检查也需要对应空间和属性两大方面。 针对线型矢量的基本检查项目 基本的属性、无效几何、多部件、锐角、非线性 悬挂点 连通性">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据库质检逻辑设计">
+<meta property="og:url" content="http://kw1649190133.github.io/2023/11/15/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%B4%A8%E6%A3%80%E9%80%BB%E8%BE%91%E8%AE%BE%E8%AE%A1/index.html">
+<meta property="og:site_name" content="kw&#39;s blog">
+<meta property="og:description" content="前言本篇主要介绍基于Data Reviewer的数据库质检方法，分析数据库质检的规则设计逻辑，总结一下哪些预设的质检项目是可以直接使用的。 质检设计一般来说，需要针对不同的业务需求来做质检设计，但所有的质检也会有基本的共通之处。地理信息数据包含时间空间信息和字段属性，所以具体的检查也需要对应空间和属性两大方面。 针对线型矢量的基本检查项目 基本的属性、无效几何、多部件、锐角、非线性 悬挂点 连通性">
+<meta property="og:locale">
+<meta property="og:image" content="http://kw1649190133.github.io/2023/11/15/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%B4%A8%E6%A3%80%E9%80%BB%E8%BE%91%E8%AE%BE%E8%AE%A1/418c5a4d8483e5abe5350a3bb74ee8bc.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2023/11/15/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%B4%A8%E6%A3%80%E9%80%BB%E8%BE%91%E8%AE%BE%E8%AE%A1/9c99ee6cbb6699dea4f0dcc0883962e3.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2023/11/15/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%B4%A8%E6%A3%80%E9%80%BB%E8%BE%91%E8%AE%BE%E8%AE%A1/0536e9eb5d1315172c4bc3a95fb2f5b1.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2023/11/15/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%B4%A8%E6%A3%80%E9%80%BB%E8%BE%91%E8%AE%BE%E8%AE%A1/27cf687cd0f87450599f97c62f88be6a.png">
+<meta property="og:image" content="http://kw1649190133.github.io/b8834cdd830a3d63b31ad0714cc56242.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2023/11/15/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%B4%A8%E6%A3%80%E9%80%BB%E8%BE%91%E8%AE%BE%E8%AE%A1/3fa45ad7405581ef61c8b2fa09b5bb1d.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2023/11/15/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%B4%A8%E6%A3%80%E9%80%BB%E8%BE%91%E8%AE%BE%E8%AE%A1/6ca7a819484d41282d72e545832d7276.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2023/11/15/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%B4%A8%E6%A3%80%E9%80%BB%E8%BE%91%E8%AE%BE%E8%AE%A1/5f4f152fd278f595f16d43d54b8fff3c.png">
+<meta property="article:published_time" content="2023-11-15T10:00:00.000Z">
+<meta property="article:modified_time" content="2023-11-16T04:30:11.594Z">
+<meta property="article:author" content="Kwindy">
+<meta property="article:tag" content="ArcGIS">
+<meta property="article:tag" content="数据库">
+<meta property="article:tag" content="Data Reviewer">
+<meta property="article:tag" content="质检">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://kw1649190133.github.io/2023/11/15/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%B4%A8%E6%A3%80%E9%80%BB%E8%BE%91%E8%AE%BE%E8%AE%A1/418c5a4d8483e5abe5350a3bb74ee8bc.png">
+  
+  
+  
+  <title>数据库质检逻辑设计 - kw&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"kw1649190133.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Hejmpaĝo</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Arkivoj</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Kategorio</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Etikedoj</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>Pri</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="数据库质检逻辑设计"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-11-15 18:00" pubdate>
+          November 15, 2023 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.8k vortoj
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          16 minutoj
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">数据库质检逻辑设计</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>本篇主要介绍基于Data Reviewer的数据库质检方法，分析数据库质检的规则设计逻辑，总结一下哪些预设的质检项目是可以直接使用的。</p>
+<h1 id="质检设计"><a href="#质检设计" class="headerlink" title="质检设计"></a>质检设计</h1><p>一般来说，需要针对不同的业务需求来做质检设计，但所有的质检也会有基本的共通之处。地理信息数据包含时间空间信息和字段属性，所以具体的检查也需要对应空间和属性两大方面。</p>
+<h2 id="针对线型矢量的基本检查项目"><a href="#针对线型矢量的基本检查项目" class="headerlink" title="针对线型矢量的基本检查项目"></a>针对线型矢量的基本检查项目</h2><ul>
+<li>基本的属性、无效几何、多部件、锐角、非线性</li>
+<li>悬挂点</li>
+<li>连通性</li>
+</ul>
+<h2 id="针对面型矢量的基本检查项目"><a href="#针对面型矢量的基本检查项目" class="headerlink" title="针对面型矢量的基本检查项目"></a>针对面型矢量的基本检查项目</h2><ul>
+<li>基本的属性、无效几何、多部件、锐角、非线性</li>
+<li>面要素中的空洞</li>
+<li>狭长面</li>
+<li>狭长面的重叠和缝隙</li>
+<li>不必要的面边界（属性相同可融合的要素）<h2 id="根据需求自定义的检查项目"><a href="#根据需求自定义的检查项目" class="headerlink" title="根据需求自定义的检查项目"></a>根据需求自定义的检查项目</h2></li>
+</ul>
+<ul>
+<li>位置检查——检查图层是否与其他图层有相交，是否在其他图层的范围内等，和GIS本身的功能“按位置选择”类似，可以按要素的空间关系进行查询。</li>
+<li>长度、面积检查——检查要素是否在规定的尺寸范围内。项目中常常会规定最小长度、最小面积，小于这个标准的就不上图或者就近和其他要素融合。<h1 id="几何检查"><a href="#几何检查" class="headerlink" title="几何检查"></a>几何检查</h1></li>
+</ul>
+<h3 id="几何无效检查"><a href="#几何无效检查" class="headerlink" title="几何无效检查"></a>几何无效检查</h3><p>首先定义什么是无效几何，可以看到效验规则的描述比较概略，但是在ArcGIS的官网可以找到非常详细的讲解，我直接一整个搬过来。</p>
+<ul>
+<li>空——当要素的几何在其最初的初始状态以外，不含点且不含由 SHAPE_LEN 和 SHAPE_AREA 字段表示的几何信息时，产生此条件。当以编程方式创建或编辑数据以及将错误数据导入您的地理信息系统时，可引入空几何。</li>
+<li>无——当要素的 SHAPE 字段值为空时，产生此条件。当校验无法检索要素的几何信息时，将返回此类错误信息。</li>
+<li>具有空包络矩形——当要素的包络或边界矩形不具有任何几何信息时，产生此条件。此条件与空几何方案类似。</li>
+<li>非简单——以下任意条件为 true 时，产生此条件：<ul>
+<li>环方向不正确（仅适用于面要素） - 不会自相交但其环未正确定向的面（外环，顺时针；内环，逆时针）。</li>
+<li>线段方向不正确 - 各个线段的定向不一致。线段 i 的终点应该与线段 i+1 的起点重合。</li>
+<li>包含短线段 - 有些线段短于与几何关联的空间参考的系统单位所允许的长度。</li>
+<li>包含自相交环（仅适用于面要素）- 面不能与自身相交。</li>
+<li>包含自相交路径（仅适用于折线要素）- 折线不能与自身相交。</li>
+<li>包含非闭合环（仅适用于面要素）- 环中的最后一个折点须与环的第一个折点重合。</li>
+<li>包含不匹配的属性 - 某线段端点的 z 坐标或 m 坐标与下一条线段中与之重合的端点的 z 坐标或 m 坐标不匹配。</li>
+<li>包含不连续的部分 - 几何的某一部分由断开的或不连续的部分组成。</li>
+<li>空的 z 值（仅适用于启用 z 值的要素）- 几何的一个或多个折点 z 值为空（例如，NaN）。</li>
+</ul>
+</li>
+</ul>
+<p>这些查出来我也暂时不知道怎么改，有些图斑看起来真的就跟正常图形一样。<br><img src="/2023/11/15/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%B4%A8%E6%A3%80%E9%80%BB%E8%BE%91%E8%AE%BE%E8%AE%A1/418c5a4d8483e5abe5350a3bb74ee8bc.png" srcset="/img/loading.gif" lazyload alt="418c5a4d8483e5abe5350a3bb74ee8bc.png"></p>
+<h3 id="多部件检查"><a href="#多部件检查" class="headerlink" title="多部件检查"></a>多部件检查</h3><p>视情况使用，线和面都可以查，大多数时候是不允许多部件的。偶尔也有例外，有时候业务逻辑允许存在多部件，主要看数据库的建库规范。<br><img src="/2023/11/15/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%B4%A8%E6%A3%80%E9%80%BB%E8%BE%91%E8%AE%BE%E8%AE%A1/9c99ee6cbb6699dea4f0dcc0883962e3.png" srcset="/img/loading.gif" lazyload alt="9c99ee6cbb6699dea4f0dcc0883962e3.png"></p>
+<h3 id="锐角检查"><a href="#锐角检查" class="headerlink" title="锐角检查"></a>锐角检查</h3><p>主要用在对道路、水路的检查上，线和面都可以用，也可以查出数据处理的时候遗留的一些细小图斑或者矢量错误。有的时候数据库建库不查这个，但是这样的几何明显不符合现实情况，有条件可以改一下。<br><img src="/2023/11/15/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%B4%A8%E6%A3%80%E9%80%BB%E8%BE%91%E8%AE%BE%E8%AE%A1/0536e9eb5d1315172c4bc3a95fb2f5b1.png" srcset="/img/loading.gif" lazyload alt="0536e9eb5d1315172c4bc3a95fb2f5b1.png"></p>
+<h3 id="非线性几何"><a href="#非线性几何" class="headerlink" title="非线性几何"></a>非线性几何</h3><p>地理信息数据一般用点构成折线，再由折线构面，一般用多个折点来表示一段弯曲的对象，此类检查应该是应对一些由算式计算出的弧线的，类似CAD中常用的倒圆角。<br><img src="/2023/11/15/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%B4%A8%E6%A3%80%E9%80%BB%E8%BE%91%E8%AE%BE%E8%AE%A1/27cf687cd0f87450599f97c62f88be6a.png" srcset="/img/loading.gif" lazyload alt="27cf687cd0f87450599f97c62f88be6a.png"></p>
+<h3 id="自闭合检查"><a href="#自闭合检查" class="headerlink" title="自闭合检查"></a>自闭合检查</h3><p>检查一个线段是否绕了一圈回到原点，可以用来查没有打断的线条。<br><img src="/b8834cdd830a3d63b31ad0714cc56242.png" srcset="/img/loading.gif" lazyload alt="b8834cdd830a3d63b31ad0714cc56242.png"></p>
+<h1 id="属性检查"><a href="#属性检查" class="headerlink" title="属性检查"></a>属性检查</h1><p>属性检查主要针对要素的属性表进行检查，比如必填字段是否按规范填写，以及字段之间是否遵守了一定的逻辑规定。</p>
+<h3 id="SQL查询"><a href="#SQL查询" class="headerlink" title="SQL查询"></a>SQL查询</h3><p>经典而通用的查询方式，这不比ArcGIS Pro的Arcade好用一万倍。SQL也用在几何检查中作为辅助手段，可以对检查的目标进行筛选，过滤掉不相干的要素。<br><img src="/2023/11/15/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%B4%A8%E6%A3%80%E9%80%BB%E8%BE%91%E8%AE%BE%E8%AE%A1/3fa45ad7405581ef61c8b2fa09b5bb1d.png" srcset="/img/loading.gif" lazyload alt="3fa45ad7405581ef61c8b2fa09b5bb1d.png"></p>
+<h3 id="表格比对检查"><a href="#表格比对检查" class="headerlink" title="表格比对检查"></a>表格比对检查</h3><p>按照表格进行查找，找到和表格中的属性有对应一致内容的要素，相比SQL更适用于大量数据和复杂内容的查询，一般情况还是用SQL更多一些。<br><img src="/2023/11/15/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%B4%A8%E6%A3%80%E9%80%BB%E8%BE%91%E8%AE%BE%E8%AE%A1/6ca7a819484d41282d72e545832d7276.png" srcset="/img/loading.gif" lazyload alt="6ca7a819484d41282d72e545832d7276.png"></p>
+<h1 id="其他检查项目"><a href="#其他检查项目" class="headerlink" title="其他检查项目"></a>其他检查项目</h1><p>关于Data Reviewer还有很多检查工具是暂时没用上，主要取决于项目要求，还有使用人的熟练度。<br>还有关于一些细节的问题，以后用到了再补充完善。<br>几何上完全依靠质检来查错的难度还是比较大的，程序因为设定参数的问题，可能很难100%的覆盖到所有的错误。但是属性查询是比较好做的，因为字段不涉及空间关系，逻辑会简单很多，实在不行还可以用统计分析把所有的字段情况全部列出来看。</p>
+<p><img src="/2023/11/15/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%B4%A8%E6%A3%80%E9%80%BB%E8%BE%91%E8%AE%BE%E8%AE%A1/5f4f152fd278f595f16d43d54b8fff3c.png" srcset="/img/loading.gif" lazyload alt="5f4f152fd278f595f16d43d54b8fff3c.png"></p>
+<p>有多少人工才有多少智能，好的质检逻辑设计需要提前进行准备，不能等到要用了再想起来弄。<br>未雨绸缪，临危不乱。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0/" class="category-chain-item">学习</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/ArcGIS/">#ArcGIS</a>
+      
+        <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/">#数据库</a>
+      
+        <a href="/tags/Data-Reviewer/">#Data Reviewer</a>
+      
+        <a href="/tags/%E8%B4%A8%E6%A3%80/">#质检</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>数据库质检逻辑设计</div>
+      <div>http://kw1649190133.github.io/2023/11/15/数据库质检逻辑设计/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Aŭtoro</div>
+          <div>Kwindy</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Postigita</div>
+          <div>November 15, 2023</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Lizenta</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/11/03/GDB%E6%95%B0%E6%8D%AE%E5%BA%93%E5%88%86%E5%89%B2%E4%B8%8E%E5%90%88%E5%B9%B6%E5%B7%A5%E5%85%B7%E5%8E%9F%E7%90%86/" title="GDB数据库分割与合并工具原理">
+                        <span class="hidden-mobile">GDB数据库分割与合并工具原理</span>
+                        <span class="visible-mobile">Sekva afiŝo</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Enhavtabelo</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Serĉi</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">ŝlosivorto</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blogo funkcias plej bone kun JavaScript ebligita</div>
+  </noscript>
+</body>
+</html>
