@@ -1,0 +1,642 @@
+
+
+<!DOCTYPE html>
+<html lang="CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Kwindy">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="软件名称：DasEntityLOD软件版本：202311181530 数据加载测试可以加载shp和OSBG，数据坐标系要一致。 数据处理测试自动提取轮廓该功能在大模型和小范围模型中均无法使用，可能存在较为严苛的使用条件。  由shp生成模型从地形图等数据导出的精确建筑物轮廓，根据相应属性由二维矢量直接生成模型。需要做数据的字段匹配。shp 指定底面高度和建筑高度的快速建模。  单个模型轮廓的自动提">
+<meta property="og:type" content="article">
+<meta property="og:title" content="大势智慧城市三维模型构建软件测试">
+<meta property="og:url" content="http://kw1649190133.github.io/2023/11/23/%E5%A4%A7%E5%8A%BF%E6%99%BA%E6%85%A7%E5%9F%8E%E5%B8%82%E4%B8%89%E7%BB%B4%E6%A8%A1%E5%9E%8B%E6%9E%84%E5%BB%BA%E8%BD%AF%E4%BB%B6%E6%B5%8B%E8%AF%95/index.html">
+<meta property="og:site_name" content="kw&#39;s blog">
+<meta property="og:description" content="软件名称：DasEntityLOD软件版本：202311181530 数据加载测试可以加载shp和OSBG，数据坐标系要一致。 数据处理测试自动提取轮廓该功能在大模型和小范围模型中均无法使用，可能存在较为严苛的使用条件。  由shp生成模型从地形图等数据导出的精确建筑物轮廓，根据相应属性由二维矢量直接生成模型。需要做数据的字段匹配。shp 指定底面高度和建筑高度的快速建模。  单个模型轮廓的自动提">
+<meta property="og:locale">
+<meta property="og:image" content="http://kw1649190133.github.io/2023/11/23/%E5%A4%A7%E5%8A%BF%E6%99%BA%E6%85%A7%E5%9F%8E%E5%B8%82%E4%B8%89%E7%BB%B4%E6%A8%A1%E5%9E%8B%E6%9E%84%E5%BB%BA%E8%BD%AF%E4%BB%B6%E6%B5%8B%E8%AF%95/e5749ece8ba5d4e06ef0ae24f54506de.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2023/11/23/%E5%A4%A7%E5%8A%BF%E6%99%BA%E6%85%A7%E5%9F%8E%E5%B8%82%E4%B8%89%E7%BB%B4%E6%A8%A1%E5%9E%8B%E6%9E%84%E5%BB%BA%E8%BD%AF%E4%BB%B6%E6%B5%8B%E8%AF%95/6d9cf911751d81b991b00081f358464f.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2023/11/23/%E5%A4%A7%E5%8A%BF%E6%99%BA%E6%85%A7%E5%9F%8E%E5%B8%82%E4%B8%89%E7%BB%B4%E6%A8%A1%E5%9E%8B%E6%9E%84%E5%BB%BA%E8%BD%AF%E4%BB%B6%E6%B5%8B%E8%AF%95/f76ed32b0da54f15b42b633a65ece4ef.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2023/11/23/%E5%A4%A7%E5%8A%BF%E6%99%BA%E6%85%A7%E5%9F%8E%E5%B8%82%E4%B8%89%E7%BB%B4%E6%A8%A1%E5%9E%8B%E6%9E%84%E5%BB%BA%E8%BD%AF%E4%BB%B6%E6%B5%8B%E8%AF%95/32c31a0144e768ae8a846ae971598204.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2023/11/23/%E5%A4%A7%E5%8A%BF%E6%99%BA%E6%85%A7%E5%9F%8E%E5%B8%82%E4%B8%89%E7%BB%B4%E6%A8%A1%E5%9E%8B%E6%9E%84%E5%BB%BA%E8%BD%AF%E4%BB%B6%E6%B5%8B%E8%AF%95/6cd445e6841c9acf2d9c4dde4229912b.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2023/11/23/%E5%A4%A7%E5%8A%BF%E6%99%BA%E6%85%A7%E5%9F%8E%E5%B8%82%E4%B8%89%E7%BB%B4%E6%A8%A1%E5%9E%8B%E6%9E%84%E5%BB%BA%E8%BD%AF%E4%BB%B6%E6%B5%8B%E8%AF%95/9b83302bea9112db0afae5013f9c6ce7.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2023/11/23/%E5%A4%A7%E5%8A%BF%E6%99%BA%E6%85%A7%E5%9F%8E%E5%B8%82%E4%B8%89%E7%BB%B4%E6%A8%A1%E5%9E%8B%E6%9E%84%E5%BB%BA%E8%BD%AF%E4%BB%B6%E6%B5%8B%E8%AF%95/db1edbad3a67527fee0c76ebc7441695.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2023/11/23/%E5%A4%A7%E5%8A%BF%E6%99%BA%E6%85%A7%E5%9F%8E%E5%B8%82%E4%B8%89%E7%BB%B4%E6%A8%A1%E5%9E%8B%E6%9E%84%E5%BB%BA%E8%BD%AF%E4%BB%B6%E6%B5%8B%E8%AF%95/e5ac1a728b77c5a39868159cb4779646.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2023/11/23/%E5%A4%A7%E5%8A%BF%E6%99%BA%E6%85%A7%E5%9F%8E%E5%B8%82%E4%B8%89%E7%BB%B4%E6%A8%A1%E5%9E%8B%E6%9E%84%E5%BB%BA%E8%BD%AF%E4%BB%B6%E6%B5%8B%E8%AF%95/1921ebb2fe8bf50b62bb75fd1771be5a.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2023/11/23/%E5%A4%A7%E5%8A%BF%E6%99%BA%E6%85%A7%E5%9F%8E%E5%B8%82%E4%B8%89%E7%BB%B4%E6%A8%A1%E5%9E%8B%E6%9E%84%E5%BB%BA%E8%BD%AF%E4%BB%B6%E6%B5%8B%E8%AF%95/0dc926218fdb4cf2c45d0b6852518895.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2023/11/23/%E5%A4%A7%E5%8A%BF%E6%99%BA%E6%85%A7%E5%9F%8E%E5%B8%82%E4%B8%89%E7%BB%B4%E6%A8%A1%E5%9E%8B%E6%9E%84%E5%BB%BA%E8%BD%AF%E4%BB%B6%E6%B5%8B%E8%AF%95/38f8b95e9984dd2d18d9f19536e27554.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2023/11/23/%E5%A4%A7%E5%8A%BF%E6%99%BA%E6%85%A7%E5%9F%8E%E5%B8%82%E4%B8%89%E7%BB%B4%E6%A8%A1%E5%9E%8B%E6%9E%84%E5%BB%BA%E8%BD%AF%E4%BB%B6%E6%B5%8B%E8%AF%95/af703f60cb57705f4f72bf49937bdd94.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2023/11/23/%E5%A4%A7%E5%8A%BF%E6%99%BA%E6%85%A7%E5%9F%8E%E5%B8%82%E4%B8%89%E7%BB%B4%E6%A8%A1%E5%9E%8B%E6%9E%84%E5%BB%BA%E8%BD%AF%E4%BB%B6%E6%B5%8B%E8%AF%95/fb96290670fdbe8fde96ca0ed94e614d.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2023/11/23/%E5%A4%A7%E5%8A%BF%E6%99%BA%E6%85%A7%E5%9F%8E%E5%B8%82%E4%B8%89%E7%BB%B4%E6%A8%A1%E5%9E%8B%E6%9E%84%E5%BB%BA%E8%BD%AF%E4%BB%B6%E6%B5%8B%E8%AF%95/68c2e0127b7e880575c10acc02be338d.png">
+<meta property="article:published_time" content="2023-11-23T09:40:30.000Z">
+<meta property="article:modified_time" content="2023-11-23T09:41:52.609Z">
+<meta property="article:author" content="Kwindy">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://kw1649190133.github.io/2023/11/23/%E5%A4%A7%E5%8A%BF%E6%99%BA%E6%85%A7%E5%9F%8E%E5%B8%82%E4%B8%89%E7%BB%B4%E6%A8%A1%E5%9E%8B%E6%9E%84%E5%BB%BA%E8%BD%AF%E4%BB%B6%E6%B5%8B%E8%AF%95/e5749ece8ba5d4e06ef0ae24f54506de.png">
+  
+  
+  
+  <title>大势智慧城市三维模型构建软件测试 - kw&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"kw1649190133.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Startseite</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archiv</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Kategorien</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Schlagwörter</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>Über</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="大势智慧城市三维模型构建软件测试"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-11-23 17:40" pubdate>
+          November 23, 2023 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          860 wörter
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          8 minuten
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">大势智慧城市三维模型构建软件测试</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>软件名称：DasEntityLOD<br>软件版本：202311181530</p>
+<h1 id="数据加载测试"><a href="#数据加载测试" class="headerlink" title="数据加载测试"></a>数据加载测试</h1><p>可以加载shp和OSBG，数据坐标系要一致。<br><img src="/2023/11/23/%E5%A4%A7%E5%8A%BF%E6%99%BA%E6%85%A7%E5%9F%8E%E5%B8%82%E4%B8%89%E7%BB%B4%E6%A8%A1%E5%9E%8B%E6%9E%84%E5%BB%BA%E8%BD%AF%E4%BB%B6%E6%B5%8B%E8%AF%95/e5749ece8ba5d4e06ef0ae24f54506de.png" srcset="/img/loading.gif" lazyload alt="e5749ece8ba5d4e06ef0ae24f54506de.png"></p>
+<h1 id="数据处理测试"><a href="#数据处理测试" class="headerlink" title="数据处理测试"></a>数据处理测试</h1><h2 id="自动提取轮廓"><a href="#自动提取轮廓" class="headerlink" title="自动提取轮廓"></a>自动提取轮廓</h2><p>该功能在大模型和小范围模型中均无法使用，可能存在较为严苛的使用条件。<br><img src="/2023/11/23/%E5%A4%A7%E5%8A%BF%E6%99%BA%E6%85%A7%E5%9F%8E%E5%B8%82%E4%B8%89%E7%BB%B4%E6%A8%A1%E5%9E%8B%E6%9E%84%E5%BB%BA%E8%BD%AF%E4%BB%B6%E6%B5%8B%E8%AF%95/6d9cf911751d81b991b00081f358464f.png" srcset="/img/loading.gif" lazyload alt="6d9cf911751d81b991b00081f358464f.png"></p>
+<p><img src="/2023/11/23/%E5%A4%A7%E5%8A%BF%E6%99%BA%E6%85%A7%E5%9F%8E%E5%B8%82%E4%B8%89%E7%BB%B4%E6%A8%A1%E5%9E%8B%E6%9E%84%E5%BB%BA%E8%BD%AF%E4%BB%B6%E6%B5%8B%E8%AF%95/f76ed32b0da54f15b42b633a65ece4ef.png" srcset="/img/loading.gif" lazyload alt="f76ed32b0da54f15b42b633a65ece4ef.png"></p>
+<h2 id="由shp生成模型"><a href="#由shp生成模型" class="headerlink" title="由shp生成模型"></a>由shp生成模型</h2><p>从地形图等数据导出的精确建筑物轮廓，根据相应属性由二维矢量直接生成模型。<br>需要做数据的字段匹配。<br>shp 指定底面高度和建筑高度的快速建模。<br><img src="/2023/11/23/%E5%A4%A7%E5%8A%BF%E6%99%BA%E6%85%A7%E5%9F%8E%E5%B8%82%E4%B8%89%E7%BB%B4%E6%A8%A1%E5%9E%8B%E6%9E%84%E5%BB%BA%E8%BD%AF%E4%BB%B6%E6%B5%8B%E8%AF%95/32c31a0144e768ae8a846ae971598204.png" srcset="/img/loading.gif" lazyload alt="32c31a0144e768ae8a846ae971598204.png"></p>
+<p><img src="/2023/11/23/%E5%A4%A7%E5%8A%BF%E6%99%BA%E6%85%A7%E5%9F%8E%E5%B8%82%E4%B8%89%E7%BB%B4%E6%A8%A1%E5%9E%8B%E6%9E%84%E5%BB%BA%E8%BD%AF%E4%BB%B6%E6%B5%8B%E8%AF%95/6cd445e6841c9acf2d9c4dde4229912b.png" srcset="/img/loading.gif" lazyload alt="6cd445e6841c9acf2d9c4dde4229912b.png"></p>
+<h2 id="单个模型轮廓的自动提取"><a href="#单个模型轮廓的自动提取" class="headerlink" title="单个模型轮廓的自动提取"></a>单个模型轮廓的自动提取</h2><p>测试在软件中进行采集的效果。除了手动绘制矢量范围，还可以自动识别和提取单个建筑轮廓，但前提是建筑模型有较高的独立性，没有和周围干扰物有粘连。<br>在模型中选择对应建筑，自动生成二维轮廓。可以通过调整参数自动简化轮廓节点数量。<br><img src="/2023/11/23/%E5%A4%A7%E5%8A%BF%E6%99%BA%E6%85%A7%E5%9F%8E%E5%B8%82%E4%B8%89%E7%BB%B4%E6%A8%A1%E5%9E%8B%E6%9E%84%E5%BB%BA%E8%BD%AF%E4%BB%B6%E6%B5%8B%E8%AF%95/9b83302bea9112db0afae5013f9c6ce7.png" srcset="/img/loading.gif" lazyload alt="9b83302bea9112db0afae5013f9c6ce7.png"></p>
+<p>对于多层复杂结构，需要单独制作每个部件。体现在shp图层中为重叠的两个要素。<br><img src="/2023/11/23/%E5%A4%A7%E5%8A%BF%E6%99%BA%E6%85%A7%E5%9F%8E%E5%B8%82%E4%B8%89%E7%BB%B4%E6%A8%A1%E5%9E%8B%E6%9E%84%E5%BB%BA%E8%BD%AF%E4%BB%B6%E6%B5%8B%E8%AF%95/db1edbad3a67527fee0c76ebc7441695.png" srcset="/img/loading.gif" lazyload alt="db1edbad3a67527fee0c76ebc7441695.png"></p>
+<h2 id="模型构建"><a href="#模型构建" class="headerlink" title="模型构建"></a>模型构建</h2><p>模型构建建立在有二维轮廓的基础上。<br>在已有shp轮廓时。可以使用快速拉白模功能，在osgb中选取单个模型的高度。<br>还可以使用“构建体块模型”进行批量构建，自动提取osgb中的模型高度。<br><img src="/2023/11/23/%E5%A4%A7%E5%8A%BF%E6%99%BA%E6%85%A7%E5%9F%8E%E5%B8%82%E4%B8%89%E7%BB%B4%E6%A8%A1%E5%9E%8B%E6%9E%84%E5%BB%BA%E8%BD%AF%E4%BB%B6%E6%B5%8B%E8%AF%95/e5ac1a728b77c5a39868159cb4779646.png" srcset="/img/loading.gif" lazyload alt="e5ac1a728b77c5a39868159cb4779646.png"></p>
+<h2 id="贴图处理"><a href="#贴图处理" class="headerlink" title="贴图处理"></a>贴图处理</h2><p>模型建立后可以设置贴图材质。仅支持使用预设的材质模板，不能从osgb中提取贴图。<br><img src="/2023/11/23/%E5%A4%A7%E5%8A%BF%E6%99%BA%E6%85%A7%E5%9F%8E%E5%B8%82%E4%B8%89%E7%BB%B4%E6%A8%A1%E5%9E%8B%E6%9E%84%E5%BB%BA%E8%BD%AF%E4%BB%B6%E6%B5%8B%E8%AF%95/1921ebb2fe8bf50b62bb75fd1771be5a.png" srcset="/img/loading.gif" lazyload alt="1921ebb2fe8bf50b62bb75fd1771be5a.png"></p>
+<p>在二维平面选择对应的矢量，可以统一给模型贴图。贴图后模型呈现实体不透明效果，未贴图为透明效果，可以在单体视图中启动预览。<br><img src="/2023/11/23/%E5%A4%A7%E5%8A%BF%E6%99%BA%E6%85%A7%E5%9F%8E%E5%B8%82%E4%B8%89%E7%BB%B4%E6%A8%A1%E5%9E%8B%E6%9E%84%E5%BB%BA%E8%BD%AF%E4%BB%B6%E6%B5%8B%E8%AF%95/0dc926218fdb4cf2c45d0b6852518895.png" srcset="/img/loading.gif" lazyload alt="0dc926218fdb4cf2c45d0b6852518895.png"><br>批量贴图功能在处理大范围数据时会卡住。</p>
+<h1 id="数据导出测试"><a href="#数据导出测试" class="headerlink" title="数据导出测试"></a>数据导出测试</h1><p>体块成果导出功能正常。可以将构建的白膜导出到一个osgb模型中。<br><img src="/2023/11/23/%E5%A4%A7%E5%8A%BF%E6%99%BA%E6%85%A7%E5%9F%8E%E5%B8%82%E4%B8%89%E7%BB%B4%E6%A8%A1%E5%9E%8B%E6%9E%84%E5%BB%BA%E8%BD%AF%E4%BB%B6%E6%B5%8B%E8%AF%95/38f8b95e9984dd2d18d9f19536e27554.png" srcset="/img/loading.gif" lazyload alt="38f8b95e9984dd2d18d9f19536e27554.png"></p>
+<p>模型素体<br><img src="/2023/11/23/%E5%A4%A7%E5%8A%BF%E6%99%BA%E6%85%A7%E5%9F%8E%E5%B8%82%E4%B8%89%E7%BB%B4%E6%A8%A1%E5%9E%8B%E6%9E%84%E5%BB%BA%E8%BD%AF%E4%BB%B6%E6%B5%8B%E8%AF%95/af703f60cb57705f4f72bf49937bdd94.png" srcset="/img/loading.gif" lazyload alt="af703f60cb57705f4f72bf49937bdd94.png"></p>
+<p>贴图效果<br><img src="/2023/11/23/%E5%A4%A7%E5%8A%BF%E6%99%BA%E6%85%A7%E5%9F%8E%E5%B8%82%E4%B8%89%E7%BB%B4%E6%A8%A1%E5%9E%8B%E6%9E%84%E5%BB%BA%E8%BD%AF%E4%BB%B6%E6%B5%8B%E8%AF%95/fb96290670fdbe8fde96ca0ed94e614d.png" srcset="/img/loading.gif" lazyload alt="fb96290670fdbe8fde96ca0ed94e614d.png"></p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><h2 id="实际作业流程"><a href="#实际作业流程" class="headerlink" title="实际作业流程"></a>实际作业流程</h2><p>自动从模型批量提取建筑轮廓的功能并不能使用，所以比较快速的构建方式依然是在已有shp轮廓的基础上，匹配高程和楼层高度属性。模型高度可以使用<strong>构建体块模型</strong>工具进行批量构建，可以让shp轮廓自动匹配osgb中的建筑高度。可以先使用批量构建，再使用白膜编辑进行细节调整。<br>shp轮廓矢量是重要的数据基础，直接决定模型成果的质量。保留<strong>shp轮廓和相关高程高度信息</strong>，即可快速构建白模。完善的字段信息、准确的矢量范围才能构建高质量的模型。忽略复杂的模型部件，仅保留基本形状和高度信息，也可以提高建模效率。</p>
+<p>成果预览<br><img src="/2023/11/23/%E5%A4%A7%E5%8A%BF%E6%99%BA%E6%85%A7%E5%9F%8E%E5%B8%82%E4%B8%89%E7%BB%B4%E6%A8%A1%E5%9E%8B%E6%9E%84%E5%BB%BA%E8%BD%AF%E4%BB%B6%E6%B5%8B%E8%AF%95/68c2e0127b7e880575c10acc02be338d.png" srcset="/img/loading.gif" lazyload alt="68c2e0127b7e880575c10acc02be338d.png"></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>大势智慧城市三维模型构建软件测试</div>
+      <div>http://kw1649190133.github.io/2023/11/23/大势智慧城市三维模型构建软件测试/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Beitragsautor</div>
+          <div>Kwindy</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Veröffentlicht am</div>
+          <div>November 23, 2023</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Urheberrechtshinweis</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/11/20/GDB%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E6%89%B9%E9%87%8F%E8%A3%81%E5%89%AA%E6%A8%A1%E5%9E%8B%E5%AE%9E%E7%8E%B0/" title="GDB数据库的批量裁剪模型实现">
+                        <span class="hidden-mobile">GDB数据库的批量裁剪模型实现</span>
+                        <span class="visible-mobile">Nächster</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Inhaltsverzeichnis</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Suchen</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Stichwort</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog funktioniert am besten mit aktiviertem JavaScript</div>
+  </noscript>
+</body>
+</html>
