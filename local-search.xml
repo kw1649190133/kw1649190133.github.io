@@ -82,9 +82,9 @@
     
     <tags>
       
-      <tag>地理信息</tag>
-      
       <tag>ArcGIS</tag>
+      
+      <tag>地理信息</tag>
       
       <tag>gdb</tag>
       
@@ -107,7 +107,7 @@
     <link href="/2023/11/15/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%B4%A8%E6%A3%80%E9%80%BB%E8%BE%91%E8%AE%BE%E8%AE%A1/"/>
     <url>/2023/11/15/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%B4%A8%E6%A3%80%E9%80%BB%E8%BE%91%E8%AE%BE%E8%AE%A1/</url>
     
-    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>本篇主要介绍基于Data Reviewer的数据库质检方法，分析数据库质检的规则设计逻辑，总结一下哪些预设的质检项目是可以直接使用的。</p><h1 id="质检设计"><a href="#质检设计" class="headerlink" title="质检设计"></a>质检设计</h1><p>一般来说，需要针对不同的业务需求来做质检设计，但所有的质检也会有基本的共通之处。地理信息数据包含时间空间信息和字段属性，所以具体的检查也需要对应空间和属性两大方面。</p><h2 id="针对线型矢量的基本检查项目"><a href="#针对线型矢量的基本检查项目" class="headerlink" title="针对线型矢量的基本检查项目"></a>针对线型矢量的基本检查项目</h2><ul><li>基本的属性、无效几何、多部件、锐角、非线性</li><li>悬挂点</li><li>连通性</li></ul><h2 id="针对面型矢量的基本检查项目"><a href="#针对面型矢量的基本检查项目" class="headerlink" title="针对面型矢量的基本检查项目"></a>针对面型矢量的基本检查项目</h2><ul><li>基本的属性、无效几何、多部件、锐角、非线性</li><li>面要素中的空洞</li><li>狭长面</li><li>狭长面的重叠和缝隙</li><li>不必要的面边界（属性相同可融合的要素）<h2 id="根据需求自定义的检查项目"><a href="#根据需求自定义的检查项目" class="headerlink" title="根据需求自定义的检查项目"></a>根据需求自定义的检查项目</h2></li></ul><ul><li>位置检查——检查图层是否与其他图层有相交，是否在其他图层的范围内等，和GIS本身的功能“按位置选择”类似，可以按要素的空间关系进行查询。</li><li>长度、面积检查——检查要素是否在规定的尺寸范围内。项目中常常会规定最小长度、最小面积，小于这个标准的就不上图或者就近和其他要素融合。<h1 id="几何检查"><a href="#几何检查" class="headerlink" title="几何检查"></a>几何检查</h1></li></ul><h3 id="几何无效检查"><a href="#几何无效检查" class="headerlink" title="几何无效检查"></a>几何无效检查</h3><p>首先定义什么是无效几何，可以看到效验规则的描述比较概略，但是在ArcGIS的官网可以找到非常详细的讲解，我直接一整个搬过来。</p><ul><li>空——当要素的几何在其最初的初始状态以外，不含点且不含由 SHAPE_LEN 和 SHAPE_AREA 字段表示的几何信息时，产生此条件。当以编程方式创建或编辑数据以及将错误数据导入您的地理信息系统时，可引入空几何。</li><li>无——当要素的 SHAPE 字段值为空时，产生此条件。当校验无法检索要素的几何信息时，将返回此类错误信息。</li><li>具有空包络矩形——当要素的包络或边界矩形不具有任何几何信息时，产生此条件。此条件与空几何方案类似。</li><li>非简单——以下任意条件为 true 时，产生此条件：<ul><li>环方向不正确（仅适用于面要素） - 不会自相交但其环未正确定向的面（外环，顺时针；内环，逆时针）。</li><li>线段方向不正确 - 各个线段的定向不一致。线段 i 的终点应该与线段 i+1 的起点重合。</li><li>包含短线段 - 有些线段短于与几何关联的空间参考的系统单位所允许的长度。</li><li>包含自相交环（仅适用于面要素）- 面不能与自身相交。</li><li>包含自相交路径（仅适用于折线要素）- 折线不能与自身相交。</li><li>包含非闭合环（仅适用于面要素）- 环中的最后一个折点须与环的第一个折点重合。</li><li>包含不匹配的属性 - 某线段端点的 z 坐标或 m 坐标与下一条线段中与之重合的端点的 z 坐标或 m 坐标不匹配。</li><li>包含不连续的部分 - 几何的某一部分由断开的或不连续的部分组成。</li><li>空的 z 值（仅适用于启用 z 值的要素）- 几何的一个或多个折点 z 值为空（例如，NaN）。</li></ul></li></ul><p>这些查出来我也暂时不知道怎么改，有些图斑看起来真的就跟正常图形一样。<br><img src="/2023/11/15/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%B4%A8%E6%A3%80%E9%80%BB%E8%BE%91%E8%AE%BE%E8%AE%A1/418c5a4d8483e5abe5350a3bb74ee8bc.png" alt="418c5a4d8483e5abe5350a3bb74ee8bc.png"></p><h3 id="多部件检查"><a href="#多部件检查" class="headerlink" title="多部件检查"></a>多部件检查</h3><p>视情况使用，线和面都可以查，大多数时候是不允许多部件的。偶尔也有例外，有时候业务逻辑允许存在多部件，主要看数据库的建库规范。<br><img src="/2023/11/15/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%B4%A8%E6%A3%80%E9%80%BB%E8%BE%91%E8%AE%BE%E8%AE%A1/9c99ee6cbb6699dea4f0dcc0883962e3.png" alt="9c99ee6cbb6699dea4f0dcc0883962e3.png"></p><h3 id="锐角检查"><a href="#锐角检查" class="headerlink" title="锐角检查"></a>锐角检查</h3><p>主要用在对道路、水路的检查上，线和面都可以用，也可以查出数据处理的时候遗留的一些细小图斑或者矢量错误。有的时候数据库建库不查这个，但是这样的几何明显不符合现实情况，有条件可以改一下。<br><img src="/2023/11/15/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%B4%A8%E6%A3%80%E9%80%BB%E8%BE%91%E8%AE%BE%E8%AE%A1/0536e9eb5d1315172c4bc3a95fb2f5b1.png" alt="0536e9eb5d1315172c4bc3a95fb2f5b1.png"></p><h3 id="非线性几何"><a href="#非线性几何" class="headerlink" title="非线性几何"></a>非线性几何</h3><p>地理信息数据一般用点构成折线，再由折线构面，一般用多个折点来表示一段弯曲的对象，此类检查应该是应对一些由算式计算出的弧线的，类似CAD中常用的倒圆角。<br><img src="/2023/11/15/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%B4%A8%E6%A3%80%E9%80%BB%E8%BE%91%E8%AE%BE%E8%AE%A1/27cf687cd0f87450599f97c62f88be6a.png" alt="27cf687cd0f87450599f97c62f88be6a.png"></p><h3 id="自闭合检查"><a href="#自闭合检查" class="headerlink" title="自闭合检查"></a>自闭合检查</h3><p>检查一个线段是否绕了一圈回到原点，可以用来查没有打断的线条。<br><img src="/b8834cdd830a3d63b31ad0714cc56242.png" alt="b8834cdd830a3d63b31ad0714cc56242.png"></p><h1 id="属性检查"><a href="#属性检查" class="headerlink" title="属性检查"></a>属性检查</h1><p>属性检查主要针对要素的属性表进行检查，比如必填字段是否按规范填写，以及字段之间是否遵守了一定的逻辑规定。</p><h3 id="SQL查询"><a href="#SQL查询" class="headerlink" title="SQL查询"></a>SQL查询</h3><p>经典而通用的查询方式，这不比ArcGIS Pro的Arcade好用一万倍。SQL也用在几何检查中作为辅助手段，可以对检查的目标进行筛选，过滤掉不相干的要素。<br><img src="/2023/11/15/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%B4%A8%E6%A3%80%E9%80%BB%E8%BE%91%E8%AE%BE%E8%AE%A1/3fa45ad7405581ef61c8b2fa09b5bb1d.png" alt="3fa45ad7405581ef61c8b2fa09b5bb1d.png"></p><h3 id="表格比对检查"><a href="#表格比对检查" class="headerlink" title="表格比对检查"></a>表格比对检查</h3><p>按照表格进行查找，找到和表格中的属性有对应一致内容的要素，相比SQL更适用于大量数据和复杂内容的查询，一般情况还是用SQL更多一些。<br><img src="/2023/11/15/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%B4%A8%E6%A3%80%E9%80%BB%E8%BE%91%E8%AE%BE%E8%AE%A1/6ca7a819484d41282d72e545832d7276.png" alt="6ca7a819484d41282d72e545832d7276.png"></p><h1 id="其他检查项目"><a href="#其他检查项目" class="headerlink" title="其他检查项目"></a>其他检查项目</h1><p>关于Data Reviewer还有很多检查工具是暂时没用上，主要取决于项目要求，还有使用人的熟练度。<br>还有关于一些细节的问题，以后用到了再补充完善。<br>几何上完全依靠质检来查错的难度还是比较大的，程序因为设定参数的问题，可能很难100%的覆盖到所有的错误。但是属性查询是比较好做的，因为字段不涉及空间关系，逻辑会简单很多，实在不行还可以用统计分析把所有的字段情况全部列出来看。</p><p><img src="/2023/11/15/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%B4%A8%E6%A3%80%E9%80%BB%E8%BE%91%E8%AE%BE%E8%AE%A1/5f4f152fd278f595f16d43d54b8fff3c.png" alt="5f4f152fd278f595f16d43d54b8fff3c.png"></p><p>有多少人工才有多少智能，好的质检逻辑设计需要提前进行准备，不能等到要用了再想起来弄。<br>未雨绸缪，临危不乱。</p>]]></content>
+    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>本篇主要介绍基于Data Reviewer的数据库质检方法，分析数据库质检的规则设计逻辑，总结一下哪些预设的质检项目是可以直接使用的。</p><h1 id="质检设计"><a href="#质检设计" class="headerlink" title="质检设计"></a>质检设计</h1><p>一般来说，需要针对不同的业务需求来做质检设计，但所有的质检也会有基本的共通之处。地理信息数据包含时间空间信息和字段属性，所以具体的检查也需要对应空间和属性两大方面。</p><h2 id="针对线型矢量的基本检查项目"><a href="#针对线型矢量的基本检查项目" class="headerlink" title="针对线型矢量的基本检查项目"></a>针对线型矢量的基本检查项目</h2><ul><li>基本的属性、无效几何、多部件、锐角、非线性</li><li>悬挂点</li><li>连通性</li></ul><h2 id="针对面型矢量的基本检查项目"><a href="#针对面型矢量的基本检查项目" class="headerlink" title="针对面型矢量的基本检查项目"></a>针对面型矢量的基本检查项目</h2><ul><li>基本的属性、无效几何、多部件、锐角、非线性</li><li>面要素中的空洞</li><li>狭长面</li><li>狭长面的重叠和缝隙</li><li>不必要的面边界（属性相同可融合的要素）<h2 id="根据需求自定义的检查项目"><a href="#根据需求自定义的检查项目" class="headerlink" title="根据需求自定义的检查项目"></a>根据需求自定义的检查项目</h2></li></ul><ul><li>位置检查——检查图层是否与其他图层有相交，是否在其他图层的范围内等，和GIS本身的功能“按位置选择”类似，可以按要素的空间关系进行查询。</li><li>长度、面积检查——检查要素是否在规定的尺寸范围内。项目中常常会规定最小长度、最小面积，小于这个标准的就不上图或者就近和其他要素融合。<h1 id="几何检查"><a href="#几何检查" class="headerlink" title="几何检查"></a>几何检查</h1></li></ul><h3 id="几何无效检查"><a href="#几何无效检查" class="headerlink" title="几何无效检查"></a>几何无效检查</h3><p>首先定义什么是无效几何，可以看到效验规则的描述比较概略，但是在ArcGIS的官网可以找到非常详细的讲解，我直接一整个搬过来。</p><ul><li>空——当要素的几何在其最初的初始状态以外，不含点且不含由 SHAPE_LEN 和 SHAPE_AREA 字段表示的几何信息时，产生此条件。当以编程方式创建或编辑数据以及将错误数据导入您的地理信息系统时，可引入空几何。</li><li>无——当要素的 SHAPE 字段值为空时，产生此条件。当校验无法检索要素的几何信息时，将返回此类错误信息。</li><li>具有空包络矩形——当要素的包络或边界矩形不具有任何几何信息时，产生此条件。此条件与空几何方案类似。</li><li>非简单——以下任意条件为 true 时，产生此条件：<ul><li>环方向不正确（仅适用于面要素） - 不会自相交但其环未正确定向的面（外环，顺时针；内环，逆时针）。</li><li>线段方向不正确 - 各个线段的定向不一致。线段 i 的终点应该与线段 i+1 的起点重合。</li><li>包含短线段 - 有些线段短于与几何关联的空间参考的系统单位所允许的长度。</li><li>包含自相交环（仅适用于面要素）- 面不能与自身相交。</li><li>包含自相交路径（仅适用于折线要素）- 折线不能与自身相交。</li><li>包含非闭合环（仅适用于面要素）- 环中的最后一个折点须与环的第一个折点重合。</li><li>包含不匹配的属性 - 某线段端点的 z 坐标或 m 坐标与下一条线段中与之重合的端点的 z 坐标或 m 坐标不匹配。</li><li>包含不连续的部分 - 几何的某一部分由断开的或不连续的部分组成。</li><li>空的 z 值（仅适用于启用 z 值的要素）- 几何的一个或多个折点 z 值为空（例如，NaN）。</li></ul></li></ul><p>这些查出来我也暂时不知道怎么改，有些图斑看起来真的就跟正常图形一样。<br><img src="/2023/11/15/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%B4%A8%E6%A3%80%E9%80%BB%E8%BE%91%E8%AE%BE%E8%AE%A1/418c5a4d8483e5abe5350a3bb74ee8bc.png" alt="418c5a4d8483e5abe5350a3bb74ee8bc.png"></p><h3 id="多部件检查"><a href="#多部件检查" class="headerlink" title="多部件检查"></a>多部件检查</h3><p>视情况使用，线和面都可以查，大多数时候是不允许多部件的。偶尔也有例外，有时候业务逻辑允许存在多部件，主要看数据库的建库规范。<br><img src="/2023/11/15/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%B4%A8%E6%A3%80%E9%80%BB%E8%BE%91%E8%AE%BE%E8%AE%A1/9c99ee6cbb6699dea4f0dcc0883962e3.png" alt="9c99ee6cbb6699dea4f0dcc0883962e3.png"></p><h3 id="锐角检查"><a href="#锐角检查" class="headerlink" title="锐角检查"></a>锐角检查</h3><p>主要用在对道路、水路的检查上，线和面都可以用，也可以查出数据处理的时候遗留的一些细小图斑或者矢量错误。有的时候数据库建库不查这个，但是这样的几何明显不符合现实情况，有条件可以改一下。<br><img src="/2023/11/15/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%B4%A8%E6%A3%80%E9%80%BB%E8%BE%91%E8%AE%BE%E8%AE%A1/0536e9eb5d1315172c4bc3a95fb2f5b1.png" alt="0536e9eb5d1315172c4bc3a95fb2f5b1.png"></p><h3 id="非线性几何"><a href="#非线性几何" class="headerlink" title="非线性几何"></a>非线性几何</h3><p>地理信息数据一般用点构成折线，再由折线构面，一般用多个折点来表示一段弯曲的对象，此类检查应该是应对一些由算式计算出的弧线的，类似CAD中常用的倒圆角。<br><img src="/2023/11/15/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%B4%A8%E6%A3%80%E9%80%BB%E8%BE%91%E8%AE%BE%E8%AE%A1/27cf687cd0f87450599f97c62f88be6a.png" alt="27cf687cd0f87450599f97c62f88be6a.png"></p><h3 id="自闭合检查"><a href="#自闭合检查" class="headerlink" title="自闭合检查"></a>自闭合检查</h3><p>检查一个线段是否绕了一圈回到原点，可以用来查没有打断的线条。<br><img src="/2023/11/15/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%B4%A8%E6%A3%80%E9%80%BB%E8%BE%91%E8%AE%BE%E8%AE%A1/b8834cdd830a3d63b31ad0714cc56242.png" alt="b8834cdd830a3d63b31ad0714cc56242.png"></p><h1 id="属性检查"><a href="#属性检查" class="headerlink" title="属性检查"></a>属性检查</h1><p>属性检查主要针对要素的属性表进行检查，比如必填字段是否按规范填写，以及字段之间是否遵守了一定的逻辑规定。</p><h3 id="SQL查询"><a href="#SQL查询" class="headerlink" title="SQL查询"></a>SQL查询</h3><p>经典而通用的查询方式，这不比ArcGIS Pro的Arcade好用一万倍。SQL也用在几何检查中作为辅助手段，可以对检查的目标进行筛选，过滤掉不相干的要素。<br><img src="/2023/11/15/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%B4%A8%E6%A3%80%E9%80%BB%E8%BE%91%E8%AE%BE%E8%AE%A1/3fa45ad7405581ef61c8b2fa09b5bb1d.png" alt="3fa45ad7405581ef61c8b2fa09b5bb1d.png"></p><h3 id="表格比对检查"><a href="#表格比对检查" class="headerlink" title="表格比对检查"></a>表格比对检查</h3><p>按照表格进行查找，找到和表格中的属性有对应一致内容的要素，相比SQL更适用于大量数据和复杂内容的查询，一般情况还是用SQL更多一些。<br><img src="/2023/11/15/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%B4%A8%E6%A3%80%E9%80%BB%E8%BE%91%E8%AE%BE%E8%AE%A1/6ca7a819484d41282d72e545832d7276.png" alt="6ca7a819484d41282d72e545832d7276.png"></p><h1 id="其他检查项目"><a href="#其他检查项目" class="headerlink" title="其他检查项目"></a>其他检查项目</h1><p>关于Data Reviewer还有很多检查工具是暂时没用上，主要取决于项目要求，还有使用人的熟练度。<br>还有关于一些细节的问题，以后用到了再补充完善。<br>几何上完全依靠质检来查错的难度还是比较大的，程序因为设定参数的问题，可能很难100%的覆盖到所有的错误。但是属性查询是比较好做的，因为字段不涉及空间关系，逻辑会简单很多，实在不行还可以用统计分析把所有的字段情况全部列出来看。</p><p><img src="/2023/11/15/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%B4%A8%E6%A3%80%E9%80%BB%E8%BE%91%E8%AE%BE%E8%AE%A1/5f4f152fd278f595f16d43d54b8fff3c.png" alt="5f4f152fd278f595f16d43d54b8fff3c.png"></p><p>有多少人工才有多少智能，好的质检逻辑设计需要提前进行准备，不能等到要用了再想起来弄。<br>未雨绸缪，临危不乱。</p>]]></content>
     
     
     <categories>
@@ -185,9 +185,9 @@
     
     <tags>
       
-      <tag>地理信息</tag>
-      
       <tag>ArcGIS</tag>
+      
+      <tag>地理信息</tag>
       
       <tag>数据库质检</tag>
       
@@ -216,11 +216,11 @@
     
     <tags>
       
-      <tag>地理信息</tag>
-      
       <tag>Arcgis</tag>
       
       <tag>软件</tag>
+      
+      <tag>地理信息</tag>
       
       <tag>Reviewer</tag>
       
@@ -249,13 +249,13 @@
     
     <tags>
       
-      <tag>地理信息</tag>
-      
       <tag>Arcgis</tag>
       
       <tag>Pro</tag>
       
       <tag>软件</tag>
+      
+      <tag>地理信息</tag>
       
     </tags>
     
@@ -537,11 +537,11 @@
     
     <tags>
       
+      <tag>ArcGIS</tag>
+      
       <tag>地理信息</tag>
       
       <tag>排序</tag>
-      
-      <tag>ArcGIS</tag>
       
     </tags>
     
@@ -566,42 +566,13 @@
     
     <tags>
       
-      <tag>地理信息</tag>
-      
       <tag>ArcGIS</tag>
+      
+      <tag>地理信息</tag>
       
       <tag>影像镶嵌</tag>
       
       <tag>FME</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
-    <title>Hexo博客的迁移</title>
-    <link href="/2023/02/10/Hexo%E5%8D%9A%E5%AE%A2%E7%9A%84%E8%BF%81%E7%A7%BB/"/>
-    <url>/2023/02/10/Hexo%E5%8D%9A%E5%AE%A2%E7%9A%84%E8%BF%81%E7%A7%BB/</url>
-    
-    <content type="html"><![CDATA[<h1 id="Hexo博客的迁移"><a href="#Hexo博客的迁移" class="headerlink" title="Hexo博客的迁移"></a>Hexo博客的迁移</h1><p>因为各种各样的原因，比如换电脑了，或者因为设备的玄学问题不得不迁移一下环境（我的笔记本连不上github，每次上传同步都报错，头都大了，家里的台式却能轻松链接）。</p><p>总之迁移Hexo环境也是一件非常重要的事情，因为我之前的迁移都是通过看自己以前写的博客创建文档，以及自己的一些写进DNA的经验，所以时间久了难免有些遗忘和不靠谱。特此记录一下迁移的步骤，以便以后查看。</p><h2 id="1-安装Node-js、git和npm"><a href="#1-安装Node-js、git和npm" class="headerlink" title="1. 安装Node.js、git和npm"></a>1. 安装Node.js、git和npm</h2><p>【<strong>这一条是给新电脑用的，如果已经有了就跳过。</strong>】具体步骤也不再赘述，关于系统环境参数的配置也有一大堆教程和说明了。</p><h2 id="2-运行Hexo的一键部署命令"><a href="#2-运行Hexo的一键部署命令" class="headerlink" title="2. 运行Hexo的一键部署命令"></a>2. 运行Hexo的一键部署命令</h2><figure class="highlight avrasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs avrasm">npm install hexo-<span class="hljs-keyword">cli</span> -g<br></code></pre></td></tr></table></figure><h2 id="3-安装依赖库"><a href="#3-安装依赖库" class="headerlink" title="3. 安装依赖库"></a>3. 安装依赖库</h2><p>在命令指令行<strong>进入博客目录下</strong>安装相关的配置</p><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cmake">npm <span class="hljs-keyword">install</span><br></code></pre></td></tr></table></figure><p>如果有报错的话，就配置一下淘宝源，用cnpm。</p><h2 id="4-安装一键上传的插件：hexo-deployer-git"><a href="#4-安装一键上传的插件：hexo-deployer-git" class="headerlink" title="4. 安装一键上传的插件：hexo-deployer-git"></a>4. 安装一键上传的插件：hexo-deployer-git</h2><figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ada">npm install hexo-deployer-git <span class="hljs-comment">--save</span><br></code></pre></td></tr></table></figure><p>这也就是我们熟悉的hexo g 、hexo d命令的插件。</p><p>如果因为404原因安装失败的话，就使用<strong>cnpm+淘宝源</strong>，大概率成功。<br>用npm安装cnpm，再使用cnpm安装hexo插件</p><figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs jboss-cli">npm install -g cnpm <span class="hljs-params">--registry=https</span>:<span class="hljs-string">//registry.npm.taobao.org</span><br>cnpm install hexo-deployer-git <span class="hljs-params">--save</span><br></code></pre></td></tr></table></figure><h2 id="5-账户信息设置"><a href="#5-账户信息设置" class="headerlink" title="5. 账户信息设置"></a>5. 账户信息设置</h2><p>因为是新的电脑第一次使用git仓库，可能需要填一下相关信息。（还是在指令框中）</p><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs stylus">git config <span class="hljs-attr">--global</span> user<span class="hljs-selector-class">.email</span> <span class="hljs-string">&quot;在这填你的github邮箱&quot;</span><br>git config <span class="hljs-attr">--global</span> user<span class="hljs-selector-class">.name</span> <span class="hljs-string">&quot;填你的用户名&quot;</span> <br></code></pre></td></tr></table></figure><p>这个如果没输入的话，运行上传时也会提示你who are you的。</p><h2 id="6-检查是否能上传"><a href="#6-检查是否能上传" class="headerlink" title="6. 检查是否能上传"></a>6. 检查是否能上传</h2><p>其实到上一步配置就基本已经完成了，可以直接执行上传指令。</p><figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs ebnf"><span class="hljs-attribute">hexo clean</span><br><span class="hljs-attribute">hexo g</span><br><span class="hljs-attribute">hexo d</span><br></code></pre></td></tr></table></figure><p>如果配置文件不对的话，也是会出现<code>spawn failed 128</code>错误的。（我最近真是被这个问题锤得头疼）。而检测是不是配置导致的无法上传，方法就是看能不能直接打开<a href="https://github.com/">github.com</a>。能打开基本就是配置问题。</p><p>检查<code>_config.yml</code>文件</p><ol><li><p>url是博客的访问地址，要设置对。例如我的是：</p><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">url: http:<span class="hljs-regexp">//</span>kw1649190133.github.io<br></code></pre></td></tr></table></figure></li><li><p>还有一项就是推送更新的设置，一般在配置文件的最后，现在可以不用ssh了，用token很方便，但是要注意保存好令牌代码。token的使用方法就是放在http访问链接里，github的前面，然后再加上一个<code>@</code>符号</p><figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs dts"><span class="hljs-symbol">deploy:</span><br><span class="hljs-symbol">  type:</span> git<br><span class="hljs-symbol">  repo:</span> https:<span class="hljs-comment">//【这里放token，然后删掉括号】@github.com/kw1649190133/kw1649190133.github.io</span><br><span class="hljs-symbol">  branch:</span> master<br></code></pre></td></tr></table></figure><h2 id="结尾"><a href="#结尾" class="headerlink" title="结尾"></a>结尾</h2><p>搬一次家挺麻烦的，可以的话还是少搬比较好。</p></li></ol>]]></content>
-    
-    
-    <categories>
-      
-      <category>学习</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>Hexo</tag>
-      
-      <tag>迁移</tag>
-      
-      <tag>博客</tag>
       
     </tags>
     
@@ -628,9 +599,38 @@
       
       <tag>Hexo</tag>
       
+      <tag>fluid主题</tag>
+      
       <tag>博客</tag>
       
-      <tag>fluid主题</tag>
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>Hexo博客的迁移</title>
+    <link href="/2023/02/10/Hexo%E5%8D%9A%E5%AE%A2%E7%9A%84%E8%BF%81%E7%A7%BB/"/>
+    <url>/2023/02/10/Hexo%E5%8D%9A%E5%AE%A2%E7%9A%84%E8%BF%81%E7%A7%BB/</url>
+    
+    <content type="html"><![CDATA[<h1 id="Hexo博客的迁移"><a href="#Hexo博客的迁移" class="headerlink" title="Hexo博客的迁移"></a>Hexo博客的迁移</h1><p>因为各种各样的原因，比如换电脑了，或者因为设备的玄学问题不得不迁移一下环境（我的笔记本连不上github，每次上传同步都报错，头都大了，家里的台式却能轻松链接）。</p><p>总之迁移Hexo环境也是一件非常重要的事情，因为我之前的迁移都是通过看自己以前写的博客创建文档，以及自己的一些写进DNA的经验，所以时间久了难免有些遗忘和不靠谱。特此记录一下迁移的步骤，以便以后查看。</p><h2 id="1-安装Node-js、git和npm"><a href="#1-安装Node-js、git和npm" class="headerlink" title="1. 安装Node.js、git和npm"></a>1. 安装Node.js、git和npm</h2><p>【<strong>这一条是给新电脑用的，如果已经有了就跳过。</strong>】具体步骤也不再赘述，关于系统环境参数的配置也有一大堆教程和说明了。</p><h2 id="2-运行Hexo的一键部署命令"><a href="#2-运行Hexo的一键部署命令" class="headerlink" title="2. 运行Hexo的一键部署命令"></a>2. 运行Hexo的一键部署命令</h2><figure class="highlight avrasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs avrasm">npm install hexo-<span class="hljs-keyword">cli</span> -g<br></code></pre></td></tr></table></figure><h2 id="3-安装依赖库"><a href="#3-安装依赖库" class="headerlink" title="3. 安装依赖库"></a>3. 安装依赖库</h2><p>在命令指令行<strong>进入博客目录下</strong>安装相关的配置</p><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cmake">npm <span class="hljs-keyword">install</span><br></code></pre></td></tr></table></figure><p>如果有报错的话，就配置一下淘宝源，用cnpm。</p><h2 id="4-安装一键上传的插件：hexo-deployer-git"><a href="#4-安装一键上传的插件：hexo-deployer-git" class="headerlink" title="4. 安装一键上传的插件：hexo-deployer-git"></a>4. 安装一键上传的插件：hexo-deployer-git</h2><figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ada">npm install hexo-deployer-git <span class="hljs-comment">--save</span><br></code></pre></td></tr></table></figure><p>这也就是我们熟悉的hexo g 、hexo d命令的插件。</p><p>如果因为404原因安装失败的话，就使用<strong>cnpm+淘宝源</strong>，大概率成功。<br>用npm安装cnpm，再使用cnpm安装hexo插件</p><figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs jboss-cli">npm install -g cnpm <span class="hljs-params">--registry=https</span>:<span class="hljs-string">//registry.npm.taobao.org</span><br>cnpm install hexo-deployer-git <span class="hljs-params">--save</span><br></code></pre></td></tr></table></figure><h2 id="5-账户信息设置"><a href="#5-账户信息设置" class="headerlink" title="5. 账户信息设置"></a>5. 账户信息设置</h2><p>因为是新的电脑第一次使用git仓库，可能需要填一下相关信息。（还是在指令框中）</p><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs stylus">git config <span class="hljs-attr">--global</span> user<span class="hljs-selector-class">.email</span> <span class="hljs-string">&quot;在这填你的github邮箱&quot;</span><br>git config <span class="hljs-attr">--global</span> user<span class="hljs-selector-class">.name</span> <span class="hljs-string">&quot;填你的用户名&quot;</span> <br></code></pre></td></tr></table></figure><p>这个如果没输入的话，运行上传时也会提示你who are you的。</p><h2 id="6-检查是否能上传"><a href="#6-检查是否能上传" class="headerlink" title="6. 检查是否能上传"></a>6. 检查是否能上传</h2><p>其实到上一步配置就基本已经完成了，可以直接执行上传指令。</p><figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs ebnf"><span class="hljs-attribute">hexo clean</span><br><span class="hljs-attribute">hexo g</span><br><span class="hljs-attribute">hexo d</span><br></code></pre></td></tr></table></figure><p>如果配置文件不对的话，也是会出现<code>spawn failed 128</code>错误的。（我最近真是被这个问题锤得头疼）。而检测是不是配置导致的无法上传，方法就是看能不能直接打开<a href="https://github.com/">github.com</a>。能打开基本就是配置问题。</p><p>检查<code>_config.yml</code>文件</p><ol><li><p>url是博客的访问地址，要设置对。例如我的是：</p><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">url: http:<span class="hljs-regexp">//</span>kw1649190133.github.io<br></code></pre></td></tr></table></figure></li><li><p>还有一项就是推送更新的设置，一般在配置文件的最后，现在可以不用ssh了，用token很方便，但是要注意保存好令牌代码。token的使用方法就是放在http访问链接里，github的前面，然后再加上一个<code>@</code>符号</p><figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs dts"><span class="hljs-symbol">deploy:</span><br><span class="hljs-symbol">  type:</span> git<br><span class="hljs-symbol">  repo:</span> https:<span class="hljs-comment">//【这里放token，然后删掉括号】@github.com/kw1649190133/kw1649190133.github.io</span><br><span class="hljs-symbol">  branch:</span> master<br></code></pre></td></tr></table></figure><h2 id="结尾"><a href="#结尾" class="headerlink" title="结尾"></a>结尾</h2><p>搬一次家挺麻烦的，可以的话还是少搬比较好。</p></li></ol>]]></content>
+    
+    
+    <categories>
+      
+      <category>学习</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Hexo</tag>
+      
+      <tag>博客</tag>
+      
+      <tag>迁移</tag>
       
     </tags>
     
@@ -1020,9 +1020,9 @@
     
     <tags>
       
-      <tag>hexo</tag>
-      
       <tag>Node.js</tag>
+      
+      <tag>hexo</tag>
       
       <tag>升级</tag>
       
