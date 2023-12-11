@@ -1,0 +1,683 @@
+
+
+<!DOCTYPE html>
+<html lang="CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Kwindy">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="前言关于地理坐标系的定义以及各种计算，在大学里的《大地测量学》课程有详细的讲解，国内应该学的都是武汉大学出版的，什么大地高、真高、海平面、高程误差，我听了也头大。而在从事工作以后，一些测绘工作的从业者甚至自己都不是测绘专业，更别提去理解那些复杂的原理和计算公式了。就连我自己一些东西很久不看以后也会忘得一干二净。所以本文从实际应用的角度出发，简单解释有关地理坐标系以及投影的相关知识，目的是让没学过和">
+<meta property="og:type" content="article">
+<meta property="og:title" content="地理坐标系以及投影的应用知识">
+<meta property="og:url" content="http://kw1649190133.github.io/2023/12/11/%E5%9C%B0%E7%90%86%E5%9D%90%E6%A0%87%E7%B3%BB%E4%BB%A5%E5%8F%8A%E6%8A%95%E5%BD%B1%E7%9A%84%E5%BA%94%E7%94%A8%E7%9F%A5%E8%AF%86/index.html">
+<meta property="og:site_name" content="kw&#39;s blog">
+<meta property="og:description" content="前言关于地理坐标系的定义以及各种计算，在大学里的《大地测量学》课程有详细的讲解，国内应该学的都是武汉大学出版的，什么大地高、真高、海平面、高程误差，我听了也头大。而在从事工作以后，一些测绘工作的从业者甚至自己都不是测绘专业，更别提去理解那些复杂的原理和计算公式了。就连我自己一些东西很久不看以后也会忘得一干二净。所以本文从实际应用的角度出发，简单解释有关地理坐标系以及投影的相关知识，目的是让没学过和">
+<meta property="og:locale">
+<meta property="og:image" content="http://kw1649190133.github.io/2023/12/11/%E5%9C%B0%E7%90%86%E5%9D%90%E6%A0%87%E7%B3%BB%E4%BB%A5%E5%8F%8A%E6%8A%95%E5%BD%B1%E7%9A%84%E5%BA%94%E7%94%A8%E7%9F%A5%E8%AF%86/%E5%A4%A7%E5%9C%B0%E5%9D%90%E6%A0%87%E7%B3%BB%E7%A4%BA%E6%84%8F%E5%9B%BE.jpg">
+<meta property="og:image" content="http://kw1649190133.github.io/2023/12/11/%E5%9C%B0%E7%90%86%E5%9D%90%E6%A0%87%E7%B3%BB%E4%BB%A5%E5%8F%8A%E6%8A%95%E5%BD%B1%E7%9A%84%E5%BA%94%E7%94%A8%E7%9F%A5%E8%AF%86/%E9%AB%98%E6%96%AF%E6%8A%95%E5%BD%B1%E7%A4%BA%E6%84%8F%E5%9B%BE.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2023/12/11/%E5%9C%B0%E7%90%86%E5%9D%90%E6%A0%87%E7%B3%BB%E4%BB%A5%E5%8F%8A%E6%8A%95%E5%BD%B1%E7%9A%84%E5%BA%94%E7%94%A8%E7%9F%A5%E8%AF%86/01436035e7932db3fa54470c1411ca7f.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2023/12/11/%E5%9C%B0%E7%90%86%E5%9D%90%E6%A0%87%E7%B3%BB%E4%BB%A5%E5%8F%8A%E6%8A%95%E5%BD%B1%E7%9A%84%E5%BA%94%E7%94%A8%E7%9F%A5%E8%AF%86/e0fdab44829768db9ae89c79d2686266.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2023/12/11/%E5%9C%B0%E7%90%86%E5%9D%90%E6%A0%87%E7%B3%BB%E4%BB%A5%E5%8F%8A%E6%8A%95%E5%BD%B1%E7%9A%84%E5%BA%94%E7%94%A8%E7%9F%A5%E8%AF%86/2e29f461c2a1d506fab5e4a745290247.png">
+<meta property="article:published_time" content="2023-12-11T03:06:43.000Z">
+<meta property="article:modified_time" content="2023-12-11T03:50:19.601Z">
+<meta property="article:author" content="Kwindy">
+<meta property="article:tag" content="地理信息">
+<meta property="article:tag" content="坐标系">
+<meta property="article:tag" content="投影">
+<meta property="article:tag" content="转化">
+<meta property="article:tag" content="基础知识">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://kw1649190133.github.io/2023/12/11/%E5%9C%B0%E7%90%86%E5%9D%90%E6%A0%87%E7%B3%BB%E4%BB%A5%E5%8F%8A%E6%8A%95%E5%BD%B1%E7%9A%84%E5%BA%94%E7%94%A8%E7%9F%A5%E8%AF%86/%E5%A4%A7%E5%9C%B0%E5%9D%90%E6%A0%87%E7%B3%BB%E7%A4%BA%E6%84%8F%E5%9B%BE.jpg">
+  
+  
+  
+  <title>地理坐标系以及投影的应用知识 - kw&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"kw1649190133.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Startseite</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archiv</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Kategorien</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Schlagwörter</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>Über</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="地理坐标系以及投影的应用知识"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-12-11 11:06" pubdate>
+          December 11, 2023 am
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.3k wörter
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          20 minuten
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">地理坐标系以及投影的应用知识</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>关于地理坐标系的定义以及各种计算，在大学里的《大地测量学》课程有详细的讲解，国内应该学的都是武汉大学出版的，什么大地高、真高、海平面、高程误差，我听了也头大。而在从事工作以后，一些测绘工作的从业者甚至自己都不是测绘专业，更别提去理解那些复杂的原理和计算公式了。就连我自己一些东西很久不看以后也会忘得一干二净。<br>所以本文从实际应用的角度出发，简单解释有关地理坐标系以及投影的相关知识，目的是让没学过和不了解的人快速熟悉和掌握基本知识和操作方法，提高工作能力。</p>
+<h1 id="地理坐标系"><a href="#地理坐标系" class="headerlink" title="地理坐标系"></a>地理坐标系</h1><p>众所周知地球是一个不规则球体（这应该是初中知识），而人类为了方便计算和描述，就定义了一个数学上的虚拟椭圆球体套到地球上，并且尽可能的和它相似，而通过这个椭球体的长短轴分别画两条直线，就构成了一个坐标系。</p>
+<p><img src="/2023/12/11/%E5%9C%B0%E7%90%86%E5%9D%90%E6%A0%87%E7%B3%BB%E4%BB%A5%E5%8F%8A%E6%8A%95%E5%BD%B1%E7%9A%84%E5%BA%94%E7%94%A8%E7%9F%A5%E8%AF%86/%E5%A4%A7%E5%9C%B0%E5%9D%90%E6%A0%87%E7%B3%BB%E7%A4%BA%E6%84%8F%E5%9B%BE.jpg" srcset="/img/loading.gif" lazyload></p>
+<p>从数学的基本理论可以知道，在三维空间中描述一个位置，那当然至少是3个参数，现代的椭球体地理坐标系的参数其实也就是两个数字和一个位置：数字就是长轴的和短轴的长度，或者其中一个轴的长度+偏心率，他们俩确定了椭球体的形状；另一个是中央子午线的位置，也就是0度经线的位置，在绝大多数情况下，0度经线在传说中的格林尼治天文台脚下。这就是由人类定义出来笼罩地球的坐标系。<br>而在这个坐标系中描述一个位置，使用的参数就是经纬度，还有一个相对于虚拟椭球面的高度，叫大地高，有时候因为只需要位置不关心高度而忽略它。<br>至于为什么搞这么麻烦，我的理解是长距离测距在人类没有掌握电磁波的时代是很困难的，而转换成角度以后，通过对太阳、星星的观察就可以确定经纬度，巧妙地绕开了测距，非常聪明。而现在这个航空航天放卫星的年代，GPS使用的坐标系就是简单粗暴的XYZ直角坐标系了（当然最后还得转换成大地坐标来使用）。</p>
+<h2 id="常用地理坐标系"><a href="#常用地理坐标系" class="headerlink" title="常用地理坐标系"></a>常用地理坐标系</h2><p>在日常工作里，基本上使用最多的地理坐标系就是WGS1984（世界地理坐标系）以及CGCS2000（中国国家坐标系）这两套（也象征着世界上有航天能力的两个最大体系）。他们俩参数是非常接近的，因为大家的目的都是为了拟合真实的地球表面，不考虑米级以下精度的时候可以相互套用。<br>现在基本已经统一坐标系了，除非从垃圾堆里翻出50年100年前的地图和数据出来，才会涉及到其他的坐标系。</p>
+<h1 id="投影和投影坐标系"><a href="#投影和投影坐标系" class="headerlink" title="投影和投影坐标系"></a>投影和投影坐标系</h1><p>虽然是地球表面是曲面的，但是曲面在数学计算上非常不方便，而且在小范围内基本可以无视地球曲率的影响，所以为了方便画地图和更简单的描述地理位置，就有了投影（具体原因请转到大地测量学）。而投影后的坐标表示方式就和地理坐标系不一样了，例如将地表投影到平面以后，描述位置的参数可以从经纬度变成直角坐标系的X,Y。</p>
+<p>不同的投影方式适合不同的区域，不同的投影有不同的用途。选择投影的依据是测量目标在地理上的位置，和具体追求的测量目标。例如航海地图，在茫茫海面上最重要的不是航行距离，而是航行方向，距离差一点可能就早晚一两天；方向要是错了就可能死在海面上。</p>
+<p>投影的方式有很多，有正面投影，有圆锥投影，有UTM莫卡托投影，而一般测绘工作中使用最多的还是高斯投影。<br>说高斯投影可能非专业的人会不知道，但如果说把西瓜皮（篮球皮）竖着切成一条一条的在拼起来，那受过义务教育的人大概就有印象了。</p>
+<h2 id="高斯克吕格-Gauss-Kruger-投影"><a href="#高斯克吕格-Gauss-Kruger-投影" class="headerlink" title="高斯克吕格(Gauss-Kruger)投影"></a>高斯克吕格(Gauss-Kruger)投影</h2><p>作为一种特殊的UTM投影，高斯投影适用的地区就是赤道和两边的低纬度地区，在赤道线上，高斯投影的长度是1:1的，越远离赤道，畸变就会越大，</p>
+<p>从三维曲面到二维平面，使用的是一套非常复杂的公式，统称高等数学，现在都有成熟的计算机软件，在工作中基本不需要手动去算，只需要知道概念就可以了。</p>
+<p>在进行高斯投影时，最重要的参数就是中央子午线的选择。尽量把目标数据放在接近中央子午线的位置，所得到的投影结果畸变就越小。一般而言高斯投影在设定时就以3度带和6度带做了划分，一般而言为了提高精度用3度带的划分方式比较多，例如国内常用的中央子午线109E，111E。</p>
+<p><img src="/2023/12/11/%E5%9C%B0%E7%90%86%E5%9D%90%E6%A0%87%E7%B3%BB%E4%BB%A5%E5%8F%8A%E6%8A%95%E5%BD%B1%E7%9A%84%E5%BA%94%E7%94%A8%E7%9F%A5%E8%AF%86/%E9%AB%98%E6%96%AF%E6%8A%95%E5%BD%B1%E7%A4%BA%E6%84%8F%E5%9B%BE.png" srcset="/img/loading.gif" lazyload></p>
+<p>有时候也会选一些奇奇怪怪的中央子午线，例如测量土地面积的时候，真实的土地面积是地球表面上的不规则曲面，而经过投影后的地图是平面，曲面面积和投影后的平面面积就会有一个差值。所以有时候一些测量项目会使用一些109.25之类的奇怪经线作为中央子午线来制图，为的就是减小误差。例如海南岛最新规定的地方坐标系，就是在CGCS2000的地理坐标基础上，对高斯投影的中央子午线进行了重新选取，不同经度的地方用不同的经线作为中央子午线。</p>
+<h2 id="常用坐标系总结"><a href="#常用坐标系总结" class="headerlink" title="常用坐标系总结"></a>常用坐标系总结</h2><p>到这我们工作中常用的坐标系已经非常清晰，就只有三种：</p>
+<ul>
+<li>WGS1984地理坐标(World Geodetic System 1984)</li>
+<li>CGCS2000地理坐标(China Geodetic Coordinate System 2000)</li>
+<li>CGCS2000在不同位置的投影坐标</li>
+</ul>
+<h1 id="实操应用"><a href="#实操应用" class="headerlink" title="实操应用"></a>实操应用</h1><h2 id="ArcGIS里改变投影的方法"><a href="#ArcGIS里改变投影的方法" class="headerlink" title="ArcGIS里改变投影的方法"></a>ArcGIS里改变投影的方法</h2><h2 id="投影"><a href="#投影" class="headerlink" title="投影"></a>投影</h2><p>使用投影工具就可以很方便的转换数据的坐标系。<br><img src="/2023/12/11/%E5%9C%B0%E7%90%86%E5%9D%90%E6%A0%87%E7%B3%BB%E4%BB%A5%E5%8F%8A%E6%8A%95%E5%BD%B1%E7%9A%84%E5%BA%94%E7%94%A8%E7%9F%A5%E8%AF%86/01436035e7932db3fa54470c1411ca7f.png" srcset="/img/loading.gif" lazyload alt="01436035e7932db3fa54470c1411ca7f.png"></p>
+<h3 id="定义投影"><a href="#定义投影" class="headerlink" title="定义投影"></a>定义投影</h3><p>定义投影实际上就是修改数据的地理坐标标注，也就是数据里面，关于这个数据使用的是什么坐标系的一个说明。<br>定义投影功能常用在由其他格式的数据转换到shp格式的时候，比如从CASS导出的dwg图层，是不带地理信息标注的。<br>当然这功能也用在一些骚操作里面，一般情况不建议乱用，容易把数据搞坏。<br><img src="/2023/12/11/%E5%9C%B0%E7%90%86%E5%9D%90%E6%A0%87%E7%B3%BB%E4%BB%A5%E5%8F%8A%E6%8A%95%E5%BD%B1%E7%9A%84%E5%BA%94%E7%94%A8%E7%9F%A5%E8%AF%86/e0fdab44829768db9ae89c79d2686266.png" srcset="/img/loading.gif" lazyload alt="e0fdab44829768db9ae89c79d2686266.png"></p>
+<p>ArcGIS有自动转换和显示的功能，也就是数据本身坐标系定义没问题的情况下，可以自动转换到数据框的坐标系下显示。当然这个只改变显示方式，不改变数据本身。<br>一般情况下，还是要注意数据坐标系和显示坐标系一致，避免一些莫名其妙的错误。<br><img src="/2023/12/11/%E5%9C%B0%E7%90%86%E5%9D%90%E6%A0%87%E7%B3%BB%E4%BB%A5%E5%8F%8A%E6%8A%95%E5%BD%B1%E7%9A%84%E5%BA%94%E7%94%A8%E7%9F%A5%E8%AF%86/2e29f461c2a1d506fab5e4a745290247.png" srcset="/img/loading.gif" lazyload alt="2e29f461c2a1d506fab5e4a745290247.png"></p>
+<h2 id="CASS修改数据坐标系"><a href="#CASS修改数据坐标系" class="headerlink" title="CASS修改数据坐标系"></a>CASS修改数据坐标系</h2><p>更换中央子午线</p>
+<h3 id="添加和删除带号"><a href="#添加和删除带号" class="headerlink" title="添加和删除带号"></a>添加和删除带号</h3><p>添加和删除带号的本质就是直接平移数据</p>
+<p>需要注意的是，CAD平移的方向在有光标引导的时候，以鼠标所指的方向为正向。所以要根据实际情况注意使用+号还是-号。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0/" class="category-chain-item">学习</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E5%9C%B0%E7%90%86%E4%BF%A1%E6%81%AF/">#地理信息</a>
+      
+        <a href="/tags/%E5%9D%90%E6%A0%87%E7%B3%BB/">#坐标系</a>
+      
+        <a href="/tags/%E6%8A%95%E5%BD%B1/">#投影</a>
+      
+        <a href="/tags/%E8%BD%AC%E5%8C%96/">#转化</a>
+      
+        <a href="/tags/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">#基础知识</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>地理坐标系以及投影的应用知识</div>
+      <div>http://kw1649190133.github.io/2023/12/11/地理坐标系以及投影的应用知识/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Beitragsautor</div>
+          <div>Kwindy</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Veröffentlicht am</div>
+          <div>December 11, 2023</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Urheberrechtshinweis</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/11/30/%E3%80%90%E8%AD%A6%E9%92%9F%E9%95%BF%E9%B8%A3%E3%80%91%E7%97%85%E6%AF%92%E9%98%B2%E6%8A%A4%E4%B8%8E%E4%B8%AA%E4%BA%BA%E4%BF%A1%E6%81%AF%E5%AE%89%E5%85%A8/" title="【警钟长鸣】病毒防护与个人信息安全">
+                        <span class="hidden-mobile">【警钟长鸣】病毒防护与个人信息安全</span>
+                        <span class="visible-mobile">Nächster</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Inhaltsverzeichnis</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Suchen</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Stichwort</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog funktioniert am besten mit aktiviertem JavaScript</div>
+  </noscript>
+</body>
+</html>
