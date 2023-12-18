@@ -1,0 +1,706 @@
+
+
+<!DOCTYPE html>
+<html lang="CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Kwindy">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="地理信息的发展概况简单给外行介绍一下什么是地理信息。从广义上看，以前的地理信息产品主要就是地图，是人们通过标记地物，观察天体来确定自己位置和了解地表情况的工具。狭义上理解，地理信息就是地图，就是坐标，就是导航。 古代地图战国时期地图： 而迈入计算机时代后，地理信息行业从绘制传统地图向数字化生产进化，但主要还是以二维的制图为主要成果。而倾斜摄影构建三维模型的技术，是建立在卫星系统完善、飞行器和摄像技">
+<meta property="og:type" content="article">
+<meta property="og:title" content="新型基础测绘和地理实体的概述">
+<meta property="og:url" content="http://kw1649190133.github.io/2023/12/16/%E6%96%B0%E5%9E%8B%E5%9F%BA%E7%A1%80%E6%B5%8B%E7%BB%98%E5%92%8C%E5%9C%B0%E7%90%86%E5%AE%9E%E4%BD%93%E7%9A%84%E6%A6%82%E8%BF%B0/index.html">
+<meta property="og:site_name" content="kw&#39;s blog">
+<meta property="og:description" content="地理信息的发展概况简单给外行介绍一下什么是地理信息。从广义上看，以前的地理信息产品主要就是地图，是人们通过标记地物，观察天体来确定自己位置和了解地表情况的工具。狭义上理解，地理信息就是地图，就是坐标，就是导航。 古代地图战国时期地图： 而迈入计算机时代后，地理信息行业从绘制传统地图向数字化生产进化，但主要还是以二维的制图为主要成果。而倾斜摄影构建三维模型的技术，是建立在卫星系统完善、飞行器和摄像技">
+<meta property="og:locale">
+<meta property="og:image" content="http://kw1649190133.github.io/2023/12/16/%E6%96%B0%E5%9E%8B%E5%9F%BA%E7%A1%80%E6%B5%8B%E7%BB%98%E5%92%8C%E5%9C%B0%E7%90%86%E5%AE%9E%E4%BD%93%E7%9A%84%E6%A6%82%E8%BF%B0/fad40503c335a27991dd223a50c56dcf.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2023/12/16/%E6%96%B0%E5%9E%8B%E5%9F%BA%E7%A1%80%E6%B5%8B%E7%BB%98%E5%92%8C%E5%9C%B0%E7%90%86%E5%AE%9E%E4%BD%93%E7%9A%84%E6%A6%82%E8%BF%B0/5f8bd842cf0455ca1b884e1a3b840da0.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2023/12/16/%E6%96%B0%E5%9E%8B%E5%9F%BA%E7%A1%80%E6%B5%8B%E7%BB%98%E5%92%8C%E5%9C%B0%E7%90%86%E5%AE%9E%E4%BD%93%E7%9A%84%E6%A6%82%E8%BF%B0/58dc8cb35b29d2e45b0a57015d8f6cc7.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2023/12/16/%E6%96%B0%E5%9E%8B%E5%9F%BA%E7%A1%80%E6%B5%8B%E7%BB%98%E5%92%8C%E5%9C%B0%E7%90%86%E5%AE%9E%E4%BD%93%E7%9A%84%E6%A6%82%E8%BF%B0/6853fceea803e48b38cf53473c803d6c.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2023/12/16/%E6%96%B0%E5%9E%8B%E5%9F%BA%E7%A1%80%E6%B5%8B%E7%BB%98%E5%92%8C%E5%9C%B0%E7%90%86%E5%AE%9E%E4%BD%93%E7%9A%84%E6%A6%82%E8%BF%B0/aa04a9f90b2e2620d1db3c7e05b3a6c5.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2023/12/16/%E6%96%B0%E5%9E%8B%E5%9F%BA%E7%A1%80%E6%B5%8B%E7%BB%98%E5%92%8C%E5%9C%B0%E7%90%86%E5%AE%9E%E4%BD%93%E7%9A%84%E6%A6%82%E8%BF%B0/96108930b06f52051ca9f279c026414e.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2023/12/16/%E6%96%B0%E5%9E%8B%E5%9F%BA%E7%A1%80%E6%B5%8B%E7%BB%98%E5%92%8C%E5%9C%B0%E7%90%86%E5%AE%9E%E4%BD%93%E7%9A%84%E6%A6%82%E8%BF%B0/5a63167b10a7162bcbc81f5584eb5a42.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2023/12/16/%E6%96%B0%E5%9E%8B%E5%9F%BA%E7%A1%80%E6%B5%8B%E7%BB%98%E5%92%8C%E5%9C%B0%E7%90%86%E5%AE%9E%E4%BD%93%E7%9A%84%E6%A6%82%E8%BF%B0/0395be837e2e101b03705df19e2030c5.png">
+<meta property="article:published_time" content="2023-12-16T04:00:00.000Z">
+<meta property="article:modified_time" content="2023-12-18T06:19:33.874Z">
+<meta property="article:author" content="Kwindy">
+<meta property="article:tag" content="行业发展">
+<meta property="article:tag" content="地理实体">
+<meta property="article:tag" content="新型测绘">
+<meta property="article:tag" content="产业升级">
+<meta property="article:tag" content="实景三维">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://kw1649190133.github.io/2023/12/16/%E6%96%B0%E5%9E%8B%E5%9F%BA%E7%A1%80%E6%B5%8B%E7%BB%98%E5%92%8C%E5%9C%B0%E7%90%86%E5%AE%9E%E4%BD%93%E7%9A%84%E6%A6%82%E8%BF%B0/fad40503c335a27991dd223a50c56dcf.png">
+  
+  
+  
+  <title>新型基础测绘和地理实体的概述 - kw&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"kw1649190133.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Hejmpaĝo</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Arkivoj</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Kategorio</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Etikedoj</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>Pri</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="新型基础测绘和地理实体的概述"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-12-16 12:00" pubdate>
+          December 16, 2023 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.7k vortoj
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          23 minutoj
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">新型基础测绘和地理实体的概述</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="地理信息的发展概况"><a href="#地理信息的发展概况" class="headerlink" title="地理信息的发展概况"></a>地理信息的发展概况</h1><p>简单给外行介绍一下什么是地理信息。从广义上看，以前的地理信息产品主要就是地图，是人们通过标记地物，观察天体来确定自己位置和了解地表情况的工具。狭义上理解，地理信息就是地图，就是坐标，就是导航。</p>
+<h2 id="古代地图"><a href="#古代地图" class="headerlink" title="古代地图"></a>古代地图</h2><p>战国时期地图：<br><img src="/2023/12/16/%E6%96%B0%E5%9E%8B%E5%9F%BA%E7%A1%80%E6%B5%8B%E7%BB%98%E5%92%8C%E5%9C%B0%E7%90%86%E5%AE%9E%E4%BD%93%E7%9A%84%E6%A6%82%E8%BF%B0/fad40503c335a27991dd223a50c56dcf.png" srcset="/img/loading.gif" lazyload alt="战国时期地图"></p>
+<p>而迈入计算机时代后，地理信息行业从绘制传统地图向数字化生产进化，但主要还是以二维的制图为主要成果。而倾斜摄影构建三维模型的技术，是建立在卫星系统完善、飞行器和摄像技术成熟、计算机算力大幅提高的现代化基础上的产物。</p>
+<h2 id="现代3S-4D结构"><a href="#现代3S-4D结构" class="headerlink" title="现代3S+4D结构"></a>现代3S+4D结构</h2><p>3S指的是三种现代的地理信息技术手段</p>
+<ul>
+<li>遥感技术（Remote Senescing）——RS</li>
+<li>地理信息系统（Geographical information System）——GIS</li>
+<li>全球定位系统（Global Positioning System）——GPS</li>
+</ul>
+<p>而4D是四种地理信息产品</p>
+<ul>
+<li>数字线划图(Digital Line Graphic)–DLG</li>
+<li>数字正射影像图_(Digital Orthophoto Map)–DOM</li>
+<li>数字高程模型(Digital Elevation Model)–DEM</li>
+<li>数字栅格地图(Digital Raster Graphic)–DRG</li>
+</ul>
+<p>这些现代技术和产品相比传统纸质地图是质的飞跃，是伴随地理信息行业发展了很长时间的强力支柱。<br>而现在是大数据和AI发展的年代，普通的地理信息产品已经很难容下当下庞大的数据规模和及时响应的业务需求，更重要的是难以实现数据之间的关联互通。地理实体就是在过去各种数据成果类型上的一次迭代升级。</p>
+<h2 id="从4D到4E"><a href="#从4D到4E" class="headerlink" title="从4D到4E"></a>从4D到4E</h2><p>“4E 标准化产品”（组合聚合实体集、无级化<br>地图表达、地形级实景三维、城市级实景三维）</p>
+<p><img src="/2023/12/16/%E6%96%B0%E5%9E%8B%E5%9F%BA%E7%A1%80%E6%B5%8B%E7%BB%98%E5%92%8C%E5%9C%B0%E7%90%86%E5%AE%9E%E4%BD%93%E7%9A%84%E6%A6%82%E8%BF%B0/5f8bd842cf0455ca1b884e1a3b840da0.png" srcset="/img/loading.gif" lazyload alt="几种概念之间的关系"><br>最核心的变化就是数据格式和数据结构的变化，从方便人理解变为方便机器理解的人机兼容模式。因为在数据量暴涨的背景下，只有依靠机器来实现自动化，提升效率、产业升级，才是唯一可行的路径。<br>还有一点，传统测绘基本就是专业的测绘队伍在自己埋头干，而现在是互联网时代了，手机上的地图和导航软件已经比测绘人自己搞出来的地图好用无数倍，人越多的地方越是如此。未来应该是以专业测量为基础的大众测量模式，每一个人都可以是地理信息的使用者和贡献者，这才是行业的进步，是地理信息发展的意义所在。</p>
+<h2 id="简单梳理一条进化路线"><a href="#简单梳理一条进化路线" class="headerlink" title="简单梳理一条进化路线"></a>简单梳理一条进化路线</h2><p>地图→数字化矢量数据→摄影测量和三维成果→统合各种数据的地理实体</p>
+<h1 id="地理实体位置编码和网格系统"><a href="#地理实体位置编码和网格系统" class="headerlink" title="地理实体位置编码和网格系统"></a>地理实体位置编码和网格系统</h1><p>通过看文件了解到，地理实体位置编码的来源，就是北斗卫星系统上应用的北斗网格码。<br>北斗网格码与地理实体位置网格的对应关系<br><img src="/2023/12/16/%E6%96%B0%E5%9E%8B%E5%9F%BA%E7%A1%80%E6%B5%8B%E7%BB%98%E5%92%8C%E5%9C%B0%E7%90%86%E5%AE%9E%E4%BD%93%E7%9A%84%E6%A6%82%E8%BF%B0/58dc8cb35b29d2e45b0a57015d8f6cc7.png" srcset="/img/loading.gif" lazyload alt="北斗网格码与地理实体网格的关系"></p>
+<p>网格系统与传统比例尺地形图的对照<br><img src="/2023/12/16/%E6%96%B0%E5%9E%8B%E5%9F%BA%E7%A1%80%E6%B5%8B%E7%BB%98%E5%92%8C%E5%9C%B0%E7%90%86%E5%AE%9E%E4%BD%93%E7%9A%84%E6%A6%82%E8%BF%B0/6853fceea803e48b38cf53473c803d6c.png" srcset="/img/loading.gif" lazyload alt="传统比例尺与网格之间的关系"></p>
+<p>而这种编码形式的来源又是一种基于经纬网的球面剖分网格：<br>GeoSOT 网格，即GeoSOT（Geographic Coordinate Subdividing Grid with One Dimension Integral Coding on n²-Tree）是基于n²一维整型数组全球经纬剖分网格。</p>
+<p>简单来说，空间编码和网格应该是通过一套经典四叉树结构（考虑高程空间的话就是八叉树），实现了对地理空间的位置描述和结构分级。其本质还是对位置的描述，不过又和传统的经纬度不同，有独特的优势，其中最重要的，是将三维空间降维到了一维的同时，保留了数据的空间关联性。它模糊了比例尺概念、突破了分幅和投影限制、建立了空间数据与现实中其他数据的连接，提高了数据的生产和使用效率。<br>传统测绘在空间上强调比例尺分级制度，在国、省、市之间数据常常是不互通的，各部门还常常重复测量，效率低下；而新型测绘的统一格式，能够解决整个国家地理信息体系中的内耗问题。<br><img src="/2023/12/16/%E6%96%B0%E5%9E%8B%E5%9F%BA%E7%A1%80%E6%B5%8B%E7%BB%98%E5%92%8C%E5%9C%B0%E7%90%86%E5%AE%9E%E4%BD%93%E7%9A%84%E6%A6%82%E8%BF%B0/aa04a9f90b2e2620d1db3c7e05b3a6c5.png" srcset="/img/loading.gif" lazyload alt="GeoSOT网格示例"></p>
+<p>关于网格划分的更详细内容可以看看知乎大佬的文章<br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/454504548?utm_id=0">https://zhuanlan.zhihu.com/p/454504548?utm_id=0</a></p>
+<p>关于网格的研究2015年左右就有了，而国家实景三维的文件是2021年年底发出的。当下社会和经济的快速发展，让业务、组织结构和信息化被打的七零八落，各种系统、各种地方标准互不兼容，极大的影响了社会生产和运营管理的效率。<br>这种全国信息系统规则与定义上的统一，如果能够贯彻执行的话，效果和重要程度堪比统一度量衡。</p>
+<h2 id="新体系下的元数据"><a href="#新体系下的元数据" class="headerlink" title="新体系下的元数据"></a>新体系下的元数据</h2><p>元数据（Metadata）是关于数据的描述信息，它提供了关于数据的详细描述和解释，帮助用户理解和使用数据。元数据可以包括数据的属性、结构、内容、质量、来源、格式、时间等信息。<br>如果说数据是产品的话，元数据就是包装盒与说明书，上面要写数据的成分、使用方法、生产日期等。<br>因为新体系必然会包含多种格式的数据，所以元数据也可以说是数据的一部分，通过数据标签和算法，实现多种数据格式的转换和兼容，最终实现数据格式的统一。</p>
+<h2 id="地理实体数据格式"><a href="#地理实体数据格式" class="headerlink" title="地理实体数据格式"></a>地理实体数据格式</h2><p>而新体系的数据来源，除了新建要素以外，更多的应该是从以前的成果转化而来。dwg地形图、GDB数据库、表格、文档等等，转换这些零零散散的数据，维护这个复杂的新体系，又是一个大工程。地信人又有活干了，暂时不用担心失业了。</p>
+<ul>
+<li>三维图元构成的数据格式：OSGB、OBJ、MAX。</li>
+<li>二维图元构成的数据格式：ShapeFile、DXF、DWG、GeoJSON、MDB、GPKG、PostGIS。</li>
+<li>属性和关系单独记录的数据格式：Excel、RDF、Access、MDB。</li>
+</ul>
+<p>很显然，大部分东西其实还是我们所熟知的那一套，只是由国家标准进行了规范和整合。不要小看组合的力量，计算机、机器人等现代社会的先进工业品也都是由一个个简单部件组合而成的。<br>国家文件比较保守的在后面都加了“等”，以后可能有更多数据格式被包含其中。</p>
+<p><img src="/2023/12/16/%E6%96%B0%E5%9E%8B%E5%9F%BA%E7%A1%80%E6%B5%8B%E7%BB%98%E5%92%8C%E5%9C%B0%E7%90%86%E5%AE%9E%E4%BD%93%E7%9A%84%E6%A6%82%E8%BF%B0/96108930b06f52051ca9f279c026414e.png" srcset="/img/loading.gif" lazyload alt="基础地理实体数据库逻辑架构"></p>
+<p>实际上，地理实体并不是各种数据类型的简单组合，国家文件中还花了大量的篇幅来说各种数据之间的关系。例如空间关系、相邻关系，时间关系等等，通过复杂系统来统合一切复杂实体，打通数据链路，这绝对是一项大工程。</p>
+<p><img src="/2023/12/16/%E6%96%B0%E5%9E%8B%E5%9F%BA%E7%A1%80%E6%B5%8B%E7%BB%98%E5%92%8C%E5%9C%B0%E7%90%86%E5%AE%9E%E4%BD%93%E7%9A%84%E6%A6%82%E8%BF%B0/5a63167b10a7162bcbc81f5584eb5a42.png" srcset="/img/loading.gif" lazyload alt="几个地理概念的关系"></p>
+<p>大楼实体和房间实体的关联<br><img src="/2023/12/16/%E6%96%B0%E5%9E%8B%E5%9F%BA%E7%A1%80%E6%B5%8B%E7%BB%98%E5%92%8C%E5%9C%B0%E7%90%86%E5%AE%9E%E4%BD%93%E7%9A%84%E6%A6%82%E8%BF%B0/0395be837e2e101b03705df19e2030c5.png" srcset="/img/loading.gif" lazyload alt="大楼实体样例"></p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>从普通的地理信息矢量和三维模型向数字孪生迈进的过程并不容易，虽然现在已经有许多厂商号称自己做数字孪生，但实际上并没有真正打通各种数据。客观来说，统一数据格式这种事情，还是得国家来做。在实现数字孪生之前，先得做地理实体，完善实景三维，统一各种数据，这方面主要还是紧跟国家的动作。<br>另外关于软件方面虽然已经有一些国内厂商在做能够生产地理实体的软件，但都在开发和完善的阶段，并且收费颇高，主要面向企业用户，普通人主要还是依靠那几种破解软件来分别处理各种格式的数据。<br>从个人角度，需要熟悉各种数据格式，掌握转换方法，熟悉处理流程，并且尽量实现流程自动化，因为地理实体的构建，不管是数据数量还是复杂度，都是持续上升的。<br>关于地理实体和实景三维方面的细节问题其实非常多，毕竟涉及到各种数据格式之间的转换和兼容，实际上国家文件中已经做了非常多的规范和描述，需要在实践过程中逐渐了解和掌握。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0/" class="category-chain-item">学习</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E8%A1%8C%E4%B8%9A%E5%8F%91%E5%B1%95/">#行业发展</a>
+      
+        <a href="/tags/%E5%9C%B0%E7%90%86%E5%AE%9E%E4%BD%93/">#地理实体</a>
+      
+        <a href="/tags/%E6%96%B0%E5%9E%8B%E6%B5%8B%E7%BB%98/">#新型测绘</a>
+      
+        <a href="/tags/%E4%BA%A7%E4%B8%9A%E5%8D%87%E7%BA%A7/">#产业升级</a>
+      
+        <a href="/tags/%E5%AE%9E%E6%99%AF%E4%B8%89%E7%BB%B4/">#实景三维</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>新型基础测绘和地理实体的概述</div>
+      <div>http://kw1649190133.github.io/2023/12/16/新型基础测绘和地理实体的概述/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Aŭtoro</div>
+          <div>Kwindy</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Postigita</div>
+          <div>December 16, 2023</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Lizenta</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/12/18/%E5%9C%B0%E7%90%86%E4%BF%A1%E6%81%AF%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86%E6%B5%81%E7%A8%8B%E7%9A%84%E4%B8%AA%E4%BA%BA%E6%80%BB%E7%BB%93/" title="地理信息数据处理流程的个人总结">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">地理信息数据处理流程的个人总结</span>
+                        <span class="visible-mobile">Antaŭa afiŝo</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/12/12/%E5%85%B3%E4%BA%8E%E7%9F%A5%E8%AF%86%E5%BA%93%E4%B8%8E%E4%BF%A1%E6%81%AF%E5%85%B1%E4%BA%AB%E7%9A%84%E8%A7%81%E8%A7%A3/" title="关于知识库与信息共享的见解">
+                        <span class="hidden-mobile">关于知识库与信息共享的见解</span>
+                        <span class="visible-mobile">Sekva afiŝo</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Enhavtabelo</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Serĉi</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">ŝlosivorto</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blogo funkcias plej bone kun JavaScript ebligita</div>
+  </noscript>
+</body>
+</html>

@@ -29,7 +29,7 @@
 <meta property="og:image" content="http://kw1649190133.github.io/2023/12/11/%E5%9C%B0%E7%90%86%E5%9D%90%E6%A0%87%E7%B3%BB%E4%BB%A5%E5%8F%8A%E6%8A%95%E5%BD%B1%E7%9A%84%E5%BA%94%E7%94%A8%E7%9F%A5%E8%AF%86/e0fdab44829768db9ae89c79d2686266.png">
 <meta property="og:image" content="http://kw1649190133.github.io/2023/12/11/%E5%9C%B0%E7%90%86%E5%9D%90%E6%A0%87%E7%B3%BB%E4%BB%A5%E5%8F%8A%E6%8A%95%E5%BD%B1%E7%9A%84%E5%BA%94%E7%94%A8%E7%9F%A5%E8%AF%86/2e29f461c2a1d506fab5e4a745290247.png">
 <meta property="article:published_time" content="2023-12-11T03:06:43.000Z">
-<meta property="article:modified_time" content="2023-12-11T03:50:19.601Z">
+<meta property="article:modified_time" content="2023-12-13T06:11:40.644Z">
 <meta property="article:author" content="Kwindy">
 <meta property="article:tag" content="地理信息">
 <meta property="article:tag" content="坐标系">
@@ -125,7 +125,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/">
                 <i class="iconfont icon-home-fill"></i>
-                <span>Startseite</span>
+                <span>Hejmpaĝo</span>
               </a>
             </li>
           
@@ -137,7 +137,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/archives/">
                 <i class="iconfont icon-archive-fill"></i>
-                <span>Archiv</span>
+                <span>Arkivoj</span>
               </a>
             </li>
           
@@ -149,7 +149,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/categories/">
                 <i class="iconfont icon-category-fill"></i>
-                <span>Kategorien</span>
+                <span>Kategorio</span>
               </a>
             </li>
           
@@ -161,7 +161,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/tags/">
                 <i class="iconfont icon-tags-fill"></i>
-                <span>Schlagwörter</span>
+                <span>Etikedoj</span>
               </a>
             </li>
           
@@ -173,7 +173,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/about/">
                 <i class="iconfont icon-user-fill"></i>
-                <span>Über</span>
+                <span>Pri</span>
               </a>
             </li>
           
@@ -230,7 +230,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2.3k wörter
+          2.8k vortoj
         
       </span>
     
@@ -241,7 +241,7 @@
         
         
         
-          20 minuten
+          24 minutoj
         
       </span>
     
@@ -303,11 +303,14 @@
 <li>CGCS2000地理坐标(China Geodetic Coordinate System 2000)</li>
 <li>CGCS2000在不同位置的投影坐标</li>
 </ul>
-<h1 id="实操应用"><a href="#实操应用" class="headerlink" title="实操应用"></a>实操应用</h1><h2 id="ArcGIS里改变投影的方法"><a href="#ArcGIS里改变投影的方法" class="headerlink" title="ArcGIS里改变投影的方法"></a>ArcGIS里改变投影的方法</h2><h2 id="投影"><a href="#投影" class="headerlink" title="投影"></a>投影</h2><p>使用投影工具就可以很方便的转换数据的坐标系。<br><img src="/2023/12/11/%E5%9C%B0%E7%90%86%E5%9D%90%E6%A0%87%E7%B3%BB%E4%BB%A5%E5%8F%8A%E6%8A%95%E5%BD%B1%E7%9A%84%E5%BA%94%E7%94%A8%E7%9F%A5%E8%AF%86/01436035e7932db3fa54470c1411ca7f.png" srcset="/img/loading.gif" lazyload alt="01436035e7932db3fa54470c1411ca7f.png"></p>
-<h3 id="定义投影"><a href="#定义投影" class="headerlink" title="定义投影"></a>定义投影</h3><p>定义投影实际上就是修改数据的地理坐标标注，也就是数据里面，关于这个数据使用的是什么坐标系的一个说明。<br>定义投影功能常用在由其他格式的数据转换到shp格式的时候，比如从CASS导出的dwg图层，是不带地理信息标注的。<br>当然这功能也用在一些骚操作里面，一般情况不建议乱用，容易把数据搞坏。<br><img src="/2023/12/11/%E5%9C%B0%E7%90%86%E5%9D%90%E6%A0%87%E7%B3%BB%E4%BB%A5%E5%8F%8A%E6%8A%95%E5%BD%B1%E7%9A%84%E5%BA%94%E7%94%A8%E7%9F%A5%E8%AF%86/e0fdab44829768db9ae89c79d2686266.png" srcset="/img/loading.gif" lazyload alt="e0fdab44829768db9ae89c79d2686266.png"></p>
-<p>ArcGIS有自动转换和显示的功能，也就是数据本身坐标系定义没问题的情况下，可以自动转换到数据框的坐标系下显示。当然这个只改变显示方式，不改变数据本身。<br>一般情况下，还是要注意数据坐标系和显示坐标系一致，避免一些莫名其妙的错误。<br><img src="/2023/12/11/%E5%9C%B0%E7%90%86%E5%9D%90%E6%A0%87%E7%B3%BB%E4%BB%A5%E5%8F%8A%E6%8A%95%E5%BD%B1%E7%9A%84%E5%BA%94%E7%94%A8%E7%9F%A5%E8%AF%86/2e29f461c2a1d506fab5e4a745290247.png" srcset="/img/loading.gif" lazyload alt="2e29f461c2a1d506fab5e4a745290247.png"></p>
-<h2 id="CASS修改数据坐标系"><a href="#CASS修改数据坐标系" class="headerlink" title="CASS修改数据坐标系"></a>CASS修改数据坐标系</h2><p>更换中央子午线</p>
-<h3 id="添加和删除带号"><a href="#添加和删除带号" class="headerlink" title="添加和删除带号"></a>添加和删除带号</h3><p>添加和删除带号的本质就是直接平移数据</p>
+<h1 id="实操应用"><a href="#实操应用" class="headerlink" title="实操应用"></a>实操应用</h1><p>在实际的项目和生产过程中，坐标系的作用是贯穿始终的，在进行数据采集、数据处理的过程，首先要弄明白的就是作业区域使用的是什么坐标系，另外就是经常会拿到各种来源的不同数据，需要做一下坐标系的统一。</p>
+<h2 id="ArcGIS里改变投影的方法"><a href="#ArcGIS里改变投影的方法" class="headerlink" title="ArcGIS里改变投影的方法"></a>ArcGIS里改变投影的方法</h2><h3 id="投影"><a href="#投影" class="headerlink" title="投影"></a>投影</h3><p>使用投影工具就可以很方便的转换数据的坐标系。此操作是对数据进行投影转换的，会生成一个转换坐标后的新数据。<br><img src="/2023/12/11/%E5%9C%B0%E7%90%86%E5%9D%90%E6%A0%87%E7%B3%BB%E4%BB%A5%E5%8F%8A%E6%8A%95%E5%BD%B1%E7%9A%84%E5%BA%94%E7%94%A8%E7%9F%A5%E8%AF%86/01436035e7932db3fa54470c1411ca7f.png" srcset="/img/loading.gif" lazyload alt="投影工具"></p>
+<h3 id="定义投影"><a href="#定义投影" class="headerlink" title="定义投影"></a>定义投影</h3><p>定义投影实际上就是修改数据的地理坐标标注，也就是数据里面，关于这个数据使用的是什么坐标系的一个说明。<br>定义投影功能常用在由其他格式的数据转换到shp格式的时候，比如从CASS导出的dwg图层，是不带地理信息标注的。<br>当然这功能也用在一些骚操作里面，一般情况不建议乱用，容易把数据搞坏。<br><img src="/2023/12/11/%E5%9C%B0%E7%90%86%E5%9D%90%E6%A0%87%E7%B3%BB%E4%BB%A5%E5%8F%8A%E6%8A%95%E5%BD%B1%E7%9A%84%E5%BA%94%E7%94%A8%E7%9F%A5%E8%AF%86/e0fdab44829768db9ae89c79d2686266.png" srcset="/img/loading.gif" lazyload alt="定义投影工具"></p>
+<p>ArcGIS有自动转换和显示的功能，也就是数据本身坐标系定义没问题的情况下，可以自动转换到数据框的坐标系下显示。当然这个只改变显示方式，不改变数据本身。<br>一般情况下，还是要注意数据坐标系和显示坐标系一致，避免一些莫名其妙的错误。<br><img src="/2023/12/11/%E5%9C%B0%E7%90%86%E5%9D%90%E6%A0%87%E7%B3%BB%E4%BB%A5%E5%8F%8A%E6%8A%95%E5%BD%B1%E7%9A%84%E5%BA%94%E7%94%A8%E7%9F%A5%E8%AF%86/2e29f461c2a1d506fab5e4a745290247.png" srcset="/img/loading.gif" lazyload alt="数据框的投影属性"></p>
+<h2 id="CASS修改数据坐标系"><a href="#CASS修改数据坐标系" class="headerlink" title="CASS修改数据坐标系"></a>CASS修改数据坐标系</h2><p>首先要提及的是，CAD作为一款工业设计软件，它里面用的就是<strong>直角坐标系</strong>，对应到地理信息领域，就是投影坐标系，比如前面提到常用的高斯投影。所以，可以说CASS中的操作都是在投影坐标系间的转换，涉及到地理坐标系，那还得是ArcGIS来处理。</p>
+<p>另外，关于CASS11里面封装的CASS3D系统，这个可以加载OSGB模型的东西，如果不想冒险或者惹上坐标转换的麻烦，最好是生产之前让osgb模型的坐标系和需要采集的dwg坐标一致。总之，生产出来的dwg一定是投影坐标。</p>
+<h3 id="数据换带"><a href="#数据换带" class="headerlink" title="数据换带"></a>数据换带</h3><p>更换中央子午线，其实也是平面到平面的一个转换，一直是直角坐标系，不过在cass里有专门的工具，直接使用换带工具进行转换，非常方便。</p>
+<h3 id="添加和删除带号"><a href="#添加和删除带号" class="headerlink" title="添加和删除带号"></a>添加和删除带号</h3><p>添加和删除带号的本质就是直接平移数据。例如，把中央子午线为111E的高斯投影，添加带号37，就是在横坐标的前面加上37。横坐标一般是七位数，加上以后变成九位数。</p>
 <p>需要注意的是，CAD平移的方向在有光标引导的时候，以鼠标所指的方向为正向。所以要根据实际情况注意使用+号还是-号。</p>
 
                 
@@ -368,20 +371,20 @@
     <div class="license-meta">
       
         <div class="license-meta-item">
-          <div>Beitragsautor</div>
+          <div>Aŭtoro</div>
           <div>Kwindy</div>
         </div>
       
       
         <div class="license-meta-item license-meta-date">
-          <div>Veröffentlicht am</div>
+          <div>Postigita</div>
           <div>December 11, 2023</div>
         </div>
       
       
       
         <div class="license-meta-item">
-          <div>Urheberrechtshinweis</div>
+          <div>Lizenta</div>
           <div>
             
               
@@ -407,13 +410,19 @@
                   <article class="post-prev col-6">
                     
                     
+                      <a href="/2023/12/12/%E5%85%B3%E4%BA%8E%E7%9F%A5%E8%AF%86%E5%BA%93%E4%B8%8E%E4%BF%A1%E6%81%AF%E5%85%B1%E4%BA%AB%E7%9A%84%E8%A7%81%E8%A7%A3/" title="关于知识库与信息共享的见解">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">关于知识库与信息共享的见解</span>
+                        <span class="visible-mobile">Antaŭa afiŝo</span>
+                      </a>
+                    
                   </article>
                   <article class="post-next col-6">
                     
                     
                       <a href="/2023/11/30/%E3%80%90%E8%AD%A6%E9%92%9F%E9%95%BF%E9%B8%A3%E3%80%91%E7%97%85%E6%AF%92%E9%98%B2%E6%8A%A4%E4%B8%8E%E4%B8%AA%E4%BA%BA%E4%BF%A1%E6%81%AF%E5%AE%89%E5%85%A8/" title="【警钟长鸣】病毒防护与个人信息安全">
                         <span class="hidden-mobile">【警钟长鸣】病毒防护与个人信息安全</span>
-                        <span class="visible-mobile">Nächster</span>
+                        <span class="visible-mobile">Sekva afiŝo</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
                     
@@ -434,7 +443,7 @@
     <div id="toc">
   <p class="toc-header">
     <i class="iconfont icon-list"></i>
-    <span>Inhaltsverzeichnis</span>
+    <span>Enhavtabelo</span>
   </p>
   <div class="toc-body" id="toc-body"></div>
 </div>
@@ -490,7 +499,7 @@
   <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold">Suchen</h4>
+        <h4 class="modal-title w-100 font-weight-bold">Serĉi</h4>
         <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -498,7 +507,7 @@
       <div class="modal-body mx-3">
         <div class="md-form mb-5">
           <input type="text" id="local-search-input" class="form-control validate">
-          <label data-error="x" data-success="v" for="local-search-input">Stichwort</label>
+          <label data-error="x" data-success="v" for="local-search-input">ŝlosivorto</label>
         </div>
         <div class="list-group" id="local-search-result"></div>
       </div>
@@ -677,7 +686,7 @@
   
 
   <noscript>
-    <div class="noscript-warning">Blog funktioniert am besten mit aktiviertem JavaScript</div>
+    <div class="noscript-warning">Blogo funkcias plej bone kun JavaScript ebligita</div>
   </noscript>
 </body>
 </html>
