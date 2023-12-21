@@ -4,6 +4,39 @@
   
   
   <entry>
+    <title>OSGB模型压缩测试</title>
+    <link href="/2023/12/21/OSGB%E6%A8%A1%E5%9E%8B%E5%8E%8B%E7%BC%A9%E6%B5%8B%E8%AF%95/"/>
+    <url>/2023/12/21/OSGB%E6%A8%A1%E5%9E%8B%E5%8E%8B%E7%BC%A9%E6%B5%8B%E8%AF%95/</url>
+    
+    <content type="html"><![CDATA[<h1 id="OSGB模型压缩测试"><a href="#OSGB模型压缩测试" class="headerlink" title="OSGB模型压缩测试"></a>OSGB模型压缩测试</h1><h3 id="计算机配置"><a href="#计算机配置" class="headerlink" title="计算机配置"></a>计算机配置</h3><ul><li>CPU：i5-13600KF</li><li>GPU：4060TI</li><li>内存：32GB 4800MHz</li><li>磁盘：Predator SSD GM7 M.2 1TB<h2 id="软件选择"><a href="#软件选择" class="headerlink" title="软件选择"></a>软件选择</h2></li><li>三维工厂  以前了解过，但很少使用。现在更新了版本。</li><li>MeshLab  强力的模型处理软件，但不支持osgb</li><li>OSGBlab  倾斜摄影模型的处理软件，虽然界面简单但非常实用。主要功能是进行osgb模型与各种其他格式的转换，例如osgb转3Dtiles。在2.9.41版本后添加了模型压缩功能。</li></ul><h1 id="开始压缩测试"><a href="#开始压缩测试" class="headerlink" title="开始压缩测试"></a>开始压缩测试</h1><h2 id="OSGBlab"><a href="#OSGBlab" class="headerlink" title="OSGBlab"></a>OSGBlab</h2><p>软件版本：2.9.99<br>OSGBlab试用版在功能上与正式版功能一致，只是处理10G以上的模型时会有水印。</p><p>使用OSGBlab对OSGB模型进行压缩的测试。<br><img src="/a6c3cb18a7aad1eab4493d48a33c373e.png" alt="a6c3cb18a7aad1eab4493d48a33c373e.png"></p><p>处理后模型的大小显著减少，大概能减少一半体积。<br><img src="/62ce4e38821ab46481235126415fb3da.png" alt="62ce4e38821ab46481235126415fb3da.png"></p><h3 id="压缩前"><a href="#压缩前" class="headerlink" title="压缩前"></a>压缩前</h3><p>体积：42GB<br><img src="/d173f2daaabe03e4834524636d7056ce.png" alt="d173f2daaabe03e4834524636d7056ce.png"></p><h3 id="压缩测试1-中等参数"><a href="#压缩测试1-中等参数" class="headerlink" title="压缩测试1-中等参数"></a>压缩测试1-中等参数</h3><p>【参数：简化80，贴图质量49】<br>压缩时间：约十分钟<br>压缩结果：24.6GB<br><img src="/d7f3ed7149705f72131f483cd0d27a20.png" alt="d7f3ed7149705f72131f483cd0d27a20.png"></p><h3 id="压缩测试2-极限参数"><a href="#压缩测试2-极限参数" class="headerlink" title="压缩测试2-极限参数"></a>压缩测试2-极限参数</h3><p>【参数：简化100，贴图质量20】<br>压缩时间：约十分钟<br>压缩结果：23.1GB<br><img src="/35940cfc4194ec2213dbddac5257c726.png" alt="35940cfc4194ec2213dbddac5257c726.png"></p><p>几乎没有肉眼可见的质量损失，效果非常不错，可能是得益于压缩算法的设定比较保守。但是这个压缩率显然有限，10个G的模型变成5个G很好，100G的模型变成50个G，还是很大，在本地查看还行，放在服务器上就太大了。总体来说还是有用的，可以作为优化存储空间的方式。</p><h2 id="三维工厂"><a href="#三维工厂" class="headerlink" title="三维工厂"></a>三维工厂</h2><p>三维工厂：K3D Maker<br>软件版本：V3.2.35<br>和osgblab一样未授权的软件会有水印</p><p>使用三维工厂对OSGB模型进行压缩的测试。<br><img src="/17737b008d680cec3dc21b01062dbec2.png" alt="17737b008d680cec3dc21b01062dbec2.png"></p><h3 id="极限测试"><a href="#极限测试" class="headerlink" title="极限测试"></a>极限测试</h3><p>【参数：模型质量极简，纹理质量极简，网格质量低】网格质量怕坍塌，就没选最后两项。<br>压缩时间：45秒<br>压缩结果：459MB！</p><p><img src="/d4839721163a232f6c2f53bc43bcceb3.png" alt="d4839721163a232f6c2f53bc43bcceb3.png"></p><p>放远了看还可以<br><img src="/9edaeec6912031dcbc3de750b96722a4.png" alt="9edaeec6912031dcbc3de750b96722a4.png"></p><h3 id="普通测试"><a href="#普通测试" class="headerlink" title="普通测试"></a>普通测试</h3><p>【参数：模型质量中，纹理质量中，网格质量高】使用默认设置。<br>压缩时间：7分钟<br>压缩结果：7.14GB！</p><p><img src="/9737db21b7ed5b91e270a381d0f5bfb1.png" alt="9737db21b7ed5b91e270a381d0f5bfb1.png"></p><p>看起来和原模型差别并不大，效果相当不错。而且在普通参数和极限参数之间还有可以调整的空间。</p><h3 id="关于价格"><a href="#关于价格" class="headerlink" title="关于价格"></a>关于价格</h3><p>顺便了解了一下价格，还真不贵，属于个人也能用得起的价格。记得原先是挺贵的，现在的价格是原先的一折。<br><img src="/f57499af8d9fcd12b8625d680646461e.png" alt="f57499af8d9fcd12b8625d680646461e.png"></p><h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>osgblab的表现在预期内，三维工厂超出预期。<br>没想到三维工厂非常厉害，而osgblab的设定非常保守。<br>如果是需要大场景的osgb转3dtiles放到服务器上，还得是三维工厂。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>工作</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>软件</tag>
+      
+      <tag>模型</tag>
+      
+      <tag>osgb</tag>
+      
+      <tag>压缩</tag>
+      
+      <tag>测试</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>地理信息数据处理流程的个人总结</title>
     <link href="/2023/12/18/%E5%9C%B0%E7%90%86%E4%BF%A1%E6%81%AF%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86%E6%B5%81%E7%A8%8B%E7%9A%84%E4%B8%AA%E4%BA%BA%E6%80%BB%E7%BB%93/"/>
     <url>/2023/12/18/%E5%9C%B0%E7%90%86%E4%BF%A1%E6%81%AF%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86%E6%B5%81%E7%A8%8B%E7%9A%84%E4%B8%AA%E4%BA%BA%E6%80%BB%E7%BB%93/</url>
