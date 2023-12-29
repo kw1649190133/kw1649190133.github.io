@@ -24,11 +24,11 @@
       
       <tag>腾讯云</tag>
       
+      <tag>windows</tag>
+      
       <tag>视频</tag>
       
       <tag>图传</tag>
-      
-      <tag>windows</tag>
       
       <tag>云端</tag>
       
@@ -59,11 +59,11 @@
       
       <tag>腾讯云</tag>
       
-      <tag>windows</tag>
-      
       <tag>网络</tag>
       
       <tag>部署</tag>
+      
+      <tag>windows</tag>
       
     </tags>
     
@@ -88,9 +88,9 @@
     
     <tags>
       
-      <tag>模型</tag>
-      
       <tag>软件</tag>
+      
+      <tag>模型</tag>
       
       <tag>osgb</tag>
       
@@ -121,9 +121,9 @@
     
     <tags>
       
-      <tag>ArcGIS</tag>
-      
       <tag>地理信息</tag>
+      
+      <tag>ArcGIS</tag>
       
       <tag>FME</tag>
       
@@ -319,9 +319,9 @@
     
     <tags>
       
-      <tag>ArcGIS</tag>
-      
       <tag>地理信息</tag>
+      
+      <tag>ArcGIS</tag>
       
       <tag>gdb</tag>
       
@@ -422,9 +422,9 @@
     
     <tags>
       
-      <tag>ArcGIS</tag>
-      
       <tag>地理信息</tag>
+      
+      <tag>ArcGIS</tag>
       
       <tag>数据库质检</tag>
       
@@ -453,11 +453,11 @@
     
     <tags>
       
+      <tag>地理信息</tag>
+      
       <tag>Arcgis</tag>
       
       <tag>软件</tag>
-      
-      <tag>地理信息</tag>
       
       <tag>Reviewer</tag>
       
@@ -486,13 +486,13 @@
     
     <tags>
       
+      <tag>地理信息</tag>
+      
       <tag>Arcgis</tag>
       
       <tag>Pro</tag>
       
       <tag>软件</tag>
-      
-      <tag>地理信息</tag>
       
     </tags>
     
@@ -681,11 +681,11 @@
     
     <tags>
       
+      <tag>地理信息</tag>
+      
       <tag>Cesium</tag>
       
       <tag>3Dtiles</tag>
-      
-      <tag>地理信息</tag>
       
       <tag>Mars3D</tag>
       
@@ -774,11 +774,11 @@
     
     <tags>
       
-      <tag>ArcGIS</tag>
-      
       <tag>地理信息</tag>
       
       <tag>排序</tag>
+      
+      <tag>ArcGIS</tag>
       
     </tags>
     
@@ -803,9 +803,9 @@
     
     <tags>
       
-      <tag>ArcGIS</tag>
-      
       <tag>地理信息</tag>
+      
+      <tag>ArcGIS</tag>
       
       <tag>影像镶嵌</tag>
       
