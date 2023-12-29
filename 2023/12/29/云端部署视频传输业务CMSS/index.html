@@ -1,0 +1,695 @@
+
+
+<!DOCTYPE html>
+<html lang="CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Kwindy">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="前提条件：有一台运行Windows实例的服务器 安装服务器端的程序包CMSServer.exe程序内包含的其实是多项服务器进程，比如什么登录啊、用户管理啊、数据存储啊之类的，它应该是支持分布式安装的，可以将各种进程跑在不同的服务器上。当然本次一站式部署不涉及这种情况。 在选择安装路径和缓存路径时需要注意，其他IP地址、端口等一般默认就可以。 装好之后会自动跳出服务器管理界面，此时还不需要做改动。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="云端部署视频传输业务CMSS">
+<meta property="og:url" content="http://kw1649190133.github.io/2023/12/29/%E4%BA%91%E7%AB%AF%E9%83%A8%E7%BD%B2%E8%A7%86%E9%A2%91%E4%BC%A0%E8%BE%93%E4%B8%9A%E5%8A%A1CMSS/index.html">
+<meta property="og:site_name" content="kw&#39;s blog">
+<meta property="og:description" content="前提条件：有一台运行Windows实例的服务器 安装服务器端的程序包CMSServer.exe程序内包含的其实是多项服务器进程，比如什么登录啊、用户管理啊、数据存储啊之类的，它应该是支持分布式安装的，可以将各种进程跑在不同的服务器上。当然本次一站式部署不涉及这种情况。 在选择安装路径和缓存路径时需要注意，其他IP地址、端口等一般默认就可以。 装好之后会自动跳出服务器管理界面，此时还不需要做改动。">
+<meta property="og:locale">
+<meta property="og:image" content="http://kw1649190133.github.io/606ab9c8a21c424cbb1be6f8f75e5f5f">
+<meta property="og:image" content="http://kw1649190133.github.io/9da9a230fb1344d3a5f2011ac355c4b2">
+<meta property="og:image" content="http://kw1649190133.github.io/fbac92f5ea924c0aa281292213a786a6">
+<meta property="og:image" content="http://kw1649190133.github.io/f6bdea2223fb476e8e3ae75bd2b84184">
+<meta property="og:image" content="http://kw1649190133.github.io/f6bc7bd582d24860b2ca5c152fb19b1f">
+<meta property="og:image" content="http://kw1649190133.github.io/1d2b1058c27a4cfa86841a8a372f895d">
+<meta property="og:image" content="http://kw1649190133.github.io/5507af2538644ba2811741b0df5a879c">
+<meta property="og:image" content="http://kw1649190133.github.io/4838e6c3b93e44df84e14a2c7f6f57e0">
+<meta property="og:image" content="http://kw1649190133.github.io/5c07d37bff4d427fb9328578c57c5fcc">
+<meta property="og:image" content="http://kw1649190133.github.io/d844ca5a82d44ebcb07e8dff13e5f348">
+<meta property="article:published_time" content="2023-12-29T02:41:55.000Z">
+<meta property="article:modified_time" content="2023-12-29T02:44:55.097Z">
+<meta property="article:author" content="Kwindy">
+<meta property="article:tag" content="服务器">
+<meta property="article:tag" content="腾讯云">
+<meta property="article:tag" content="视频">
+<meta property="article:tag" content="图传">
+<meta property="article:tag" content="windows">
+<meta property="article:tag" content="云端">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://kw1649190133.github.io/606ab9c8a21c424cbb1be6f8f75e5f5f">
+  
+  
+  
+  <title>云端部署视频传输业务CMSS - kw&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"kw1649190133.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Startseite</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archiv</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Kategorien</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Schlagwörter</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>Über</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="云端部署视频传输业务CMSS"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-12-29 10:41" pubdate>
+          December 29, 2023 am
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.6k wörter
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          14 minuten
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">云端部署视频传输业务CMSS</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>前提条件：有一台运行Windows实例的服务器</p>
+<h1 id="安装服务器端的程序包"><a href="#安装服务器端的程序包" class="headerlink" title="安装服务器端的程序包"></a>安装服务器端的程序包</h1><p>CMSServer.exe程序内包含的其实是多项服务器进程，比如什么登录啊、用户管理啊、数据存储啊之类的，它应该是支持分布式安装的，可以将各种进程跑在不同的服务器上。当然本次一站式部署不涉及这种情况。</p>
+<p>在选择安装路径和缓存路径时需要注意，其他IP地址、端口等一般默认就可以。<br><img src="/606ab9c8a21c424cbb1be6f8f75e5f5f" srcset="/img/loading.gif" lazyload alt="963dd07df375c26a3106cba2443ac0cf.png"></p>
+<p>装好之后会自动跳出服务器管理界面，此时还不需要做改动。<br><img src="/9da9a230fb1344d3a5f2011ac355c4b2" srcset="/img/loading.gif" lazyload alt="b06d7d2612669fa52251bd3ce0d5663f.png"></p>
+<p>并且得到一个ReadMe文档，文档可以在<strong>服务器安装目录</strong>找到，也可以在windows程序菜单下找到。文档会说明IP端口、<strong>管理员账户和密码</strong>。</p>
+<h1 id="平台访问"><a href="#平台访问" class="headerlink" title="平台访问"></a>平台访问</h1><p>用本地端个人电脑直接访问地址后可以在主界面下载各个平台的客户端<br><img src="/fbac92f5ea924c0aa281292213a786a6" srcset="/img/loading.gif" lazyload alt="413beb1fa46c4e855e4a84b3dffc42f7.png"></p>
+<p>在本地也可以用客户端进行访问了。客户端的功能会更加全面一些，尤其是要使用视频监控和回放等功能的时候。<br><img src="/f6bdea2223fb476e8e3ae75bd2b84184" srcset="/img/loading.gif" lazyload alt="74e359a3eda10dd7310ab08d52e10bb0.png"></p>
+<p>从说明书和软件界面也可以了解到，这是一款集成度非常高的软件，它包含了地图定位、车辆管理业务板块、数据库管理、信息汇总等等很多内容，视频监控和回传保存只是它功能的一部分而已。</p>
+<h1 id="图传设置"><a href="#图传设置" class="headerlink" title="图传设置"></a>图传设置</h1><p>接下来的问题是如何设置视频的发送端，让它能够连接上服务器，并且往里头传画面。</p>
+<h2 id="图传模块设置"><a href="#图传模块设置" class="headerlink" title="图传模块设置"></a>图传模块设置</h2><p>图传模块需要进行IP设置，将IP设置成服务器的地址，端口号不要改。</p>
+<h3 id="手机App连接"><a href="#手机App连接" class="headerlink" title="手机App连接"></a>手机App连接</h3><p>个人觉得手机连接比较方便，先介绍手机连接方式。</p>
+<ol>
+<li>设备启动后，会在一分钟内运行在AP模式下，该模式下图传模块自己是一个<strong>热点</strong>，可以用手机直接搜索附近的WIFI，找到它并连接。</li>
+<li>打开手机端App，不用登录，点击右边的<strong>搜索</strong>按钮，在连上设备热点的情况下可以找到一个设备。然后点击进入，设备管理的初始密码是Adm_123。</li>
+<li>进入后找到<strong>网络设置</strong>，把IP地址改成服务器的IP，或者服务器有域名的话也可以使用域名，端口号默认6608，不能改！<br><img src="/f6bc7bd582d24860b2ca5c152fb19b1f" srcset="/img/loading.gif" lazyload alt="aa955c5f43a30a9089635e998a9878e2.png"></li>
+</ol>
+<h3 id="电脑连接"><a href="#电脑连接" class="headerlink" title="电脑连接"></a>电脑连接</h3><p>电脑连接比较麻烦，推荐使用手机连接。但是电脑画面好。</p>
+<ol>
+<li>图传模块的设备默认IP为192.168.1.253，需要将电脑网络接口的IP也设置在同一子网下，才可以进行连接。</li>
+<li>进入电脑的网络修改界面，把电脑的IP地址改成192.168.1.123，网关设成192.168.1.0。</li>
+<li>接上以后可以使用MVMS_NetPlayer软件查看设备连接、图传画面，这个软件可以在网上随便下到。</li>
+<li>也可以用浏览器直接访问模块的IP，进入系统设置界面。和手机上有点类似。主要是在模块中设置服务器端的IP地址，让它知道该往哪发送视频流。</li>
+</ol>
+<h2 id="服务器端设置"><a href="#服务器端设置" class="headerlink" title="服务器端设置"></a>服务器端设置</h2><p>首先需要在运营管理→公司信息中，添加一个公司。只要输入公司名称和主账户就行了，很多内容可以不填。<br><img src="/1d2b1058c27a4cfa86841a8a372f895d" srcset="/img/loading.gif" lazyload alt="862e2306c6fc257cd09db80f1aa2122a.png"></p>
+<p>然后在设备管理中，就可以添加发送端设备了。如果是已经将设备IP配置好，那么设备联网后就会出现在未注册设备的目录中，点开看一下把它加上就行。<br><img src="/5507af2538644ba2811741b0df5a879c" srcset="/img/loading.gif" lazyload alt="20a2d37fe8fdb1e1517fd7f6a7b3ffbc.png"></p>
+<p>在添加设备的时候最重要的是设备编号和所属公司，设备编号可以进入图传模块的设置里更改。也可以提前设置好设备号，这样当设备接入以后，就会自动匹配设备号发送画面。<br><img src="/4838e6c3b93e44df84e14a2c7f6f57e0" srcset="/img/loading.gif" lazyload alt="5a693b101d8482bd320be336ddb6f335.png"></p>
+<h2 id="关于视频保存"><a href="#关于视频保存" class="headerlink" title="关于视频保存"></a>关于视频保存</h2><p>在信号发射端插入sim卡联网后，就会自动向设置好的IP地址传输视频流信号了，但此时并不会在服务器端保存视频画面。如果设备上插入了TF卡的话，倒是会保存在TF卡上。要想视频保存在服务器，就需要在服务器管理程序中设置。<br>选择<strong>存储服务器配置</strong>，选择存储视频画面的硬盘，并且可以设置相关的存储大小、时间间隔，把<strong>存储实时视频改为yes</strong>，最后点保存，完成配置。<br><img src="/5c07d37bff4d427fb9328578c57c5fcc" srcset="/img/loading.gif" lazyload alt="9721458a6b20968437129d0733838693.png"></p>
+<p>之后视频会保存在服务器上，在选择的硬盘下，会新建一个gStorage/STOMEDIA/【设备编号】/【日期】的文件夹里。<br>即使没有视频信号，只要发射器能够连上服务器，也会有一个无信号的蓝屏画面。<br><img src="/d844ca5a82d44ebcb07e8dff13e5f348" srcset="/img/loading.gif" lazyload alt="4e5d402b607ff4667e657c9de26be7c3.png"></p>
+<h2 id="关于软件延迟"><a href="#关于软件延迟" class="headerlink" title="关于软件延迟"></a>关于软件延迟</h2><p>服务器端的画面延迟大概在5s左右。用电脑或者手机直接连接模块，延迟大概0.5s左右。<br>另外，双路视频画面会对网络负担比较大，而主码流和子码流这种概念是海康威视提的，主码流画质高、占用带宽资源多，一般用于存储；子码流相对清晰度低，占用资源少，用于网传，保证视频的实时和流畅。需要清晰度的时候可以切换成主码流。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0/" class="category-chain-item">学习</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%9C%8D%E5%8A%A1%E5%99%A8/">#服务器</a>
+      
+        <a href="/tags/%E8%85%BE%E8%AE%AF%E4%BA%91/">#腾讯云</a>
+      
+        <a href="/tags/%E8%A7%86%E9%A2%91/">#视频</a>
+      
+        <a href="/tags/%E5%9B%BE%E4%BC%A0/">#图传</a>
+      
+        <a href="/tags/windows/">#windows</a>
+      
+        <a href="/tags/%E4%BA%91%E7%AB%AF/">#云端</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>云端部署视频传输业务CMSS</div>
+      <div>http://kw1649190133.github.io/2023/12/29/云端部署视频传输业务CMSS/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Beitragsautor</div>
+          <div>Kwindy</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Veröffentlicht am</div>
+          <div>December 29, 2023</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Urheberrechtshinweis</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/12/29/%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95-%E8%85%BE%E8%AE%AF%E4%BA%91/" title="云服务器使用方法_腾讯云">
+                        <span class="hidden-mobile">云服务器使用方法_腾讯云</span>
+                        <span class="visible-mobile">Nächster</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Inhaltsverzeichnis</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Suchen</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Stichwort</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog funktioniert am besten mit aktiviertem JavaScript</div>
+  </noscript>
+</body>
+</html>

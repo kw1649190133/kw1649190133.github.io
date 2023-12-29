@@ -1,0 +1,686 @@
+
+
+<!DOCTYPE html>
+<html lang="CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Kwindy">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="以腾讯云为例子，记录一下云服务器的基本使用方法和部署流程 云服务器购买与配置腾讯服务器购买后，可以在购买账号的信箱内，可以找到服务器的IP、用户名、密码。这些重要信息一定要妥善保管。云服务器的配置、使用时长等都在腾讯云的网页上进行管理，操作系统也是在购买时就可以选择并预装的。例如本次使用的Windows server系统在登录过程中就不会遇到对普通人不友好的黑框命令行界面。另外关于服务器使用的方法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="云服务器使用方法_腾讯云">
+<meta property="og:url" content="http://kw1649190133.github.io/2023/12/29/%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95-%E8%85%BE%E8%AE%AF%E4%BA%91/index.html">
+<meta property="og:site_name" content="kw&#39;s blog">
+<meta property="og:description" content="以腾讯云为例子，记录一下云服务器的基本使用方法和部署流程 云服务器购买与配置腾讯服务器购买后，可以在购买账号的信箱内，可以找到服务器的IP、用户名、密码。这些重要信息一定要妥善保管。云服务器的配置、使用时长等都在腾讯云的网页上进行管理，操作系统也是在购买时就可以选择并预装的。例如本次使用的Windows server系统在登录过程中就不会遇到对普通人不友好的黑框命令行界面。另外关于服务器使用的方法">
+<meta property="og:locale">
+<meta property="og:image" content="http://kw1649190133.github.io/7e1072099ba94eedbabde1a7d34b28d3">
+<meta property="og:image" content="http://kw1649190133.github.io/11865e2ee6f746e8bc0dcb3cd2828f5a">
+<meta property="og:image" content="http://kw1649190133.github.io/aa06f7c112e3440d8f0267282c3e1e94">
+<meta property="og:image" content="http://kw1649190133.github.io/bb9f5e23ffc2459a807a0c54f23c506b">
+<meta property="og:image" content="http://kw1649190133.github.io/48fa7d744022434a96c2427136c77604">
+<meta property="og:image" content="http://kw1649190133.github.io/643c9f70e011448fa6d70365f7905846">
+<meta property="article:published_time" content="2023-12-28T16:59:41.000Z">
+<meta property="article:modified_time" content="2023-12-28T17:42:35.447Z">
+<meta property="article:author" content="Kwindy">
+<meta property="article:tag" content="服务器">
+<meta property="article:tag" content="腾讯云">
+<meta property="article:tag" content="windows">
+<meta property="article:tag" content="网络">
+<meta property="article:tag" content="部署">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://kw1649190133.github.io/7e1072099ba94eedbabde1a7d34b28d3">
+  
+  
+  
+  <title>云服务器使用方法_腾讯云 - kw&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"kw1649190133.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Startseite</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archiv</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Kategorien</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Schlagwörter</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>Über</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="云服务器使用方法_腾讯云"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-12-29 00:59" pubdate>
+          December 29, 2023 am
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.3k wörter
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          11 minuten
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">云服务器使用方法_腾讯云</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>以腾讯云为例子，记录一下云服务器的基本使用方法和部署流程</p>
+<h2 id="云服务器购买与配置"><a href="#云服务器购买与配置" class="headerlink" title="云服务器购买与配置"></a>云服务器购买与配置</h2><p>腾讯服务器购买后，可以在购买账号的信箱内，可以找到服务器的IP、用户名、密码。这些重要信息一定要妥善保管。<br><img src="/7e1072099ba94eedbabde1a7d34b28d3" srcset="/img/loading.gif" lazyload alt="103eda96fb31ec203a43c4c839717a4a.png"><br>云服务器的配置、使用时长等都在<strong>腾讯云的网页</strong>上进行管理，操作系统也是在购买时就可以选择并预装的。例如本次使用的Windows server系统在登录过程中就不会遇到对普通人不友好的黑框命令行界面。另外关于服务器使用的方法在腾讯云网站上也有很多文档可以查看，一些基础的东西可以直接在上面找到。</p>
+<p>另外，如果有单独购买的数据盘服务也是需要在腾讯云的网页里进行<strong>挂载</strong>，挂载之后才能在服务器的<strong>磁盘管理</strong>里面看到，相当于把硬盘插上电脑。但是新硬盘还需要在磁盘管理中进行初始化和分区，分配盘符才能正常使用，和本地计算机是一样的。<br><img src="/11865e2ee6f746e8bc0dcb3cd2828f5a" srcset="/img/loading.gif" lazyload alt="a2c908c30ddbd0ac4dfc9fcddb77a1ba.png"></p>
+<h2 id="首次登录要做的事情"><a href="#首次登录要做的事情" class="headerlink" title="首次登录要做的事情"></a>首次登录要做的事情</h2><p>第一次登录可以使用腾讯云的网页，可以先上去把密码改了，不然一串乱码真的不好记不好用。另外第一次登录的是管理员账号，如果需要对访客进行限制的话，可以把系统账号也注册一下，设置专用的访客账号。</p>
+<h2 id="使用远程桌面连接"><a href="#使用远程桌面连接" class="headerlink" title="使用远程桌面连接"></a>使用远程桌面连接</h2><p>在确认服务器允许使用远程连接后，打开Windows系统自带的远程桌面连接程序，输入网址或服务器IP地址。（网址的话就是要去域名注册网站去买）<br>成果登录的<strong>必要条件</strong>：</p>
+<ul>
+<li>IP地址或域名</li>
+<li>Windows系统的账号或密码</li>
+<li>服务器允许远程连接（买到云服务器一般默认允许）<br><img src="/aa06f7c112e3440d8f0267282c3e1e94" srcset="/img/loading.gif" lazyload alt="325d4a201d16226e5e2f76c3b95fb108.png"></li>
+</ul>
+<h3 id="关于数据传输"><a href="#关于数据传输" class="headerlink" title="关于数据传输"></a>关于数据传输</h3><p>在启动远程连接之前，如果想和服务器之间传文件的话，为了方便可以点左下角的显示选项，进行本地设备的配置，把本地的硬盘连接到远程服务器上，这样就可以直接在远程服务器上调用本地的硬盘数据。<br><img src="/bb9f5e23ffc2459a807a0c54f23c506b" srcset="/img/loading.gif" lazyload alt="aacb0a6aa174bc6f5fffc0201ea3b059.png"></p>
+<h2 id="补充的说明"><a href="#补充的说明" class="headerlink" title="补充的说明"></a>补充的说明</h2><p>一般在使用远程连接之前，需要看一下服务器是否允许使用远程连接。因为是云服务器，所以这一项一般默认是开启动，否则那机器都放在机房里，怎么打开进行设置。如果是自己购买和部署的服务器（自己买机器自己拉专线的），那可能就需要自己去设置一下。<br><img src="/48fa7d744022434a96c2427136c77604" srcset="/img/loading.gif" lazyload alt="e1e46e2354218e1dd91f4126103b9886.png"></p>
+<h2 id="关于账户管理"><a href="#关于账户管理" class="headerlink" title="关于账户管理"></a>关于账户管理</h2><p>服务器默认使用的是管理员账户登录，但如果遇到一些比较复杂的情况，比如要部署的业务比较复杂，需要让乙方也登录到服务器的系统界面帮助配置业务，那么为了安全考虑就可以另外设置访客账户。<br><img src="/643c9f70e011448fa6d70365f7905846" srcset="/img/loading.gif" lazyload alt="d821fd33315bfb29c9e72af1d2eb3428.png"></p>
+<h2 id="其他方面的补充说明"><a href="#其他方面的补充说明" class="headerlink" title="其他方面的补充说明"></a>其他方面的补充说明</h2><ul>
+<li><p>windows系统的服务器的优点就是界面完善，自带多种工具功能，windows server和平时使用的windows个人电脑是非常相似的，运行起来就像平时电脑开机一样简单自然。而它的缺点是比较占用硬件资源，冗余进程比较多，处理器不行还带不动。还有系统本很比较复杂，后期的维护会比较麻烦，还有一些组件和代码在Windows系统上跑会遇到各种问题。比如一些机器学习服务器就一般用Linex系统，还有一些机关单位为了保密也不会用Windows。</p>
+</li>
+<li><p>在服务器上运行程序和在个人电脑上一样。若遇到有组件或者依赖库缺失的话，就根据提示在自己电脑上下载，再传到服务器里进行安装。服务器资源非常宝贵，不要随便在上面装软件，比如offic，WPS这种东西。</p>
+</li>
+<li><p>服务器的对外链接主要是需要固定IP，另外服务器的稳定运行需要良好的物理环境，尤其是在防尘、散热方面，这些条件在大企业的机房就比较容易实现。在短时间内使用服务器，租比买划算一些。</p>
+</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0/" class="category-chain-item">学习</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%9C%8D%E5%8A%A1%E5%99%A8/">#服务器</a>
+      
+        <a href="/tags/%E8%85%BE%E8%AE%AF%E4%BA%91/">#腾讯云</a>
+      
+        <a href="/tags/windows/">#windows</a>
+      
+        <a href="/tags/%E7%BD%91%E7%BB%9C/">#网络</a>
+      
+        <a href="/tags/%E9%83%A8%E7%BD%B2/">#部署</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>云服务器使用方法_腾讯云</div>
+      <div>http://kw1649190133.github.io/2023/12/29/云服务器使用方法-腾讯云/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Beitragsautor</div>
+          <div>Kwindy</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Veröffentlicht am</div>
+          <div>December 29, 2023</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Urheberrechtshinweis</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/12/29/%E4%BA%91%E7%AB%AF%E9%83%A8%E7%BD%B2%E8%A7%86%E9%A2%91%E4%BC%A0%E8%BE%93%E4%B8%9A%E5%8A%A1CMSS/" title="云端部署视频传输业务CMSS">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">云端部署视频传输业务CMSS</span>
+                        <span class="visible-mobile">Vorheriger</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/12/21/OSGB%E6%A8%A1%E5%9E%8B%E5%8E%8B%E7%BC%A9%E6%B5%8B%E8%AF%95/" title="OSGB模型压缩测试">
+                        <span class="hidden-mobile">OSGB模型压缩测试</span>
+                        <span class="visible-mobile">Nächster</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Inhaltsverzeichnis</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Suchen</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Stichwort</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog funktioniert am besten mit aktiviertem JavaScript</div>
+  </noscript>
+</body>
+</html>
