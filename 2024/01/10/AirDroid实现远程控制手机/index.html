@@ -1,0 +1,633 @@
+
+
+<!DOCTYPE html>
+<html lang="CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Kwindy">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="安卓设备的远程控制主要用途直接定位家里孩子或老人的手机，防止走丢，远程协助；电脑接收手机的通知和短信，获取屏幕镜像；以及，远程打卡。 使用方法被控制手机配置被控制的手机上需要安装AirDroid，并且尽可能多的开启权限。因此尽量不要使用自己的常用手机作为被控手机，尽量不要在被控制手机上存放隐私资料，远程控制是一把双刃剑，谨防重要个人信息泄露。 电脑控制手机网页端这界面还挺好看的，我爱说实话。htt">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AirDroid实现远程控制手机">
+<meta property="og:url" content="http://kw1649190133.github.io/2024/01/10/AirDroid%E5%AE%9E%E7%8E%B0%E8%BF%9C%E7%A8%8B%E6%8E%A7%E5%88%B6%E6%89%8B%E6%9C%BA/index.html">
+<meta property="og:site_name" content="kw&#39;s blog">
+<meta property="og:description" content="安卓设备的远程控制主要用途直接定位家里孩子或老人的手机，防止走丢，远程协助；电脑接收手机的通知和短信，获取屏幕镜像；以及，远程打卡。 使用方法被控制手机配置被控制的手机上需要安装AirDroid，并且尽可能多的开启权限。因此尽量不要使用自己的常用手机作为被控手机，尽量不要在被控制手机上存放隐私资料，远程控制是一把双刃剑，谨防重要个人信息泄露。 电脑控制手机网页端这界面还挺好看的，我爱说实话。htt">
+<meta property="og:locale">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/01/10/AirDroid%E5%AE%9E%E7%8E%B0%E8%BF%9C%E7%A8%8B%E6%8E%A7%E5%88%B6%E6%89%8B%E6%9C%BA/web%E7%AB%AF%E7%95%8C%E9%9D%A2.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/01/10/AirDroid%E5%AE%9E%E7%8E%B0%E8%BF%9C%E7%A8%8B%E6%8E%A7%E5%88%B6%E6%89%8B%E6%9C%BA/%E6%89%8B%E6%9C%BA%E8%BF%9C%E7%A8%8B%E6%8E%A7%E5%88%B6%E7%95%8C%E9%9D%A2.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/01/10/AirDroid%E5%AE%9E%E7%8E%B0%E8%BF%9C%E7%A8%8B%E6%8E%A7%E5%88%B6%E6%89%8B%E6%9C%BA/%E6%89%8B%E6%9C%BA%E8%BF%9C%E7%A8%8B%E6%8E%A7%E5%88%B6%E6%95%88%E6%9E%9C.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/01/10/AirDroid%E5%AE%9E%E7%8E%B0%E8%BF%9C%E7%A8%8B%E6%8E%A7%E5%88%B6%E6%89%8B%E6%9C%BA/AirDroid%E4%B8%AA%E4%BA%BA%E7%89%88%E4%BB%8B%E7%BB%8D.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/01/10/AirDroid%E5%AE%9E%E7%8E%B0%E8%BF%9C%E7%A8%8B%E6%8E%A7%E5%88%B6%E6%89%8B%E6%9C%BA/AirMirror%E4%BB%8B%E7%BB%8D.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/01/10/AirDroid%E5%AE%9E%E7%8E%B0%E8%BF%9C%E7%A8%8B%E6%8E%A7%E5%88%B6%E6%89%8B%E6%9C%BA/AirDroidCast.png">
+<meta property="article:published_time" content="2024-01-10T08:30:18.000Z">
+<meta property="article:modified_time" content="2024-01-10T08:45:08.038Z">
+<meta property="article:author" content="Kwindy">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://kw1649190133.github.io/2024/01/10/AirDroid%E5%AE%9E%E7%8E%B0%E8%BF%9C%E7%A8%8B%E6%8E%A7%E5%88%B6%E6%89%8B%E6%9C%BA/web%E7%AB%AF%E7%95%8C%E9%9D%A2.png">
+  
+  
+  
+  <title>AirDroid实现远程控制手机 - kw&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"kw1649190133.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Startseite</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archiv</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Kategorien</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Schlagwörter</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>Über</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="AirDroid实现远程控制手机"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-01-10 16:30" pubdate>
+          January 10, 2024 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          926 wörter
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          8 minuten
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">AirDroid实现远程控制手机</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="安卓设备的远程控制"><a href="#安卓设备的远程控制" class="headerlink" title="安卓设备的远程控制"></a>安卓设备的远程控制</h1><h2 id="主要用途"><a href="#主要用途" class="headerlink" title="主要用途"></a>主要用途</h2><p>直接定位家里孩子或老人的手机，防止走丢，远程协助；电脑接收手机的通知和短信，获取屏幕镜像；以及，远程打卡。</p>
+<h2 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h2><h3 id="被控制手机配置"><a href="#被控制手机配置" class="headerlink" title="被控制手机配置"></a>被控制手机配置</h3><p>被控制的手机上需要安装AirDroid，并且尽可能多的开启权限。因此尽量不要使用自己的常用手机作为被控手机，尽量不要在被控制手机上存放隐私资料，远程控制是一把双刃剑，谨防重要个人信息泄露。</p>
+<h3 id="电脑控制手机"><a href="#电脑控制手机" class="headerlink" title="电脑控制手机"></a>电脑控制手机</h3><p>网页端<br>这界面还挺好看的，我爱说实话。<br><a target="_blank" rel="noopener" href="https://web.airdroid.cn/?lang=zh-cn">https://web.airdroid.cn/?lang=zh-cn</a></p>
+<p><img src="/2024/01/10/AirDroid%E5%AE%9E%E7%8E%B0%E8%BF%9C%E7%A8%8B%E6%8E%A7%E5%88%B6%E6%89%8B%E6%9C%BA/web%E7%AB%AF%E7%95%8C%E9%9D%A2.png" srcset="/img/loading.gif" lazyload alt="web端界面"></p>
+<p>软件端<br>可以在电脑上安装AirDroid桌面端软件，这样更好的体验稳定的远程控制。只满足基本需求的话用网页就可以。</p>
+<h3 id="手机控制手机"><a href="#手机控制手机" class="headerlink" title="手机控制手机"></a>手机控制手机</h3><p>AirDroid手机端是被控制软件，没有控制其他设备的功能，需要在控制手机上安装AirMirror，然后登录同一个账号，然后就可以在设备列表中看到另外一部手机，点击设备即可远程查看和控制安装AirDroid的手机。<br><img src="/2024/01/10/AirDroid%E5%AE%9E%E7%8E%B0%E8%BF%9C%E7%A8%8B%E6%8E%A7%E5%88%B6%E6%89%8B%E6%9C%BA/%E6%89%8B%E6%9C%BA%E8%BF%9C%E7%A8%8B%E6%8E%A7%E5%88%B6%E7%95%8C%E9%9D%A2.png" srcset="/img/loading.gif" lazyload alt="手机远程控制界面"></p>
+<p>远程控制效果，可能会有点糊，操作有些卡，但勉强能用。<br><img src="/2024/01/10/AirDroid%E5%AE%9E%E7%8E%B0%E8%BF%9C%E7%A8%8B%E6%8E%A7%E5%88%B6%E6%89%8B%E6%9C%BA/%E6%89%8B%E6%9C%BA%E8%BF%9C%E7%A8%8B%E6%8E%A7%E5%88%B6%E6%95%88%E6%9E%9C.png" srcset="/img/loading.gif" lazyload alt="手机远程控制效果"></p>
+<h2 id="AirDroid软件族简单介绍"><a href="#AirDroid软件族简单介绍" class="headerlink" title="AirDroid软件族简单介绍"></a>AirDroid软件族简单介绍</h2><p>AirDroid 族群主要实现的功能是对手机的控制，包括手机连手机、电脑连手机，但不支持手机控制电脑。控制电脑可以用向日葵、teamviewer等专门的软件。</p>
+<ul>
+<li>AirDroid Business 商业版的多合一软件，个人用户暂时不考虑<br>![AirDroid Business.png](AirDroid Business.png)</li>
+<li>AirDroid Remote Support 支持远程控制、手势引导、实时聊天，算是普通AirDroid的升级版，不需要额外功能可以不用。<br>![AirDroid Remote Support](AirDroid Remote Support.png)</li>
+<li>AirDroid 个人版 可以跨平台传输文件，支持控制手机，有Web、Windows、Mac、Android、iOS多个平台的版本支持。被控制设备必须下载。<br><img src="/2024/01/10/AirDroid%E5%AE%9E%E7%8E%B0%E8%BF%9C%E7%A8%8B%E6%8E%A7%E5%88%B6%E6%89%8B%E6%9C%BA/AirDroid%E4%B8%AA%E4%BA%BA%E7%89%88%E4%BB%8B%E7%BB%8D.png" srcset="/img/loading.gif" lazyload alt="AirDroid个人版介绍"></li>
+<li>AirMirror 从手机远程控制其他手机，支持Android和iOS，和被控制手机登录同一个账户即可远程控制。远程连接其他设备的话有使用时长限制。<br><img src="/2024/01/10/AirDroid%E5%AE%9E%E7%8E%B0%E8%BF%9C%E7%A8%8B%E6%8E%A7%E5%88%B6%E6%89%8B%E6%9C%BA/AirMirror%E4%BB%8B%E7%BB%8D.png" srcset="/img/loading.gif" lazyload alt="AirMirror介绍"></li>
+<li>AirDroid Cast 投屏应用，可以将画面投射到电脑、手机、AndroidTV上，可以无线或有线连接，需要在同一局域网。<br><img src="/2024/01/10/AirDroid%E5%AE%9E%E7%8E%B0%E8%BF%9C%E7%A8%8B%E6%8E%A7%E5%88%B6%E6%89%8B%E6%9C%BA/AirDroidCast.png" srcset="/img/loading.gif" lazyload alt="AirDroidCast"></li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>AirDroid实现远程控制手机</div>
+      <div>http://kw1649190133.github.io/2024/01/10/AirDroid实现远程控制手机/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Beitragsautor</div>
+          <div>Kwindy</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Veröffentlicht am</div>
+          <div>January 10, 2024</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Urheberrechtshinweis</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/12/29/%E4%BA%91%E7%AB%AF%E9%83%A8%E7%BD%B2%E8%A7%86%E9%A2%91%E4%BC%A0%E8%BE%93%E4%B8%9A%E5%8A%A1CMSS/" title="云端部署视频传输业务CMSS">
+                        <span class="hidden-mobile">云端部署视频传输业务CMSS</span>
+                        <span class="visible-mobile">Nächster</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Inhaltsverzeichnis</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Suchen</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Stichwort</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog funktioniert am besten mit aktiviertem JavaScript</div>
+  </noscript>
+</body>
+</html>
