@@ -4,6 +4,70 @@
   
   
   <entry>
+    <title>AndroidStudio安装部署</title>
+    <link href="/2024/02/26/AndroidStudio%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2/"/>
+    <url>/2024/02/26/AndroidStudio%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2/</url>
+    
+    <content type="html"><![CDATA[<h1 id="软件安装"><a href="#软件安装" class="headerlink" title="软件安装"></a>软件安装</h1><ol><li>去官方网站下载最新的安装包<br><a href="https://developer.android.google.cn/studio?hl=zh-cn">https://developer.android.google.cn/studio?hl=zh-cn</a></li><li>安装AndroidStudio</li><li>配置SDK<br>理论上这一步是在安装过程中设置一下路径就可以自动搞定的，但可能因为我安装过其他版本，没有卸载干净，所以识别不到，SDK可以用软件中的SDK manager进行管理。</li><li>配置JAVA环境</li></ol><h2 id="JAVA基础知识"><a href="#JAVA基础知识" class="headerlink" title="JAVA基础知识"></a>JAVA基础知识</h2><p>简单复习一下各个J的用途，虽然学过但几年不用早就还给老师了。</p><ol><li><strong>JRE</strong>（Java Runtime Environment，Java运行时环境）：JRE是指Java应用程序运行所需的软件环境。它包含Java虚拟机（JVM）和Java类库，用于解释和执行Java字节码，并提供了Java核心库和其他运行时支持。JRE只能用于运行Java程序，而无法进行开发。当用户想要运行Java程序时，需要先安装JRE。常见的JRE包括Oracle JRE、OpenJDK JRE等。</li><li><strong>JDK</strong>（Java Development Kit，Java开发工具包）：JDK是用于开发Java应用程序的软件包。它包含了JRE以及用于开发Java程序所需的工具和库，如编译器（javac）、调试器（jdb）、Java API文档、开发工具等。JDK提供了完整的Java开发环境，开发人员可以使用JDK进行Java程序的编写、调试和构建。常见的JDK包括Oracle JDK、OpenJDK等。</li><li><strong>JDE</strong>（Java Development Environment，Java开发环境）：JDE是指用于开发Java应用程序的集成开发环境（IDE）。它提供了开发人员所需的工具和功能，包括代码编辑器、调试器、编译器、构建工具等，用于编写、调试和构建Java程序。常见的JDE包括Eclipse、IntelliJ IDEA和NetBeans等。</li></ol><p>下载地址：<a href="https://www.oracle.com/java/">https://www.oracle.com/java/</a><br>因为Java被Oracle买下来了，所以实际上是在Oracle官网下载.。</p><h3 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h3><ul><li>JDE（Java Development Environment）是用于开发Java应用程序的集成开发环境（IDE）。</li><li>JRE（Java Runtime Environment）是Java应用程序运行所需的运行时环境。</li><li>JDK（Java Development Kit）是用于开发Java应用程序的软件包，包含JRE和开发工具。</li></ul><p>JDK是最全面的，包含了JRE和开发工具，而JRE只包含了运行时环境，JDE则是指特定的集成开发环境。根据具体需求，选择合适的组件来进行Java程序的开发和运行。<br>JAVA的JDE和Python的IDE是类似的东西。</p><h2 id="Android-SDK基础知识"><a href="#Android-SDK基础知识" class="headerlink" title="Android SDK基础知识"></a>Android SDK基础知识</h2><p>Android Studio 相当于是一个IDE环境，而安卓的SDK就是真正用到的开发工具包，它比JAVA复杂的地方在于它分了很多个模块，而最关键的是其中的三个。</p><ul><li><p>Android平台工具（Android Platform Tools）：包括adb（Android Debug Bridge）和其他命令行工具，用于与Android设备进行通信、调试和管理。</p></li><li><p>Android构建工具（Android Build Tools）：包括dx（Dalvik Executable）工具、aapt（Android Asset Packaging Tool）等，用于将Java源代码编译为Dalvik字节码、打包资源文件等。</p></li><li><p>Android模拟器（Android Emulator）是Android SDK中的一个工具，用于在计算机上模拟Android设备的运行环境。它允许开发人员在没有真实设备的情况下进行应用程序的测试和调试。</p></li></ul><h1 id="汉化过程"><a href="#汉化过程" class="headerlink" title="汉化过程"></a>汉化过程</h1><p>汉化的方法与VScode类似，都是直接加载外置插件就可以了，只是现在汉化插件不在官方的插件库中，必须要自己下载导入。</p><ol><li>查看当前版本号</li></ol><p><strong>版本号前三位必须与汉化包一致，否则会报错</strong>。下载的压缩包不用解压。<br><img src="/2024/02/26/AndroidStudio%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2/31e7401844b6f27405014d2d6883497e.png"></p><ol><li><p>在中文包网站找到相应的语言包，Download<br><a href="https://plugins.jetbrains.com/plugin/13710-chinese-simplified-language-pack----/versions/stable">https://plugins.jetbrains.com/plugin/13710-chinese-simplified-language-pack----/versions/stable</a></p></li><li><p>从AndroidStudio中导入<br>在菜单里找到Setting，打开Plugins标签，点中间的齿轮打开加载本地包，然后宣导刚刚下载的压缩包，直接导入，然后重启软件刷新，中文界面就有了。<br><img src="/2024/02/26/AndroidStudio%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2/8d3d41c6b2caaa52c33eab9de54a2429.png"></p></li></ol><h1 id="项目配置"><a href="#项目配置" class="headerlink" title="项目配置"></a>项目配置</h1><p>因为Android的构建工具比较多，会涉及各种版本插件兼容的问题，所以原本能正常运行的项目，可能换个地方又跑不动了，所以需要了解这些插件的版本差异和兼容情况。</p><h2 id="报错”the-android-sdk-location-cannot-be-at-the-filesystem-root”解决方案"><a href="#报错”the-android-sdk-location-cannot-be-at-the-filesystem-root”解决方案" class="headerlink" title="报错”the android sdk location cannot be at the filesystem root”解决方案"></a>报错”the android sdk location cannot be at the filesystem root”解决方案</h2><p>打开SDK manager，在尝试获取AndroidSDK时遇到“the android sdk location cannot be at the filesystem root”问题，并且无法加载包目录。<br><img src="/2024/02/26/AndroidStudio%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2/f6eb989002fb915f782221bea991cbdf.png"></p><p>处理办法：</p><ol><li>删除User文件夹下的.android文件夹、android studio 文件夹和.gradle文件夹</li><li>在AndroidStudio的系统设置中选择无代理<br><img src="/2024/02/26/AndroidStudio%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2/6d9811312ad361ae6ad272d52917f5fd.png"></li><li>重启电脑</li></ol><h2 id="报错”Gradle-syns-failed”的解决办法"><a href="#报错”Gradle-syns-failed”的解决办法" class="headerlink" title="报错”Gradle syns failed”的解决办法"></a>报错”Gradle syns failed”的解决办法</h2><p>新建项目或使用别人的项目时，遇到”Gradle syns failed”和”Connect time out”，可能是网络原因让Gradle无法从服务器自动下载。<br>解决办法：</p><ol><li><p>在项目文件夹中找到gradle文件夹，在gradle/warpper目录下找到.properties配置文件，查看gradle版本。这里看到使用的是7.5版本。<br><img src="/2024/02/26/AndroidStudio%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2/a7dd9e9fba9652c1fef3cae3d19e0f02.png"></p></li><li><p>去官网下载对应版本的包<br>官网地址：<a href="https://services.gradle.org/distributions/">https://services.gradle.org/distributions/</a><br>外网反应会比较慢，可以加速一下。<br>选择名称为【gradle对应版本-all】的包下载</p></li><li><p>把压缩包放到本地目录中去<br>默认路径：C:\Users\用户名.gradle\wrapper\dists\gradle-7.5-all\6qsw290k5lz422uaf8jf6m7co<br>最后是一个乱码字符串的文件夹，不用管那么多直接把ZIP压缩包丢进去就行。<br>最后回到项目点击Try Again。</p></li></ol><h2 id="NDK相关"><a href="#NDK相关" class="headerlink" title="NDK相关"></a>NDK相关</h2><p>报错<br>java.lang.NullPointerException (no error message)</p><p><img src="/2024/02/26/AndroidStudio%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2/3573e662eab4ff9dd5ddc28a3f4d907c.png"></p><p>[CXX1101] NDK at D:\app\Android\SDK\ndk did not have a source.properties file</p><h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>只是向着Android开发迈出的一小步，想让项目运行起来并不容易，还需要理解Android项目的结构，各部分代码的作用等等。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>学习</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Java</tag>
+      
+      <tag>Android</tag>
+      
+      <tag>环境部署</tag>
+      
+      <tag>开发</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>Anaconda基本使用方法</title>
+    <link href="/2024/02/26/Anaconda%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95/"/>
+    <url>/2024/02/26/Anaconda%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95/</url>
+    
+    <content type="html"><![CDATA[<h2 id="Anaconda简介"><a href="#Anaconda简介" class="headerlink" title="Anaconda简介"></a>Anaconda简介</h2><p>Anaconda是一个环境管理器。当运行各种项目时，电脑中可能需要同时安装多个版本的Python，使用环境管理器避免环境之间的冲突。</p><p>可以使用Prompt打开命令行，也可以用Navigator打开图形界面<br><img src="/2024/02/26/Anaconda%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95/298ff5c6b9f43f618ccf45ff3756d979.png"></p><h2 id="图形界面"><a href="#图形界面" class="headerlink" title="图形界面"></a>图形界面</h2><p>在图形界面可以简单直观地管理环境和包<br><img src="/2024/02/26/Anaconda%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95/1f1715edfa8a940916d9082acc265c6b.png"></p><p>将Anaconda的安装路径添加到系统变量中。控制面板→系统属性→高级→环境变量，在系统变量中找到Path，添加下面几条。（一般情况似乎不用手动添加，可能是因为重装了系统）<br><img src="/2024/02/26/Anaconda%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95/354c3d7b45865294500ecaec27c903dc.png"></p><p>F:\Softwork\Anacoda<br>F:\Softwork\Anacoda\Scripts<br>F:\Softwork\Anacoda\Library\bin<br>F:\Softwork\Anacoda\Library\mingw-w64\bin</p><h2 id="命令行常用指令"><a href="#命令行常用指令" class="headerlink" title="命令行常用指令"></a>命令行常用指令</h2><h3 id="环境管理"><a href="#环境管理" class="headerlink" title="环境管理"></a>环境管理</h3><p>创建环境<br><code>conda create -n env_name</code></p><p>激活环境<br><code>conda activate env_name</code></p><p>退出环境<br><code>deactivate env_name</code></p><p>克隆环境<br><code>conda create -n new_name --clone old_name</code></p><p>删除环境<br><code>conda remove -n old_name --all</code></p><p>查看当前所有环境<br><code>conda env list</code></p><p>查看conda信息<br><code>conda info</code></p><p>可以使用克隆+删除的方式，重命名环境</p><h3 id="包管理"><a href="#包管理" class="headerlink" title="包管理"></a>包管理</h3><p>查看当前环境已安装的包<br><code>conda list</code></p><p>安装<br><code>conda install package_name</code></p><p>安装多个<br><code>conda install numpy scipy pandas</code></p><p>安装指定版本<br><code>conda install numpy=1.10</code></p><p>更新包<br><code>conda update 包名</code><br>可以使用conda更新自己</p><p>卸载包<br><code>conda remove 包名</code></p><p>使用pip也是可以的，还有换源之类的操作略过</p><h2 id="错误处理"><a href="#错误处理" class="headerlink" title="错误处理"></a>错误处理</h2><figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs livecodeserver">CommandNotFoundError: Your <span class="hljs-built_in">shell</span> has <span class="hljs-keyword">not</span> been properly configured <span class="hljs-built_in">to</span> use <span class="hljs-string">&#x27;conda activate&#x27;</span>.<br>If <span class="hljs-keyword">using</span> <span class="hljs-string">&#x27;conda activate&#x27;</span> <span class="hljs-built_in">from</span> <span class="hljs-keyword">a</span> batch script, change your<br>invocation <span class="hljs-built_in">to</span> <span class="hljs-string">&#x27;CALL conda.bat activate&#x27;</span>.<br></code></pre></td></tr></table></figure><p>输入activate，进入base环境</p><p>再输入进入环境的指令<br>conda activate 指定环境</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>学习</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>环境部署</tag>
+      
+      <tag>开发</tag>
+      
+      <tag>python</tag>
+      
+      <tag>JavAnaconda</tag>
+      
+      <tag>环境管理</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>地理三维场景制作-真模型导出</title>
     <link href="/2024/02/21/%E5%9C%B0%E7%90%86%E4%B8%89%E7%BB%B4%E5%9C%BA%E6%99%AF%E5%88%B6%E4%BD%9C-%E7%9C%9F%E6%A8%A1%E5%9E%8B%E5%AF%BC%E5%87%BA/"/>
     <url>/2024/02/21/%E5%9C%B0%E7%90%86%E4%B8%89%E7%BB%B4%E5%9C%BA%E6%99%AF%E5%88%B6%E4%BD%9C-%E7%9C%9F%E6%A8%A1%E5%9E%8B%E5%AF%BC%E5%87%BA/</url>
@@ -758,37 +822,6 @@
       <tag>osgb</tag>
       
       <tag>三维模型</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
-    <title>Android开发环境的部署</title>
-    <link href="/2023/07/24/Android%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E7%9A%84%E9%83%A8%E7%BD%B2/"/>
-    <url>/2023/07/24/Android%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E7%9A%84%E9%83%A8%E7%BD%B2/</url>
-    
-    <content type="html"><![CDATA[<h2 id="一、安装JDK"><a href="#一、安装JDK" class="headerlink" title="一、安装JDK"></a>一、安装JDK</h2><ol><li>安装Java的基础环境，包含JDK和JRE，可以更改一下安装位置不要装在C盘。</li><li>添加系统变量。</li></ol><ul><li>在系统变量中添加两个变量<br>变量名：<code>JAVA_HOME</code><br>变量值：<code>F:\Softwork\Java\jdk1.8.0\</code></li></ul><p>变量名：<code>CLASSPATH</code><br>变量值：<code>.;%JAVA_HOME%\lib\dt.jar;%JAVA_HOME%\lib\tools.jar</code></p><ul><li>打开系统变量的<code>Path</code>变量,在里面添加两项：<br><code>%JAVA_HOME%\bin</code></li></ul><p><code>%JAVA_HOME%\jre\bin</code></p><ol start="3"><li>测试是否配置成功<br>弄完第一第二条以后去命令栏（CMD），分别输入<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs mipsasm"><span class="hljs-keyword">java </span>-version<br><span class="hljs-keyword">java</span><br><span class="hljs-keyword"></span><span class="hljs-keyword">javac</span><br></code></pre></td></tr></table></figure></li></ol><p>看看是不是都有正确的反应，都正常的话才说明配置成功。</p><h2 id="二、配置SDK文件"><a href="#二、配置SDK文件" class="headerlink" title="二、配置SDK文件"></a>二、配置SDK文件</h2><p>找一个非中文路径，解压SDK文件。最好是磁盘的根目录。</p><p>再次进入环境变量设置，在系统变量中添加<br>变量名：<code>ANDROID_SDK_HOME</code></p><p>变量值：<code>F\SDK</code></p><p><del>又要开一遍环境变量，不如刚刚顺便搞了</del></p><h2 id="三、Android-Studio安装"><a href="#三、Android-Studio安装" class="headerlink" title="三、Android Studio安装"></a>三、Android Studio安装</h2><p>安装过程中有一些注意事项</p><ol><li><p>在<code>Select components to install</code>时，不要选择<code>Android SDK</code></p></li><li><p>在<code>Android SDK Settings</code>页面时，选择<code>Use an existing Android SDK</code>，然后输入SDK文件的解压路径，例如<code>F\SDK</code></p></li><li><p>设置<code>Android Studio</code>的安装位置。然后就是点几次next开始安装。</p></li><li><p>在打开软件后，<code>Complete Installation</code>页面，选择第二项。</p></li><li><p>在<code>Android Studio Setup Wizard</code>页面中选择第二项<code>Custom</code>。</p></li><li><p>一般来说一直NextNextNext就完事了，但最后还是遇到了问题。中国特色问题，无法直接访问谷歌，不能在线下载SDK。</p></li></ol><p>此时报错：<code>The following SDK components were not installed:extra-android-m2repository and extra-google-m2repository</code>，<br>大概就是在线下载SDK包的时候一直响应超时。其实就是连不上服务器。</p><p>由于谷歌在中国的服务完全停止，所以简单改host的方式已经不能解决问题了，只能通过国内镜像源来下载SDK</p><p>以下是几个国内镜像源的地址：</p><ol><li>mirrors.neusoft.edu.cn //东软信息学院</li><li>ubuntu.buct.edu.cn/ubuntu.buct.cn //北京化工大学</li><li>mirrors.opencas.cn (mirrors.opencas.org/mirrors.opencas.ac.cn) 端口：80//中国科学院开源协会</li><li>sdk.gdgshanghai.com 端口：8000 //上海GDG镜像服务器</li><li>mirrors.dormforce.net 端口80//（栋力无限）电子科技大学</li><li>android-mirror.bugly.qq.com 端口：8080  //腾讯Bugly 镜像</li></ol><p>打开SDK解压路径下的管理工具Android SDK Manager，在主菜单选择tool-Option，到达Setting窗口，然后配置镜像源。</p><p><code>HTTP Proxy Server</code>——填镜像地址</p><p><code>HTTP Proxy Port</code>——填端口号</p><p><img src="/2023/07/24/Android%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E7%9A%84%E9%83%A8%E7%BD%B2/Android_SDK_Manager-settings.jpg" alt="SDK Manager 设置"></p><p>然后用Packages-Reload一键进行重新加载，列表中的状态都是Installed以后，应该就没问题了。</p><p>下面是大佬对SDK列表的解析。若是追求轻量化的安装，其实可以省略很多东西。</p><p><img src="/2023/07/24/Android%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E7%9A%84%E9%83%A8%E7%BD%B2/AndroidSDK%E5%88%97%E8%A1%A8%E8%A7%A3%E6%9E%90.jpeg" alt="SDK列表解析"></p><h2 id="四、Android-Studio的SDK环境配置"><a href="#四、Android-Studio的SDK环境配置" class="headerlink" title="四、Android Studio的SDK环境配置"></a>四、Android Studio的SDK环境配置</h2><p>在AndroidStudioSetupWizaed的界面选择设置<br>Configure-&gt;Project Defaults-&gt;Project Structure</p><p>检查一下SDK和JKD是否配置好。没有问题的话就算安装配置完成，可以打开一个工程测试一下了。</p><p><img src="/2023/07/24/Android%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E7%9A%84%E9%83%A8%E7%BD%B2/ProjectStructure.jpg" alt="SDK和JKD是否配置"></p>]]></content>
-    
-    
-    <categories>
-      
-      <category>学习</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>Java</tag>
-      
-      <tag>Android</tag>
-      
-      <tag>环境部署</tag>
-      
-      <tag>开发</tag>
       
     </tags>
     
