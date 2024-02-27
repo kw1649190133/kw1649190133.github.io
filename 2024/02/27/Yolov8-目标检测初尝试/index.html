@@ -1,0 +1,699 @@
+
+
+<!DOCTYPE html>
+<html lang="CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Kwindy">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="前言之前先是尝试了yolov8的安卓移植，然后遭遇了许多问题。没栽在yolov8上而是栽在Android开发上。现在要利用空闲时间，补齐有关yolo和Android的相关知识。相比以前为了写论文训练的全卷积神经网络，yolo的部署要简单很多，主要得益于完善的软件配套。 相关资料：YOLOv8代码：https:&#x2F;&#x2F;github.com&#x2F;ultralytics&#x2F;ultralyticsYOLOv8文档：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Yolov8-目标检测初尝试">
+<meta property="og:url" content="http://kw1649190133.github.io/2024/02/27/Yolov8-%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E5%88%9D%E5%B0%9D%E8%AF%95/index.html">
+<meta property="og:site_name" content="kw&#39;s blog">
+<meta property="og:description" content="前言之前先是尝试了yolov8的安卓移植，然后遭遇了许多问题。没栽在yolov8上而是栽在Android开发上。现在要利用空闲时间，补齐有关yolo和Android的相关知识。相比以前为了写论文训练的全卷积神经网络，yolo的部署要简单很多，主要得益于完善的软件配套。 相关资料：YOLOv8代码：https:&#x2F;&#x2F;github.com&#x2F;ultralytics&#x2F;ultralyticsYOLOv8文档：">
+<meta property="og:locale">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/02/27/Yolov8-%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E5%88%9D%E5%B0%9D%E8%AF%95/fd172c59d68bd767d02238b53b03cb9e.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/02/27/Yolov8-%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E5%88%9D%E5%B0%9D%E8%AF%95/50e80dfb684ec42d94b64f5c081812fb.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/02/27/Yolov8-%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E5%88%9D%E5%B0%9D%E8%AF%95/f3f96e1046b8d73cfbb41d1178dd84a9.png">
+<meta property="article:published_time" content="2024-02-27T03:39:58.000Z">
+<meta property="article:modified_time" content="2024-02-27T06:55:45.728Z">
+<meta property="article:author" content="Kwindy">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="yolov8">
+<meta property="article:tag" content="目标识别">
+<meta property="article:tag" content="计算机视觉">
+<meta property="article:tag" content="神经网络">
+<meta property="article:tag" content="Anaconda">
+<meta property="article:tag" content="CUDA">
+<meta property="article:tag" content="AI">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://kw1649190133.github.io/2024/02/27/Yolov8-%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E5%88%9D%E5%B0%9D%E8%AF%95/fd172c59d68bd767d02238b53b03cb9e.png">
+  
+  
+  
+  <title>Yolov8-目标检测初尝试 - kw&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"kw1649190133.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Startseite</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archiv</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Kategorien</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Schlagwörter</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>Über</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Yolov8-目标检测初尝试"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-02-27 11:39" pubdate>
+          February 27, 2024 am
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.3k wörter
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          20 minuten
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Yolov8-目标检测初尝试</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>之前先是尝试了yolov8的安卓移植，然后遭遇了许多问题。没栽在yolov8上而是栽在Android开发上。现在要利用空闲时间，补齐有关yolo和Android的相关知识。相比以前为了写论文训练的全卷积神经网络，yolo的部署要简单很多，主要得益于完善的软件配套。</p>
+<p>相关资料：<br>YOLOv8代码：<a target="_blank" rel="noopener" href="https://github.com/ultralytics/ultralytics">https://github.com/ultralytics/ultralytics</a><br>YOLOv8文档：<a target="_blank" rel="noopener" href="https://docs.ultralytics.com/">https://docs.ultralytics.com/</a></p>
+<h1 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h1><p>使用Andconda做环境管理，创建一个yolov8的专属环境</p>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs applescript">conda create -n yolov8 python=<span class="hljs-number">3.8</span> <span class="hljs-comment">#创建python环境</span><br>conda <span class="hljs-built_in">activate</span> yolov8 <span class="hljs-comment">#进入环境</span><br></code></pre></td></tr></table></figure>
+
+<p>获取yolo代码</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs awk">git clone https:<span class="hljs-regexp">//gi</span>thub.com<span class="hljs-regexp">/ultralytics/u</span>ltralytics.git <span class="hljs-comment">#下载代码</span><br>pip install ultralytics <span class="hljs-comment">#安装训练环境</span><br></code></pre></td></tr></table></figure>
+
+<p>以前还需要逐个安装组件，现在其他的操作都已经集成到ultralytics里面了，直接pip install就OK了。</p>
+<h1 id="运行"><a href="#运行" class="headerlink" title="运行"></a>运行</h1><p>单个目标的输入只需要指定处理类型、模型类型、输入文件路径即可。<br>程序会在<strong>当前路径</strong>寻找模型，模型可以直接放在根目录，当程序找不到模型时会自动从网上下载。<br>文件类型支持图片和视频，当输入为视频时输出也会自动转为视频。（简直太方便了）常见格式<strong>jpeg</strong>和<strong>mp4</strong>，其他支持格式可以查看官网文档。</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs routeros">yolo detect predict <span class="hljs-attribute">model</span>=yolov8m.pt <span class="hljs-attribute">source</span>=ultralytics/assets/bus.jpg<br></code></pre></td></tr></table></figure>
+
+<p>执行之后可以看到，结果自动保存在runs\detect\predict中。<br>并且可以看到，这里直接用CPU来运行的。处理图片还可以，处理视频就太慢了，需要调整一下。</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs awk">(yolov8train) H:\work\yolov8train\ultralytics&gt;yolo detect predict model=yolov8m.pt source=ultralytics<span class="hljs-regexp">/assets/</span>bus.jpg<br>Ultralytics YOLOv8.<span class="hljs-number">1.18</span> 🚀 Python-<span class="hljs-number">3.8</span>.<span class="hljs-number">18</span> torch-<span class="hljs-number">2.2</span>.<span class="hljs-number">1</span>+cpu CPU (Intel Core(TM) i5-<span class="hljs-number">4210</span>M <span class="hljs-number">2.60</span>GHz)<br>YOLOv8m summary (fused): <span class="hljs-number">218</span> layers, <span class="hljs-number">25886080</span> parameters, <span class="hljs-number">0</span> gradients, <span class="hljs-number">78.9</span> GFLOPs<br><br>image <span class="hljs-number">1</span>/<span class="hljs-number">1</span> H:\work\yolov8train\ultralytics\ultralytics\assets\bus.jpg: <span class="hljs-number">640</span>x480 <span class="hljs-number">4</span> persons, <span class="hljs-number">1</span> bus, <span class="hljs-number">1251.3</span>ms<br>Speed: <span class="hljs-number">6.0</span>ms preprocess, <span class="hljs-number">1251.3</span>ms inference, <span class="hljs-number">5.0</span>ms postprocess per image at shape (<span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">640</span>, <span class="hljs-number">480</span>)<br>Results saved to runs\detect\predict<br>💡 Learn more at https:<span class="hljs-regexp">//</span>docs.ultralytics.com<span class="hljs-regexp">/modes/</span>predict<br></code></pre></td></tr></table></figure>
+
+<p>输出结果<br><img src="/2024/02/27/Yolov8-%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E5%88%9D%E5%B0%9D%E8%AF%95/fd172c59d68bd767d02238b53b03cb9e.png" srcset="/img/loading.gif" lazyload></p>
+<h1 id="调整"><a href="#调整" class="headerlink" title="调整"></a>调整</h1><h3 id="解决显卡不上班的问题"><a href="#解决显卡不上班的问题" class="headerlink" title="解决显卡不上班的问题"></a>解决显卡不上班的问题</h3><p>检查显卡情况<br><code>nvidia-smi</code><br>查看cuda版本<br><code>nvcc --version</code><br>到这里发现问题了，电脑里居然没有cuda…去官网找老黄要一下(<a target="_blank" rel="noopener" href="https://developer.nvidia.com/">https://developer.nvidia.com/</a>)<br>下载的时候需要注意，查看显卡情况时右上角会显示最高支持的cuda版本，老电脑要注意下载版本低于最高版本。<br><img src="/2024/02/27/Yolov8-%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E5%88%9D%E5%B0%9D%E8%AF%95/50e80dfb684ec42d94b64f5c081812fb.png" srcset="/img/loading.gif" lazyload></p>
+<p>在Nvidia控制面板中也能看到CODA的最高支持版本<br><img src="/2024/02/27/Yolov8-%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E5%88%9D%E5%B0%9D%E8%AF%95/f3f96e1046b8d73cfbb41d1178dd84a9.png" srcset="/img/loading.gif" lazyload></p>
+<p>下载安装之后，再次使用<code>nvcc -v</code>查看Cuda版本，有结果了</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs vim">(yolov8train) C:\Users\Administrator&gt;nvcc --<span class="hljs-keyword">version</span><br>nvcc: NVIDIA (R) Cuda <span class="hljs-keyword">compiler</span> driver<br>Copyright (<span class="hljs-keyword">c</span>) <span class="hljs-number">2005</span>-<span class="hljs-number">2022</span> NVIDIA Corporation<br>Built <span class="hljs-keyword">on</span> Mon_Oct_24_19:<span class="hljs-number">40</span>:<span class="hljs-number">05</span>_Pacific_Daylight_Time_2022<br>Cuda compilation tools, release <span class="hljs-number">12.0</span>, V12.<span class="hljs-number">0.76</span><br>Build cuda_12.<span class="hljs-number">0</span>.r12.<span class="hljs-number">0</span>/<span class="hljs-keyword">compiler</span>.<span class="hljs-number">31968024</span>_0<br></code></pre></td></tr></table></figure>
+
+<p>在给其他电脑装CUDA的时候遇到了NVCC不能用的问题，明明装了CUDA，也配置了系统变量，摸不着头脑。</p>
+<h3 id="关于cuDNN"><a href="#关于cuDNN" class="headerlink" title="关于cuDNN"></a>关于cuDNN</h3><p>cuDNN在CUDA的基础上，使计算速度进一步加快，可以的话最好安装一下，并且注意版本号对齐CUDA<br><a target="_blank" rel="noopener" href="https://developer.nvidia.cn/rdp/cudnn-archive">https://developer.nvidia.cn/rdp/cudnn-archive</a></p>
+<h3 id="检查Torch与cuda兼容性"><a href="#检查Torch与cuda兼容性" class="headerlink" title="检查Torch与cuda兼容性"></a>检查Torch与cuda兼容性</h3><p>安装好Cuda之后还是不行，开始检查兼容性。这段是Python代码，需要输入Python进入对应环境才可以运行，CMD不识别import。</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs stylus">import torch  <br><span class="hljs-function"><span class="hljs-title">print</span><span class="hljs-params">(torch.__version__)</span></span>  #查看当前torch版本<br><span class="hljs-function"><span class="hljs-title">print</span><span class="hljs-params">(torch.cuda.is_available()</span></span>) #检查cuda和torch是否匹配<br></code></pre></td></tr></table></figure>
+<p>运行得到了False，不兼容。有点难搞，暂时没搞明白。只能换台电脑试试了。</p>
+<p>当电脑硬件过老的时候就真的没办法，只能换电脑了。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>初次尝试的成功取决于工程师的基础建设，在没有完善配套的年代，自己搭建整个流程是非常非常累的事情，而在今天只需要短短两三句代码。当然还有很多兼容性的问题还有待解决，这个只能是一步步来了。</p>
+<p>本篇中没有解决，仍然需要进步的地方：</p>
+<ul>
+<li>深入学习其中的算法和原理</li>
+<li>尝试语义分割和姿态检测等其他案例</li>
+<li>多文件处理</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0/" class="category-chain-item">学习</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Python/">#Python</a>
+      
+        <a href="/tags/yolov8/">#yolov8</a>
+      
+        <a href="/tags/%E7%9B%AE%E6%A0%87%E8%AF%86%E5%88%AB/">#目标识别</a>
+      
+        <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/">#计算机视觉</a>
+      
+        <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">#神经网络</a>
+      
+        <a href="/tags/Anaconda/">#Anaconda</a>
+      
+        <a href="/tags/CUDA/">#CUDA</a>
+      
+        <a href="/tags/AI/">#AI</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Yolov8-目标检测初尝试</div>
+      <div>http://kw1649190133.github.io/2024/02/27/Yolov8-目标检测初尝试/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Beitragsautor</div>
+          <div>Kwindy</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Veröffentlicht am</div>
+          <div>February 27, 2024</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Urheberrechtshinweis</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/02/27/%E5%9C%B0%E7%90%86%E4%B8%89%E7%BB%B4%E5%9C%BA%E6%99%AF%E5%88%B6%E4%BD%9C-%E5%BD%B1%E5%83%8F%E8%B4%B4%E5%9B%BE%E4%BC%98%E5%8C%96/" title="地理三维场景制作-影像贴图优化">
+                        <span class="hidden-mobile">地理三维场景制作-影像贴图优化</span>
+                        <span class="visible-mobile">Nächster</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Inhaltsverzeichnis</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Suchen</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Stichwort</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog funktioniert am besten mit aktiviertem JavaScript</div>
+  </noscript>
+</body>
+</html>
