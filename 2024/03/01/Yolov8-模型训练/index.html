@@ -1,0 +1,1107 @@
+
+
+<!DOCTYPE html>
+<html lang="CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Kwindy">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="前言本篇开始尝试训练自己的模型，使用的是官方github仓库里的代码。参考文档：官网模型训练指南：https:&#x2F;&#x2F;docs.ultralytics.com&#x2F;zh&#x2F;modes&#x2F;train&#x2F;#key-features-of-train-modeB站Up主的视频讲解：https:&#x2F;&#x2F;www.bilibili.com&#x2F;video&#x2F;BV1o44y1w77C&#x2F; 运行环境CPU 13th Gen Intel(R">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Yolov8-模型训练">
+<meta property="og:url" content="http://kw1649190133.github.io/2024/03/01/Yolov8-%E6%A8%A1%E5%9E%8B%E8%AE%AD%E7%BB%83/index.html">
+<meta property="og:site_name" content="kw&#39;s blog">
+<meta property="og:description" content="前言本篇开始尝试训练自己的模型，使用的是官方github仓库里的代码。参考文档：官网模型训练指南：https:&#x2F;&#x2F;docs.ultralytics.com&#x2F;zh&#x2F;modes&#x2F;train&#x2F;#key-features-of-train-modeB站Up主的视频讲解：https:&#x2F;&#x2F;www.bilibili.com&#x2F;video&#x2F;BV1o44y1w77C&#x2F; 运行环境CPU 13th Gen Intel(R">
+<meta property="og:locale">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/03/01/Yolov8-%E6%A8%A1%E5%9E%8B%E8%AE%AD%E7%BB%83/ce614a74d48529935a224f460e233c61.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/03/01/Yolov8-%E6%A8%A1%E5%9E%8B%E8%AE%AD%E7%BB%83/2fa27c482a7d1012096c34096dd75c7a.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/03/01/Yolov8-%E6%A8%A1%E5%9E%8B%E8%AE%AD%E7%BB%83/291602ede429c53b7b9f5d74f99a6bf2.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/03/01/Yolov8-%E6%A8%A1%E5%9E%8B%E8%AE%AD%E7%BB%83/f43af05faebd8399f3b05df53535474f.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/03/01/Yolov8-%E6%A8%A1%E5%9E%8B%E8%AE%AD%E7%BB%83/dbee73c46e0b43e4fccc8e4711b8f5ca.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/03/01/Yolov8-%E6%A8%A1%E5%9E%8B%E8%AE%AD%E7%BB%83/1812667ac107d48b2e8733386c210f55.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/03/01/Yolov8-%E6%A8%A1%E5%9E%8B%E8%AE%AD%E7%BB%83/d407f2b14a9364bac9f5b7bb4a6e8ced.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/03/01/Yolov8-%E6%A8%A1%E5%9E%8B%E8%AE%AD%E7%BB%83/d7f1bb6e6ddb5f0ac9fdcf813dafd229.png">
+<meta property="article:published_time" content="2024-03-01T08:02:45.000Z">
+<meta property="article:modified_time" content="2024-03-01T08:08:35.173Z">
+<meta property="article:author" content="Kwindy">
+<meta property="article:tag" content="yolov8">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="目标识别">
+<meta property="article:tag" content="计算机视觉">
+<meta property="article:tag" content="神经网络">
+<meta property="article:tag" content="Anaconda">
+<meta property="article:tag" content="CUDA">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="模型训练">
+<meta property="article:tag" content="大楼墙体检测">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://kw1649190133.github.io/2024/03/01/Yolov8-%E6%A8%A1%E5%9E%8B%E8%AE%AD%E7%BB%83/ce614a74d48529935a224f460e233c61.png">
+  
+  
+  
+  <title>Yolov8-模型训练 - kw&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"kw1649190133.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Hejmpaĝo</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Arkivoj</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Kategorio</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Etikedoj</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>Pri</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Yolov8-模型训练"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-03-01 16:02" pubdate>
+          March 1, 2024 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          8.7k vortoj
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          73 minutoj
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Yolov8-模型训练</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>本篇开始尝试训练自己的模型，使用的是官方github仓库里的代码。<br>参考文档：<br>官网模型训练指南：<a target="_blank" rel="noopener" href="https://docs.ultralytics.com/zh/modes/train/#key-features-of-train-mode">https://docs.ultralytics.com/zh/modes/train/#key-features-of-train-mode</a><br>B站Up主的视频讲解：<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1o44y1w77C/">https://www.bilibili.com/video/BV1o44y1w77C/</a></p>
+<h2 id="运行环境"><a href="#运行环境" class="headerlink" title="运行环境"></a>运行环境</h2><p>CPU 13th Gen Intel(R) Core(TM) i5-13600KF   3.50 GHz<br>RAM 32.0 GB (31.8 GB 可用)<br>GPU NVIDIA GeForce RTX4060 TI<br>SYSTEM windows 10 专业版 22H2  x64<br>CUDA 12.1<br>torch 2.2.1</p>
+<h1 id="Python启动"><a href="#Python启动" class="headerlink" title="Python启动"></a>Python启动</h1><p>官方给出了三种加载模型的方式，选一种即可：</p>
+<h3 id="新建模型"><a href="#新建模型" class="headerlink" title="新建模型"></a>新建模型</h3><p>按照.yaml文件新建一个模型进行训练</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ini"><span class="hljs-attr">model</span> = YOLO(<span class="hljs-string">&#x27;yolov8n.yaml&#x27;</span>) <span class="hljs-comment">#build a new model from YAML`</span><br></code></pre></td></tr></table></figure>
+<p>这里新建模型的时候除非自己有需要，可以修改模型，否则会直接调用官方文件，所有的模型参数已经内置在程序设置里了，包括姿态识别、world等，输对名称就可以调用了。<br>例如：ultralytics\cfg\models\v8\yolov8.yaml</p>
+<h3 id="使用已有模型"><a href="#使用已有模型" class="headerlink" title="使用已有模型"></a>使用已有模型</h3><p>在另一个模型的基础上继续训练，可以用于断点继续。</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ini"><span class="hljs-attr">model</span> = YOLO(<span class="hljs-string">&#x27;yolov8n.pt&#x27;</span>)  <span class="hljs-comment"># load a pretrained model (recommended for training)`</span><br></code></pre></td></tr></table></figure>
+<h3 id="参数继承"><a href="#参数继承" class="headerlink" title="参数继承"></a>参数继承</h3><p>从yaml文件构建模型，然后从另一个相同结构的模型中继承权重参数。</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ini"><span class="hljs-attr">model</span> = YOLO(<span class="hljs-string">&#x27;yolov8n.yaml&#x27;</span>).load(<span class="hljs-string">&#x27;yolov8n.pt&#x27;</span>)  <span class="hljs-comment"># build from YAML and transfer weights`</span><br></code></pre></td></tr></table></figure>
+<p>这里的.yaml文件实际上只是文本，重要的是里面记录的内容，比如模型的yaml文件里面记录的是模型的结构，程序根据描述的结构去构建模型。在初学阶段可以不去了解每一层的内容，简单看看。<br><img src="/2024/03/01/Yolov8-%E6%A8%A1%E5%9E%8B%E8%AE%AD%E7%BB%83/ce614a74d48529935a224f460e233c61.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="开始训练"><a href="#开始训练" class="headerlink" title="开始训练"></a>开始训练</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">results = model.train(data=<span class="hljs-string">&#x27;coco128.yaml&#x27;</span>, epochs=<span class="hljs-number">100</span>, imgsz=<span class="hljs-number">640</span>)<br></code></pre></td></tr></table></figure>
+<ul>
+<li>model 必要参数，用来训练的模型</li>
+<li>data 必要参数，用来训练的数据</li>
+<li>epochs=100 训练历元总数。每个历元代表对整个数据集进行一次完整的训练。调整该值会影响训练时间和模型性能。</li>
+<li>imgsz=640 用于训练的目标图像尺寸。所有图像在输入模型前都会被调整到这一尺寸。影响模型精度和计算复杂度。</li>
+<li>batch=4 学习率。把这个降低可以有效改善内存占用。</li>
+<li>resume=true 可以从中断处继续训练，默认是Fales</li>
+</ul>
+<p>还有很多其他参数，附在页尾便于查看。</p>
+<p>当我们没有准备数据集就直接运行coco数据集时，程序会贴心的帮我们下载到datasets目录下，太感动了。</p>
+<p>因为这些数据集的参数是内置在训练环境的docs文档目录下的，可以参考官方样例的数据格式。<br><img src="/2024/03/01/Yolov8-%E6%A8%A1%E5%9E%8B%E8%AE%AD%E7%BB%83/2fa27c482a7d1012096c34096dd75c7a.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="多GPU训练"><a href="#多GPU训练" class="headerlink" title="多GPU训练"></a>多GPU训练</h2><p>万一飞黄腾达了能用上服务器的时候有可能用得到……</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs routeros">results = model.train(<span class="hljs-attribute">data</span>=<span class="hljs-string">&#x27;coco128.yaml&#x27;</span>, <span class="hljs-attribute">epochs</span>=100, <span class="hljs-attribute">imgsz</span>=640, device=[0, 1]) # Train the model with 2 GPUs<br></code></pre></td></tr></table></figure>
+
+<h1 id="命令行启动"><a href="#命令行启动" class="headerlink" title="命令行启动"></a>命令行启动</h1><p>与上面python一样的内容，只是形式有变化，优点是方便，缺点是不够优雅，代码糊在一起变成一坨。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs CLI"># Build a new model from YAML and start training from scratch<br>yolo detect train data=coco128.yaml model=yolov8n.yaml epochs=100 imgsz=640<br><br># Start training from a pretrained *.pt model<br>yolo detect train data=coco128.yaml model=yolov8n.pt epochs=100 imgsz=640<br><br># Build a new model from YAML, transfer pretrained weights to it and start training<br>yolo detect train data=coco128.yaml model=yolov8n.yaml pretrained=yolov8n.pt epochs=100 imgsz=640<br></code></pre></td></tr></table></figure>
+
+<p>我使用的训练启动代码——使用墙体破损监测数据集</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs routeros">yolo detect train <span class="hljs-attribute">data</span>=dataset/walldata/walldata.yaml <span class="hljs-attribute">model</span>=yolov8m.yaml <span class="hljs-attribute">epochs</span>=300 <span class="hljs-attribute">batch</span>=8 <span class="hljs-attribute">resume</span>=<span class="hljs-literal">true</span><br></code></pre></td></tr></table></figure>
+<p>常用参数data、model、epochs、batch、resume。其他少用的参数放在页尾以便查看。</p>
+<h1 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h1><p>虽然启动训练很简单，但准备工作还是比较多的。开始训练时需要加载数据的.yaml文件，而里面的内容包括训练数据列表地址、标签列表地址、对象类型数量、标签名称。</p>
+<p>以墙体缺陷的数据集为例，图片为jpg格式，标签为txt格式。<br>数据集文件的内容：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs .yaml">path: ..\datasets\walldata #数据集路径，程序在path路径下寻找train和val<br>train: images\train #训练数据集<br>val: images\val  #验证数据集<br>test: #测试数据集<br><br>names: <br>  0: exposed reinforcement #外露钢筋<br>  1: rust stain #生锈<br>  2: Crack #裂缝<br>  3: Spalling #剥落<br>  4: Efflorescence #风化<br>  5: delamination #分层<br></code></pre></td></tr></table></figure>
+
+<p>官方推荐的数据集存放格式：<br><img src="/2024/03/01/Yolov8-%E6%A8%A1%E5%9E%8B%E8%AE%AD%E7%BB%83/291602ede429c53b7b9f5d74f99a6bf2.png" srcset="/img/loading.gif" lazyload><br>把这个路径和上面的数据集文件内容一比较，就知道，数据集路径是随意的放在哪都行，甚至path都可以不要，但唯独要注意，默认的读取程序是通过直接置换images变成labels来读取标签信息的，$\color{red}{所以images和labels这两个单词不要改，并且里面的内容要保持一致。}$</p>
+<p>当然也可以不适用官方读取方式，自己修改读取方法。<br>需要注意路径有没有错误，错一个字母就会报错找不到对应文件。</p>
+<h1 id="量化参数"><a href="#量化参数" class="headerlink" title="量化参数"></a>量化参数</h1><p>模型一般用一些识别准确率啊之类的东西描述识别的效果和质量，时间太久我也忘记了，以后再整理一下，这些参数需要使用对应的工具进行查看也计算。<br>Yolo支持Comet、ClearML、TensorBoard三种工具来查看量化的训练结果，按照以前的习惯，用TensorBoard。<br>如果没有安装的话使用<code>pip install tensorboard</code>安装<br>使用–logdir加结果存放的路径。运行训练程序的时候会自动记录训练过程的参数，在训练结束后可以调用tensorboard进行查看。</p>
+<figure class="highlight clean"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs clean">tensorboard --logdir ultralytics/runs  # replace <span class="hljs-keyword">with</span> <span class="hljs-string">&#x27;runs&#x27;</span> directory 训练结果的地址<br></code></pre></td></tr></table></figure>
+
+<p><img src="/2024/03/01/Yolov8-%E6%A8%A1%E5%9E%8B%E8%AE%AD%E7%BB%83/f43af05faebd8399f3b05df53535474f.png" srcset="/img/loading.gif" lazyload><br>太久没用了，早都忘记这些参数是什么意思了。</p>
+<h1 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a>遇到的问题</h1><h2 id="libiomp5md-dll文件冲突问题"><a href="#libiomp5md-dll文件冲突问题" class="headerlink" title="libiomp5md.dll文件冲突问题"></a>libiomp5md.dll文件冲突问题</h2><p>眼看着训练程序正要起飞的时候突然报错</p>
+<figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs livecodeserver">OMP: Error <span class="hljs-comment">#15: Initializing libiomp5md.dll, but found libiomp5md.dll already initialized.</span><br>OMP: Hint This means that multiple copies <span class="hljs-keyword">of</span> <span class="hljs-keyword">the</span> OpenMP runtime have been linked <span class="hljs-keyword">into</span> <span class="hljs-keyword">the</span> program. That is dangerous, since <span class="hljs-keyword">it</span> can degrade performance <span class="hljs-keyword">or</span> cause incorrect results. The best thing <span class="hljs-built_in">to</span> <span class="hljs-built_in">do</span> is <span class="hljs-built_in">to</span> ensure that only <span class="hljs-keyword">a</span> single OpenMP runtime is linked <span class="hljs-keyword">into</span> <span class="hljs-keyword">the</span> <span class="hljs-built_in">process</span>, e.g. <span class="hljs-keyword">by</span> avoiding static linking <span class="hljs-keyword">of</span> <span class="hljs-keyword">the</span> OpenMP runtime <span class="hljs-keyword">in</span> <span class="hljs-keyword">any</span> library. As <span class="hljs-keyword">an</span> unsafe, unsupported, undocumented workaround you can <span class="hljs-built_in">set</span> <span class="hljs-keyword">the</span> environment <span class="hljs-built_in">variable</span> KMP_DUPLICATE_LIB_OK=<span class="hljs-literal">TRUE</span> <span class="hljs-built_in">to</span> allow <span class="hljs-keyword">the</span> program <span class="hljs-built_in">to</span> continue <span class="hljs-built_in">to</span> execute, but that may cause crashes <span class="hljs-keyword">or</span> silently produce incorrect results. For more information, please see <span class="hljs-keyword">http</span>://www.intel.com/software/products/support/.<br></code></pre></td></tr></table></figure>
+<p>查了一下大概意思是libiomp5md.dll这个文件冲突了。torch包中包含了名为libiomp5md.dll，与Anaconda环境中的文件冲突了。如果使用的是base环境，就删掉base环境的同名文件，如果使用的是新建的环境，则找到对应环境下的libiomp5md.dll删除。</p>
+<p><img src="/2024/03/01/Yolov8-%E6%A8%A1%E5%9E%8B%E8%AE%AD%E7%BB%83/dbee73c46e0b43e4fccc8e4711b8f5ca.png" srcset="/img/loading.gif" lazyload></p>
+<p>用文件搜索可以更方便的查找，找到之后直接删掉就可以了，但是以后创建环境还是会有这个文件，所以仍然需要注意。这都什么事啊。</p>
+<h2 id="RuntimeError-CUDA-Out-of-memory"><a href="#RuntimeError-CUDA-Out-of-memory" class="headerlink" title="RuntimeError: CUDA Out of memory"></a>RuntimeError: CUDA Out of memory</h2><p>非常明显，就是内存爆了，按照顺序优先级进行处理</p>
+<ol>
+<li>减少“batch_size”</li>
+<li>降低精度</li>
+<li>按照错误提示说的做</li>
+<li>清除缓存</li>
+<li>修改模型/训练</li>
+</ol>
+<p>顺利的话其实第一条就解决了，把batch减半减半再减半，减到1为止。这次调到4就解决了。</p>
+<h2 id="成功运行！"><a href="#成功运行！" class="headerlink" title="成功运行！"></a>成功运行！</h2><p><img src="/2024/03/01/Yolov8-%E6%A8%A1%E5%9E%8B%E8%AE%AD%E7%BB%83/1812667ac107d48b2e8733386c210f55.png" srcset="/img/loading.gif" lazyload><br>太感动了，仿佛回到了大四那年做毕设的时光，不同的是现在的yolo可比以前的全卷积神经网络简单多了，当然，我自己的认知水平也相比从前有了提高。不管结果怎么样，成功运行已经是前进了一大步，看样子要明天才能收结果了。</p>
+<p>第二天发现电脑自动休眠了，模型还没有跑完。这…以后还是留意一下电脑的自动休眠吧，跑数据处理要关一下。趁这个时间找一找验证数据，比如视频之类的。</p>
+<h2 id="训练完成"><a href="#训练完成" class="headerlink" title="训练完成"></a>训练完成</h2><p>经过了22个小时，300个回合终于跑完了，看来程序会自动保存一个最终版本模型和最好效果模型，太方便了。</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">300</span> epochs completed in <span class="hljs-number">22</span>.<span class="hljs-number">225</span> hours.<br><span class="hljs-attribute">Optimizer</span> stripped from runs\detect\train7\weights\last.pt, <span class="hljs-number">52</span>.<span class="hljs-number">1</span>MB<br><span class="hljs-attribute">Optimizer</span> stripped from runs\detect\train7\weights\best.pt, <span class="hljs-number">52</span>.<span class="hljs-number">1</span>MB<br><br><span class="hljs-attribute">Validating</span> runs\detect\train7\weights\best.pt...<br><span class="hljs-attribute">Ultralytics</span> YOLOv8.<span class="hljs-number">1</span>.<span class="hljs-number">19</span> 🚀 Python-<span class="hljs-number">3</span>.<span class="hljs-number">8</span>.<span class="hljs-number">18</span> torch-<span class="hljs-number">2</span>.<span class="hljs-number">2</span>.<span class="hljs-number">1</span> CUDA:<span class="hljs-number">0</span> (NVIDIA GeForce RTX <span class="hljs-number">4060</span> Ti, <span class="hljs-number">8188</span>MiB)<br><span class="hljs-attribute">YOLOv8m</span> summary (fused): <span class="hljs-number">218</span> layers, <span class="hljs-number">25843234</span> parameters, <span class="hljs-number">0</span> gradients, <span class="hljs-number">78</span>.<span class="hljs-number">7</span> GFLOPs<br>                 <span class="hljs-attribute">Class</span>     Images  Instances      Box(P          R      mAP50  mAP50-<span class="hljs-number">95</span>): <span class="hljs-number">100</span>%|██████████| <span class="hljs-number">92</span>/<span class="hljs-number">92</span><span class="hljs-meta"> [00:05</span><br><span class="hljs-meta">                   all        735       3874       0.73      0.687      0.743      0.555</span><br><span class="hljs-meta"> exposed reinforcement        735        796      0.811       0.78      0.839       0.64</span><br><span class="hljs-meta">            rust stain        735        760      0.706       0.65      0.689      0.489</span><br><span class="hljs-meta">                 Crack        735       1077      0.759      0.683      0.757      0.571</span><br><span class="hljs-meta">              Spalling        735        726      0.721      0.694      0.742      0.589</span><br><span class="hljs-meta">         Efflorescence        735        432      0.681      0.544      0.623      0.494</span><br><span class="hljs-meta">          delamination        735         83        0.7      0.771       0.81      0.549</span><br><span class="hljs-meta">Speed: 0.1ms preprocess, 5.3ms inference, 0.0ms loss, 0.6ms postprocess per image</span><br><span class="hljs-meta">Results saved to runs\detect\train7</span><br><span class="hljs-meta">💡 Learn more at https://docs.ultralytics.com/modes/train</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="模型推理"><a href="#模型推理" class="headerlink" title="模型推理"></a>模型推理</h2><p>使用训练后的模型，加上网上随便找的图，来测试一下效果。</p>
+<p><img src="/2024/03/01/Yolov8-%E6%A8%A1%E5%9E%8B%E8%AE%AD%E7%BB%83/d407f2b14a9364bac9f5b7bb4a6e8ced.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/2024/03/01/Yolov8-%E6%A8%A1%E5%9E%8B%E8%AE%AD%E7%BB%83/d7f1bb6e6ddb5f0ac9fdcf813dafd229.png" srcset="/img/loading.gif" lazyload></p>
+<p>emmmm，只能说效果一般般，还有各种识别错误的情况，还是有待提高。不知道是不是跑的时间还不够。一般处理远距离或者大图像的时候，需要对整个图像进行切割，不知道yolo有没有内置这项功能。要学的东西还有很多。</p>
+<h1 id="其他资料"><a href="#其他资料" class="headerlink" title="其他资料"></a>其他资料</h1><h2 id="训练参数"><a href="#训练参数" class="headerlink" title="训练参数"></a>训练参数</h2><p>官方网站的参数表</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>默认值</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>model</td>
+<td>None</td>
+<td>指定用于训练的模型文件。接受指向 .pt   预训练模型或 .yaml 配置文件。对于定义模型结构或初始化权重至关重要。</td>
+</tr>
+<tr>
+<td>data</td>
+<td>None</td>
+<td>数据集配置文件的路径（例如   coco128.yaml).该文件包含特定于数据集的参数，包括训练数据和验证数据的路径、类名和类数。</td>
+</tr>
+<tr>
+<td>epochs</td>
+<td>100</td>
+<td>训练历元总数。每个历元代表对整个数据集进行一次完整的训练。调整该值会影响训练时间和模型性能。</td>
+</tr>
+<tr>
+<td>time</td>
+<td>None</td>
+<td>最长训练时间（小时）。如果设置了该值，则会覆盖 epochs   参数，允许训练在指定的持续时间后自动停止。对于时间有限的训练场景非常有用。</td>
+</tr>
+<tr>
+<td>patience</td>
+<td>100</td>
+<td>在验证指标没有改善的情况下，提前停止训练所需的历元数。当性能趋于平稳时停止训练，有助于防止过度拟合。</td>
+</tr>
+<tr>
+<td>batch</td>
+<td>16</td>
+<td>训练的批量大小，表示在更新模型内部参数之前要处理多少张图像。自动批处理 (batch=-1)会根据   GPU 内存可用性动态调整批处理大小。</td>
+</tr>
+<tr>
+<td>imgsz</td>
+<td>640</td>
+<td>用于训练的目标图像尺寸。所有图像在输入模型前都会被调整到这一尺寸。影响模型精度和计算复杂度。</td>
+</tr>
+<tr>
+<td>save</td>
+<td>True</td>
+<td>可保存训练检查点和最终模型权重。这对恢复训练或模型部署非常有用。</td>
+</tr>
+<tr>
+<td>save_period</td>
+<td>-1</td>
+<td>保存模型检查点的频率，以 epochs   为单位。值为-1 时将禁用此功能。该功能适用于在长时间训练过程中保存临时模型。</td>
+</tr>
+<tr>
+<td>cache</td>
+<td>False</td>
+<td>在内存中缓存数据集图像 (True/ram）、磁盘 (disk），或禁用它   (False).通过减少磁盘 I/O 提高训练速度，但代价是增加内存使用量。</td>
+</tr>
+<tr>
+<td>device</td>
+<td>None</td>
+<td>指定用于训练的计算设备：单个 GPU   (device=0）、多个 GPU (device=0,1)、CPU (device=cpu)，或苹果芯片的 MPS (device=mps).</td>
+</tr>
+<tr>
+<td>workers</td>
+<td>8</td>
+<td>加载数据的工作线程数（每 RANK 多 GPU 训练）。影响数据预处理和输入模型的速度，尤其适用于多   GPU 设置。</td>
+</tr>
+<tr>
+<td>project</td>
+<td>None</td>
+<td>保存训练结果的项目目录名称。允许有组织地存储不同的实验。</td>
+</tr>
+<tr>
+<td>name</td>
+<td>None</td>
+<td>训练运行的名称。用于在项目文件夹内创建一个子目录，用于存储训练日志和输出结果。</td>
+</tr>
+<tr>
+<td>exist_ok</td>
+<td>False</td>
+<td>如果为   True，则允许覆盖现有的项目/名称目录。这对迭代实验非常有用，无需手动清除之前的输出。</td>
+</tr>
+<tr>
+<td>pretrained</td>
+<td>True</td>
+<td>决定是否从预处理模型开始训练。可以是布尔值，也可以是加载权重的特定模型的字符串路径。提高训练效率和模型性能。</td>
+</tr>
+<tr>
+<td>optimizer</td>
+<td>‘auto’</td>
+<td>为培训选择优化器。选项包括 SGD, Adam,   AdamW, NAdam, RAdam, RMSProp 等，或 auto 用于根据模型配置进行自动选择。影响收敛速度和稳定性</td>
+</tr>
+<tr>
+<td>verbose</td>
+<td>False</td>
+<td>在训练过程中启用冗长输出，提供详细日志和进度更新。有助于调试和密切监控培训过程。</td>
+</tr>
+<tr>
+<td>seed</td>
+<td>0</td>
+<td>为训练设置随机种子，确保在相同配置下运行的结果具有可重复性。</td>
+</tr>
+<tr>
+<td>deterministic</td>
+<td>True</td>
+<td>强制使用确定性算法，确保可重复性，但由于对非确定性算法的限制，可能会影响性能和速度。</td>
+</tr>
+<tr>
+<td>single_cls</td>
+<td>False</td>
+<td>在训练过程中将多类数据集中的所有类别视为单一类别。适用于二元分类任务，或侧重于对象的存在而非分类。</td>
+</tr>
+<tr>
+<td>rect</td>
+<td>False</td>
+<td>可进行矩形训练，优化批次组成以减少填充。这可以提高效率和速度，但可能会影响模型的准确性。</td>
+</tr>
+<tr>
+<td>cos_lr</td>
+<td>False</td>
+<td>利用余弦学习率调度器，根据历时的余弦曲线调整学习率。这有助于管理学习率，实现更好的收敛。</td>
+</tr>
+<tr>
+<td>close_mosaic</td>
+<td>10</td>
+<td>在训练完成前禁用最后 N 个历元的马赛克数据增强以稳定训练。设置为 0 则禁用此功能。</td>
+</tr>
+<tr>
+<td>resume</td>
+<td>False</td>
+<td>从上次保存的检查点恢复训练。自动加载模型权重、优化器状态和历时计数，无缝继续训练。</td>
+</tr>
+<tr>
+<td>amp</td>
+<td>True</td>
+<td>启用自动混合精度 (AMP) 训练，可减少内存使用量并加快训练速度，同时将对精度的影响降至最低。</td>
+</tr>
+<tr>
+<td>fraction</td>
+<td>1.0</td>
+<td>指定用于训练的数据集的部分。允许在完整数据集的子集上进行训练，这对实验或资源有限的情况非常有用。</td>
+</tr>
+<tr>
+<td>profile</td>
+<td>False</td>
+<td>在训练过程中，可对ONNX 和TensorRT 速度进行剖析，有助于优化模型部署。</td>
+</tr>
+<tr>
+<td>freeze</td>
+<td>None</td>
+<td>冻结模型的前 N   层或按索引指定的层，从而减少可训练参数的数量。这对微调或迁移学习非常有用。</td>
+</tr>
+<tr>
+<td>lr0</td>
+<td>0.01</td>
+<td>初始学习率（即 SGD=1E-2, Adam=1E-3)   .调整这个值对优化过程至关重要，会影响模型权重的更新速度。</td>
+</tr>
+<tr>
+<td>lrf</td>
+<td>0.01</td>
+<td>最终学习率占初始学习率的百分比 = (lr0 *   lrf)，与调度程序结合使用，随着时间的推移调整学习率。</td>
+</tr>
+<tr>
+<td>momentum</td>
+<td>0.937</td>
+<td>用于 SGD 的动量因子，或用于 Adam 优化器的 beta1，用于将过去的梯度纳入当前更新。</td>
+</tr>
+<tr>
+<td>weight_decay</td>
+<td>0.0005</td>
+<td>L2 正则化项，对大权重进行惩罚，以防止过度拟合。</td>
+</tr>
+<tr>
+<td>warmup_epochs</td>
+<td>3.0</td>
+<td>学习率预热的历元数，学习率从低值逐渐增加到初始学习率，以在早期稳定训练。</td>
+</tr>
+<tr>
+<td>warmup_momentum</td>
+<td>0.8</td>
+<td>热身阶段的初始动力，在热身期间逐渐调整到设定动力。</td>
+</tr>
+<tr>
+<td>warmup_bias_lr</td>
+<td>0.1</td>
+<td>热身阶段的偏置参数学习率，有助于稳定初始历元的模型训练。</td>
+</tr>
+<tr>
+<td>box</td>
+<td>7.5</td>
+<td>损失函数中边框损失部分的权重，影响对准确预测边框坐标的重视程度。</td>
+</tr>
+<tr>
+<td>cls</td>
+<td>0.5</td>
+<td>分类损失在总损失函数中的权重，影响正确分类预测相对于其他部分的重要性。</td>
+</tr>
+<tr>
+<td>dfl</td>
+<td>1.5</td>
+<td>分布焦点损失权重，在某些YOLO   版本中用于精细分类。</td>
+</tr>
+<tr>
+<td>pose</td>
+<td>12.0</td>
+<td>姿态损失在姿态估计模型中的权重，影响准确预测姿态关键点的重点。</td>
+</tr>
+<tr>
+<td>kobj</td>
+<td>2.0</td>
+<td>姿态估计模型中关键点对象性损失的权重，在检测可信度和姿态精度之间取得平衡。</td>
+</tr>
+<tr>
+<td>label_smoothing</td>
+<td>0.0</td>
+<td>应用标签平滑，将硬标签软化为目标标签和标签均匀分布的混合标签，可以提高泛化效果。</td>
+</tr>
+<tr>
+<td>nbs</td>
+<td>64</td>
+<td>用于损耗正常化的标称批量大小。</td>
+</tr>
+<tr>
+<td>overlap_mask</td>
+<td>True</td>
+<td>决定在训练过程中分割掩码是否应该重叠，适用于实例分割任务。</td>
+</tr>
+<tr>
+<td>mask_ratio</td>
+<td>4</td>
+<td>分割掩码的下采样率，影响训练时使用的掩码分辨率。</td>
+</tr>
+<tr>
+<td>dropout</td>
+<td>0.0</td>
+<td>分类任务中正则化的放弃率，通过在训练过程中随机省略单元来防止过拟合。</td>
+</tr>
+<tr>
+<td>val</td>
+<td>True</td>
+<td>可在训练过程中进行验证，以便在单独的数据集上对模型性能进行定期评估。</td>
+</tr>
+<tr>
+<td>plots</td>
+<td>False</td>
+<td>生成并保存训练和验证指标图以及预测示例图，以便直观地了解模型性能和学习进度。</td>
+</tr>
+</tbody></table>
+<h2 id="增强设置和特殊参数"><a href="#增强设置和特殊参数" class="headerlink" title="增强设置和特殊参数"></a>增强设置和特殊参数</h2><table>
+<thead>
+<tr>
+<th>参数</th>
+<th>类型</th>
+<th>默认值</th>
+<th>范围</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>hsv_h</td>
+<td>float</td>
+<td>0.015</td>
+<td>0.0 - 1.0</td>
+<td>通过色轮的一部分来调整图像的色调，从而引入色彩的可变性。帮助模型在不同的光照条件下通用。</td>
+</tr>
+<tr>
+<td>hsv_s</td>
+<td>float</td>
+<td>0.7</td>
+<td>0.0 - 1.0</td>
+<td>改变图像饱和度的一部分，影响色彩的强度。可用于模拟不同的环境条件。</td>
+</tr>
+<tr>
+<td>hsv_v</td>
+<td>float</td>
+<td>0.4</td>
+<td>0.0 - 1.0</td>
+<td>将图像的数值（亮度）修改一部分，帮助模型在不同的光照条件下表现良好。</td>
+</tr>
+<tr>
+<td>degrees</td>
+<td>float</td>
+<td>0.0</td>
+<td>-180 - +180</td>
+<td>在指定的度数范围内随机旋转图像，提高模型识别不同方向物体的能力。</td>
+</tr>
+<tr>
+<td>translate</td>
+<td>float</td>
+<td>0.1</td>
+<td>0.0 - 1.0</td>
+<td>以图像大小的一小部分水平和垂直平移图像，帮助学习检测部分可见的物体。</td>
+</tr>
+<tr>
+<td>scale</td>
+<td>float</td>
+<td>0.5</td>
+<td>&gt;=0.0</td>
+<td>通过增益因子缩放图像，模拟物体与摄像机的不同距离。</td>
+</tr>
+<tr>
+<td>shear</td>
+<td>float</td>
+<td>0.0</td>
+<td>-180 - +180</td>
+<td>按指定角度剪切图像，模拟从不同角度观察物体的效果。</td>
+</tr>
+<tr>
+<td>perspective</td>
+<td>float</td>
+<td>0.0</td>
+<td>0.0 - 0.001</td>
+<td>对图像进行随机透视变换，增强模型理解三维空间中物体的能力。</td>
+</tr>
+<tr>
+<td>flipud</td>
+<td>float</td>
+<td>0.0</td>
+<td>0.0 - 1.0</td>
+<td>以指定的概率将图像翻转过来，在不影响物体特征的情况下增加数据的可变性。</td>
+</tr>
+<tr>
+<td>fliplr</td>
+<td>float</td>
+<td>0.5</td>
+<td>0.0 - 1.0</td>
+<td>以指定的概率将图像从左到右翻转，这对学习对称物体和增加数据集多样性非常有用。</td>
+</tr>
+<tr>
+<td>mosaic</td>
+<td>float</td>
+<td>1.0</td>
+<td>0.0 - 1.0</td>
+<td>将四幅训练图像合成一幅，模拟不同的场景构成和物体互动。对复杂场景的理解非常有效。</td>
+</tr>
+<tr>
+<td>mixup</td>
+<td>float</td>
+<td>0.0</td>
+<td>0.0 - 1.0</td>
+<td>混合两幅图像及其标签，创建合成图像。通过引入标签噪声和视觉变化，增强模型的泛化能力。</td>
+</tr>
+<tr>
+<td>copy_paste</td>
+<td>float</td>
+<td>0.0</td>
+<td>0.0 - 1.0</td>
+<td>从一幅图像中复制物体并粘贴到另一幅图像上，用于增加物体实例和学习物体遮挡。</td>
+</tr>
+<tr>
+<td>auto_augment</td>
+<td>str</td>
+<td>randaugment</td>
+<td>-</td>
+<td>自动应用预定义的增强策略 (randaugment, autoaugment,   augmix)，通过丰富视觉特征来优化分类任务。</td>
+</tr>
+<tr>
+<td>erasing</td>
+<td>float</td>
+<td>0.4</td>
+<td>0.0 - 1.0</td>
+<td>在分类训练过程中随机擦除部分图像，鼓励模型将识别重点放在不明显的特征上。</td>
+</tr>
+</tbody></table>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0/" class="category-chain-item">学习</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/yolov8/">#yolov8</a>
+      
+        <a href="/tags/Python/">#Python</a>
+      
+        <a href="/tags/%E7%9B%AE%E6%A0%87%E8%AF%86%E5%88%AB/">#目标识别</a>
+      
+        <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/">#计算机视觉</a>
+      
+        <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">#神经网络</a>
+      
+        <a href="/tags/Anaconda/">#Anaconda</a>
+      
+        <a href="/tags/CUDA/">#CUDA</a>
+      
+        <a href="/tags/AI/">#AI</a>
+      
+        <a href="/tags/%E6%A8%A1%E5%9E%8B%E8%AE%AD%E7%BB%83/">#模型训练</a>
+      
+        <a href="/tags/%E5%A4%A7%E6%A5%BC%E5%A2%99%E4%BD%93%E6%A3%80%E6%B5%8B/">#大楼墙体检测</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Yolov8-模型训练</div>
+      <div>http://kw1649190133.github.io/2024/03/01/Yolov8-模型训练/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Aŭtoro</div>
+          <div>Kwindy</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Postigita</div>
+          <div>March 1, 2024</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Lizenta</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/02/27/Yolov8-%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E5%88%9D%E5%B0%9D%E8%AF%95/" title="Yolov8-目标检测初尝试">
+                        <span class="hidden-mobile">Yolov8-目标检测初尝试</span>
+                        <span class="visible-mobile">Sekva afiŝo</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Enhavtabelo</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Serĉi</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">ŝlosivorto</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blogo funkcias plej bone kun JavaScript ebligita</div>
+  </noscript>
+</body>
+</html>
