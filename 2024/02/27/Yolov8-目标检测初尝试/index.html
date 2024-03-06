@@ -28,7 +28,7 @@
 <meta property="og:image" content="http://kw1649190133.github.io/2024/02/27/Yolov8-%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E5%88%9D%E5%B0%9D%E8%AF%95/f3f96e1046b8d73cfbb41d1178dd84a9.png">
 <meta property="og:image" content="http://kw1649190133.github.io/2024/02/27/Yolov8-%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E5%88%9D%E5%B0%9D%E8%AF%95/pytorch%E4%B8%8B%E8%BD%BD.png">
 <meta property="article:published_time" content="2024-02-27T03:39:58.000Z">
-<meta property="article:modified_time" content="2024-03-01T04:15:34.605Z">
+<meta property="article:modified_time" content="2024-03-06T09:54:56.241Z">
 <meta property="article:author" content="Kwindy">
 <meta property="article:tag" content="yolov8">
 <meta property="article:tag" content="Python">
@@ -127,7 +127,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/">
                 <i class="iconfont icon-home-fill"></i>
-                <span>Home</span>
+                <span>Startseite</span>
               </a>
             </li>
           
@@ -139,7 +139,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/archives/">
                 <i class="iconfont icon-archive-fill"></i>
-                <span>Archives</span>
+                <span>Archiv</span>
               </a>
             </li>
           
@@ -151,7 +151,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/categories/">
                 <i class="iconfont icon-category-fill"></i>
-                <span>Categories</span>
+                <span>Kategorien</span>
               </a>
             </li>
           
@@ -163,7 +163,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/tags/">
                 <i class="iconfont icon-tags-fill"></i>
-                <span>Tags</span>
+                <span>Schlagwörter</span>
               </a>
             </li>
           
@@ -175,7 +175,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/about/">
                 <i class="iconfont icon-user-fill"></i>
-                <span>About</span>
+                <span>Über</span>
               </a>
             </li>
           
@@ -232,7 +232,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          3k words
+          4k wörter
         
       </span>
     
@@ -243,7 +243,7 @@
         
         
         
-          25 mins
+          34 minuten
         
       </span>
     
@@ -326,7 +326,130 @@
 <li>尝试语义分割和姿态检测等其他案例</li>
 <li>多文件处理</li>
 </ul>
+<h1 id="附录：YOLOv8的简单介绍"><a href="#附录：YOLOv8的简单介绍" class="headerlink" title="附录：YOLOv8的简单介绍"></a>附录：YOLOv8的简单介绍</h1><p>YOLOv8不是一个模型，而是多个模型组成的计算机视觉体系，可以满足多场景的需求。<br>以下是官网扒的内容：<br>YOLOv8网站地址：<a target="_blank" rel="noopener" href="https://docs.ultralytics.com/zh/models/yolov8/#overview">https://docs.ultralytics.com/zh/models/yolov8/#overview</a><br>训练集网站：<a target="_blank" rel="noopener" href="https://roboflow.com/">https://roboflow.com/</a></p>
+<p>YOLOv8 系列提供多种模型，每种模型都专门用于计算机视觉中的特定任务。这些模型旨在满足从物体检测到实例分割、姿态/关键点检测、定向物体检测和分类等更复杂任务的各种要求。</p>
+<p>YOLOv8 系列的每个变体都针对各自的任务进行了优化，以确保高性能和高精度。此外，这些模型还兼容各种操作模式，包括推理、验证、训练和输出，便于在部署和开发的不同阶段使用。</p>
+<table>
+<thead>
+<tr>
+<th>模型</th>
+<th>文件名</th>
+<th>任务</th>
+<th>推论</th>
+<th>验证</th>
+<th>培训</th>
+<th>出口</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>YOLOv8</td>
+<td><code data-wg-notranslate="">yolov8n.pt</code> <code data-wg-notranslate="">yolov8s.pt</code> <code data-wg-notranslate="">yolov8m.pt</code> <code data-wg-notranslate="">yolov8l.pt</code> <code data-wg-notranslate="">yolov8x.pt</code></td>
+<td><a href="../../tasks/detect/">检测</a></td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>YOLOv8-seg</td>
+<td><code data-wg-notranslate="">yolov8n-seg.pt</code> <code data-wg-notranslate="">yolov8s-seg.pt</code> <code data-wg-notranslate="">yolov8m-seg.pt</code> <code data-wg-notranslate="">yolov8l-seg.pt</code> <code data-wg-notranslate="">yolov8x-seg.pt</code></td>
+<td><a href="../../tasks/segment/">实例分割</a></td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>YOLOv8-姿势</td>
+<td><code data-wg-notranslate="">yolov8n-pose.pt</code> <code data-wg-notranslate="">yolov8s-pose.pt</code> <code data-wg-notranslate="">yolov8m-pose.pt</code> <code data-wg-notranslate="">yolov8l-pose.pt</code> <code data-wg-notranslate="">yolov8x-pose.pt</code> <code data-wg-notranslate="">yolov8x-pose-p6.pt</code></td>
+<td><a href="../../tasks/pose/">姿势/关键点</a></td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>YOLOv8-obb</td>
+<td><code data-wg-notranslate="">yolov8n-obb.pt</code> <code data-wg-notranslate="">yolov8s-obb.pt</code> <code data-wg-notranslate="">yolov8m-obb.pt</code> <code data-wg-notranslate="">yolov8l-obb.pt</code> <code data-wg-notranslate="">yolov8x-obb.pt</code></td>
+<td><a href="../../tasks/obb/">定向检测</a></td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>YOLOv8-cls</td>
+<td><code data-wg-notranslate="">yolov8n-cls.pt</code> <code data-wg-notranslate="">yolov8s-cls.pt</code> <code data-wg-notranslate="">yolov8m-cls.pt</code> <code data-wg-notranslate="">yolov8l-cls.pt</code> <code data-wg-notranslate="">yolov8x-cls.pt</code></td>
+<td><a href="../../tasks/classify/">分类</a></td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+</tr>
+</tbody>
+</table>
 
+<h2 id="不同子模型的性能指标"><a href="#不同子模型的性能指标" class="headerlink" title="不同子模型的性能指标"></a>不同子模型的性能指标</h2><table>
+<thead>
+<tr>
+<th>模型</th>
+<th>尺寸<br><sup> （像素）</sup></th>
+<th>mAPval<sup><br>50-95</sup></th>
+<th>速度<br><sup>CPUONNX<br> (ms)</sup></th>
+<th>速度<br> A100<sup> TensorRT<br> （毫秒）</sup></th>
+<th>params<br><sup>(M)</sup></th>
+<th>FLOPs<br><sup>(B)</sup></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://github.com/ultralytics/assets/releases/download/v8.1.0/yolov8n.pt">YOLOv8n</a></td>
+<td>640</td>
+<td>37.3</td>
+<td>80.4</td>
+<td>0.99</td>
+<td>3.2</td>
+<td>8.7</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://github.com/ultralytics/assets/releases/download/v8.1.0/yolov8s.pt">YOLOv8s</a></td>
+<td>640</td>
+<td>44.9</td>
+<td>128.4</td>
+<td>1.20</td>
+<td>11.2</td>
+<td>28.6</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://github.com/ultralytics/assets/releases/download/v8.1.0/yolov8m.pt">YOLOv8m</a></td>
+<td>640</td>
+<td>50.2</td>
+<td>234.7</td>
+<td>1.83</td>
+<td>25.9</td>
+<td>78.9</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://github.com/ultralytics/assets/releases/download/v8.1.0/yolov8l.pt">YOLOv8l</a></td>
+<td>640</td>
+<td>52.9</td>
+<td>375.2</td>
+<td>2.39</td>
+<td>43.7</td>
+<td>165.2</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://github.com/ultralytics/assets/releases/download/v8.1.0/yolov8x.pt">YOLOv8x</a></td>
+<td>640</td>
+<td>53.9</td>
+<td>479.1</td>
+<td>3.53</td>
+<td>68.2</td>
+<td>257.8</td>
+</tr>
+</tbody>
+</table>
                 
               </div>
             
@@ -391,20 +514,20 @@
     <div class="license-meta">
       
         <div class="license-meta-item">
-          <div>Author</div>
+          <div>Beitragsautor</div>
           <div>Kwindy</div>
         </div>
       
       
         <div class="license-meta-item license-meta-date">
-          <div>Posted on</div>
+          <div>Veröffentlicht am</div>
           <div>February 27, 2024</div>
         </div>
       
       
       
         <div class="license-meta-item">
-          <div>Licensed under</div>
+          <div>Urheberrechtshinweis</div>
           <div>
             
               
@@ -433,7 +556,7 @@
                       <a href="/2024/03/01/Yolov8-%E6%A8%A1%E5%9E%8B%E8%AE%AD%E7%BB%83/" title="Yolov8-模型训练">
                         <i class="iconfont icon-arrowleft"></i>
                         <span class="hidden-mobile">Yolov8-模型训练</span>
-                        <span class="visible-mobile">Previous</span>
+                        <span class="visible-mobile">Vorheriger</span>
                       </a>
                     
                   </article>
@@ -442,7 +565,7 @@
                     
                       <a href="/2024/02/27/%E5%9C%B0%E7%90%86%E4%B8%89%E7%BB%B4%E5%9C%BA%E6%99%AF%E5%88%B6%E4%BD%9C-%E5%BD%B1%E5%83%8F%E8%B4%B4%E5%9B%BE%E4%BC%98%E5%8C%96/" title="地理三维场景制作-影像贴图优化">
                         <span class="hidden-mobile">地理三维场景制作-影像贴图优化</span>
-                        <span class="visible-mobile">Next</span>
+                        <span class="visible-mobile">Nächster</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
                     
@@ -463,7 +586,7 @@
     <div id="toc">
   <p class="toc-header">
     <i class="iconfont icon-list"></i>
-    <span>Table of Contents</span>
+    <span>Inhaltsverzeichnis</span>
   </p>
   <div class="toc-body" id="toc-body"></div>
 </div>
@@ -519,7 +642,7 @@
   <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <h4 class="modal-title w-100 font-weight-bold">Suchen</h4>
         <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -527,7 +650,7 @@
       <div class="modal-body mx-3">
         <div class="md-form mb-5">
           <input type="text" id="local-search-input" class="form-control validate">
-          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+          <label data-error="x" data-success="v" for="local-search-input">Stichwort</label>
         </div>
         <div class="list-group" id="local-search-result"></div>
       </div>
@@ -706,7 +829,7 @@
   
 
   <noscript>
-    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+    <div class="noscript-warning">Blog funktioniert am besten mit aktiviertem JavaScript</div>
   </noscript>
 </body>
 </html>

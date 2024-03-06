@@ -1,0 +1,709 @@
+
+
+<!DOCTYPE html>
+<html lang="CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Kwindy">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="前言虽然并不是第一次接触安卓，但是之前在做安卓端部署YoloV8时碰了壁，所以现在回头恶补基本知识。众所周知，学习某个开发平台的第一个程序那肯定得是HelloWorld，今天就先做一个简单的程序出来给自己涨涨信心。 相关资料：Android 官方网站：（https:&#x2F;&#x2F;developer.android.google.cn&#x2F;?hl&#x3D;zh-cn） 新建项目AndroidStudio的新建项目里有不少">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android-HelloWorld">
+<meta property="og:url" content="http://kw1649190133.github.io/2024/03/05/Android-HelloWorld/index.html">
+<meta property="og:site_name" content="kw&#39;s blog">
+<meta property="og:description" content="前言虽然并不是第一次接触安卓，但是之前在做安卓端部署YoloV8时碰了壁，所以现在回头恶补基本知识。众所周知，学习某个开发平台的第一个程序那肯定得是HelloWorld，今天就先做一个简单的程序出来给自己涨涨信心。 相关资料：Android 官方网站：（https:&#x2F;&#x2F;developer.android.google.cn&#x2F;?hl&#x3D;zh-cn） 新建项目AndroidStudio的新建项目里有不少">
+<meta property="og:locale">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/03/05/Android-HelloWorld/34fdb5cf8b2e43a0724e429cacc94620.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/03/05/Android-HelloWorld/0249d0be0079ba6375864117317166ff.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/03/05/Android-HelloWorld/f21167ce7ad668fbb29b238497ed6e04.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/03/05/Android-HelloWorld/4000da02e89e0805247116219e08d626.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/03/05/Android-HelloWorld/fecebd1bb9d9e016feef2cb349953ba7.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/03/05/Android-HelloWorld/79a2e9bd44602070f0c992b5fa1235b3.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/03/05/Android-HelloWorld/bf74ed9ef7706e57464946142c2f261d.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/03/05/Android-HelloWorld/dc917006105ea1ff3c2aaea8b1b16fb6.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/03/05/Android-HelloWorld/4f6af8980c6a677dc15e5e40f6b3883b.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/03/05/Android-HelloWorld/0b68d3414e61bcc9af78a5ea0d2f8002.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/03/05/Android-HelloWorld/fa5c75021fe1d4a8ee3a26782fc02c75.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/03/05/Android-HelloWorld/325c25f8b499ee3c966b53ee6ca7817d.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/03/05/Android-HelloWorld/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87%E7%BC%96%E8%BE%91_20240305140740.jpg">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/03/05/Android-HelloWorld/73e6276a0c659d8dfebfe5f0b1319590.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/03/05/Android-HelloWorld/d64f4e1886d27f8fbbfd9586aafe017f.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/03/05/Android-HelloWorld/a83401741c93bce4898f84f0a09fe078.png">
+<meta property="article:published_time" content="2024-03-05T09:56:58.000Z">
+<meta property="article:modified_time" content="2024-03-06T10:06:08.269Z">
+<meta property="article:author" content="Kwindy">
+<meta property="article:tag" content="开发">
+<meta property="article:tag" content="Java">
+<meta property="article:tag" content="Android">
+<meta property="article:tag" content="yolov8">
+<meta property="article:tag" content="helloworld">
+<meta property="article:tag" content="安卓">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://kw1649190133.github.io/2024/03/05/Android-HelloWorld/34fdb5cf8b2e43a0724e429cacc94620.png">
+  
+  
+  
+  <title>Android-HelloWorld - kw&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"kw1649190133.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Startseite</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archiv</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Kategorien</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Schlagwörter</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>Über</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Android-HelloWorld"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-03-05 17:56" pubdate>
+          March 5, 2024 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.9k wörter
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          16 minuten
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Android-HelloWorld</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>虽然并不是第一次接触安卓，但是之前在做安卓端部署YoloV8时碰了壁，所以现在回头恶补基本知识。众所周知，学习某个开发平台的第一个程序那肯定得是HelloWorld，今天就先做一个简单的程序出来给自己涨涨信心。</p>
+<h3 id="相关资料："><a href="#相关资料：" class="headerlink" title="相关资料："></a>相关资料：</h3><p>Android 官方网站：（<a target="_blank" rel="noopener" href="https://developer.android.google.cn/?hl=zh-cn%EF%BC%89">https://developer.android.google.cn/?hl=zh-cn）</a></p>
+<h1 id="新建项目"><a href="#新建项目" class="headerlink" title="新建项目"></a>新建项目</h1><p>AndroidStudio的新建项目里有不少县城的模板。现在知道E-hantai那些软件是怎么做出来的了，根本就是用的官方模板一点没改。<br><img src="/2024/03/05/Android-HelloWorld/34fdb5cf8b2e43a0724e429cacc94620.png" srcset="/img/loading.gif" lazyload></p>
+<p>选择项目模板之后配置项目名、存放位置、SDK版本。<br><img src="/2024/03/05/Android-HelloWorld/0249d0be0079ba6375864117317166ff.png" srcset="/img/loading.gif" lazyload></p>
+<p>确认之后等待开发环境加载一段时间，AndroidStudio会给新项目创建一个新窗口。<br><img src="/2024/03/05/Android-HelloWorld/f21167ce7ad668fbb29b238497ed6e04.png" srcset="/img/loading.gif" lazyload></p>
+<p>这白花花的太晃眼了，顺便去设置里换一个主题。</p>
+<h2 id="Gradle问题"><a href="#Gradle问题" class="headerlink" title="Gradle问题"></a>Gradle问题</h2><p>又遇到了和上次一样的问题：<br><code>project sync failed.Basic functionality(e.g.editing,debugging) will not work properly</code><br><img src="/2024/03/05/Android-HelloWorld/4000da02e89e0805247116219e08d626.png" srcset="/img/loading.gif" lazyload><br>然后会发现状态栏有个进程一直在下载gradle但下载不了。<br><img src="/2024/03/05/Android-HelloWorld/fecebd1bb9d9e016feef2cb349953ba7.png" srcset="/img/loading.gif" lazyload></p>
+<p>去网站上直接下载gradle文件的压缩包，然后直接放在gradle目录下的乱码文件夹内。<br><img src="/2024/03/05/Android-HelloWorld/79a2e9bd44602070f0c992b5fa1235b3.png" srcset="/img/loading.gif" lazyload><br>然后点击try again，可以顺利运行了。<br><img src="/2024/03/05/Android-HelloWorld/bf74ed9ef7706e57464946142c2f261d.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="gradle下载站"><a href="#gradle下载站" class="headerlink" title="gradle下载站"></a>gradle下载站</h3><p>(<a target="_blank" rel="noopener" href="https://services.gradle.org/distributions/">https://services.gradle.org/distributions/</a>)</p>
+<h2 id="gradle问题总结"><a href="#gradle问题总结" class="headerlink" title="gradle问题总结"></a>gradle问题总结</h2><p>这下算是初步弄懂了gradle的问题了。就是每次对Android程序进行编译都需要gradle工具，而因为不同的程序需要各种不同版本的gradle，所以Android的设计就是需要的时候就从官网上下载一个到临时文件夹里。但因为服务器在灯塔国，中国用户因为墙的关系，日常被限制，就导致了连接超时。而程序员需要做的就是手动把对应版本的gradle压缩包下载下来，丢到用户名下那个临时文件夹里，帮愚蠢一根筋的IDE完成这个下载的过程。然后后面的过程就像窜稀一样流畅了，IDE会自己解压文件，运行构建程序，下载其他需要的组件。虽然解决完Gradle以后还是会报其他十几条问题，但是都不影响编译运行了。<br>但是像平时使用python时，把pip换个源就能解决的服务器连接问题，不知道为什么安卓解决不了，可能是因为AndroidStudio并没有开这样的设置吧。</p>
+<h1 id="调试运行"><a href="#调试运行" class="headerlink" title="调试运行"></a>调试运行</h1><p>Android程序的运行必须在指定的环境下，可以使用现有的Android设备，或在电脑上运行虚拟环境。</p>
+<h2 id="在电脑上运行虚拟手机"><a href="#在电脑上运行虚拟手机" class="headerlink" title="在电脑上运行虚拟手机"></a>在电脑上运行虚拟手机</h2><p>在运行管理的界面除了能看到连接的手机设备，还能自己添加虚拟设备。按加号就可以进入虚拟设备创建页面，选择设备类型和规格（手机、平板、电视等），然后下一级选择系统版本。<br><img src="/2024/03/05/Android-HelloWorld/dc917006105ea1ff3c2aaea8b1b16fb6.png" srcset="/img/loading.gif" lazyload></p>
+<p>到了选择系统界面如果左下角出现<br><strong>”a system image must be selected“</strong><br>就是对应的系统没有下载，直接点击左边的小白箭头下载。<br><img src="/2024/03/05/Android-HelloWorld/4f6af8980c6a677dc15e5e40f6b3883b.png" srcset="/img/loading.gif" lazyload><br>在右边有个小提示可以看到各种版本的安卓使用分布情况，这下明白安卓为什么这么乱也就不稀奇了，这么多版本还能乱中有序也是挺神奇的。<br><img src="/2024/03/05/Android-HelloWorld/0b68d3414e61bcc9af78a5ea0d2f8002.png" srcset="/img/loading.gif" lazyload></p>
+<p>然后选择运行设备，点击运行，就可以启动虚拟设备了。（有一种为了一碟醋包饺子的感觉，臃肿程度比C#更胜一筹。）<br><img src="/2024/03/05/Android-HelloWorld/fa5c75021fe1d4a8ee3a26782fc02c75.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="在手机上调试程序"><a href="#在手机上调试程序" class="headerlink" title="在手机上调试程序"></a>在手机上调试程序</h2><ol>
+<li>把手机USB连上电脑。（要使用数据线）</li>
+<li>进入开发者模式，打开USB调试开关。(像)现在的系统好像还支持WiFi调试，只要手机和正在同一个WIFI下即可。<br>小米把开发者模式的开关藏在MIUI版本号里，在设置-全部参数里找到MIUI版本号狂点即可进入开发者模式，然后才能再更多设置里找到开发者选项。另外允许USB安装应用还必须要插入SMI卡，挺麻烦的。<br><img src="/2024/03/05/Android-HelloWorld/325c25f8b499ee3c966b53ee6ca7817d.png" srcset="/img/loading.gif" lazyload></li>
+</ol>
+<p>调试运行之后APP就会被自动安装到手机上。<br><img src="/2024/03/05/Android-HelloWorld/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87%E7%BC%96%E8%BE%91_20240305140740.jpg" srcset="/img/loading.gif" lazyload></p>
+<p>直接点开运行，非常流程丝滑。<br><img src="/2024/03/05/Android-HelloWorld/73e6276a0c659d8dfebfe5f0b1319590.png" srcset="/img/loading.gif" lazyload></p>
+<h1 id="目录解析"><a href="#目录解析" class="headerlink" title="目录解析"></a>目录解析</h1><p>有个小细节，好像原来挺乱的项目文件夹怎么运行之后好像变了，其实是由项目文件夹切换到了安卓文件夹，在左上角可以切换回去。<br><img src="/2024/03/05/Android-HelloWorld/d64f4e1886d27f8fbbfd9586aafe017f.png" srcset="/img/loading.gif" lazyload></p>
+<p>三个主要文件：</p>
+<ul>
+<li>activity：提供了用户与屏幕之间的互动，以便于用户进行操作，在里面实现主要的Java代码</li>
+<li>activity_main.xml：布局文件（可能会没有），Android的UI界面显示的视图，所有的控件在这里设计。</li>
+<li>AndroidManifest.xml：Android应用程序的清单文件,是整个Android应用程序的描述文件</li>
+</ul>
+<p><img src="/2024/03/05/Android-HelloWorld/a83401741c93bce4898f84f0a09fe078.png" srcset="/img/loading.gif" lazyload></p>
+<p>至于安卓项目怎么布局的还是以后再分析吧，有点头大。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>虽然开发流程是成功跑起来了，但还是感觉安卓开发挺抽象的，前有服务器连不上，后有为了一个APP搞个虚拟手机，更别说这么多的安卓系统版本和硬件规格，要适配起来怕不是头都大了。</p>
+<p>上次项目运行不起来应该也是gradle相关的环境或者解释器版本的问题。知道问题在哪之后解决起来应该就不会那么困难了。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0/" class="category-chain-item">学习</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E5%BC%80%E5%8F%91/">#开发</a>
+      
+        <a href="/tags/Java/">#Java</a>
+      
+        <a href="/tags/Android/">#Android</a>
+      
+        <a href="/tags/yolov8/">#yolov8</a>
+      
+        <a href="/tags/helloworld/">#helloworld</a>
+      
+        <a href="/tags/%E5%AE%89%E5%8D%93/">#安卓</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Android-HelloWorld</div>
+      <div>http://kw1649190133.github.io/2024/03/05/Android-HelloWorld/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Beitragsautor</div>
+          <div>Kwindy</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Veröffentlicht am</div>
+          <div>March 5, 2024</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Urheberrechtshinweis</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/03/06/Android%E8%BF%90%E8%A1%8Cyolov8-%E7%AC%AC%E4%BA%8C%E6%AC%A1%E5%B0%9D%E8%AF%95/" title="Android运行yolov8-第二次尝试">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Android运行yolov8-第二次尝试</span>
+                        <span class="visible-mobile">Vorheriger</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/03/01/Yolov8-%E6%A8%A1%E5%9E%8B%E8%AE%AD%E7%BB%83/" title="Yolov8-模型训练">
+                        <span class="hidden-mobile">Yolov8-模型训练</span>
+                        <span class="visible-mobile">Nächster</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Inhaltsverzeichnis</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Suchen</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Stichwort</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog funktioniert am besten mit aktiviertem JavaScript</div>
+  </noscript>
+</body>
+</html>
