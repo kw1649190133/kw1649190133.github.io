@@ -1,0 +1,703 @@
+
+
+<!DOCTYPE html>
+<html lang="CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Kwindy">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="部署私有云笔记LeaNote基本配置linux服务器运营商：腾讯系统：CentOS 7.9 64bit配置：2核心2GB 前期准备下载程序包下载leanote软件并放到服务器上解压。一般网站内容都放在www文件夹内。这个路径是可以在服务器宝塔面板设置里改的。软件本体下载地址：https:&#x2F;&#x2F;nchc.dl.sourceforge.net&#x2F;project&#x2F;leanote-bin&#x2F;2.6.1&#x2F;lean">
+<meta property="og:type" content="article">
+<meta property="og:title" content="署私有云笔记LeaNote">
+<meta property="og:url" content="http://kw1649190133.github.io/2024/03/16/%E7%BD%B2%E7%A7%81%E6%9C%89%E4%BA%91%E7%AC%94%E8%AE%B0LeaNote/index.html">
+<meta property="og:site_name" content="kw&#39;s blog">
+<meta property="og:description" content="部署私有云笔记LeaNote基本配置linux服务器运营商：腾讯系统：CentOS 7.9 64bit配置：2核心2GB 前期准备下载程序包下载leanote软件并放到服务器上解压。一般网站内容都放在www文件夹内。这个路径是可以在服务器宝塔面板设置里改的。软件本体下载地址：https:&#x2F;&#x2F;nchc.dl.sourceforge.net&#x2F;project&#x2F;leanote-bin&#x2F;2.6.1&#x2F;lean">
+<meta property="og:locale">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/03/16/%E7%BD%B2%E7%A7%81%E6%9C%89%E4%BA%91%E7%AC%94%E8%AE%B0LeaNote/4ca878f31d0588020199689d57e599db.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/03/16/%E7%BD%B2%E7%A7%81%E6%9C%89%E4%BA%91%E7%AC%94%E8%AE%B0LeaNote/d360a40b7a196a8ea9921465f2da74aa.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/03/16/%E7%BD%B2%E7%A7%81%E6%9C%89%E4%BA%91%E7%AC%94%E8%AE%B0LeaNote/96d38e98e268ee3d8cd92de2feac33bf.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/03/16/%E7%BD%B2%E7%A7%81%E6%9C%89%E4%BA%91%E7%AC%94%E8%AE%B0LeaNote/4b3f982199e8c4d155e3ac6b0da25f63.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/03/16/%E7%BD%B2%E7%A7%81%E6%9C%89%E4%BA%91%E7%AC%94%E8%AE%B0LeaNote/132e87284a8ea7f7e0feddb823480f7a.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/03/16/%E7%BD%B2%E7%A7%81%E6%9C%89%E4%BA%91%E7%AC%94%E8%AE%B0LeaNote/e2603a4c0bb086f71ac6e701b5fb6b36.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/03/16/%E7%BD%B2%E7%A7%81%E6%9C%89%E4%BA%91%E7%AC%94%E8%AE%B0LeaNote/82555e9d2a1859a0eed5ed5a5518ed83.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/03/16/%E7%BD%B2%E7%A7%81%E6%9C%89%E4%BA%91%E7%AC%94%E8%AE%B0LeaNote/0d27f22f716f75d6887451a351a7b97f.png">
+<meta property="article:published_time" content="2024-03-16T08:49:41.000Z">
+<meta property="article:modified_time" content="2024-03-22T08:53:30.676Z">
+<meta property="article:author" content="Kwindy">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="服务器">
+<meta property="article:tag" content="网络">
+<meta property="article:tag" content="网站部署">
+<meta property="article:tag" content="服务">
+<meta property="article:tag" content="云笔记">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://kw1649190133.github.io/2024/03/16/%E7%BD%B2%E7%A7%81%E6%9C%89%E4%BA%91%E7%AC%94%E8%AE%B0LeaNote/4ca878f31d0588020199689d57e599db.png">
+  
+  
+  
+  <title>署私有云笔记LeaNote - kw&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"kw1649190133.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Hejmpaĝo</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Arkivoj</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Kategorio</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Etikedoj</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>Pri</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="署私有云笔记LeaNote"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-03-16 16:49" pubdate>
+          March 16, 2024 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2k vortoj
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          18 minutoj
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">署私有云笔记LeaNote</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="部署私有云笔记LeaNote"><a href="#部署私有云笔记LeaNote" class="headerlink" title="部署私有云笔记LeaNote"></a>部署私有云笔记LeaNote</h1><h2 id="基本配置"><a href="#基本配置" class="headerlink" title="基本配置"></a>基本配置</h2><p>linux服务器<br>运营商：腾讯<br>系统：CentOS 7.9 64bit<br>配置：2核心2GB</p>
+<h2 id="前期准备"><a href="#前期准备" class="headerlink" title="前期准备"></a>前期准备</h2><h3 id="下载程序包"><a href="#下载程序包" class="headerlink" title="下载程序包"></a>下载程序包</h3><p>下载leanote软件并放到服务器上解压。一般网站内容都放在www文件夹内。这个路径是可以在服务器宝塔面板设置里改的。<br>软件本体下载地址：<br><a target="_blank" rel="noopener" href="https://nchc.dl.sourceforge.net/project/leanote-bin/2.6.1/leanote-linux-amd64-v2.6.1.bin.tar.gz">https://nchc.dl.sourceforge.net/project/leanote-bin/2.6.1/leanote-linux-amd64-v2.6.1.bin.tar.gz</a></p>
+<h3 id="数据库准备"><a href="#数据库准备" class="headerlink" title="数据库准备"></a>数据库准备</h3><p>安装数据库MongeDB。版本不知道有没有限制，这里选择老版本MongoDB4.4.6<br><img src="/2024/03/16/%E7%BD%B2%E7%A7%81%E6%9C%89%E4%BA%91%E7%AC%94%E8%AE%B0LeaNote/4ca878f31d0588020199689d57e599db.png" srcset="/img/loading.gif" lazyload><br>这里还踩了个坑，系统得是CentOS才能装上，而腾讯那个号称与CentOS兼容的系统就不能装，可能是这种非主流数据库用的人少吧……</p>
+<h3 id="数据库初始化"><a href="#数据库初始化" class="headerlink" title="数据库初始化"></a>数据库初始化</h3><p>进入了mongodb_backup目录下，将初始数据导入mongodb<br>/data/fxzserves/softwork/leanote/mongodb_backup<br>（因为已经进入了指定目录所以使用相对路径，也可以将后面的地址改为绝对路径。）</p>
+<figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ada">mongorestore -h localhost -d leanote <span class="hljs-comment">--dir leanote_install_data/</span><br></code></pre></td></tr></table></figure>
+<h3 id="启动程序"><a href="#启动程序" class="headerlink" title="启动程序"></a>启动程序</h3><p>进入…/leanote/bin启动云笔记，使用nohub+&amp;来执行程序，让程序在后台运行</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mipsasm">nohup <span class="hljs-keyword">bash </span>run.<span class="hljs-keyword">sh </span>&amp;<br></code></pre></td></tr></table></figure>
+
+<h3 id="启动成功"><a href="#启动成功" class="headerlink" title="启动成功"></a>启动成功</h3><p>经过尝试，进入成功了？明明做起来只有两步，为什么我简直像历经八十一难一样……<br><img src="/2024/03/16/%E7%BD%B2%E7%A7%81%E6%9C%89%E4%BA%91%E7%AC%94%E8%AE%B0LeaNote/d360a40b7a196a8ea9921465f2da74aa.png" srcset="/img/loading.gif" lazyload></p>
+<p>还没结束呢，还得进去把禁止注册开了，然后给mongedb数据库再上个锁。</p>
+<p>尝试了一下图片插入功能，可以成功把图片插入在文档里面，但是有大小限制，<br><img src="/2024/03/16/%E7%BD%B2%E7%A7%81%E6%9C%89%E4%BA%91%E7%AC%94%E8%AE%B0LeaNote/96d38e98e268ee3d8cd92de2feac33bf.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="安全配置"><a href="#安全配置" class="headerlink" title="安全配置"></a>安全配置</h2><ul>
+<li>修改Admin账号的密码</li>
+<li>关闭注册按钮<br>在右上角找到配置管理，进入后台。找到注册开关把它点掉，就可以关闭注册按钮了。关闭之后网页打开的时候还是会显示注册按钮，但是点了之后不会有反应。要关掉显示的话就要找到对应的网页代码，把相关内容注释掉，应该也不是很难。<br><img src="/2024/03/16/%E7%BD%B2%E7%A7%81%E6%9C%89%E4%BA%91%E7%AC%94%E8%AE%B0LeaNote/4b3f982199e8c4d155e3ac6b0da25f63.png" srcset="/img/loading.gif" lazyload></li>
+<li>配置数据库密码。<br>在笔记程序文件夹的/conf文件夹中找到配置文件app.conf，可以看到username和password两项是空的，因为默认创建的mongodb没有用户名和密码，相当于裸奔中。在数据库设置里给数据库配上密码，然后把用户名密码写在配置文件里，这样数据库就不能被外部直接访问。<figure class="highlight nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs nix"><span class="hljs-comment"># mongodb</span><br>db.<span class="hljs-attr">host=127.0.0.1</span><br>db.<span class="hljs-attr">port=27017</span><br>db.<span class="hljs-attr">dbname=leanote</span> <span class="hljs-comment"># required</span><br>db.<span class="hljs-attr">username=</span> <span class="hljs-comment"># if not exists, please leave it blank</span><br>db.<span class="hljs-attr">password=</span> <span class="hljs-comment"># if not exists, please leave it blank</span><br></code></pre></td></tr></table></figure></li>
+</ul>
+<p>如果有域名可以使用就安装一下Nginx</p>
+<h1 id="后面不用看了都是失败经历"><a href="#后面不用看了都是失败经历" class="headerlink" title="后面不用看了都是失败经历"></a>后面不用看了都是失败经历</h1><p>这篇记录大部分的时间都在踩雷，后面掌握熟练之后才回来整理的笔记，以下是之前的失败记录。</p>
+<hr>
+<p><del>然后发现这丫的服务器端口只开了3个，白忙活了。</del><br>后来才知道，在端口没有部署服务的时候，ping口检查也是没用的，不会显示端口开放。</p>
+<h3 id="购买自己的服务器"><a href="#购买自己的服务器" class="headerlink" title="购买自己的服务器"></a>购买自己的服务器</h3><p>不行，我怎么能吃这种亏，既然公司的服务器用不了，那我就自己搞一个服务器！搜了一下腾讯云的最低配还挺便宜的，打完折才60块左右一年，2核心2G3M带宽，反正只是用来验证技术的，完全够用。</p>
+<p>根据提示获取宝塔的登录用户名和密码<br><img src="/2024/03/16/%E7%BD%B2%E7%A7%81%E6%9C%89%E4%BA%91%E7%AC%94%E8%AE%B0LeaNote/132e87284a8ea7f7e0feddb823480f7a.png" srcset="/img/loading.gif" lazyload></p>
+<p>在防火墙管理界面放开端口<br><img src="/2024/03/16/%E7%BD%B2%E7%A7%81%E6%9C%89%E4%BA%91%E7%AC%94%E8%AE%B0LeaNote/e2603a4c0bb086f71ac6e701b5fb6b36.png" srcset="/img/loading.gif" lazyload><br>理论上开个端口应该没什么问题，但不知道为什么宝塔的8888端口是开了，但自定义的任何其他端口怎么也开不了。难道这便宜服务器还有我不知道的坑？</p>
+<p>去控制面板输入指令，获取宝塔系统的初始账号和密码<br><img src="/2024/03/16/%E7%BD%B2%E7%A7%81%E6%9C%89%E4%BA%91%E7%AC%94%E8%AE%B0LeaNote/82555e9d2a1859a0eed5ed5a5518ed83.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="重装系统"><a href="#重装系统" class="headerlink" title="重装系统"></a>重装系统</h3><p>可能是因为多次反复安装mongodb，现在mongo数据库也出问题了，怎么都安装不上。唉，修不如换，直接重装系统吧。</p>
+<h3 id="获取root权限"><a href="#获取root权限" class="headerlink" title="获取root权限"></a>获取root权限</h3><p>之前启动服务器时是选择了自动安装宝塔实例的，现在选了个腾讯的OpenCloudOS系统试试，但这个不能默认安装宝塔，只能自己去命令行安装。<br>安装宝塔界面时报错：</p>
+<figure class="highlight subunit"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs subunit"><span class="hljs-keyword">Error: </span>This command has to be run with superuser privileges (under the root user on most systems).<br></code></pre></td></tr></table></figure>
+<p>获取root权限<br><code>su root</code></p>
+<h3 id="安装宝塔"><a href="#安装宝塔" class="headerlink" title="安装宝塔"></a>安装宝塔</h3><p>去宝塔的官网（<a target="_blank" rel="noopener" href="https://www.bt.cn)/">https://www.bt.cn）</a><br>找到安装脚本。因为腾讯的系统与Centos是兼容的，所以使用Centos的安装脚本即可。</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs vim">yum install -<span class="hljs-keyword">y</span> wget &amp;&amp; wget -O install.<span class="hljs-keyword">sh</span> https://download.bt.<span class="hljs-keyword">cn</span>/install/install_6.<span class="hljs-number">0</span>.<span class="hljs-keyword">sh</span> &amp;&amp; <span class="hljs-keyword">sh</span> install.<span class="hljs-keyword">sh</span> ed8484bec<br></code></pre></td></tr></table></figure>
+
+<p>说好的兼容呢？你看看你都兼容了什么<br><img src="/2024/03/16/%E7%BD%B2%E7%A7%81%E6%9C%89%E4%BA%91%E7%AC%94%E8%AE%B0LeaNote/0d27f22f716f75d6887451a351a7b97f.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="第二次重装系统"><a href="#第二次重装系统" class="headerlink" title="第二次重装系统"></a>第二次重装系统</h3><p>忍无可忍，再次重装回一开始的系统。真是啥事没干尽忙活重装系统了。linux这么多坑真是不踩不知道。<br>第二次重装之后，终于顺利把系统部署运行成功了。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0/" class="category-chain-item">学习</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Linux/">#Linux</a>
+      
+        <a href="/tags/%E6%9C%8D%E5%8A%A1%E5%99%A8/">#服务器</a>
+      
+        <a href="/tags/%E7%BD%91%E7%BB%9C/">#网络</a>
+      
+        <a href="/tags/%E7%BD%91%E7%AB%99%E9%83%A8%E7%BD%B2/">#网站部署</a>
+      
+        <a href="/tags/%E6%9C%8D%E5%8A%A1/">#服务</a>
+      
+        <a href="/tags/%E4%BA%91%E7%AC%94%E8%AE%B0/">#云笔记</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>署私有云笔记LeaNote</div>
+      <div>http://kw1649190133.github.io/2024/03/16/署私有云笔记LeaNote/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Aŭtoro</div>
+          <div>Kwindy</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Postigita</div>
+          <div>March 16, 2024</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Lizenta</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/03/18/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" title="计算机网络基础知识">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">计算机网络基础知识</span>
+                        <span class="visible-mobile">Antaŭa afiŝo</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/03/07/Android%E8%BF%90%E8%A1%8Cyolov8-%E8%BF%90%E8%A1%8C%E8%87%AA%E5%B7%B1%E7%9A%84%E6%A8%A1%E5%9E%8B/" title="Android运行yolov8-运行自己的模型">
+                        <span class="hidden-mobile">Android运行yolov8-运行自己的模型</span>
+                        <span class="visible-mobile">Sekva afiŝo</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Enhavtabelo</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Serĉi</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">ŝlosivorto</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blogo funkcias plej bone kun JavaScript ebligita</div>
+  </noscript>
+</body>
+</html>

@@ -1,0 +1,697 @@
+
+
+<!DOCTYPE html>
+<html lang="CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Kwindy">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="OrangePiPlus5系统安装初次启动开发板，给开发板烧录系统 设备目录 Orange pi 5 plus 开发板 官方5V4A电源 官方EMMC模块 自己买到第三方亚克力外壳与风扇 Windows笔记本电脑 Type-C数据线 鼠标键盘显示器  准备烧录工具安装驱动助手在官方的资源包里找到驱动程序DriverAssitant_v5.12执行程序DriverInstall.exe安装瑞芯微驱动">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OrangePiPlus5系统安装">
+<meta property="og:url" content="http://kw1649190133.github.io/2024/03/20/OrangePiPlus5%E7%B3%BB%E7%BB%9F%E5%AE%89%E8%A3%85/index.html">
+<meta property="og:site_name" content="kw&#39;s blog">
+<meta property="og:description" content="OrangePiPlus5系统安装初次启动开发板，给开发板烧录系统 设备目录 Orange pi 5 plus 开发板 官方5V4A电源 官方EMMC模块 自己买到第三方亚克力外壳与风扇 Windows笔记本电脑 Type-C数据线 鼠标键盘显示器  准备烧录工具安装驱动助手在官方的资源包里找到驱动程序DriverAssitant_v5.12执行程序DriverInstall.exe安装瑞芯微驱动">
+<meta property="og:locale">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/03/20/OrangePiPlus5%E7%B3%BB%E7%BB%9F%E5%AE%89%E8%A3%85/7c95202a81b4fb462da05315f8b49562.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/03/20/OrangePiPlus5%E7%B3%BB%E7%BB%9F%E5%AE%89%E8%A3%85/bb90b314017d27677507e4a7050286d3.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/03/20/OrangePiPlus5%E7%B3%BB%E7%BB%9F%E5%AE%89%E8%A3%85/9f187285abff6555f2344319af4b1ba8.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/03/20/OrangePiPlus5%E7%B3%BB%E7%BB%9F%E5%AE%89%E8%A3%85/d43006e9145cf8a399bf47dee6bae2d6.png">
+<meta property="article:published_time" content="2024-03-20T08:56:58.000Z">
+<meta property="article:modified_time" content="2024-03-22T09:01:31.282Z">
+<meta property="article:author" content="Kwindy">
+<meta property="article:tag" content="OrangePI">
+<meta property="article:tag" content="开发板">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="系统">
+<meta property="article:tag" content="单片机">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://kw1649190133.github.io/2024/03/20/OrangePiPlus5%E7%B3%BB%E7%BB%9F%E5%AE%89%E8%A3%85/7c95202a81b4fb462da05315f8b49562.png">
+  
+  
+  
+  <title>OrangePiPlus5系统安装 - kw&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"kw1649190133.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Hejmpaĝo</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Arkivoj</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Kategorio</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Etikedoj</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>Pri</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="OrangePiPlus5系统安装"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-03-20 16:56" pubdate>
+          March 20, 2024 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.1k vortoj
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          10 minutoj
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">OrangePiPlus5系统安装</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="OrangePiPlus5系统安装"><a href="#OrangePiPlus5系统安装" class="headerlink" title="OrangePiPlus5系统安装"></a>OrangePiPlus5系统安装</h1><p>初次启动开发板，给开发板烧录系统</p>
+<h2 id="设备目录"><a href="#设备目录" class="headerlink" title="设备目录"></a>设备目录</h2><ul>
+<li>Orange pi 5 plus 开发板</li>
+<li>官方5V4A电源</li>
+<li>官方EMMC模块</li>
+<li>自己买到第三方亚克力外壳与风扇</li>
+<li>Windows笔记本电脑</li>
+<li>Type-C数据线</li>
+<li>鼠标键盘显示器</li>
+</ul>
+<h2 id="准备烧录工具"><a href="#准备烧录工具" class="headerlink" title="准备烧录工具"></a>准备烧录工具</h2><h3 id="安装驱动助手"><a href="#安装驱动助手" class="headerlink" title="安装驱动助手"></a>安装驱动助手</h3><p>在官方的资源包里找到驱动程序DriverAssitant_v5.12<br>执行程序DriverInstall.exe安装瑞芯微驱动。<br><img src="/2024/03/20/OrangePiPlus5%E7%B3%BB%E7%BB%9F%E5%AE%89%E8%A3%85/7c95202a81b4fb462da05315f8b49562.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="准备烧录程序"><a href="#准备烧录程序" class="headerlink" title="准备烧录程序"></a>准备烧录程序</h3><p>在官方资源包里，解压即用。<br>RKDevTool_Release_v3.15</p>
+<h2 id="下载系统镜像"><a href="#下载系统镜像" class="headerlink" title="下载系统镜像"></a>下载系统镜像</h2><p>从orange pi的官网顺藤摸瓜找到对应版本的系统资源。因为是我自己使用的设备，而我又是基本很少接触Linux的菜鸟，考虑到易用性选择带桌面的ubantu系统。<br><a target="_blank" rel="noopener" href="http://www.orangepi.cn/">http://www.orangepi.cn/</a></p>
+<p>Orange pi5 plus 版本的下载地址：<br><a target="_blank" rel="noopener" href="https://joshua-riek.github.io/ubuntu-rockchip-download/boards/orangepi-5-plus.html">https://joshua-riek.github.io/ubuntu-rockchip-download/boards/orangepi-5-plus.html</a></p>
+<p>下载之后解压，并且按照官方的建议改成比较短的名字，这样方便烧录的时候看到进度条。</p>
+<h2 id="开始烧录系统"><a href="#开始烧录系统" class="headerlink" title="开始烧录系统"></a>开始烧录系统</h2><p>打开烧录工具后，逐步操作</p>
+<ol>
+<li>右键点击中间的表格，选择导入配置，然后根据实际情况在官方给的配置文件里选择。（这里我使用的是EMMC来安装系统。也可以将系统安装在tf卡或者m.2硬盘中。）</li>
+<li>导入后发现该模式下，烧录系统需要两个文件，一个是官方提供的配置文件MiniLoaderAll.bin，还有一个是系统的镜像文件（上面刚刚下载的压缩包解压后变成.img文件）。要把表格中的路径修改成自己的文件路径。</li>
+<li>用Type-C数据线连接开发板和电脑，<strong>按住MaskROM按钮再通电</strong>，进入烧录模式，此时左下角会显示检测到设备。</li>
+<li>点上左下角的强制地址</li>
+<li>一切就绪后点击执行。</li>
+</ol>
+<p><img src="/2024/03/20/OrangePiPlus5%E7%B3%BB%E7%BB%9F%E5%AE%89%E8%A3%85/bb90b314017d27677507e4a7050286d3.png" srcset="/img/loading.gif" lazyload><br>官方文档里有提到安装失败的话需要用RKDevTool 清空 SPIFlash，应该是清除缓存的意思，不过我是新机器第一次安装系统，没有遇到这种情况。</p>
+<p>在右边看到烧录完成之后，右边会提示完成，可以插上显示器看效果。显示器不支持时会出现异常，可能与系统或者硬件本身有关。（我的4K显示器会白屏，但2K的小屏幕就正常了）<br><img src="/2024/03/20/OrangePiPlus5%E7%B3%BB%E7%BB%9F%E5%AE%89%E8%A3%85/9f187285abff6555f2344319af4b1ba8.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="认识接口"><a href="#认识接口" class="headerlink" title="认识接口"></a>认识接口</h2><ul>
+<li>网口旁边的是5V4AType-C电源接口，USB旁边的是Type-C数据接口。</li>
+<li>数据接口的左边是MaskROM按钮<strong>按住后通电</strong>才能进入到烧录系统的模式，被电脑上的程序检测到。</li>
+<li>中间是电源，短按开关机，长按强制关机。</li>
+<li>电源指示灯，红色为通电状态，红白交替为开机运行中。</li>
+<li>网口旁边的两个是HDMI输出，靠近USB的是一个HDMI输入</li>
+</ul>
+<p><img src="/2024/03/20/OrangePiPlus5%E7%B3%BB%E7%BB%9F%E5%AE%89%E8%A3%85/d43006e9145cf8a399bf47dee6bae2d6.png" srcset="/img/loading.gif" lazyload></p>
+<p>不知道哪个睿智把开关机有关的内容写在说明书后面几百页里，我拔了电源才发现文档里说Linux最好不要直接拔Type-C断电，说会有概率损坏系统文件。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0/" class="category-chain-item">学习</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/OrangePI/">#OrangePI</a>
+      
+        <a href="/tags/%E5%BC%80%E5%8F%91%E6%9D%BF/">#开发板</a>
+      
+        <a href="/tags/Linux/">#Linux</a>
+      
+        <a href="/tags/%E7%B3%BB%E7%BB%9F/">#系统</a>
+      
+        <a href="/tags/%E5%8D%95%E7%89%87%E6%9C%BA/">#单片机</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>OrangePiPlus5系统安装</div>
+      <div>http://kw1649190133.github.io/2024/03/20/OrangePiPlus5系统安装/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Aŭtoro</div>
+          <div>Kwindy</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Postigita</div>
+          <div>March 20, 2024</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Lizenta</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/03/22/%E9%83%A8%E7%BD%B2MinDoc%E6%96%87%E6%A1%A3%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F/" title="部署MinDoc文档管理系统">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">部署MinDoc文档管理系统</span>
+                        <span class="visible-mobile">Antaŭa afiŝo</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/03/18/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" title="计算机网络基础知识">
+                        <span class="hidden-mobile">计算机网络基础知识</span>
+                        <span class="visible-mobile">Sekva afiŝo</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Enhavtabelo</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Serĉi</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">ŝlosivorto</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blogo funkcias plej bone kun JavaScript ebligita</div>
+  </noscript>
+</body>
+</html>

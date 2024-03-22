@@ -4,6 +4,146 @@
   
   
   <entry>
+    <title>部署MinDoc文档管理系统</title>
+    <link href="/2024/03/22/%E9%83%A8%E7%BD%B2MinDoc%E6%96%87%E6%A1%A3%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F/"/>
+    <url>/2024/03/22/%E9%83%A8%E7%BD%B2MinDoc%E6%96%87%E6%A1%A3%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F/</url>
+    
+    <content type="html"><![CDATA[<h1 id="部署MinDoc文档管理系统"><a href="#部署MinDoc文档管理系统" class="headerlink" title="部署MinDoc文档管理系统"></a>部署MinDoc文档管理系统</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>Mindoc是一个非常简单轻量化的文档管理系统，可以部署在线上，界面简洁功能有限，主要使用markdown来编写内容，支持多种格式导出。<br>因为服务器到期没续费，公司的禅道寄了，原来的项目管理和知识库全都挫骨扬灰。没有文档系统很不方便分享内容，于是自己找了一个放在公司的Linux服务器上，顺便记录一下部署过程。</p><h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p>软件源代码：<a href="https://github.com/mindoc-org/mindoc">https://github.com/mindoc-org/mindoc</a><br>使用mindoc制作的帮助手册：<a href="https://doc.gsw945.com/docs/mindoc-docs">https://doc.gsw945.com/docs/mindoc-docs</a><br>已编译的软件本体仓库：<a href="https://github.com/mindoc-org/mindoc/releases">https://github.com/mindoc-org/mindoc/releases</a></p><h2 id="获取软件"><a href="#获取软件" class="headerlink" title="获取软件"></a>获取软件</h2><p>虽然官方建议编译安装，但直接安装编译好的程序比较省事。在上面的github仓库可以找到4个已经编译好的版本。这里选择第一个。</p><ul><li>mindoc_linux_amd64.zip linux, gcc版本编译，运行依赖系统glibc(CentOS不建议用这个)</li><li>mindoc_linux_musl_amd64.zip linux, musl-gcc编译，运行不依赖系统glibc(CentOS推荐用这个)</li><li>mindoc_windows_amd64.7z windows 64位</li><li>mindoc_windows_386.7z windows 32位</li></ul><h2 id="新建数据库"><a href="#新建数据库" class="headerlink" title="新建数据库"></a>新建数据库</h2><p>需要先安装MySQL数据库（如果没有安装的话，版本好像没有特别要求，使用已有的版本8.0.34）。在宝塔的数据库管理页面选择MySQL数据库添加，记住名称密码等参数，后面要输入到配置文件。<br><img src="/2024/03/22/%E9%83%A8%E7%BD%B2MinDoc%E6%96%87%E6%A1%A3%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F/fb7d3def5d63d03cfd458c137eff012e.png"></p><h2 id="修改配置文件"><a href="#修改配置文件" class="headerlink" title="修改配置文件"></a>修改配置文件</h2><p>配置文件路径<code>./conf/app.conf</code>。<br>配置文件必须是这个名字，另外文件夹下已有一个配置文件的参考备份<code>app.conf.example</code>。</p><h3 id="数据库配置"><a href="#数据库配置" class="headerlink" title="数据库配置"></a>数据库配置</h3><p>mindoc支持mysql和sqlite两种数据库。<br>这里选择mysql数据库。数据库地址和端口是默认的不用改，只修改数据库名称和配置用户名密码。（只修改竖“||”后面的内容）</p><figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs ini"><span class="hljs-attr">db_adapter</span>=<span class="hljs-string">&quot;$&#123;MINDOC_DB_ADAPTER||MySQL&#125;&quot;</span><br><span class="hljs-attr">db_host</span>=<span class="hljs-string">&quot;$&#123;MINDOC_DB_HOST||127.0.0.1&#125;&quot;</span><br><span class="hljs-attr">db_port</span>=<span class="hljs-string">&quot;$&#123;MINDOC_DB_PORT||3306&#125;&quot;</span><br><span class="hljs-attr">db_database</span>=<span class="hljs-string">&quot;$&#123;MINDOC_DB_DATABASE||minDoc&#125;&quot;</span><br><span class="hljs-attr">db_username</span>=<span class="hljs-string">&quot;$&#123;MINDOC_DB_USERNAME||minDoc&#125;&quot;</span><br><span class="hljs-attr">db_password</span>=<span class="hljs-string">&quot;$&#123;MINDOC_DB_PASSWORD||fxz0314&#125;&quot;</span><br></code></pre></td></tr></table></figure><h3 id="修改网站端口"><a href="#修改网站端口" class="headerlink" title="修改网站端口"></a>修改网站端口</h3><p>默认设置是8181，可以修改为自己指定的端口。</p><figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs abnf"><span class="hljs-attribute">httpport</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;$&#123;MINDOC_PORT||804&#125;&quot;</span><br></code></pre></td></tr></table></figure><h2 id="运行程序"><a href="#运行程序" class="headerlink" title="运行程序"></a>运行程序</h2><p>确认前面的事项完成后在运行程序</p><ul><li>创建数据库</li><li>数据库信息正确录入到配置文件</li><li>配置文件指定的端口号已开启<h3 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h3>初始化只需要解压程序包以后运行一次即可。（更新数据库表结构）<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">./mindoc_linux_amd64 install <br></code></pre></td></tr></table></figure></li></ul><h3 id="直接启动"><a href="#直接启动" class="headerlink" title="直接启动"></a>直接启动</h3><p>直接启动可以用来检查网站是否部署正确，能否正常运行。输入指令前要进入软件的根目录。</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment">#修改可执行权限(不知道有什么用)</span><br><span class="hljs-built_in">chmod</span> +x mindoc_linux_amd64<br><br><span class="hljs-comment">#启动程序</span><br>./mindoc_linux_amd64<br></code></pre></td></tr></table></figure><p>但是这样启动有一个问题，就是关闭命令行窗口的话程序也会关闭，网站就无法访问了，所以应该让程序后台启动。</p><h3 id="后台服务启动"><a href="#后台服务启动" class="headerlink" title="后台服务启动"></a>后台服务启动</h3><p>使用和之前蚂蚁笔记一样的的nohup指令去运行并不能让程序运行在后台，要让程序在后台服务启动的话就需要另一种启动方式。</p><figure class="highlight nsis"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs nsis">./mindoc_linux_amd64 service install<br><span class="hljs-params">system</span>ctl start mindocd.service <span class="hljs-comment">#启动服务</span><br><span class="hljs-params">system</span>ctl status mindocd.service <span class="hljs-comment">#查看服务状态</span><br></code></pre></td></tr></table></figure><p>此时关掉服务器的ssh连接也不会使程序停止运行。<br><img src="/2024/03/22/%E9%83%A8%E7%BD%B2MinDoc%E6%96%87%E6%A1%A3%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F/bc210dbb4b4ea027e5bcfd30ae5607a0.png"><br>另外如果有自己的域名的话，可以配置代理，然后使用域名访问。</p><p>正常来说，应该是可以放在宝塔的网站页面下运行，方便管理，但是我并不会操作，尝试了一下没有成功。</p><h1 id="软件试用"><a href="#软件试用" class="headerlink" title="软件试用"></a>软件试用</h1><h2 id="软件界面与内容"><a href="#软件界面与内容" class="headerlink" title="软件界面与内容"></a>软件界面与内容</h2><p>成功进入登录界面。这个验证码还挺烦的，可以用超级管理员账号从后台关掉。另外注册是默认关闭的，但可以从后台开启。<br><img src="/2024/03/22/%E9%83%A8%E7%BD%B2MinDoc%E6%96%87%E6%A1%A3%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F/0854191c6feb115caf1c051451d408b3.png"></p><p>初始超级管理员账号：admin   密码：123456<br>输入后进入系统内部，建议修改超级账户密码。<br><img src="/2024/03/22/%E9%83%A8%E7%BD%B2MinDoc%E6%96%87%E6%A1%A3%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F/539d6614aaad1283a4ae8e3a01e146c9.png"></p><p>这个系统内非常简洁，几乎没有任何多余的内容和装饰。<br>但是太简洁了，要是再加个夜间模式就更好了，白色界面看的晃眼睛。</p><h2 id="内容管理"><a href="#内容管理" class="headerlink" title="内容管理"></a>内容管理</h2><h3 id="内容分类"><a href="#内容分类" class="headerlink" title="内容分类"></a>内容分类</h3><p>该系统内的内容分组形式：项目空间、项目、文档、文章，可以用一个书和书架的形式来描述这种分组结构。</p><ul><li>文章：相当于独立的一页纸，不与其他三个相关。</li><li>文档：文档相当于某一本书里的一页纸，与文章不同的是它有归属。</li><li>项目：项目相当于一本书，包含多个文档。</li><li>项目空间：项目空间相当于一个书架，可以容纳多个项目。</li></ul><h3 id="新建与编辑"><a href="#新建与编辑" class="headerlink" title="新建与编辑"></a>新建与编辑</h3><p>新建项目、文档、文章，都必须通过右上角的头像——我的项目/我的文章来新建文档；而编辑不需要，可以直接在浏览界面进行编辑。<br>通过头像进入的项目库才能看到文档列表里的加号<br><img src="/2024/03/22/%E9%83%A8%E7%BD%B2MinDoc%E6%96%87%E6%A1%A3%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F/c2e82a84586d6220cff4b0dcd34548c8.png"><br>创建项目空间需要使用超级管理员账号<br><img src="/2024/03/22/%E9%83%A8%E7%BD%B2MinDoc%E6%96%87%E6%A1%A3%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F/c8eba38e188a7fb7e7661eb087da00b9.png"></p><h3 id="备份与迁移"><a href="#备份与迁移" class="headerlink" title="备份与迁移"></a>备份与迁移</h3><p>软件与数据库是分离的，可以直接在宝塔的数据库管理界面设置数据库备份。<br>宝塔的数据库文件一般放置在<code>根目录/www/server/data</code>下，也可以直接复制走，然后在另一个服务器安装了MySQL以后再粘贴回去。</p><h3 id="保存与发布"><a href="#保存与发布" class="headerlink" title="保存与发布"></a>保存与发布</h3><p>保存与发布是分开的，编辑内容之后点击保存即可让内容保存在后台，而要在预览时查看还需要点击发布。也可以在后台设置自动发布。</p><h2 id="用户管理"><a href="#用户管理" class="headerlink" title="用户管理"></a>用户管理</h2><h3 id="权限分级"><a href="#权限分级" class="headerlink" title="权限分级"></a>权限分级</h3><p>该系统内的权限主要分为三个等级：超级管理员、管理员、普通用户<br>超级管理员只有一个，用户只能自己添加管理员和普通用户</p><h3 id="添加和删除用户"><a href="#添加和删除用户" class="headerlink" title="添加和删除用户"></a>添加和删除用户</h3><p>添加用户需要超级管理员账号才会在右上角显示小绿标，否则就看不到。但编辑和删除用户则不需要。<br><img src="/2024/03/22/%E9%83%A8%E7%BD%B2MinDoc%E6%96%87%E6%A1%A3%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F/b87d06e6ef8699b28e52acc9d5e2f353.png"></p><h3 id="团队管理"><a href="#团队管理" class="headerlink" title="团队管理"></a>团队管理</h3><p>添加团队也需要超级管理员账号，但删除就不需要，不太懂这什么逻辑。<br><img src="/2024/03/22/%E9%83%A8%E7%BD%B2MinDoc%E6%96%87%E6%A1%A3%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F/6c10f4fb184944939f1f6ecadfc39c70.png"></p><h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>相比上次部署蚂蚁笔记的多灾多难，这次倒是非常的顺利。主要是稍微有了一点点经验，出现问题知道怎么解决了。把握几个关键点之后，问题也就迎刃而解。<br>需要注意的是：</p><ol><li>数据库创建与配置文件的修改</li><li>端口要开放</li><li>参考别人的输入指令</li></ol>]]></content>
+    
+    
+    <categories>
+      
+      <category>学习</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Linux</tag>
+      
+      <tag>系统</tag>
+      
+      <tag>服务器</tag>
+      
+      <tag>网络</tag>
+      
+      <tag>网站部署</tag>
+      
+      <tag>云文档</tag>
+      
+      <tag>Mindoc</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>OrangePiPlus5系统安装</title>
+    <link href="/2024/03/20/OrangePiPlus5%E7%B3%BB%E7%BB%9F%E5%AE%89%E8%A3%85/"/>
+    <url>/2024/03/20/OrangePiPlus5%E7%B3%BB%E7%BB%9F%E5%AE%89%E8%A3%85/</url>
+    
+    <content type="html"><![CDATA[<h1 id="OrangePiPlus5系统安装"><a href="#OrangePiPlus5系统安装" class="headerlink" title="OrangePiPlus5系统安装"></a>OrangePiPlus5系统安装</h1><p>初次启动开发板，给开发板烧录系统</p><h2 id="设备目录"><a href="#设备目录" class="headerlink" title="设备目录"></a>设备目录</h2><ul><li>Orange pi 5 plus 开发板</li><li>官方5V4A电源</li><li>官方EMMC模块</li><li>自己买到第三方亚克力外壳与风扇</li><li>Windows笔记本电脑</li><li>Type-C数据线</li><li>鼠标键盘显示器</li></ul><h2 id="准备烧录工具"><a href="#准备烧录工具" class="headerlink" title="准备烧录工具"></a>准备烧录工具</h2><h3 id="安装驱动助手"><a href="#安装驱动助手" class="headerlink" title="安装驱动助手"></a>安装驱动助手</h3><p>在官方的资源包里找到驱动程序DriverAssitant_v5.12<br>执行程序DriverInstall.exe安装瑞芯微驱动。<br><img src="/2024/03/20/OrangePiPlus5%E7%B3%BB%E7%BB%9F%E5%AE%89%E8%A3%85/7c95202a81b4fb462da05315f8b49562.png"></p><h3 id="准备烧录程序"><a href="#准备烧录程序" class="headerlink" title="准备烧录程序"></a>准备烧录程序</h3><p>在官方资源包里，解压即用。<br>RKDevTool_Release_v3.15</p><h2 id="下载系统镜像"><a href="#下载系统镜像" class="headerlink" title="下载系统镜像"></a>下载系统镜像</h2><p>从orange pi的官网顺藤摸瓜找到对应版本的系统资源。因为是我自己使用的设备，而我又是基本很少接触Linux的菜鸟，考虑到易用性选择带桌面的ubantu系统。<br><a href="http://www.orangepi.cn/">http://www.orangepi.cn/</a></p><p>Orange pi5 plus 版本的下载地址：<br><a href="https://joshua-riek.github.io/ubuntu-rockchip-download/boards/orangepi-5-plus.html">https://joshua-riek.github.io/ubuntu-rockchip-download/boards/orangepi-5-plus.html</a></p><p>下载之后解压，并且按照官方的建议改成比较短的名字，这样方便烧录的时候看到进度条。</p><h2 id="开始烧录系统"><a href="#开始烧录系统" class="headerlink" title="开始烧录系统"></a>开始烧录系统</h2><p>打开烧录工具后，逐步操作</p><ol><li>右键点击中间的表格，选择导入配置，然后根据实际情况在官方给的配置文件里选择。（这里我使用的是EMMC来安装系统。也可以将系统安装在tf卡或者m.2硬盘中。）</li><li>导入后发现该模式下，烧录系统需要两个文件，一个是官方提供的配置文件MiniLoaderAll.bin，还有一个是系统的镜像文件（上面刚刚下载的压缩包解压后变成.img文件）。要把表格中的路径修改成自己的文件路径。</li><li>用Type-C数据线连接开发板和电脑，<strong>按住MaskROM按钮再通电</strong>，进入烧录模式，此时左下角会显示检测到设备。</li><li>点上左下角的强制地址</li><li>一切就绪后点击执行。</li></ol><p><img src="/2024/03/20/OrangePiPlus5%E7%B3%BB%E7%BB%9F%E5%AE%89%E8%A3%85/bb90b314017d27677507e4a7050286d3.png"><br>官方文档里有提到安装失败的话需要用RKDevTool 清空 SPIFlash，应该是清除缓存的意思，不过我是新机器第一次安装系统，没有遇到这种情况。</p><p>在右边看到烧录完成之后，右边会提示完成，可以插上显示器看效果。显示器不支持时会出现异常，可能与系统或者硬件本身有关。（我的4K显示器会白屏，但2K的小屏幕就正常了）<br><img src="/2024/03/20/OrangePiPlus5%E7%B3%BB%E7%BB%9F%E5%AE%89%E8%A3%85/9f187285abff6555f2344319af4b1ba8.png"></p><h2 id="认识接口"><a href="#认识接口" class="headerlink" title="认识接口"></a>认识接口</h2><ul><li>网口旁边的是5V4AType-C电源接口，USB旁边的是Type-C数据接口。</li><li>数据接口的左边是MaskROM按钮<strong>按住后通电</strong>才能进入到烧录系统的模式，被电脑上的程序检测到。</li><li>中间是电源，短按开关机，长按强制关机。</li><li>电源指示灯，红色为通电状态，红白交替为开机运行中。</li><li>网口旁边的两个是HDMI输出，靠近USB的是一个HDMI输入</li></ul><p><img src="/2024/03/20/OrangePiPlus5%E7%B3%BB%E7%BB%9F%E5%AE%89%E8%A3%85/d43006e9145cf8a399bf47dee6bae2d6.png"></p><p>不知道哪个睿智把开关机有关的内容写在说明书后面几百页里，我拔了电源才发现文档里说Linux最好不要直接拔Type-C断电，说会有概率损坏系统文件。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>学习</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>OrangePI</tag>
+      
+      <tag>开发板</tag>
+      
+      <tag>Linux</tag>
+      
+      <tag>系统</tag>
+      
+      <tag>单片机</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>计算机网络基础知识</title>
+    <link href="/2024/03/18/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"/>
+    <url>/2024/03/18/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/</url>
+    
+    <content type="html"><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>以前学过计算机网络的基本知识，也就熟悉属性什么IP地址、分层结构、组网模式等等基础知识，毕竟又不是计算机专业，也就偶尔自己组个局域网会用到，生活中的网络更是早已变成空气一般无处不在。而最近在自己捣鼓云服务器的时候又遇到了很多问题，在尝试解决无果的情况下，只能又回头恶补知识了。</p><h2 id="TCP-IP协议"><a href="#TCP-IP协议" class="headerlink" title="TCP/IP协议"></a>TCP/IP协议</h2><p>由TCP和IP等多种协议构成的协议组。由OSI体系简化而来的四层网络结构：网络接口层、网络层、传输层、应用层。</p><h2 id="IP地址"><a href="#IP地址" class="headerlink" title="IP地址"></a>IP地址</h2><p>电脑之间插上网线，通过IP地址进行通信，这是内网的简单组网方式。而现实中因为各种组网，大网套小网，为了避免IP冲突而进行了人为分类：</p><ul><li>A类地址（1.0.0.0-126.255.255.255）用于最大型的网络，该网络的节点数可达16777216个。</li><li>B类地址（128.0.0.0-191.255.255.255）一般用于中等规模网络。</li><li>C类地址（192.0.0.0~223.255.255.255）一般用于小型网络。</li><li>D类地址（224.0.0.0-239.255.255.255）一般用于多路广播用户 。是多播地址。该类IP地址的最前面为“1110”，所以地址的网络号取值于224~239之间。</li><li>E类地址（240.0.0.0-255.255.255.254）是保留地址。</li></ul><p>这么一看就很明显了，A类肯定是公网，下面都是私网。从IP就可以分辨出自己的计算机在网络中所处的位置了。</p><h3 id="公网与私网"><a href="#公网与私网" class="headerlink" title="公网与私网"></a>公网与私网</h3><p>私网IP是路由器分配的，例如常见的192.168.X.X就一定是私网的IP。30.0.0.1就明显是公网IP。</p><h2 id="端口"><a href="#端口" class="headerlink" title="端口"></a>端口</h2><p>每台电脑上有1-65535个端口，系统占用1-1023，动态端口是1024-65535，其中给用户分配的一般是1024-49151，相当于一条公路上可以有很多条车道。</p><h2 id="NAT（NAPT）网络地址转换"><a href="#NAT（NAPT）网络地址转换" class="headerlink" title="NAT（NAPT）网络地址转换"></a>NAT（NAPT）网络地址转换</h2><p>当本地计算机想要与远在其他局域网的计算机通信时，计算机发送的地址仍然是内网地址和端口，但路由器收到计算机的发送请求后，会以服务器的公网IP和一个随机分配的端口发送出去，并且在路由器内部记下一条记录，使路由器的端口与本地端口和地址对映，在收到数据包以后，再转发给指定的IP和端口（IP端口映射表）。路由器就起到一个转发的作用，期间IP和端口会发生转换。</p><h2 id="端口映射"><a href="#端口映射" class="headerlink" title="端口映射"></a>端口映射</h2><p>路由器端口与计算机端口强绑定，一直监听，一有信息就转发给计算机。<br>在国内的网络环境下，路由器套娃很多，一般都是2层甚至3层，而大楼路由器、小区路由器甚至运营商内部路由器，显然不是普通人能接触到的。所以端口映射是不现实的。</p><h2 id="内网穿透"><a href="#内网穿透" class="headerlink" title="内网穿透"></a>内网穿透</h2><p>在国内各种套娃式NAT结构下，分别处在两个局域网下的没法直接通信，而需要一个中介服务器。</p><h2 id="DNS-域名解析"><a href="#DNS-域名解析" class="headerlink" title="DNS 域名解析"></a>DNS 域名解析</h2><p>由一个服务器保存域名与IP地址的对应关系，当目标服务器接收到域名时，就会自己去找域名服务器进行解析。</p><h2 id="DDNS-动态域名解析"><a href="#DDNS-动态域名解析" class="headerlink" title="DDNS 动态域名解析"></a>DDNS 动态域名解析</h2><p>比DNS多了一个负责监听的服务器，当发现变化时就更新DNS服务器中的域名地址信息。</p><h2 id="跨域"><a href="#跨域" class="headerlink" title="跨域"></a>跨域</h2><p>跨域，是指浏览器不能执行其他网站的脚本。它是由浏览器的同源策略造成的，是浏览器对JavaScript实施的安全限制。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>学习</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>网络</tag>
+      
+      <tag>基础</tag>
+      
+      <tag>TCP/IP</tag>
+      
+      <tag>地址</tag>
+      
+      <tag>端口</tag>
+      
+      <tag>DNS</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>署私有云笔记LeaNote</title>
+    <link href="/2024/03/16/%E7%BD%B2%E7%A7%81%E6%9C%89%E4%BA%91%E7%AC%94%E8%AE%B0LeaNote/"/>
+    <url>/2024/03/16/%E7%BD%B2%E7%A7%81%E6%9C%89%E4%BA%91%E7%AC%94%E8%AE%B0LeaNote/</url>
+    
+    <content type="html"><![CDATA[<h1 id="部署私有云笔记LeaNote"><a href="#部署私有云笔记LeaNote" class="headerlink" title="部署私有云笔记LeaNote"></a>部署私有云笔记LeaNote</h1><h2 id="基本配置"><a href="#基本配置" class="headerlink" title="基本配置"></a>基本配置</h2><p>linux服务器<br>运营商：腾讯<br>系统：CentOS 7.9 64bit<br>配置：2核心2GB</p><h2 id="前期准备"><a href="#前期准备" class="headerlink" title="前期准备"></a>前期准备</h2><h3 id="下载程序包"><a href="#下载程序包" class="headerlink" title="下载程序包"></a>下载程序包</h3><p>下载leanote软件并放到服务器上解压。一般网站内容都放在www文件夹内。这个路径是可以在服务器宝塔面板设置里改的。<br>软件本体下载地址：<br><a href="https://nchc.dl.sourceforge.net/project/leanote-bin/2.6.1/leanote-linux-amd64-v2.6.1.bin.tar.gz">https://nchc.dl.sourceforge.net/project/leanote-bin/2.6.1/leanote-linux-amd64-v2.6.1.bin.tar.gz</a></p><h3 id="数据库准备"><a href="#数据库准备" class="headerlink" title="数据库准备"></a>数据库准备</h3><p>安装数据库MongeDB。版本不知道有没有限制，这里选择老版本MongoDB4.4.6<br><img src="/2024/03/16/%E7%BD%B2%E7%A7%81%E6%9C%89%E4%BA%91%E7%AC%94%E8%AE%B0LeaNote/4ca878f31d0588020199689d57e599db.png"><br>这里还踩了个坑，系统得是CentOS才能装上，而腾讯那个号称与CentOS兼容的系统就不能装，可能是这种非主流数据库用的人少吧……</p><h3 id="数据库初始化"><a href="#数据库初始化" class="headerlink" title="数据库初始化"></a>数据库初始化</h3><p>进入了mongodb_backup目录下，将初始数据导入mongodb<br>/data/fxzserves/softwork/leanote/mongodb_backup<br>（因为已经进入了指定目录所以使用相对路径，也可以将后面的地址改为绝对路径。）</p><figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ada">mongorestore -h localhost -d leanote <span class="hljs-comment">--dir leanote_install_data/</span><br></code></pre></td></tr></table></figure><h3 id="启动程序"><a href="#启动程序" class="headerlink" title="启动程序"></a>启动程序</h3><p>进入…/leanote/bin启动云笔记，使用nohub+&amp;来执行程序，让程序在后台运行</p><figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mipsasm">nohup <span class="hljs-keyword">bash </span>run.<span class="hljs-keyword">sh </span>&amp;<br></code></pre></td></tr></table></figure><h3 id="启动成功"><a href="#启动成功" class="headerlink" title="启动成功"></a>启动成功</h3><p>经过尝试，进入成功了？明明做起来只有两步，为什么我简直像历经八十一难一样……<br><img src="/2024/03/16/%E7%BD%B2%E7%A7%81%E6%9C%89%E4%BA%91%E7%AC%94%E8%AE%B0LeaNote/d360a40b7a196a8ea9921465f2da74aa.png"></p><p>还没结束呢，还得进去把禁止注册开了，然后给mongedb数据库再上个锁。</p><p>尝试了一下图片插入功能，可以成功把图片插入在文档里面，但是有大小限制，<br><img src="/2024/03/16/%E7%BD%B2%E7%A7%81%E6%9C%89%E4%BA%91%E7%AC%94%E8%AE%B0LeaNote/96d38e98e268ee3d8cd92de2feac33bf.png"></p><h2 id="安全配置"><a href="#安全配置" class="headerlink" title="安全配置"></a>安全配置</h2><ul><li>修改Admin账号的密码</li><li>关闭注册按钮<br>在右上角找到配置管理，进入后台。找到注册开关把它点掉，就可以关闭注册按钮了。关闭之后网页打开的时候还是会显示注册按钮，但是点了之后不会有反应。要关掉显示的话就要找到对应的网页代码，把相关内容注释掉，应该也不是很难。<br><img src="/2024/03/16/%E7%BD%B2%E7%A7%81%E6%9C%89%E4%BA%91%E7%AC%94%E8%AE%B0LeaNote/4b3f982199e8c4d155e3ac6b0da25f63.png"></li><li>配置数据库密码。<br>在笔记程序文件夹的/conf文件夹中找到配置文件app.conf，可以看到username和password两项是空的，因为默认创建的mongodb没有用户名和密码，相当于裸奔中。在数据库设置里给数据库配上密码，然后把用户名密码写在配置文件里，这样数据库就不能被外部直接访问。<figure class="highlight nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs nix"><span class="hljs-comment"># mongodb</span><br>db.<span class="hljs-attr">host=127.0.0.1</span><br>db.<span class="hljs-attr">port=27017</span><br>db.<span class="hljs-attr">dbname=leanote</span> <span class="hljs-comment"># required</span><br>db.<span class="hljs-attr">username=</span> <span class="hljs-comment"># if not exists, please leave it blank</span><br>db.<span class="hljs-attr">password=</span> <span class="hljs-comment"># if not exists, please leave it blank</span><br></code></pre></td></tr></table></figure></li></ul><p>如果有域名可以使用就安装一下Nginx</p><h1 id="后面不用看了都是失败经历"><a href="#后面不用看了都是失败经历" class="headerlink" title="后面不用看了都是失败经历"></a>后面不用看了都是失败经历</h1><p>这篇记录大部分的时间都在踩雷，后面掌握熟练之后才回来整理的笔记，以下是之前的失败记录。</p><hr><p><del>然后发现这丫的服务器端口只开了3个，白忙活了。</del><br>后来才知道，在端口没有部署服务的时候，ping口检查也是没用的，不会显示端口开放。</p><h3 id="购买自己的服务器"><a href="#购买自己的服务器" class="headerlink" title="购买自己的服务器"></a>购买自己的服务器</h3><p>不行，我怎么能吃这种亏，既然公司的服务器用不了，那我就自己搞一个服务器！搜了一下腾讯云的最低配还挺便宜的，打完折才60块左右一年，2核心2G3M带宽，反正只是用来验证技术的，完全够用。</p><p>根据提示获取宝塔的登录用户名和密码<br><img src="/2024/03/16/%E7%BD%B2%E7%A7%81%E6%9C%89%E4%BA%91%E7%AC%94%E8%AE%B0LeaNote/132e87284a8ea7f7e0feddb823480f7a.png"></p><p>在防火墙管理界面放开端口<br><img src="/2024/03/16/%E7%BD%B2%E7%A7%81%E6%9C%89%E4%BA%91%E7%AC%94%E8%AE%B0LeaNote/e2603a4c0bb086f71ac6e701b5fb6b36.png"><br>理论上开个端口应该没什么问题，但不知道为什么宝塔的8888端口是开了，但自定义的任何其他端口怎么也开不了。难道这便宜服务器还有我不知道的坑？</p><p>去控制面板输入指令，获取宝塔系统的初始账号和密码<br><img src="/2024/03/16/%E7%BD%B2%E7%A7%81%E6%9C%89%E4%BA%91%E7%AC%94%E8%AE%B0LeaNote/82555e9d2a1859a0eed5ed5a5518ed83.png"></p><h3 id="重装系统"><a href="#重装系统" class="headerlink" title="重装系统"></a>重装系统</h3><p>可能是因为多次反复安装mongodb，现在mongo数据库也出问题了，怎么都安装不上。唉，修不如换，直接重装系统吧。</p><h3 id="获取root权限"><a href="#获取root权限" class="headerlink" title="获取root权限"></a>获取root权限</h3><p>之前启动服务器时是选择了自动安装宝塔实例的，现在选了个腾讯的OpenCloudOS系统试试，但这个不能默认安装宝塔，只能自己去命令行安装。<br>安装宝塔界面时报错：</p><figure class="highlight subunit"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs subunit"><span class="hljs-keyword">Error: </span>This command has to be run with superuser privileges (under the root user on most systems).<br></code></pre></td></tr></table></figure><p>获取root权限<br><code>su root</code></p><h3 id="安装宝塔"><a href="#安装宝塔" class="headerlink" title="安装宝塔"></a>安装宝塔</h3><p>去宝塔的官网（<a href="https://www.bt.cn)/">https://www.bt.cn）</a><br>找到安装脚本。因为腾讯的系统与Centos是兼容的，所以使用Centos的安装脚本即可。</p><figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs vim">yum install -<span class="hljs-keyword">y</span> wget &amp;&amp; wget -O install.<span class="hljs-keyword">sh</span> https://download.bt.<span class="hljs-keyword">cn</span>/install/install_6.<span class="hljs-number">0</span>.<span class="hljs-keyword">sh</span> &amp;&amp; <span class="hljs-keyword">sh</span> install.<span class="hljs-keyword">sh</span> ed8484bec<br></code></pre></td></tr></table></figure><p>说好的兼容呢？你看看你都兼容了什么<br><img src="/2024/03/16/%E7%BD%B2%E7%A7%81%E6%9C%89%E4%BA%91%E7%AC%94%E8%AE%B0LeaNote/0d27f22f716f75d6887451a351a7b97f.png"></p><h3 id="第二次重装系统"><a href="#第二次重装系统" class="headerlink" title="第二次重装系统"></a>第二次重装系统</h3><p>忍无可忍，再次重装回一开始的系统。真是啥事没干尽忙活重装系统了。linux这么多坑真是不踩不知道。<br>第二次重装之后，终于顺利把系统部署运行成功了。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>学习</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Linux</tag>
+      
+      <tag>服务器</tag>
+      
+      <tag>网络</tag>
+      
+      <tag>网站部署</tag>
+      
+      <tag>服务</tag>
+      
+      <tag>云笔记</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>Android运行yolov8-运行自己的模型</title>
     <link href="/2024/03/07/Android%E8%BF%90%E8%A1%8Cyolov8-%E8%BF%90%E8%A1%8C%E8%87%AA%E5%B7%B1%E7%9A%84%E6%A8%A1%E5%9E%8B/"/>
     <url>/2024/03/07/Android%E8%BF%90%E8%A1%8Cyolov8-%E8%BF%90%E8%A1%8C%E8%87%AA%E5%B7%B1%E7%9A%84%E6%A8%A1%E5%9E%8B/</url>
@@ -20,9 +160,9 @@
     
     <tags>
       
-      <tag>yolov8</tag>
-      
       <tag>Android</tag>
+      
+      <tag>yolov8</tag>
       
       <tag>Python</tag>
       
@@ -61,15 +201,15 @@
     
     <tags>
       
-      <tag>yolov8</tag>
-      
-      <tag>Android</tag>
-      
-      <tag>helloworld</tag>
-      
       <tag>开发</tag>
       
       <tag>Java</tag>
+      
+      <tag>Android</tag>
+      
+      <tag>yolov8</tag>
+      
+      <tag>helloworld</tag>
       
       <tag>安卓</tag>
       
@@ -98,15 +238,15 @@
     
     <tags>
       
-      <tag>yolov8</tag>
-      
-      <tag>Android</tag>
-      
-      <tag>helloworld</tag>
-      
       <tag>开发</tag>
       
       <tag>Java</tag>
+      
+      <tag>Android</tag>
+      
+      <tag>yolov8</tag>
+      
+      <tag>helloworld</tag>
       
       <tag>安卓</tag>
       
@@ -215,9 +355,9 @@
     
     <tags>
       
-      <tag>ArcGIS</tag>
-      
       <tag>地理信息</tag>
+      
+      <tag>ArcGIS</tag>
       
       <tag>模型</tag>
       
@@ -252,13 +392,13 @@
     
     <tags>
       
-      <tag>Android</tag>
+      <tag>环境部署</tag>
       
       <tag>开发</tag>
       
       <tag>Java</tag>
       
-      <tag>环境部署</tag>
+      <tag>Android</tag>
       
     </tags>
     
@@ -283,13 +423,13 @@
     
     <tags>
       
-      <tag>开发</tag>
-      
-      <tag>环境部署</tag>
-      
       <tag>JavAnaconda</tag>
       
       <tag>python</tag>
+      
+      <tag>环境部署</tag>
+      
+      <tag>开发</tag>
       
       <tag>环境管理</tag>
       
@@ -316,9 +456,9 @@
     
     <tags>
       
-      <tag>yolov8</tag>
-      
       <tag>Android</tag>
+      
+      <tag>yolov8</tag>
       
       <tag>Python</tag>
       
@@ -355,9 +495,9 @@
     
     <tags>
       
-      <tag>ArcGIS</tag>
-      
       <tag>地理信息</tag>
+      
+      <tag>ArcGIS</tag>
       
       <tag>模型</tag>
       
@@ -390,9 +530,9 @@
     
     <tags>
       
-      <tag>ArcGIS</tag>
-      
       <tag>地理信息</tag>
+      
+      <tag>ArcGIS</tag>
       
       <tag>模型</tag>
       
@@ -588,9 +728,9 @@
     
     <tags>
       
-      <tag>ArcGIS</tag>
-      
       <tag>地理信息</tag>
+      
+      <tag>ArcGIS</tag>
       
       <tag>FME</tag>
       
@@ -786,9 +926,9 @@
     
     <tags>
       
-      <tag>ArcGIS</tag>
-      
       <tag>地理信息</tag>
+      
+      <tag>ArcGIS</tag>
       
       <tag>gdb</tag>
       
@@ -889,9 +1029,9 @@
     
     <tags>
       
-      <tag>ArcGIS</tag>
-      
       <tag>地理信息</tag>
+      
+      <tag>ArcGIS</tag>
       
       <tag>数据库质检</tag>
       
@@ -920,11 +1060,11 @@
     
     <tags>
       
-      <tag>地理信息</tag>
-      
       <tag>Arcgis</tag>
       
       <tag>软件</tag>
+      
+      <tag>地理信息</tag>
       
       <tag>Reviewer</tag>
       
@@ -953,13 +1093,13 @@
     
     <tags>
       
-      <tag>地理信息</tag>
-      
       <tag>Arcgis</tag>
       
       <tag>Pro</tag>
       
       <tag>软件</tag>
+      
+      <tag>地理信息</tag>
       
     </tags>
     
@@ -1117,13 +1257,13 @@
     
     <tags>
       
-      <tag>Android</tag>
+      <tag>环境部署</tag>
       
       <tag>开发</tag>
       
       <tag>Java</tag>
       
-      <tag>环境部署</tag>
+      <tag>Android</tag>
       
     </tags>
     
@@ -1241,9 +1381,9 @@
     
     <tags>
       
-      <tag>ArcGIS</tag>
-      
       <tag>地理信息</tag>
+      
+      <tag>ArcGIS</tag>
       
       <tag>排序</tag>
       
@@ -1270,42 +1410,13 @@
     
     <tags>
       
-      <tag>ArcGIS</tag>
-      
       <tag>地理信息</tag>
+      
+      <tag>ArcGIS</tag>
       
       <tag>影像镶嵌</tag>
       
       <tag>FME</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
-    <title>Hexo的复活和升级计划</title>
-    <link href="/2023/02/10/Hexo%E7%9A%84%E5%A4%8D%E6%B4%BB%E5%92%8C%E5%8D%87%E7%BA%A7%E8%AE%A1%E5%88%92/"/>
-    <url>/2023/02/10/Hexo%E7%9A%84%E5%A4%8D%E6%B4%BB%E5%92%8C%E5%8D%87%E7%BA%A7%E8%AE%A1%E5%88%92/</url>
-    
-    <content type="html"><![CDATA[<h1 id="Hexo的复活和升级计划"><a href="#Hexo的复活和升级计划" class="headerlink" title="Hexo的复活和升级计划"></a>Hexo的复活和升级计划</h1><p><em>为了能够愉快的继续使用Hexo，之前积累的一些问题也必须得解决了，所谓“工欲善其事必先利其器”，不把这博客弄好我都不能专心去搞神经网络。</em></p><p>之前的问题归纳下来就三个:</p><ol><li><p>之前刚搞博客喜欢研究新鲜玩意，整了个2Dlive,搞得文件夹变成了几百MB，这次必须另起炉灶，把原来的modle都抛弃掉。</p></li><li><p>之前的页面会一直卡加载，研究了一下发现是没有合理的优化，一进去主页就会直接加载全部文章，百度一下之后，发现可以通过换主题解决，之前的主题只能说太简陋了。</p></li><li><p>最后一点也是最重要的一点，github时常连不上的问题，经常导致上传失败，现在只能暂时存在本地，还是得尝试一下其他平台的部署。</p></li><li><p>然后是支线任务，想办法做一下一键预览、一键打包和一键同步，以及快速创建文章，。我的水平也许做不出Gridea这种集成式程序，但优化一下基本体验应该还是做得到的，体验这一块不能输。或者找一下别人有没有现成的。</p></li></ol><p>之前一直使用ayer主题，虽然好看是好看，但是它完全没有优化，主页会直接加载全部的文章，东西一多直接爆卡，除非写文章的时候全部手动设置截断或者隐藏，但那也太麻烦了，于是我决定找一个简约而又好看，优化还得好的主题。</p><h2 id="fluid主题"><a href="#fluid主题" class="headerlink" title="fluid主题"></a>fluid主题</h2><p>挑挑拣拣半天，终于找到了一个合心意的主题，这简约的界面和流畅的优化，舒服了。还有这个右上角的一键切换夜间模式，也非常好用。我决定就它了。其实还有一些主题我也挺喜欢的，但是要么就是广告味太浓，要么就是特效太多，速度不够快。经过了以前2Dlive的折磨，我再也不敢在博客里塞大件的东西了，还是简单实用最好。</p><p>主题的主页在此，上面有详细的使用手册，后面有时间了我再去研究研究怎么调整和优化。</p><p><a href="https://fluid-dev.github.io/hexo-fluid-docs/">点击跳转fluid</a></p><p><img src="/2023/02/10/Hexo%E7%9A%84%E5%A4%8D%E6%B4%BB%E5%92%8C%E5%8D%87%E7%BA%A7%E8%AE%A1%E5%88%92/fulid%E4%B8%BB%E9%A2%98.png" alt="fulid主题"></p>]]></content>
-    
-    
-    <categories>
-      
-      <category>学习</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>Hexo</tag>
-      
-      <tag>fluid主题</tag>
-      
-      <tag>博客</tag>
       
     </tags>
     
@@ -1332,9 +1443,38 @@
       
       <tag>Hexo</tag>
       
+      <tag>迁移</tag>
+      
       <tag>博客</tag>
       
-      <tag>迁移</tag>
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>Hexo的复活和升级计划</title>
+    <link href="/2023/02/10/Hexo%E7%9A%84%E5%A4%8D%E6%B4%BB%E5%92%8C%E5%8D%87%E7%BA%A7%E8%AE%A1%E5%88%92/"/>
+    <url>/2023/02/10/Hexo%E7%9A%84%E5%A4%8D%E6%B4%BB%E5%92%8C%E5%8D%87%E7%BA%A7%E8%AE%A1%E5%88%92/</url>
+    
+    <content type="html"><![CDATA[<h1 id="Hexo的复活和升级计划"><a href="#Hexo的复活和升级计划" class="headerlink" title="Hexo的复活和升级计划"></a>Hexo的复活和升级计划</h1><p><em>为了能够愉快的继续使用Hexo，之前积累的一些问题也必须得解决了，所谓“工欲善其事必先利其器”，不把这博客弄好我都不能专心去搞神经网络。</em></p><p>之前的问题归纳下来就三个:</p><ol><li><p>之前刚搞博客喜欢研究新鲜玩意，整了个2Dlive,搞得文件夹变成了几百MB，这次必须另起炉灶，把原来的modle都抛弃掉。</p></li><li><p>之前的页面会一直卡加载，研究了一下发现是没有合理的优化，一进去主页就会直接加载全部文章，百度一下之后，发现可以通过换主题解决，之前的主题只能说太简陋了。</p></li><li><p>最后一点也是最重要的一点，github时常连不上的问题，经常导致上传失败，现在只能暂时存在本地，还是得尝试一下其他平台的部署。</p></li><li><p>然后是支线任务，想办法做一下一键预览、一键打包和一键同步，以及快速创建文章，。我的水平也许做不出Gridea这种集成式程序，但优化一下基本体验应该还是做得到的，体验这一块不能输。或者找一下别人有没有现成的。</p></li></ol><p>之前一直使用ayer主题，虽然好看是好看，但是它完全没有优化，主页会直接加载全部的文章，东西一多直接爆卡，除非写文章的时候全部手动设置截断或者隐藏，但那也太麻烦了，于是我决定找一个简约而又好看，优化还得好的主题。</p><h2 id="fluid主题"><a href="#fluid主题" class="headerlink" title="fluid主题"></a>fluid主题</h2><p>挑挑拣拣半天，终于找到了一个合心意的主题，这简约的界面和流畅的优化，舒服了。还有这个右上角的一键切换夜间模式，也非常好用。我决定就它了。其实还有一些主题我也挺喜欢的，但是要么就是广告味太浓，要么就是特效太多，速度不够快。经过了以前2Dlive的折磨，我再也不敢在博客里塞大件的东西了，还是简单实用最好。</p><p>主题的主页在此，上面有详细的使用手册，后面有时间了我再去研究研究怎么调整和优化。</p><p><a href="https://fluid-dev.github.io/hexo-fluid-docs/">点击跳转fluid</a></p><p><img src="/2023/02/10/Hexo%E7%9A%84%E5%A4%8D%E6%B4%BB%E5%92%8C%E5%8D%87%E7%BA%A7%E8%AE%A1%E5%88%92/fulid%E4%B8%BB%E9%A2%98.png" alt="fulid主题"></p>]]></content>
+    
+    
+    <categories>
+      
+      <category>学习</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Hexo</tag>
+      
+      <tag>博客</tag>
+      
+      <tag>fluid主题</tag>
       
     </tags>
     

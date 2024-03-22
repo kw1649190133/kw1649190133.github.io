@@ -1,0 +1,719 @@
+
+
+<!DOCTYPE html>
+<html lang="CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Kwindy">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="部署MinDoc文档管理系统前言Mindoc是一个非常简单轻量化的文档管理系统，可以部署在线上，界面简洁功能有限，主要使用markdown来编写内容，支持多种格式导出。因为服务器到期没续费，公司的禅道寄了，原来的项目管理和知识库全都挫骨扬灰。没有文档系统很不方便分享内容，于是自己找了一个放在公司的Linux服务器上，顺便记录一下部署过程。 参考资料软件源代码：https:&#x2F;&#x2F;github.com&#x2F;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="部署MinDoc文档管理系统">
+<meta property="og:url" content="http://kw1649190133.github.io/2024/03/22/%E9%83%A8%E7%BD%B2MinDoc%E6%96%87%E6%A1%A3%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F/index.html">
+<meta property="og:site_name" content="kw&#39;s blog">
+<meta property="og:description" content="部署MinDoc文档管理系统前言Mindoc是一个非常简单轻量化的文档管理系统，可以部署在线上，界面简洁功能有限，主要使用markdown来编写内容，支持多种格式导出。因为服务器到期没续费，公司的禅道寄了，原来的项目管理和知识库全都挫骨扬灰。没有文档系统很不方便分享内容，于是自己找了一个放在公司的Linux服务器上，顺便记录一下部署过程。 参考资料软件源代码：https:&#x2F;&#x2F;github.com&#x2F;">
+<meta property="og:locale">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/03/22/%E9%83%A8%E7%BD%B2MinDoc%E6%96%87%E6%A1%A3%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F/fb7d3def5d63d03cfd458c137eff012e.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/03/22/%E9%83%A8%E7%BD%B2MinDoc%E6%96%87%E6%A1%A3%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F/bc210dbb4b4ea027e5bcfd30ae5607a0.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/03/22/%E9%83%A8%E7%BD%B2MinDoc%E6%96%87%E6%A1%A3%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F/0854191c6feb115caf1c051451d408b3.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/03/22/%E9%83%A8%E7%BD%B2MinDoc%E6%96%87%E6%A1%A3%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F/539d6614aaad1283a4ae8e3a01e146c9.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/03/22/%E9%83%A8%E7%BD%B2MinDoc%E6%96%87%E6%A1%A3%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F/c2e82a84586d6220cff4b0dcd34548c8.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/03/22/%E9%83%A8%E7%BD%B2MinDoc%E6%96%87%E6%A1%A3%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F/c8eba38e188a7fb7e7661eb087da00b9.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/03/22/%E9%83%A8%E7%BD%B2MinDoc%E6%96%87%E6%A1%A3%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F/b87d06e6ef8699b28e52acc9d5e2f353.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/03/22/%E9%83%A8%E7%BD%B2MinDoc%E6%96%87%E6%A1%A3%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F/6c10f4fb184944939f1f6ecadfc39c70.png">
+<meta property="article:published_time" content="2024-03-22T09:01:05.000Z">
+<meta property="article:modified_time" content="2024-03-22T09:22:56.661Z">
+<meta property="article:author" content="Kwindy">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="系统">
+<meta property="article:tag" content="服务器">
+<meta property="article:tag" content="网络">
+<meta property="article:tag" content="网站部署">
+<meta property="article:tag" content="云文档">
+<meta property="article:tag" content="Mindoc">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://kw1649190133.github.io/2024/03/22/%E9%83%A8%E7%BD%B2MinDoc%E6%96%87%E6%A1%A3%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F/fb7d3def5d63d03cfd458c137eff012e.png">
+  
+  
+  
+  <title>部署MinDoc文档管理系统 - kw&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"kw1649190133.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Hejmpaĝo</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Arkivoj</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Kategorio</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Etikedoj</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>Pri</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="部署MinDoc文档管理系统"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-03-22 17:01" pubdate>
+          March 22, 2024 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.7k vortoj
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          23 minutoj
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">部署MinDoc文档管理系统</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="部署MinDoc文档管理系统"><a href="#部署MinDoc文档管理系统" class="headerlink" title="部署MinDoc文档管理系统"></a>部署MinDoc文档管理系统</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>Mindoc是一个非常简单轻量化的文档管理系统，可以部署在线上，界面简洁功能有限，主要使用markdown来编写内容，支持多种格式导出。<br>因为服务器到期没续费，公司的禅道寄了，原来的项目管理和知识库全都挫骨扬灰。没有文档系统很不方便分享内容，于是自己找了一个放在公司的Linux服务器上，顺便记录一下部署过程。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p>软件源代码：<a target="_blank" rel="noopener" href="https://github.com/mindoc-org/mindoc">https://github.com/mindoc-org/mindoc</a><br>使用mindoc制作的帮助手册：<a target="_blank" rel="noopener" href="https://doc.gsw945.com/docs/mindoc-docs">https://doc.gsw945.com/docs/mindoc-docs</a><br>已编译的软件本体仓库：<a target="_blank" rel="noopener" href="https://github.com/mindoc-org/mindoc/releases">https://github.com/mindoc-org/mindoc/releases</a></p>
+<h2 id="获取软件"><a href="#获取软件" class="headerlink" title="获取软件"></a>获取软件</h2><p>虽然官方建议编译安装，但直接安装编译好的程序比较省事。在上面的github仓库可以找到4个已经编译好的版本。这里选择第一个。</p>
+<ul>
+<li>mindoc_linux_amd64.zip linux, gcc版本编译，运行依赖系统glibc(CentOS不建议用这个)</li>
+<li>mindoc_linux_musl_amd64.zip linux, musl-gcc编译，运行不依赖系统glibc(CentOS推荐用这个)</li>
+<li>mindoc_windows_amd64.7z windows 64位</li>
+<li>mindoc_windows_386.7z windows 32位</li>
+</ul>
+<h2 id="新建数据库"><a href="#新建数据库" class="headerlink" title="新建数据库"></a>新建数据库</h2><p>需要先安装MySQL数据库（如果没有安装的话，版本好像没有特别要求，使用已有的版本8.0.34）。在宝塔的数据库管理页面选择MySQL数据库添加，记住名称密码等参数，后面要输入到配置文件。<br><img src="/2024/03/22/%E9%83%A8%E7%BD%B2MinDoc%E6%96%87%E6%A1%A3%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F/fb7d3def5d63d03cfd458c137eff012e.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="修改配置文件"><a href="#修改配置文件" class="headerlink" title="修改配置文件"></a>修改配置文件</h2><p>配置文件路径<code>./conf/app.conf</code>。<br>配置文件必须是这个名字，另外文件夹下已有一个配置文件的参考备份<code>app.conf.example</code>。</p>
+<h3 id="数据库配置"><a href="#数据库配置" class="headerlink" title="数据库配置"></a>数据库配置</h3><p>mindoc支持mysql和sqlite两种数据库。<br>这里选择mysql数据库。数据库地址和端口是默认的不用改，只修改数据库名称和配置用户名密码。（只修改竖“||”后面的内容）</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs ini"><span class="hljs-attr">db_adapter</span>=<span class="hljs-string">&quot;$&#123;MINDOC_DB_ADAPTER||MySQL&#125;&quot;</span><br><span class="hljs-attr">db_host</span>=<span class="hljs-string">&quot;$&#123;MINDOC_DB_HOST||127.0.0.1&#125;&quot;</span><br><span class="hljs-attr">db_port</span>=<span class="hljs-string">&quot;$&#123;MINDOC_DB_PORT||3306&#125;&quot;</span><br><span class="hljs-attr">db_database</span>=<span class="hljs-string">&quot;$&#123;MINDOC_DB_DATABASE||minDoc&#125;&quot;</span><br><span class="hljs-attr">db_username</span>=<span class="hljs-string">&quot;$&#123;MINDOC_DB_USERNAME||minDoc&#125;&quot;</span><br><span class="hljs-attr">db_password</span>=<span class="hljs-string">&quot;$&#123;MINDOC_DB_PASSWORD||fxz0314&#125;&quot;</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="修改网站端口"><a href="#修改网站端口" class="headerlink" title="修改网站端口"></a>修改网站端口</h3><p>默认设置是8181，可以修改为自己指定的端口。</p>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs abnf"><span class="hljs-attribute">httpport</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;$&#123;MINDOC_PORT||804&#125;&quot;</span><br></code></pre></td></tr></table></figure>
+<h2 id="运行程序"><a href="#运行程序" class="headerlink" title="运行程序"></a>运行程序</h2><p>确认前面的事项完成后在运行程序</p>
+<ul>
+<li>创建数据库</li>
+<li>数据库信息正确录入到配置文件</li>
+<li>配置文件指定的端口号已开启<h3 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h3>初始化只需要解压程序包以后运行一次即可。（更新数据库表结构）<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">./mindoc_linux_amd64 install <br></code></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="直接启动"><a href="#直接启动" class="headerlink" title="直接启动"></a>直接启动</h3><p>直接启动可以用来检查网站是否部署正确，能否正常运行。输入指令前要进入软件的根目录。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment">#修改可执行权限(不知道有什么用)</span><br><span class="hljs-built_in">chmod</span> +x mindoc_linux_amd64<br><br><span class="hljs-comment">#启动程序</span><br>./mindoc_linux_amd64<br></code></pre></td></tr></table></figure>
+
+<p>但是这样启动有一个问题，就是关闭命令行窗口的话程序也会关闭，网站就无法访问了，所以应该让程序后台启动。</p>
+<h3 id="后台服务启动"><a href="#后台服务启动" class="headerlink" title="后台服务启动"></a>后台服务启动</h3><p>使用和之前蚂蚁笔记一样的的nohup指令去运行并不能让程序运行在后台，要让程序在后台服务启动的话就需要另一种启动方式。</p>
+<figure class="highlight nsis"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs nsis">./mindoc_linux_amd64 service install<br><span class="hljs-params">system</span>ctl start mindocd.service <span class="hljs-comment">#启动服务</span><br><span class="hljs-params">system</span>ctl status mindocd.service <span class="hljs-comment">#查看服务状态</span><br></code></pre></td></tr></table></figure>
+<p>此时关掉服务器的ssh连接也不会使程序停止运行。<br><img src="/2024/03/22/%E9%83%A8%E7%BD%B2MinDoc%E6%96%87%E6%A1%A3%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F/bc210dbb4b4ea027e5bcfd30ae5607a0.png" srcset="/img/loading.gif" lazyload><br>另外如果有自己的域名的话，可以配置代理，然后使用域名访问。</p>
+<p>正常来说，应该是可以放在宝塔的网站页面下运行，方便管理，但是我并不会操作，尝试了一下没有成功。</p>
+<h1 id="软件试用"><a href="#软件试用" class="headerlink" title="软件试用"></a>软件试用</h1><h2 id="软件界面与内容"><a href="#软件界面与内容" class="headerlink" title="软件界面与内容"></a>软件界面与内容</h2><p>成功进入登录界面。这个验证码还挺烦的，可以用超级管理员账号从后台关掉。另外注册是默认关闭的，但可以从后台开启。<br><img src="/2024/03/22/%E9%83%A8%E7%BD%B2MinDoc%E6%96%87%E6%A1%A3%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F/0854191c6feb115caf1c051451d408b3.png" srcset="/img/loading.gif" lazyload></p>
+<p>初始超级管理员账号：admin   密码：123456<br>输入后进入系统内部，建议修改超级账户密码。<br><img src="/2024/03/22/%E9%83%A8%E7%BD%B2MinDoc%E6%96%87%E6%A1%A3%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F/539d6614aaad1283a4ae8e3a01e146c9.png" srcset="/img/loading.gif" lazyload></p>
+<p>这个系统内非常简洁，几乎没有任何多余的内容和装饰。<br>但是太简洁了，要是再加个夜间模式就更好了，白色界面看的晃眼睛。</p>
+<h2 id="内容管理"><a href="#内容管理" class="headerlink" title="内容管理"></a>内容管理</h2><h3 id="内容分类"><a href="#内容分类" class="headerlink" title="内容分类"></a>内容分类</h3><p>该系统内的内容分组形式：项目空间、项目、文档、文章，可以用一个书和书架的形式来描述这种分组结构。</p>
+<ul>
+<li>文章：相当于独立的一页纸，不与其他三个相关。</li>
+<li>文档：文档相当于某一本书里的一页纸，与文章不同的是它有归属。</li>
+<li>项目：项目相当于一本书，包含多个文档。</li>
+<li>项目空间：项目空间相当于一个书架，可以容纳多个项目。</li>
+</ul>
+<h3 id="新建与编辑"><a href="#新建与编辑" class="headerlink" title="新建与编辑"></a>新建与编辑</h3><p>新建项目、文档、文章，都必须通过右上角的头像——我的项目/我的文章来新建文档；而编辑不需要，可以直接在浏览界面进行编辑。<br>通过头像进入的项目库才能看到文档列表里的加号<br><img src="/2024/03/22/%E9%83%A8%E7%BD%B2MinDoc%E6%96%87%E6%A1%A3%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F/c2e82a84586d6220cff4b0dcd34548c8.png" srcset="/img/loading.gif" lazyload><br>创建项目空间需要使用超级管理员账号<br><img src="/2024/03/22/%E9%83%A8%E7%BD%B2MinDoc%E6%96%87%E6%A1%A3%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F/c8eba38e188a7fb7e7661eb087da00b9.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="备份与迁移"><a href="#备份与迁移" class="headerlink" title="备份与迁移"></a>备份与迁移</h3><p>软件与数据库是分离的，可以直接在宝塔的数据库管理界面设置数据库备份。<br>宝塔的数据库文件一般放置在<code>根目录/www/server/data</code>下，也可以直接复制走，然后在另一个服务器安装了MySQL以后再粘贴回去。</p>
+<h3 id="保存与发布"><a href="#保存与发布" class="headerlink" title="保存与发布"></a>保存与发布</h3><p>保存与发布是分开的，编辑内容之后点击保存即可让内容保存在后台，而要在预览时查看还需要点击发布。也可以在后台设置自动发布。</p>
+<h2 id="用户管理"><a href="#用户管理" class="headerlink" title="用户管理"></a>用户管理</h2><h3 id="权限分级"><a href="#权限分级" class="headerlink" title="权限分级"></a>权限分级</h3><p>该系统内的权限主要分为三个等级：超级管理员、管理员、普通用户<br>超级管理员只有一个，用户只能自己添加管理员和普通用户</p>
+<h3 id="添加和删除用户"><a href="#添加和删除用户" class="headerlink" title="添加和删除用户"></a>添加和删除用户</h3><p>添加用户需要超级管理员账号才会在右上角显示小绿标，否则就看不到。但编辑和删除用户则不需要。<br><img src="/2024/03/22/%E9%83%A8%E7%BD%B2MinDoc%E6%96%87%E6%A1%A3%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F/b87d06e6ef8699b28e52acc9d5e2f353.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="团队管理"><a href="#团队管理" class="headerlink" title="团队管理"></a>团队管理</h3><p>添加团队也需要超级管理员账号，但删除就不需要，不太懂这什么逻辑。<br><img src="/2024/03/22/%E9%83%A8%E7%BD%B2MinDoc%E6%96%87%E6%A1%A3%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F/6c10f4fb184944939f1f6ecadfc39c70.png" srcset="/img/loading.gif" lazyload></p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>相比上次部署蚂蚁笔记的多灾多难，这次倒是非常的顺利。主要是稍微有了一点点经验，出现问题知道怎么解决了。把握几个关键点之后，问题也就迎刃而解。<br>需要注意的是：</p>
+<ol>
+<li>数据库创建与配置文件的修改</li>
+<li>端口要开放</li>
+<li>参考别人的输入指令</li>
+</ol>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0/" class="category-chain-item">学习</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Linux/">#Linux</a>
+      
+        <a href="/tags/%E7%B3%BB%E7%BB%9F/">#系统</a>
+      
+        <a href="/tags/%E6%9C%8D%E5%8A%A1%E5%99%A8/">#服务器</a>
+      
+        <a href="/tags/%E7%BD%91%E7%BB%9C/">#网络</a>
+      
+        <a href="/tags/%E7%BD%91%E7%AB%99%E9%83%A8%E7%BD%B2/">#网站部署</a>
+      
+        <a href="/tags/%E4%BA%91%E6%96%87%E6%A1%A3/">#云文档</a>
+      
+        <a href="/tags/Mindoc/">#Mindoc</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>部署MinDoc文档管理系统</div>
+      <div>http://kw1649190133.github.io/2024/03/22/部署MinDoc文档管理系统/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Aŭtoro</div>
+          <div>Kwindy</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Postigita</div>
+          <div>March 22, 2024</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Lizenta</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/03/20/OrangePiPlus5%E7%B3%BB%E7%BB%9F%E5%AE%89%E8%A3%85/" title="OrangePiPlus5系统安装">
+                        <span class="hidden-mobile">OrangePiPlus5系统安装</span>
+                        <span class="visible-mobile">Sekva afiŝo</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Enhavtabelo</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Serĉi</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">ŝlosivorto</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blogo funkcias plej bone kun JavaScript ebligita</div>
+  </noscript>
+</body>
+</html>
