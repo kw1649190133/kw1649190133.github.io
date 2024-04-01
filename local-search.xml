@@ -4,6 +4,39 @@
   
   
   <entry>
+    <title>GDAL解析GDB数据库内容</title>
+    <link href="/2024/04/01/GDAL%E8%A7%A3%E6%9E%90GDB%E6%95%B0%E6%8D%AE%E5%BA%93%E5%86%85%E5%AE%B9/"/>
+    <url>/2024/04/01/GDAL%E8%A7%A3%E6%9E%90GDB%E6%95%B0%E6%8D%AE%E5%BA%93%E5%86%85%E5%AE%B9/</url>
+    
+    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>现在的地理实体数据库搞得非常复杂，一个GDB里面有一百多个图层，非常不便于查看，于是就想弄个一键导出图层列表的工具，这样放到Excel里面就非常方便比对了。<br>本来想着可能可以用Arcgis简单实现一下，或者有没有现成的工具箱，实在不行还可以折腾一下安装FME。但是问了一下朋友刚好有现成的工具，那就多一事不如少一事，先拿来用了再说。<br>环境 ：Windows 11<br>实现功能：将一个路径内的所有数据库的所有数据名称和数据类型导出到文本</p><h2 id="操作过程"><a href="#操作过程" class="headerlink" title="操作过程"></a>操作过程</h2><h3 id="1-安装GDAL环境。"><a href="#1-安装GDAL环境。" class="headerlink" title="1. 安装GDAL环境。"></a>1. 安装GDAL环境。</h3><p>GDAL官网：<a href="https://gdal.org/">https://gdal.org/</a><br>在Download页面下载到GDAL的安装包。需要连接github。<br>gdal-3.8.4-1916-x64-core.msi<br>运行GDAL的msi安装包，一路下一步，直接默认到底，将GDAL直接安装在Windows环境。<br>理论上应该也可以用Python的GDAL插件whl来做，有机会可以尝试一下。</p><h3 id="2-准备脚本文件list-gdb"><a href="#2-准备脚本文件list-gdb" class="headerlink" title="2. 准备脚本文件list_gdb"></a>2. 准备脚本文件list_gdb</h3><p>把代码粘贴到文本里再改个.bat后缀，文件名可以根据需要自己改。</p><figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs CMD">@<span class="hljs-built_in">echo</span> off<br><span class="hljs-built_in">chcp</span> <span class="hljs-number">65001</span><br><span class="hljs-built_in">setlocal</span> enabledelayedexpansion<br><br>:: 罗列当前目录下的所有GDB文件以及相应的图层<br><span class="hljs-keyword">for</span> /d <span class="hljs-variable">%%f</span> <span class="hljs-keyword">in</span> (*.gdb) <span class="hljs-keyword">do</span> (<br>  <span class="hljs-keyword">for</span> /f &quot;tokens=<span class="hljs-number">2</span>,*&quot; <span class="hljs-variable">%%i</span> <span class="hljs-keyword">in</span> (&#x27;ogrinfo -q <span class="hljs-variable">%%f</span>&#x27;) <span class="hljs-keyword">do</span> (<br>    <span class="hljs-built_in">set</span> &quot;<span class="hljs-built_in">type</span>=<span class="hljs-variable">%%j</span>&quot;<br>    <span class="hljs-built_in">set</span> &quot;<span class="hljs-built_in">type</span>=<span class="hljs-variable">!type:~1,-1!</span>&quot;<br>    <span class="hljs-built_in">set</span> &quot;<span class="hljs-built_in">type</span>=!<span class="hljs-built_in">type</span>: =!&quot;<br>    <span class="hljs-built_in">echo</span> <span class="hljs-variable">%%f</span>,<span class="hljs-variable">%%i</span>,<span class="hljs-variable">!type!</span><br>  )<br>)<br><br><span class="hljs-built_in">endlocal</span><br></code></pre></td></tr></table></figure><h3 id="3-在GDAL环境下执行脚本"><a href="#3-在GDAL环境下执行脚本" class="headerlink" title="3. 在GDAL环境下执行脚本"></a>3. 在GDAL环境下执行脚本</h3><p>安装好GDAL之后，如果不添加系统路径的话是没法在CMD里直接执行相关指令的。要是嫌麻烦不想添加系统路径的话，也可以直接运行GDAL，直接进入环境，再CD到数据库和bat所在的路径去。<br><img src="/2024/04/01/GDAL%E8%A7%A3%E6%9E%90GDB%E6%95%B0%E6%8D%AE%E5%BA%93%E5%86%85%E5%AE%B9/9ea13785a2d6da6566b954e413147997.png"></p><p>在GDAL环境下执行指令</p><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs stylus">list_gdb<span class="hljs-selector-class">.bat</span> &gt; <span class="hljs-selector-tag">a</span>.csv<br></code></pre></td></tr></table></figure><p>脚本文件名 &gt; 导出文本名，可以根据实际需求情况修改。<br>执行完脚本之后就可以得到数据库的图层列表了，再导进excel里面稍微处理一下，用起来就非常方便了。</p><p>导出的文件格式如下：</p><figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs TXT">Active code page: 65001<br>new.gdb,GRAPH_PATH,None<br>new.gdb,N_MOU_FUN_A,3DMeasuredMultiPolygon<br>new.gdb,N_MOU_FUN_P,3DMeasuredPoint<br>new.gdb,N_MOU_CAV_A,3DMeasuredMultiPolygon<br>new.gdb,N_MOU_CAV_P,3DMeasuredPoint<br>new.gdb,N_MOU_CRA_A,3DMeasuredMultiPolygon<br>new.gdb,N_MOU_CRA_P,3DMeasuredPoint<br>new.gdb,N_MOU_GUL_A,3DMeasuredMultiPolygon<br>new.gdb,N_MOU_GUL_L,3DMeasuredMultiLineString<br>new.gdb,N_MOU_GUL_P,3DMeasuredPoint<br>new.gdb,N_MOU_OTH_A,3DMeasuredMultiPolygon<br>new.gdb,N_MOU_OTH_P,3DMeasuredPoint<br>new.gdb,N_MOU_OTH_L,3DMeasuredMultiLineString<br>new.gdb,N_HYD_RIV_A,3DMeasuredMultiPolygon<br>new.gdb,N_HYD_RIV_L,3DMeasuredMultiLineString<br>new.gdb,N_HYD_RIV_P,3DMeasuredPoint<br>new.gdb,N_HYD_LAK_A,3DMeasuredMultiPolygon<br>new.gdb,N_HYD_LAK_L,3DMeasuredMultiLineString<br>new.gdb,N_HYD_LAK_P,3DMeasuredPoint<br>new.gdb,N_HYD_SPR_P,3DMeasuredPoint<br>new.gdb,N_HYD_FAL_L,3DMeasuredMultiLineString<br>new.gdb,N_HYD_FAL_P,3DMeasuredPoint<br>………………<br></code></pre></td></tr></table></figure><p>可以看到里面第一列是数据库名，第二列是数据图层名，第三列是数据类型，都是用逗号隔开的。使用Execl里面的数据加载功能，就可以制成表格了。</p><p><img src="/2024/04/01/GDAL%E8%A7%A3%E6%9E%90GDB%E6%95%B0%E6%8D%AE%E5%BA%93%E5%86%85%E5%AE%B9/e99df8d0ca8da666defe68a61d1b3a48.png"></p><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>虽然ArcGIS这样的成熟软件用的很方便，但这也注定了它的功能有限，满足不了现实情况五花八门的需求，这时候还得是靠基础工具，从更底层的轮子入手去解决问题。比如要获取图层的字段列表、属性域之类的就更复杂一点了。<br>还是多学学代码，总不会吃亏。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>学习</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>地理信息</tag>
+      
+      <tag>数据库</tag>
+      
+      <tag>GDAL</tag>
+      
+      <tag>CMD</tag>
+      
+      <tag>bat</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>部署MinDoc文档管理系统</title>
     <link href="/2024/03/22/%E9%83%A8%E7%BD%B2MinDoc%E6%96%87%E6%A1%A3%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F/"/>
     <url>/2024/03/22/%E9%83%A8%E7%BD%B2MinDoc%E6%96%87%E6%A1%A3%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F/</url>
