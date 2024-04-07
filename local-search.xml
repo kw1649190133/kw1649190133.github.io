@@ -4,6 +4,39 @@
   
   
   <entry>
+    <title>Arcpy解析GDB数据库内容</title>
+    <link href="/2024/04/07/Arcpy%E8%A7%A3%E6%9E%90GDB%E6%95%B0%E6%8D%AE%E5%BA%93%E5%86%85%E5%AE%B9/"/>
+    <url>/2024/04/07/Arcpy%E8%A7%A3%E6%9E%90GDB%E6%95%B0%E6%8D%AE%E5%BA%93%E5%86%85%E5%AE%B9/</url>
+    
+    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>今天要更进一步，需要导出数据库内每个要素的字段信息，包括字段名称、字段类型、字段长度等等。之前导出数据库的要素名称和数据类型是依靠GDAL来实现的，通过GDAL在Window环境的直接运行，加上一段我根本看不懂的抽象代码，就把要素类的名称和类型全部读完了。虽然完成了目标但依然云里雾里。<br>而经过多番尝试，最终还是觉得在ArcGIS环境自带的arcpy库来实现比较容易，什么QGIS、osgeo、GDAL属实是太抽象了。</p><h3 id="运行环境"><a href="#运行环境" class="headerlink" title="运行环境"></a>运行环境</h3><p>Windows11<br>ArcGIS10.4自带环境Python2.7</p><h2 id="获取字段信息"><a href="#获取字段信息" class="headerlink" title="获取字段信息"></a>获取字段信息</h2><p>在CSDN上抄了一段别人的代码，简单的实现数据库要素的字段信息获取。</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> arcpy<br>arcpy.env.workspace=<span class="hljs-string">r&#x27;H:\work\数据库核对\new.gdb&#x27;</span> <span class="hljs-comment">#数据空间，文件夹或者数据库</span><br>flds=arcpy.ListFields(<span class="hljs-string">r&#x27;兴趣点.shp&#x27;</span>) <span class="hljs-comment">#获取要素类的字段列表</span><br><span class="hljs-keyword">for</span> fld <span class="hljs-keyword">in</span> flds:<br><span class="hljs-built_in">print</span> fld.name,fld.<span class="hljs-built_in">type</span>,fld.length <span class="hljs-comment">#通过循环打印所有的字段名称、类型和长度</span><br></code></pre></td></tr></table></figure><p>运行结果：</p><figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs txt">SHAPE Geometry 0<br>OBJECTID OID 4<br>TYMC String 60<br>TYDM String 50<br>SJY String 50<br>GB String 7<br>CJSJ Date 8<br>GXSJ Date 8<br>XWSJ Date 8<br>SGVID String 50<br></code></pre></td></tr></table></figure><p>这么一来，只要给这个程序套上循环和文件写入，就可以轻松地将所有的图层的字段信息导出到其他文本里了，然后做数据对比和汇总就容易了。</p><h2 id="文件写入"><a href="#文件写入" class="headerlink" title="文件写入"></a>文件写入</h2><p>回顾C语言的文件读写，也是大致如此，一句话打开文件，一句话关闭文件。</p><figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs livecodeserver">f = <span class="hljs-built_in">open</span>(<span class="hljs-string">&#x27;H:\我的文件路径\output.txt&#x27;</span>，<span class="hljs-string">&#x27;w&#x27;</span>) <span class="hljs-comment"># 打开文件</span><br>f.<span class="hljs-built_in">write</span>() <span class="hljs-comment"># 写入内容。一个对象，对象必须是字符串，如果不是要进行转换。</span><br>f.<span class="hljs-built_in">close</span>() <span class="hljs-comment"># 关闭文件</span><br></code></pre></td></tr></table></figure><p>open的几种模式：</p><ul><li>r：表示文件只能读取</li><li>w：表示文件只能写入</li><li>a：表示打开文件，在原有内容的基础上追加内容，在末尾写入</li><li>w+:表示可以对文件进行读写双重操作</li></ul><p>python和C语言不太一样，它的输出是先写到缓存中的，有时候明明成功运行了代码，txt中却不见结果。为了避免这种情况可以用with来打开文件，避免直接使用open方法。<br>使用<strong>with语句</strong>可以自动管理文件的打开和关闭，避免了显式地调用open()和close()函数。这样就不会出现需要关掉python进程才会将缓存中的结果保存到文本中的情况。</p><p>到这一步的代码：</p><figure class="highlight plaintext"><figcaption><span>python</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs #">import arcpy<br>arcpy.env.workspace=r&#x27;H:\work\数据库核对\new.gdb&#x27; #数据库路径<br>flds=arcpy.ListFields(r&#x27;A_BLD_AFL_A&#x27;)#获取要素类的字段列表<br><br>with open(&#x27;H:\output.txt&#x27;, &#x27;w&#x27;) as file:<br><br>    for fld in flds:<br>        print fld.name,fld.type,fld.length#通过循环打印所有的字段名称、类型和长度<br>        # 将结果写入txt文件<br>        file.write(fld.name+&#x27;,&#x27;+fld.type+&#x27;,&#x27;+str(fld.length)+&#x27;\n&#x27;) #写入时配合逗号和换行对数据进行分隔。<br></code></pre></td></tr></table></figure><p>结果如下：<br><img src="/2024/04/07/Arcpy%E8%A7%A3%E6%9E%90GDB%E6%95%B0%E6%8D%AE%E5%BA%93%E5%86%85%E5%AE%B9/e9719fac6750f86d3dab99b0cf16518d.png"></p><p>接下来要实现要素类的迭代，也就是在现有程序的外面再套一层循环。</p><h2 id="循环读取要素类"><a href="#循环读取要素类" class="headerlink" title="循环读取要素类"></a>循环读取要素类</h2><p>之前通过循环读取字段，现在通过循环读取数据库内的所有要素类，总共两层循环。如果要读取多个数据库还需要加一层。</p><p>最终代码：</p><figure class="highlight plaintext"><figcaption><span>python</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs #">import arcpy<br>arcpy.env.workspace=r&#x27;H:\work\新疆地理实体项目\地理实体数据库核对\new.gdb&#x27;<br><br>fcs=arcpy.ListFeatureClasses() #直接获取GDB下的所有要素类<br>for fc in fcs: #循环所有要素类<br>    print(&#x27;-------&#x27; + fc)  # 打印要素类名称便于查看进度<br>    # cnt=int(arcpy.GetCount_management(fc).getOutput(0)) #获取该要素类的要素总个数<br>    # print fc,&quot; feature number is &quot;,cnt<br>    with open(&#x27;H:\output.txt&#x27;, &#x27;a&#x27;) as file: # 把要素名称也写到文件中<br>        file.write(&#x27;ClassName&#x27;+&#x27;,&#x27;+fc+&#x27;\n&#x27;)<br>    flds=arcpy.ListFields(fc)#获取要素类的字段列表<br>    for fld in flds: #循环所有字段<br>        print fld.name,fld.type,fld.length#通过循环打印所有的字段名称、类型和长度<br>        # 以追加写入模式打开txt<br>        with open(&#x27;H:\output.txt&#x27;, &#x27;a&#x27;) as file:<br>        # 将结果写入txt文件<br>            file.write(fld.name+&#x27;,&#x27;+fld.type+&#x27;,&#x27;+str(fld.length)+&#x27;\n&#x27;)<br></code></pre></td></tr></table></figure><p>一些不需要的功能暂时注释掉了，使用的时候只需要注意输入和输出数据的路径。<br>这里有一个小细节，print方法输出时在命令行里会自动换行，但write方法是没有自动换行的，和C语言一样要自己手动加。</p><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ol><li>需要的核心库是Arcpy，该库依赖于ArcGIS，自己安装比较麻烦，所以最简单的方法就是直接使用ArcGIS内置的Python环境。不需要打开ArcGIS，直接打开IDEL。</li><li>功能实现拆分成几个小目标：导出字段信息、循环要素类、文件读写，然后逐一实现。</li><li>实现最简单的文本写入之后，后面想改成csv写入、Excel写入也很容易。</li><li>将数据库信息导出后，才是更重要的内容：数据比较与核对，这方面非常简单，但有些繁琐，要想少些代码就需要一些结构上的设计。</li></ol>]]></content>
+    
+    
+    <categories>
+      
+      <category>学习</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>python</tag>
+      
+      <tag>Arcgis</tag>
+      
+      <tag>地理信息</tag>
+      
+      <tag>数据库</tag>
+      
+      <tag>GDB</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>GDAL解析GDB数据库内容</title>
     <link href="/2024/04/01/GDAL%E8%A7%A3%E6%9E%90GDB%E6%95%B0%E6%8D%AE%E5%BA%93%E5%86%85%E5%AE%B9/"/>
     <url>/2024/04/01/GDAL%E8%A7%A3%E6%9E%90GDB%E6%95%B0%E6%8D%AE%E5%BA%93%E5%86%85%E5%AE%B9/</url>
