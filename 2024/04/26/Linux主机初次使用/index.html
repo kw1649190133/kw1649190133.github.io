@@ -1,0 +1,717 @@
+
+
+<!DOCTYPE html>
+<html lang="CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Kwindy">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="设备名称规格OrangePI 5 plusRK358816G 256GBWIFI 蓝牙模块 网络问题因为之前买开发板的时候为了省钱暂时没有买WIFI和蓝牙模块，为了解决联网问题，现在暂时使用网线与Windows电脑直连，共享网络。通过网线直连上网的方式与系统无关，Windows和Linux都可以。 设置共享我的Windows电脑是通过WIFI上网的，而Linux主机通过网线与Windows电脑直连">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux主机初次使用">
+<meta property="og:url" content="http://kw1649190133.github.io/2024/04/26/Linux%E4%B8%BB%E6%9C%BA%E5%88%9D%E6%AC%A1%E4%BD%BF%E7%94%A8/index.html">
+<meta property="og:site_name" content="kw&#39;s blog">
+<meta property="og:description" content="设备名称规格OrangePI 5 plusRK358816G 256GBWIFI 蓝牙模块 网络问题因为之前买开发板的时候为了省钱暂时没有买WIFI和蓝牙模块，为了解决联网问题，现在暂时使用网线与Windows电脑直连，共享网络。通过网线直连上网的方式与系统无关，Windows和Linux都可以。 设置共享我的Windows电脑是通过WIFI上网的，而Linux主机通过网线与Windows电脑直连">
+<meta property="og:locale">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/04/26/Linux%E4%B8%BB%E6%9C%BA%E5%88%9D%E6%AC%A1%E4%BD%BF%E7%94%A8/c180f63a8db30e6ad19da61a271b32b1.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/04/26/Linux%E4%B8%BB%E6%9C%BA%E5%88%9D%E6%AC%A1%E4%BD%BF%E7%94%A8/d1a00e5edec8b36a1d33ec94fb87716e.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/04/26/Linux%E4%B8%BB%E6%9C%BA%E5%88%9D%E6%AC%A1%E4%BD%BF%E7%94%A8/54f9a884bec4457b39f29bbe0e8fd7f7.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/04/26/Linux%E4%B8%BB%E6%9C%BA%E5%88%9D%E6%AC%A1%E4%BD%BF%E7%94%A8/1dba3ac15f0107fe09694c6750b41ac9.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/04/26/Linux%E4%B8%BB%E6%9C%BA%E5%88%9D%E6%AC%A1%E4%BD%BF%E7%94%A8/5c7c39271e0be8f312f62287902b47f7.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/04/26/Linux%E4%B8%BB%E6%9C%BA%E5%88%9D%E6%AC%A1%E4%BD%BF%E7%94%A8/28ee61b9ee5ceccb46807c20deba8aab.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/04/26/Linux%E4%B8%BB%E6%9C%BA%E5%88%9D%E6%AC%A1%E4%BD%BF%E7%94%A8/b6565a338b626e11794d57a08178cd50.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/04/26/Linux%E4%B8%BB%E6%9C%BA%E5%88%9D%E6%AC%A1%E4%BD%BF%E7%94%A8/e1c15173df0ecc6d51a4730c9c22e96c.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/04/26/Linux%E4%B8%BB%E6%9C%BA%E5%88%9D%E6%AC%A1%E4%BD%BF%E7%94%A8/9486323ddfa5400e6b4d440f130186ca.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/04/26/Linux%E4%B8%BB%E6%9C%BA%E5%88%9D%E6%AC%A1%E4%BD%BF%E7%94%A8/fdaf37204b853efff17517a3eb8e57b3.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/04/26/Linux%E4%B8%BB%E6%9C%BA%E5%88%9D%E6%AC%A1%E4%BD%BF%E7%94%A8/5be5e3af1b23f64a0829879b4613ff72.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/04/26/Linux%E4%B8%BB%E6%9C%BA%E5%88%9D%E6%AC%A1%E4%BD%BF%E7%94%A8/dbf556a0949633eb4802f18cecd52c0b.png">
+<meta property="article:published_time" content="2024-04-26T08:22:30.000Z">
+<meta property="article:modified_time" content="2024-04-26T08:33:35.490Z">
+<meta property="article:author" content="Kwindy">
+<meta property="article:tag" content="远程控制">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="嵌入式">
+<meta property="article:tag" content="RK3588">
+<meta property="article:tag" content="arm64">
+<meta property="article:tag" content="单片机">
+<meta property="article:tag" content="网络">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://kw1649190133.github.io/2024/04/26/Linux%E4%B8%BB%E6%9C%BA%E5%88%9D%E6%AC%A1%E4%BD%BF%E7%94%A8/c180f63a8db30e6ad19da61a271b32b1.png">
+  
+  
+  
+  <title>Linux主机初次使用 - kw&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"kw1649190133.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Startseite</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archiv</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Kategorien</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Schlagwörter</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>Über</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Linux主机初次使用"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-04-26 16:22" pubdate>
+          April 26, 2024 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.4k wörter
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          29 minuten
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Linux主机初次使用</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="设备名称规格"><a href="#设备名称规格" class="headerlink" title="设备名称规格"></a>设备名称规格</h2><p>OrangePI 5 plus<br>RK3588<br>16G 256GB<br>WIFI 蓝牙模块</p>
+<h2 id="网络问题"><a href="#网络问题" class="headerlink" title="网络问题"></a>网络问题</h2><p>因为之前买开发板的时候为了省钱暂时没有买WIFI和蓝牙模块，为了解决联网问题，现在暂时使用网线与Windows电脑直连，共享网络。通过网线直连上网的方式与系统无关，Windows和Linux都可以。</p>
+<h3 id="设置共享"><a href="#设置共享" class="headerlink" title="设置共享"></a>设置共享</h3><p>我的Windows电脑是通过WIFI上网的，而Linux主机通过网线与Windows电脑直连。<br><img src="/2024/04/26/Linux%E4%B8%BB%E6%9C%BA%E5%88%9D%E6%AC%A1%E4%BD%BF%E7%94%A8/c180f63a8db30e6ad19da61a271b32b1.png" srcset="/img/loading.gif" lazyload><br>在WLAN的属性设置里修改网络的属性，把网络设置为共享，运行其他计算机通过本机上网。<br><img src="/2024/04/26/Linux%E4%B8%BB%E6%9C%BA%E5%88%9D%E6%AC%A1%E4%BD%BF%E7%94%A8/d1a00e5edec8b36a1d33ec94fb87716e.png" srcset="/img/loading.gif" lazyload></p>
+<h4 id="配置Windows电脑IP"><a href="#配置Windows电脑IP" class="headerlink" title="配置Windows电脑IP"></a>配置Windows电脑IP</h4><p>修改网线接口的IP地址。以太网-属性-IPV4，查看一下IP地址的设置，把IP改成手动设置，设一个内网IP（这里例如192.168.137.1，应该只要192.168开头都可以），子网掩码24位。<br><img src="/2024/04/26/Linux%E4%B8%BB%E6%9C%BA%E5%88%9D%E6%AC%A1%E4%BD%BF%E7%94%A8/54f9a884bec4457b39f29bbe0e8fd7f7.png" srcset="/img/loading.gif" lazyload></p>
+<h4 id="配置Linux主机IP"><a href="#配置Linux主机IP" class="headerlink" title="配置Linux主机IP"></a>配置Linux主机IP</h4><p>在Linux主机端，修改Linux主机的ID端口为192.168.137.2（编号随意，需要在网关之后），网关设为Windows电脑的端口IP，子网掩码24。<strong>DNS服务器地址写上网关的地址</strong>，否则无法使用域名访问。<br><img src="/2024/04/26/Linux%E4%B8%BB%E6%9C%BA%E5%88%9D%E6%AC%A1%E4%BD%BF%E7%94%A8/1dba3ac15f0107fe09694c6750b41ac9.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="遇到问题"><a href="#遇到问题" class="headerlink" title="遇到问题"></a>遇到问题</h3><p>通过网线直连之后，开发板已经可以直接通过IP地址访问我自己的服务器，但是输入域名后又无法访问。猜测应该是DNS的问题。<br>看了一圈网上的说法，有说去修改/etc/resolv.conf文件的，有说在ubantu下这个文件重启后就会被覆写，要去修改/etc/systemd/resolver.conf才行。在文件里直接添加nameserver IP地址的方法，在一些更简洁朴素的Linux系统里是可以的，但ubantu20.04不行，这个文件已经被架空了，实际上已经不起作用，权限也变了根本改不了。<br>而我折腾了半天无果后，最后直接在DNS服务器的地址写上Windows电脑的地址，然后重启，问题就解决了。<br>原因就是DNS解析失败，修改文件也是为了添加DNS地址，而ubantu在有桌面的情况下可以通过网络设置界面直接修改DNS服务器地址就可以了。</p>
+<h3 id="遇到问题2"><a href="#遇到问题2" class="headerlink" title="遇到问题2"></a>遇到问题2</h3><p>在使用这种直连的方式上了一天网之后，后面尝试安装了许多远程桌面的软件，最后成功用上NoMachine。但是网络却出问题了，虽然远程桌面可以正常使用，但是无论是IP还是域名都无法访问网站，说明网线物理层应该是接好的，但IP地址之类的网络层设置有问题，搞不明白。反正购买的WIFI模块和外置无线网卡也到了，应该可以绕开这个问题。</p>
+<p>尝试重启网络服务</p>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ebnf"><span class="hljs-attribute">sudo systemctl restart NetworkManager</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="软件安装"><a href="#软件安装" class="headerlink" title="软件安装"></a>软件安装</h2><p>安装软件之前如果不确定系统的架构，可以使用：<strong>显示系统架构</strong></p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cmd">sudo dpkg --<span class="hljs-built_in">print</span>-architecture<br></code></pre></td></tr></table></figure>
+<h3 id="deb安装"><a href="#deb安装" class="headerlink" title="deb安装"></a>deb安装</h3><ul>
+<li>使用软件中心安装</li>
+<li>使用Gdebi安装。软件中心虽然很方便，但它并不能解决软件安装时的依赖问题，而使用Gdebi<br>可以直接使用apt指令来安装gdebi。<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cmd">sudo apt install gdebi<br></code></pre></td></tr></table></figure>
+打开某个端口的指令<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs CMD">sudo ufw allow from any to any port <span class="hljs-number">3389</span> proto tcp<br>sudo fuw reload<br></code></pre></td></tr></table></figure>
+<h3 id="软件包删除"><a href="#软件包删除" class="headerlink" title="软件包删除"></a>软件包删除</h3></li>
+</ul>
+<p>通过指令可以获取所有已安装的软件包列表。可以通过grep + 名称包含字符串的方式来缩小查询范围。</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cmd">sudo apt list --installed | grep (软件名称包含的字符串)<br></code></pre></td></tr></table></figure>
+<p>使用remove指令删除指定名称的包</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cmd">sudo apt remove program_name<br></code></pre></td></tr></table></figure>
+
+<h3 id="Joplin"><a href="#Joplin" class="headerlink" title="Joplin"></a>Joplin</h3><p>虽然在探索的时候各种碰壁，但是在翻看应用商店的时候意外的找到了Joplin，这下虽然别的没解决，记笔记的需求倒是意外解决了。但是这又出现了新的问题，还不懂怎么截图，而且现在不知道为何无法输入中文。</p>
+<h2 id="远程桌面"><a href="#远程桌面" class="headerlink" title="远程桌面"></a>远程桌面</h2><p>虽然Linux的一般用法就是直接通过命令行空值，不是很需要桌面系统，但对于初学者来说，有桌面还是更简单直观一点，没有必要折磨自己。当然命令行也是必须掌握的交互方式，只是说二者并不冲突，而且后面要做摄像头相关的应用，还是离不开画面。<br>之前使用过的AirDroid Cast主要支持电脑与手机间的投射（Windows/MacOS/IOS/Android），但是它不支持Linux，所以只能另寻它法。而可以通过网络连接的远程桌面软件就很多了，除了比较早的teamviewer，向日葵，还有AndDesk。现在开始逐一尝试有没有能用的。</p>
+<h3 id="AnyDesk"><a href="#AnyDesk" class="headerlink" title="AnyDesk"></a>AnyDesk</h3><p>据小道消息，Anydesk是前TeamViewer开发小组人员自立门户的产品，可以说是在TeamViewer现有的基础上进行改良、加强的版本，并且Anydesk支持更多不同的系统间的远程访问。<br>但是无论是是那个版本的Anydesk都安装不了。目前尝试了Amd64版，armlf版，都无法安装。</p>
+<p>安装报错：<br><code>package architecture（amd64） does not match system(armhf)</code><br>这就说明架构不符合，无法安装。</p>
+<h3 id="Xrdp"><a href="#Xrdp" class="headerlink" title="Xrdp"></a>Xrdp</h3><p>Xrdp是一个开源工具，允许用户通过Windows RDP访问Linux远程桌面。<br>需要在Linux端安装Xrdp。<br>按照网上找到代码，分别输入了几条指令</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs Linux"><br></code></pre></td></tr></table></figure>
+<p>通过输入IP可以访问到Linux主机，可以来到输入用户名和密码的界面。<br><img src="/2024/04/26/Linux%E4%B8%BB%E6%9C%BA%E5%88%9D%E6%AC%A1%E4%BD%BF%E7%94%A8/5c7c39271e0be8f312f62287902b47f7.png" srcset="/img/loading.gif" lazyload></p>
+<p>但是实际连接后只得到一个蓝底桌面。过了一会之后弹了一个logs记录，并不能正常进入桌面。<br><img src="/2024/04/26/Linux%E4%B8%BB%E6%9C%BA%E5%88%9D%E6%AC%A1%E4%BD%BF%E7%94%A8/28ee61b9ee5ceccb46807c20deba8aab.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="TeamViewer"><a href="#TeamViewer" class="headerlink" title="TeamViewer"></a>TeamViewer</h3><p>TeamViewer是很久以前就出现的远程控制软件了，现在它的支持面也是比较广的，包含了各种主流系统。虽然体积有点大，但用起来也是真的简单方便。<br>不是不想用这个老牌软件，只是碰到了注册问题，实在是麻烦，无法解决。<br><img src="/2024/04/26/Linux%E4%B8%BB%E6%9C%BA%E5%88%9D%E6%AC%A1%E4%BD%BF%E7%94%A8/b6565a338b626e11794d57a08178cd50.png" srcset="/img/loading.gif" lazyload><br>TeamViewer理论上应该也是能用的，只是现在所有的用户都需要注册才能使用，而我的手机号在几年前就注册过了，然后好久没用好像账号被删除了，而注册新用户又用不了现在唯一的手机号。结果就是软件都装好了但是不能用。</p>
+<h3 id="向日葵"><a href="#向日葵" class="headerlink" title="向日葵"></a>向日葵</h3><p>向日葵虽然可以安装arm64位的麒麟处理器版本，也可以正常启动，但是一启动就会闪退。不太懂有没有一般arm的专门版本。<br>我的Linux主机系统架构是arm64的，核心是RK3588，而向日葵里没有几个arm选项，麒麟和UOS的安装包也试过了，都不行。<br><img src="/2024/04/26/Linux%E4%B8%BB%E6%9C%BA%E5%88%9D%E6%AC%A1%E4%BD%BF%E7%94%A8/e1c15173df0ecc6d51a4730c9c22e96c.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="NoMachine"><a href="#NoMachine" class="headerlink" title="NoMachine"></a>NoMachine</h3><p>NoMachine也是类似TeamViewer的软件，但是支持的面也挺广的，Windows、Linux、Mac、Android、IOS，最关键的是有专门对ARM的支持。<br>官网地址：<a target="_blank" rel="noopener" href="https://www.nomachine.com/">https://www.nomachine.com/</a><br>下载页面：<a target="_blank" rel="noopener" href="https://downloads.nomachine.com/">https://downloads.nomachine.com/</a></p>
+<p>在下面找到ARM版本的下载，选择ARMv8的DEB安装包下载<br><img src="/2024/04/26/Linux%E4%B8%BB%E6%9C%BA%E5%88%9D%E6%AC%A1%E4%BD%BF%E7%94%A8/9486323ddfa5400e6b4d440f130186ca.png" srcset="/img/loading.gif" lazyload></p>
+<p>使用安装工具打开进行安装。这里选择了比较好用的GDebi。<br><img src="/2024/04/26/Linux%E4%B8%BB%E6%9C%BA%E5%88%9D%E6%AC%A1%E4%BD%BF%E7%94%A8/fdaf37204b853efff17517a3eb8e57b3.png" srcset="/img/loading.gif" lazyload><br>两边都装好后虽然可以正常打开，但是画面全花，原因不明。都到这一步了没想到也会遇到问题，只能先试试其他方法了。<br><img src="/2024/04/26/Linux%E4%B8%BB%E6%9C%BA%E5%88%9D%E6%AC%A1%E4%BD%BF%E7%94%A8/5be5e3af1b23f64a0829879b4613ff72.png" srcset="/img/loading.gif" lazyload></p>
+<p>后来放了一会没管，去研究其他方法了。然后突然遇到了网络问题，Linux连不上网络了，已经插了网线但IP地址和域名都用不了。在网络用不了的时候，想看看这个基于局域网的NoMachine还能不能用，结果意外的发现，不仅能用，而且画面还正常了？<br><img src="/2024/04/26/Linux%E4%B8%BB%E6%9C%BA%E5%88%9D%E6%AC%A1%E4%BD%BF%E7%94%A8/dbf556a0949633eb4802f18cecd52c0b.png" srcset="/img/loading.gif" lazyload><br>搞不明白，这应该算是能用吧……虽然不知道以后还会不会出问题。</p>
+<h3 id="其他方案"><a href="#其他方案" class="headerlink" title="其他方案"></a>其他方案</h3><ul>
+<li>VNC 需要再linux端装server，在Windows端装viewer。到一半放弃了。</li>
+<li>ToDesk 听说也非常不错，没试过。</li>
+<li>Remmina 开源，功能强大，口碑不错，支持多种协议，包括 RDP、VNC、SPICE、X2GO、SSH 和 HTTP(S)。有空可以试一试。</li>
+<li>X2Go</li>
+<li>KRDC<br>还有很多其他软件，时间有限就不尝试了。</li>
+</ul>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>Linux只是一种内核，而基于它的ubantu、Debian、Android等等，都是完全不同的东西，甚至ubantu不同版本之间的文件结构都会有区别。很多我们习以为常的操作，包括语言、输入法、上网、文件管理、截图等等，在Linux上可能会碰上各种意想不到的状况。有对比才会明白，Windows虽然臃肿，但兼容性和稳定性也真是高不少。例如只是安装一个程序，Windows只需要运行一下exe就可以了，最多选一下系统架构和系统位数；而linux，需要考虑的东西就多得多，从架构到依赖包，什么情况都有。<br>但Linux也有它的优势，它简单、高效、灵活，轻量，可以高度定制，而且可以避免一些复杂的Windows上会遇到的问题。虽然折腾起来麻烦，但收获也可以很多，可以更好的让人理解计算机的底层原理。</p>
+<p>真令人头大</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0/" class="category-chain-item">学习</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E8%BF%9C%E7%A8%8B%E6%8E%A7%E5%88%B6/">#远程控制</a>
+      
+        <a href="/tags/Linux/">#Linux</a>
+      
+        <a href="/tags/%E5%B5%8C%E5%85%A5%E5%BC%8F/">#嵌入式</a>
+      
+        <a href="/tags/RK3588/">#RK3588</a>
+      
+        <a href="/tags/arm64/">#arm64</a>
+      
+        <a href="/tags/%E5%8D%95%E7%89%87%E6%9C%BA/">#单片机</a>
+      
+        <a href="/tags/%E7%BD%91%E7%BB%9C/">#网络</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Linux主机初次使用</div>
+      <div>http://kw1649190133.github.io/2024/04/26/Linux主机初次使用/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Beitragsautor</div>
+          <div>Kwindy</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Veröffentlicht am</div>
+          <div>April 26, 2024</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Urheberrechtshinweis</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/04/26/%E4%BD%BF%E7%94%A8Arcpy%E8%BF%9B%E8%A1%8CGDB%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AD%97%E6%AE%B5%E8%B4%A8%E6%A3%80/" title="使用Arcpy进行GDB数据库字段质检">
+                        <span class="hidden-mobile">使用Arcpy进行GDB数据库字段质检</span>
+                        <span class="visible-mobile">Nächster</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Inhaltsverzeichnis</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Suchen</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Stichwort</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog funktioniert am besten mit aktiviertem JavaScript</div>
+  </noscript>
+</body>
+</html>

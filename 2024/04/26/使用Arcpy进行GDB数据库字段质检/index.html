@@ -1,0 +1,674 @@
+
+
+<!DOCTYPE html>
+<html lang="CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Kwindy">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="前言之前使用Arcpy已经可以轻松导出GDB数据库所有要素类的字段信息，已经解决了最难的部分，而数据的对比和验证，都是可以在Python实现的，难点主要在结构设计上，质检规则怎么录入、数据如何比对，错误如何反馈等等，以及除了最小功能可用性，如何扩展易维护性。 数据库字段对比本来设想用一个字符串数组来保存数据检查的状态，也就是简单朴素的错误代码，在以前用C语言的时候屡试不爽，但是在运行时发现了问题。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用Arcpy进行GDB数据库字段质检">
+<meta property="og:url" content="http://kw1649190133.github.io/2024/04/26/%E4%BD%BF%E7%94%A8Arcpy%E8%BF%9B%E8%A1%8CGDB%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AD%97%E6%AE%B5%E8%B4%A8%E6%A3%80/index.html">
+<meta property="og:site_name" content="kw&#39;s blog">
+<meta property="og:description" content="前言之前使用Arcpy已经可以轻松导出GDB数据库所有要素类的字段信息，已经解决了最难的部分，而数据的对比和验证，都是可以在Python实现的，难点主要在结构设计上，质检规则怎么录入、数据如何比对，错误如何反馈等等，以及除了最小功能可用性，如何扩展易维护性。 数据库字段对比本来设想用一个字符串数组来保存数据检查的状态，也就是简单朴素的错误代码，在以前用C语言的时候屡试不爽，但是在运行时发现了问题。">
+<meta property="og:locale">
+<meta property="article:published_time" content="2024-04-26T08:13:55.000Z">
+<meta property="article:modified_time" content="2024-04-26T08:16:04.305Z">
+<meta property="article:author" content="Kwindy">
+<meta property="article:tag" content="地理信息">
+<meta property="article:tag" content="数据库">
+<meta property="article:tag" content="GDB">
+<meta property="article:tag" content="Arcpy">
+<meta property="article:tag" content="字段检查">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>使用Arcpy进行GDB数据库字段质检 - kw&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"kw1649190133.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Startseite</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archiv</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Kategorien</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Schlagwörter</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>Über</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="使用Arcpy进行GDB数据库字段质检"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-04-26 16:13" pubdate>
+          April 26, 2024 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.4k wörter
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          29 minuten
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">使用Arcpy进行GDB数据库字段质检</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>之前使用Arcpy已经可以轻松导出GDB数据库所有要素类的字段信息，已经解决了最难的部分，而数据的对比和验证，都是可以在Python实现的，难点主要在结构设计上，质检规则怎么录入、数据如何比对，错误如何反馈等等，以及除了最小功能可用性，如何扩展易维护性。</p>
+<h1 id="数据库字段对比"><a href="#数据库字段对比" class="headerlink" title="数据库字段对比"></a>数据库字段对比</h1><p>本来设想用一个字符串数组来保存数据检查的状态，也就是简单朴素的错误代码，在以前用C语言的时候屡试不爽，但是在运行时发现了问题。Python的字符串数组和C语言还是不太一样的。</p>
+<h2 id="Python字符串不可变特性"><a href="#Python字符串不可变特性" class="headerlink" title="Python字符串不可变特性"></a>Python字符串不可变特性</h2><p>在Python中，字符串是不可变的，这意味着你不能直接修改字符串中的单个字符。当你尝试执行类似<code>str[2] = &#39;0&#39;</code>这样的操作时，你会得到一个<code>TypeError: &#39;str&#39; object does not support item assignment</code>的错误，因为字符串不支持通过索引来赋值。<br>所以一般通过三种方式来解决字符串赋值的问题。</p>
+<h3 id="字符串拼接"><a href="#字符串拼接" class="headerlink" title="字符串拼接"></a>字符串拼接</h3><p>可以通过连接一个新的字符串来实现修改，但这并不是真正的修改原字符串，而是创建了一个全新的字符串。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Python">original_str = <span class="hljs-string">&quot;12345&quot;</span><br>new_str = original_str[:<span class="hljs-number">2</span>] + <span class="hljs-string">&quot;0&quot;</span> + original_str[<span class="hljs-number">3</span>:]<br></code></pre></td></tr></table></figure>
+
+<h3 id="字符串转换为列表"><a href="#字符串转换为列表" class="headerlink" title="字符串转换为列表"></a>字符串转换为列表</h3><p>可以将字符串转换为字符列表，然后修改列表中的元素，最后再将列表转换回字符串。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Python">original_str = <span class="hljs-string">&quot;12345&quot;</span><br>char_list = <span class="hljs-built_in">list</span>(original_str)<br>char_list[<span class="hljs-number">2</span>] = <span class="hljs-string">&#x27;0&#x27;</span><br>new_str = <span class="hljs-string">&#x27;&#x27;</span>.join(char_list)<br></code></pre></td></tr></table></figure>
+
+<h3 id="replace方法"><a href="#replace方法" class="headerlink" title="replace方法"></a>replace方法</h3><p>可以用replace来替换字符串中的特定部分</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Python">original_str = <span class="hljs-string">&quot;12345&quot;</span><br>new_str = original_str.replace(<span class="hljs-string">&#x27;3&#x27;</span>, <span class="hljs-string">&#x27;0&#x27;</span>)<br></code></pre></td></tr></table></figure>
+
+<h2 id="全部代码"><a href="#全部代码" class="headerlink" title="全部代码"></a>全部代码</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><code class="hljs Python"><span class="hljs-keyword">import</span> arcpy<br>arcpy.env.workspace=<span class="hljs-string">r&#x27;H:\work\数据库核对\new.gdb&#x27;</span><br>outputpath=<span class="hljs-string">&#x27;H:\output.txt&#x27;</span>  <span class="hljs-comment">#把输入与输出放到前面便于调整</span><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">notgeneral</span>(<span class="hljs-params">fldname</span>):  <span class="hljs-comment">#检测目标字段是否为通用字段。不是则返回true。</span><br>    allowed_values = <span class="hljs-built_in">set</span>([<span class="hljs-string">&quot;SGVID&quot;</span>, <span class="hljs-string">&quot;TYMC&quot;</span>, <span class="hljs-string">&quot;TYDM&quot;</span>, <span class="hljs-string">&quot;SJY&quot;</span>, <span class="hljs-string">&quot;GB&quot;</span>, <span class="hljs-string">&quot;CJSJ&quot;</span>, <span class="hljs-string">&quot;GXSJ&quot;</span>, <span class="hljs-string">&quot;XWSJ&quot;</span>])<br>    <span class="hljs-keyword">if</span> fldname <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> allowed_values:<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span><br>    <span class="hljs-keyword">else</span>:<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">ganeralcheak</span>(<span class="hljs-params">flds</span>): <span class="hljs-comment">#检测通用字段的方法。只检查名称、类型、长度</span><br>    errorcode = [<span class="hljs-string">&#x27;11111111&#x27;</span>] <span class="hljs-comment"># 重置错误代码</span><br>    errorcodelist=<span class="hljs-built_in">list</span>(errorcode[<span class="hljs-number">0</span>]) <span class="hljs-comment"># 将errorcode字符串转换成列表</span><br>    <span class="hljs-keyword">for</span> fld <span class="hljs-keyword">in</span> flds: <span class="hljs-comment">#循环所有字段</span><br>        <span class="hljs-keyword">if</span> fld.name==<span class="hljs-string">&#x27;SGVID&#x27;</span> <span class="hljs-keyword">and</span> fld.<span class="hljs-built_in">type</span>==<span class="hljs-string">&#x27;String&#x27;</span><span class="hljs-keyword">and</span> fld.length==<span class="hljs-number">50</span>:<br>            errorcodelist[<span class="hljs-number">0</span>]=<span class="hljs-string">&#x27;0&#x27;</span><br>        <span class="hljs-keyword">elif</span> fld.name==<span class="hljs-string">&#x27;TYMC&#x27;</span><span class="hljs-keyword">and</span> fld.<span class="hljs-built_in">type</span>==<span class="hljs-string">&#x27;String&#x27;</span><span class="hljs-keyword">and</span> fld.length==<span class="hljs-number">60</span>:<br>            errorcodelist[<span class="hljs-number">1</span>]=<span class="hljs-string">&#x27;0&#x27;</span><br>        <span class="hljs-keyword">elif</span> fld.name==<span class="hljs-string">&#x27;TYDM&#x27;</span><span class="hljs-keyword">and</span> fld.<span class="hljs-built_in">type</span>==<span class="hljs-string">&#x27;String&#x27;</span><span class="hljs-keyword">and</span> fld.length==<span class="hljs-number">50</span>:<br>            errorcodelist[<span class="hljs-number">2</span>]=<span class="hljs-string">&#x27;0&#x27;</span><br>        <span class="hljs-keyword">elif</span> fld.name==<span class="hljs-string">&#x27;SJY&#x27;</span> <span class="hljs-keyword">and</span> fld.<span class="hljs-built_in">type</span>==<span class="hljs-string">&#x27;String&#x27;</span><span class="hljs-keyword">and</span> fld.length==<span class="hljs-number">50</span>:<br>            errorcodelist[<span class="hljs-number">3</span>]=<span class="hljs-string">&#x27;0&#x27;</span><br>        <span class="hljs-keyword">elif</span> fld.name==<span class="hljs-string">&#x27;GB&#x27;</span> <span class="hljs-keyword">and</span> fld.<span class="hljs-built_in">type</span>==<span class="hljs-string">&#x27;String&#x27;</span><span class="hljs-keyword">and</span> fld.length==<span class="hljs-number">7</span>:<br>            errorcodelist[<span class="hljs-number">4</span>]=<span class="hljs-string">&#x27;0&#x27;</span><br>        <span class="hljs-keyword">elif</span> fld.name==<span class="hljs-string">&#x27;CJSJ&#x27;</span><span class="hljs-keyword">and</span> fld.<span class="hljs-built_in">type</span>==<span class="hljs-string">&#x27;Date&#x27;</span>:<br>            errorcodelist[<span class="hljs-number">5</span>]=<span class="hljs-string">&#x27;0&#x27;</span><br>        <span class="hljs-keyword">elif</span> fld.name==<span class="hljs-string">&#x27;GXSJ&#x27;</span><span class="hljs-keyword">and</span> fld.<span class="hljs-built_in">type</span>==<span class="hljs-string">&#x27;Date&#x27;</span>:<br>            errorcodelist[<span class="hljs-number">6</span>]=<span class="hljs-string">&#x27;0&#x27;</span><br>        <span class="hljs-keyword">elif</span> fld.name==<span class="hljs-string">&#x27;XWSJ&#x27;</span><span class="hljs-keyword">and</span> fld.<span class="hljs-built_in">type</span>==<span class="hljs-string">&#x27;Date&#x27;</span>:<br>            errorcodelist[<span class="hljs-number">7</span>]=<span class="hljs-string">&#x27;0&#x27;</span><br>    errorcode = <span class="hljs-string">&#x27;&#x27;</span>.join(errorcodelist)<br>    <span class="hljs-keyword">if</span> (errorcode == <span class="hljs-string">&#x27;00000000&#x27;</span>): <span class="hljs-comment">#通用属性检测无误</span><br>        <span class="hljs-built_in">print</span> (<span class="hljs-string">&#x27;ganeral attributes pass.&#x27;</span>)<br>    <span class="hljs-keyword">else</span>:<br>        <span class="hljs-built_in">print</span> (<span class="hljs-string">&#x27;error_code:&#x27;</span>+errorcode)<br><br><span class="hljs-comment"># 主要代码</span><br>fcs=arcpy.ListFeatureClasses() <span class="hljs-comment">#直接获取GDB下的所有要素类</span><br><span class="hljs-keyword">for</span> fc <span class="hljs-keyword">in</span> fcs: <span class="hljs-comment">#循环所有要素类</span><br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;-------&#x27;</span> + fc)  <span class="hljs-comment"># 打印要素类名称便于查看进度</span><br>    <span class="hljs-comment"># cnt=int(arcpy.GetCount_management(fc).getOutput(0)) #获取该要素类的要素总个数</span><br>    <span class="hljs-comment"># print fc,&quot; feature number is &quot;,cnt</span><br>    <span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(outputpath, <span class="hljs-string">&#x27;a&#x27;</span>) <span class="hljs-keyword">as</span> file: <span class="hljs-comment"># 把要素名称也写到文件中</span><br>        file.write(<span class="hljs-string">&#x27;ClassName&#x27;</span>+<span class="hljs-string">&#x27;,&#x27;</span>+fc+<span class="hljs-string">&#x27;\n&#x27;</span>)<br><br>    flds=arcpy.ListFields(fc)<span class="hljs-comment">#获取要素类的字段列表</span><br>    ganeralcheak(flds)<br>    <span class="hljs-keyword">for</span> fld <span class="hljs-keyword">in</span> flds: <span class="hljs-comment">#循环所有字段</span><br>        <span class="hljs-keyword">if</span> (notgeneral(fld.name)): <span class="hljs-comment"># 检测到非通用属性</span><br>            <span class="hljs-built_in">print</span> fld.name,fld.<span class="hljs-built_in">type</span>,fld.length<span class="hljs-comment">#通过循环打印所有的字段名称、类型和长度</span><br>              <span class="hljs-comment"># 以追加写入模式打开txt</span><br>            <span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(outputpath, <span class="hljs-string">&#x27;a&#x27;</span>) <span class="hljs-keyword">as</span> file:<br>              <span class="hljs-comment"># 将结果写入txt文件</span><br>                file.write(fld.name+<span class="hljs-string">&#x27;,&#x27;</span>+fld.<span class="hljs-built_in">type</span>+<span class="hljs-string">&#x27;,&#x27;</span>+<span class="hljs-built_in">str</span>(fld.length)+<span class="hljs-string">&#x27;\n&#x27;</span>)<br><br></code></pre></td></tr></table></figure>
+
+<p>相比之前增加了核对通用字段的功能，同时调整了一下代码结构。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>当前算是基本完成了本次任务要实现的功能，但是未来可能还会有很多类似的需求，质检数据库算是经常会用到的刚需工具了，趁此次机会记录下探索过程，以后代码还可以复用。<br>之后还可以实现数据库内容批量检查之类的操作。虽然DataReviewer之类的工具也是挺方便的，但是自由度也比较有限，要一个个图层点点点也比较繁琐。python这种更为原始和直接的手段还是非常有用的。<br>像这样子把质检规则写在代码里其实非常不方便，更好的做法还是把规则写在表里，这样更方便管理。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0/" class="category-chain-item">学习</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E5%9C%B0%E7%90%86%E4%BF%A1%E6%81%AF/">#地理信息</a>
+      
+        <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/">#数据库</a>
+      
+        <a href="/tags/GDB/">#GDB</a>
+      
+        <a href="/tags/Arcpy/">#Arcpy</a>
+      
+        <a href="/tags/%E5%AD%97%E6%AE%B5%E6%A3%80%E6%9F%A5/">#字段检查</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>使用Arcpy进行GDB数据库字段质检</div>
+      <div>http://kw1649190133.github.io/2024/04/26/使用Arcpy进行GDB数据库字段质检/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Beitragsautor</div>
+          <div>Kwindy</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Veröffentlicht am</div>
+          <div>April 26, 2024</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Urheberrechtshinweis</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/04/26/Linux%E4%B8%BB%E6%9C%BA%E5%88%9D%E6%AC%A1%E4%BD%BF%E7%94%A8/" title="Linux主机初次使用">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Linux主机初次使用</span>
+                        <span class="visible-mobile">Vorheriger</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/04/26/2023%E5%B9%B4%E5%BA%A6%E6%80%BB%E7%BB%93/" title="2023年度总结">
+                        <span class="hidden-mobile">2023年度总结</span>
+                        <span class="visible-mobile">Nächster</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Inhaltsverzeichnis</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Suchen</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Stichwort</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog funktioniert am besten mit aktiviertem JavaScript</div>
+  </noscript>
+</body>
+</html>

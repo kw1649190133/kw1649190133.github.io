@@ -4,6 +4,101 @@
   
   
   <entry>
+    <title>Linux主机初次使用</title>
+    <link href="/2024/04/26/Linux%E4%B8%BB%E6%9C%BA%E5%88%9D%E6%AC%A1%E4%BD%BF%E7%94%A8/"/>
+    <url>/2024/04/26/Linux%E4%B8%BB%E6%9C%BA%E5%88%9D%E6%AC%A1%E4%BD%BF%E7%94%A8/</url>
+    
+    <content type="html"><![CDATA[<h2 id="设备名称规格"><a href="#设备名称规格" class="headerlink" title="设备名称规格"></a>设备名称规格</h2><p>OrangePI 5 plus<br>RK3588<br>16G 256GB<br>WIFI 蓝牙模块</p><h2 id="网络问题"><a href="#网络问题" class="headerlink" title="网络问题"></a>网络问题</h2><p>因为之前买开发板的时候为了省钱暂时没有买WIFI和蓝牙模块，为了解决联网问题，现在暂时使用网线与Windows电脑直连，共享网络。通过网线直连上网的方式与系统无关，Windows和Linux都可以。</p><h3 id="设置共享"><a href="#设置共享" class="headerlink" title="设置共享"></a>设置共享</h3><p>我的Windows电脑是通过WIFI上网的，而Linux主机通过网线与Windows电脑直连。<br><img src="/2024/04/26/Linux%E4%B8%BB%E6%9C%BA%E5%88%9D%E6%AC%A1%E4%BD%BF%E7%94%A8/c180f63a8db30e6ad19da61a271b32b1.png"><br>在WLAN的属性设置里修改网络的属性，把网络设置为共享，运行其他计算机通过本机上网。<br><img src="/2024/04/26/Linux%E4%B8%BB%E6%9C%BA%E5%88%9D%E6%AC%A1%E4%BD%BF%E7%94%A8/d1a00e5edec8b36a1d33ec94fb87716e.png"></p><h4 id="配置Windows电脑IP"><a href="#配置Windows电脑IP" class="headerlink" title="配置Windows电脑IP"></a>配置Windows电脑IP</h4><p>修改网线接口的IP地址。以太网-属性-IPV4，查看一下IP地址的设置，把IP改成手动设置，设一个内网IP（这里例如192.168.137.1，应该只要192.168开头都可以），子网掩码24位。<br><img src="/2024/04/26/Linux%E4%B8%BB%E6%9C%BA%E5%88%9D%E6%AC%A1%E4%BD%BF%E7%94%A8/54f9a884bec4457b39f29bbe0e8fd7f7.png"></p><h4 id="配置Linux主机IP"><a href="#配置Linux主机IP" class="headerlink" title="配置Linux主机IP"></a>配置Linux主机IP</h4><p>在Linux主机端，修改Linux主机的ID端口为192.168.137.2（编号随意，需要在网关之后），网关设为Windows电脑的端口IP，子网掩码24。<strong>DNS服务器地址写上网关的地址</strong>，否则无法使用域名访问。<br><img src="/2024/04/26/Linux%E4%B8%BB%E6%9C%BA%E5%88%9D%E6%AC%A1%E4%BD%BF%E7%94%A8/1dba3ac15f0107fe09694c6750b41ac9.png"></p><h3 id="遇到问题"><a href="#遇到问题" class="headerlink" title="遇到问题"></a>遇到问题</h3><p>通过网线直连之后，开发板已经可以直接通过IP地址访问我自己的服务器，但是输入域名后又无法访问。猜测应该是DNS的问题。<br>看了一圈网上的说法，有说去修改/etc/resolv.conf文件的，有说在ubantu下这个文件重启后就会被覆写，要去修改/etc/systemd/resolver.conf才行。在文件里直接添加nameserver IP地址的方法，在一些更简洁朴素的Linux系统里是可以的，但ubantu20.04不行，这个文件已经被架空了，实际上已经不起作用，权限也变了根本改不了。<br>而我折腾了半天无果后，最后直接在DNS服务器的地址写上Windows电脑的地址，然后重启，问题就解决了。<br>原因就是DNS解析失败，修改文件也是为了添加DNS地址，而ubantu在有桌面的情况下可以通过网络设置界面直接修改DNS服务器地址就可以了。</p><h3 id="遇到问题2"><a href="#遇到问题2" class="headerlink" title="遇到问题2"></a>遇到问题2</h3><p>在使用这种直连的方式上了一天网之后，后面尝试安装了许多远程桌面的软件，最后成功用上NoMachine。但是网络却出问题了，虽然远程桌面可以正常使用，但是无论是IP还是域名都无法访问网站，说明网线物理层应该是接好的，但IP地址之类的网络层设置有问题，搞不明白。反正购买的WIFI模块和外置无线网卡也到了，应该可以绕开这个问题。</p><p>尝试重启网络服务</p><figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ebnf"><span class="hljs-attribute">sudo systemctl restart NetworkManager</span><br></code></pre></td></tr></table></figure><h2 id="软件安装"><a href="#软件安装" class="headerlink" title="软件安装"></a>软件安装</h2><p>安装软件之前如果不确定系统的架构，可以使用：<strong>显示系统架构</strong></p><figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cmd">sudo dpkg --<span class="hljs-built_in">print</span>-architecture<br></code></pre></td></tr></table></figure><h3 id="deb安装"><a href="#deb安装" class="headerlink" title="deb安装"></a>deb安装</h3><ul><li>使用软件中心安装</li><li>使用Gdebi安装。软件中心虽然很方便，但它并不能解决软件安装时的依赖问题，而使用Gdebi<br>可以直接使用apt指令来安装gdebi。<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cmd">sudo apt install gdebi<br></code></pre></td></tr></table></figure>打开某个端口的指令<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs CMD">sudo ufw allow from any to any port <span class="hljs-number">3389</span> proto tcp<br>sudo fuw reload<br></code></pre></td></tr></table></figure><h3 id="软件包删除"><a href="#软件包删除" class="headerlink" title="软件包删除"></a>软件包删除</h3></li></ul><p>通过指令可以获取所有已安装的软件包列表。可以通过grep + 名称包含字符串的方式来缩小查询范围。</p><figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cmd">sudo apt list --installed | grep (软件名称包含的字符串)<br></code></pre></td></tr></table></figure><p>使用remove指令删除指定名称的包</p><figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cmd">sudo apt remove program_name<br></code></pre></td></tr></table></figure><h3 id="Joplin"><a href="#Joplin" class="headerlink" title="Joplin"></a>Joplin</h3><p>虽然在探索的时候各种碰壁，但是在翻看应用商店的时候意外的找到了Joplin，这下虽然别的没解决，记笔记的需求倒是意外解决了。但是这又出现了新的问题，还不懂怎么截图，而且现在不知道为何无法输入中文。</p><h2 id="远程桌面"><a href="#远程桌面" class="headerlink" title="远程桌面"></a>远程桌面</h2><p>虽然Linux的一般用法就是直接通过命令行空值，不是很需要桌面系统，但对于初学者来说，有桌面还是更简单直观一点，没有必要折磨自己。当然命令行也是必须掌握的交互方式，只是说二者并不冲突，而且后面要做摄像头相关的应用，还是离不开画面。<br>之前使用过的AirDroid Cast主要支持电脑与手机间的投射（Windows/MacOS/IOS/Android），但是它不支持Linux，所以只能另寻它法。而可以通过网络连接的远程桌面软件就很多了，除了比较早的teamviewer，向日葵，还有AndDesk。现在开始逐一尝试有没有能用的。</p><h3 id="AnyDesk"><a href="#AnyDesk" class="headerlink" title="AnyDesk"></a>AnyDesk</h3><p>据小道消息，Anydesk是前TeamViewer开发小组人员自立门户的产品，可以说是在TeamViewer现有的基础上进行改良、加强的版本，并且Anydesk支持更多不同的系统间的远程访问。<br>但是无论是是那个版本的Anydesk都安装不了。目前尝试了Amd64版，armlf版，都无法安装。</p><p>安装报错：<br><code>package architecture（amd64） does not match system(armhf)</code><br>这就说明架构不符合，无法安装。</p><h3 id="Xrdp"><a href="#Xrdp" class="headerlink" title="Xrdp"></a>Xrdp</h3><p>Xrdp是一个开源工具，允许用户通过Windows RDP访问Linux远程桌面。<br>需要在Linux端安装Xrdp。<br>按照网上找到代码，分别输入了几条指令</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs Linux"><br></code></pre></td></tr></table></figure><p>通过输入IP可以访问到Linux主机，可以来到输入用户名和密码的界面。<br><img src="/2024/04/26/Linux%E4%B8%BB%E6%9C%BA%E5%88%9D%E6%AC%A1%E4%BD%BF%E7%94%A8/5c7c39271e0be8f312f62287902b47f7.png"></p><p>但是实际连接后只得到一个蓝底桌面。过了一会之后弹了一个logs记录，并不能正常进入桌面。<br><img src="/2024/04/26/Linux%E4%B8%BB%E6%9C%BA%E5%88%9D%E6%AC%A1%E4%BD%BF%E7%94%A8/28ee61b9ee5ceccb46807c20deba8aab.png"></p><h3 id="TeamViewer"><a href="#TeamViewer" class="headerlink" title="TeamViewer"></a>TeamViewer</h3><p>TeamViewer是很久以前就出现的远程控制软件了，现在它的支持面也是比较广的，包含了各种主流系统。虽然体积有点大，但用起来也是真的简单方便。<br>不是不想用这个老牌软件，只是碰到了注册问题，实在是麻烦，无法解决。<br><img src="/2024/04/26/Linux%E4%B8%BB%E6%9C%BA%E5%88%9D%E6%AC%A1%E4%BD%BF%E7%94%A8/b6565a338b626e11794d57a08178cd50.png"><br>TeamViewer理论上应该也是能用的，只是现在所有的用户都需要注册才能使用，而我的手机号在几年前就注册过了，然后好久没用好像账号被删除了，而注册新用户又用不了现在唯一的手机号。结果就是软件都装好了但是不能用。</p><h3 id="向日葵"><a href="#向日葵" class="headerlink" title="向日葵"></a>向日葵</h3><p>向日葵虽然可以安装arm64位的麒麟处理器版本，也可以正常启动，但是一启动就会闪退。不太懂有没有一般arm的专门版本。<br>我的Linux主机系统架构是arm64的，核心是RK3588，而向日葵里没有几个arm选项，麒麟和UOS的安装包也试过了，都不行。<br><img src="/2024/04/26/Linux%E4%B8%BB%E6%9C%BA%E5%88%9D%E6%AC%A1%E4%BD%BF%E7%94%A8/e1c15173df0ecc6d51a4730c9c22e96c.png"></p><h3 id="NoMachine"><a href="#NoMachine" class="headerlink" title="NoMachine"></a>NoMachine</h3><p>NoMachine也是类似TeamViewer的软件，但是支持的面也挺广的，Windows、Linux、Mac、Android、IOS，最关键的是有专门对ARM的支持。<br>官网地址：<a href="https://www.nomachine.com/">https://www.nomachine.com/</a><br>下载页面：<a href="https://downloads.nomachine.com/">https://downloads.nomachine.com/</a></p><p>在下面找到ARM版本的下载，选择ARMv8的DEB安装包下载<br><img src="/2024/04/26/Linux%E4%B8%BB%E6%9C%BA%E5%88%9D%E6%AC%A1%E4%BD%BF%E7%94%A8/9486323ddfa5400e6b4d440f130186ca.png"></p><p>使用安装工具打开进行安装。这里选择了比较好用的GDebi。<br><img src="/2024/04/26/Linux%E4%B8%BB%E6%9C%BA%E5%88%9D%E6%AC%A1%E4%BD%BF%E7%94%A8/fdaf37204b853efff17517a3eb8e57b3.png"><br>两边都装好后虽然可以正常打开，但是画面全花，原因不明。都到这一步了没想到也会遇到问题，只能先试试其他方法了。<br><img src="/2024/04/26/Linux%E4%B8%BB%E6%9C%BA%E5%88%9D%E6%AC%A1%E4%BD%BF%E7%94%A8/5be5e3af1b23f64a0829879b4613ff72.png"></p><p>后来放了一会没管，去研究其他方法了。然后突然遇到了网络问题，Linux连不上网络了，已经插了网线但IP地址和域名都用不了。在网络用不了的时候，想看看这个基于局域网的NoMachine还能不能用，结果意外的发现，不仅能用，而且画面还正常了？<br><img src="/2024/04/26/Linux%E4%B8%BB%E6%9C%BA%E5%88%9D%E6%AC%A1%E4%BD%BF%E7%94%A8/dbf556a0949633eb4802f18cecd52c0b.png"><br>搞不明白，这应该算是能用吧……虽然不知道以后还会不会出问题。</p><h3 id="其他方案"><a href="#其他方案" class="headerlink" title="其他方案"></a>其他方案</h3><ul><li>VNC 需要再linux端装server，在Windows端装viewer。到一半放弃了。</li><li>ToDesk 听说也非常不错，没试过。</li><li>Remmina 开源，功能强大，口碑不错，支持多种协议，包括 RDP、VNC、SPICE、X2GO、SSH 和 HTTP(S)。有空可以试一试。</li><li>X2Go</li><li>KRDC<br>还有很多其他软件，时间有限就不尝试了。</li></ul><h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>Linux只是一种内核，而基于它的ubantu、Debian、Android等等，都是完全不同的东西，甚至ubantu不同版本之间的文件结构都会有区别。很多我们习以为常的操作，包括语言、输入法、上网、文件管理、截图等等，在Linux上可能会碰上各种意想不到的状况。有对比才会明白，Windows虽然臃肿，但兼容性和稳定性也真是高不少。例如只是安装一个程序，Windows只需要运行一下exe就可以了，最多选一下系统架构和系统位数；而linux，需要考虑的东西就多得多，从架构到依赖包，什么情况都有。<br>但Linux也有它的优势，它简单、高效、灵活，轻量，可以高度定制，而且可以避免一些复杂的Windows上会遇到的问题。虽然折腾起来麻烦，但收获也可以很多，可以更好的让人理解计算机的底层原理。</p><p>真令人头大</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>学习</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>远程控制</tag>
+      
+      <tag>Linux</tag>
+      
+      <tag>嵌入式</tag>
+      
+      <tag>RK3588</tag>
+      
+      <tag>arm64</tag>
+      
+      <tag>单片机</tag>
+      
+      <tag>网络</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>使用Arcpy进行GDB数据库字段质检</title>
+    <link href="/2024/04/26/%E4%BD%BF%E7%94%A8Arcpy%E8%BF%9B%E8%A1%8CGDB%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AD%97%E6%AE%B5%E8%B4%A8%E6%A3%80/"/>
+    <url>/2024/04/26/%E4%BD%BF%E7%94%A8Arcpy%E8%BF%9B%E8%A1%8CGDB%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AD%97%E6%AE%B5%E8%B4%A8%E6%A3%80/</url>
+    
+    <content type="html"><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>之前使用Arcpy已经可以轻松导出GDB数据库所有要素类的字段信息，已经解决了最难的部分，而数据的对比和验证，都是可以在Python实现的，难点主要在结构设计上，质检规则怎么录入、数据如何比对，错误如何反馈等等，以及除了最小功能可用性，如何扩展易维护性。</p><h1 id="数据库字段对比"><a href="#数据库字段对比" class="headerlink" title="数据库字段对比"></a>数据库字段对比</h1><p>本来设想用一个字符串数组来保存数据检查的状态，也就是简单朴素的错误代码，在以前用C语言的时候屡试不爽，但是在运行时发现了问题。Python的字符串数组和C语言还是不太一样的。</p><h2 id="Python字符串不可变特性"><a href="#Python字符串不可变特性" class="headerlink" title="Python字符串不可变特性"></a>Python字符串不可变特性</h2><p>在Python中，字符串是不可变的，这意味着你不能直接修改字符串中的单个字符。当你尝试执行类似<code>str[2] = &#39;0&#39;</code>这样的操作时，你会得到一个<code>TypeError: &#39;str&#39; object does not support item assignment</code>的错误，因为字符串不支持通过索引来赋值。<br>所以一般通过三种方式来解决字符串赋值的问题。</p><h3 id="字符串拼接"><a href="#字符串拼接" class="headerlink" title="字符串拼接"></a>字符串拼接</h3><p>可以通过连接一个新的字符串来实现修改，但这并不是真正的修改原字符串，而是创建了一个全新的字符串。</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Python">original_str = <span class="hljs-string">&quot;12345&quot;</span><br>new_str = original_str[:<span class="hljs-number">2</span>] + <span class="hljs-string">&quot;0&quot;</span> + original_str[<span class="hljs-number">3</span>:]<br></code></pre></td></tr></table></figure><h3 id="字符串转换为列表"><a href="#字符串转换为列表" class="headerlink" title="字符串转换为列表"></a>字符串转换为列表</h3><p>可以将字符串转换为字符列表，然后修改列表中的元素，最后再将列表转换回字符串。</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Python">original_str = <span class="hljs-string">&quot;12345&quot;</span><br>char_list = <span class="hljs-built_in">list</span>(original_str)<br>char_list[<span class="hljs-number">2</span>] = <span class="hljs-string">&#x27;0&#x27;</span><br>new_str = <span class="hljs-string">&#x27;&#x27;</span>.join(char_list)<br></code></pre></td></tr></table></figure><h3 id="replace方法"><a href="#replace方法" class="headerlink" title="replace方法"></a>replace方法</h3><p>可以用replace来替换字符串中的特定部分</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Python">original_str = <span class="hljs-string">&quot;12345&quot;</span><br>new_str = original_str.replace(<span class="hljs-string">&#x27;3&#x27;</span>, <span class="hljs-string">&#x27;0&#x27;</span>)<br></code></pre></td></tr></table></figure><h2 id="全部代码"><a href="#全部代码" class="headerlink" title="全部代码"></a>全部代码</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><code class="hljs Python"><span class="hljs-keyword">import</span> arcpy<br>arcpy.env.workspace=<span class="hljs-string">r&#x27;H:\work\数据库核对\new.gdb&#x27;</span><br>outputpath=<span class="hljs-string">&#x27;H:\output.txt&#x27;</span>  <span class="hljs-comment">#把输入与输出放到前面便于调整</span><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">notgeneral</span>(<span class="hljs-params">fldname</span>):  <span class="hljs-comment">#检测目标字段是否为通用字段。不是则返回true。</span><br>    allowed_values = <span class="hljs-built_in">set</span>([<span class="hljs-string">&quot;SGVID&quot;</span>, <span class="hljs-string">&quot;TYMC&quot;</span>, <span class="hljs-string">&quot;TYDM&quot;</span>, <span class="hljs-string">&quot;SJY&quot;</span>, <span class="hljs-string">&quot;GB&quot;</span>, <span class="hljs-string">&quot;CJSJ&quot;</span>, <span class="hljs-string">&quot;GXSJ&quot;</span>, <span class="hljs-string">&quot;XWSJ&quot;</span>])<br>    <span class="hljs-keyword">if</span> fldname <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> allowed_values:<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span><br>    <span class="hljs-keyword">else</span>:<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">ganeralcheak</span>(<span class="hljs-params">flds</span>): <span class="hljs-comment">#检测通用字段的方法。只检查名称、类型、长度</span><br>    errorcode = [<span class="hljs-string">&#x27;11111111&#x27;</span>] <span class="hljs-comment"># 重置错误代码</span><br>    errorcodelist=<span class="hljs-built_in">list</span>(errorcode[<span class="hljs-number">0</span>]) <span class="hljs-comment"># 将errorcode字符串转换成列表</span><br>    <span class="hljs-keyword">for</span> fld <span class="hljs-keyword">in</span> flds: <span class="hljs-comment">#循环所有字段</span><br>        <span class="hljs-keyword">if</span> fld.name==<span class="hljs-string">&#x27;SGVID&#x27;</span> <span class="hljs-keyword">and</span> fld.<span class="hljs-built_in">type</span>==<span class="hljs-string">&#x27;String&#x27;</span><span class="hljs-keyword">and</span> fld.length==<span class="hljs-number">50</span>:<br>            errorcodelist[<span class="hljs-number">0</span>]=<span class="hljs-string">&#x27;0&#x27;</span><br>        <span class="hljs-keyword">elif</span> fld.name==<span class="hljs-string">&#x27;TYMC&#x27;</span><span class="hljs-keyword">and</span> fld.<span class="hljs-built_in">type</span>==<span class="hljs-string">&#x27;String&#x27;</span><span class="hljs-keyword">and</span> fld.length==<span class="hljs-number">60</span>:<br>            errorcodelist[<span class="hljs-number">1</span>]=<span class="hljs-string">&#x27;0&#x27;</span><br>        <span class="hljs-keyword">elif</span> fld.name==<span class="hljs-string">&#x27;TYDM&#x27;</span><span class="hljs-keyword">and</span> fld.<span class="hljs-built_in">type</span>==<span class="hljs-string">&#x27;String&#x27;</span><span class="hljs-keyword">and</span> fld.length==<span class="hljs-number">50</span>:<br>            errorcodelist[<span class="hljs-number">2</span>]=<span class="hljs-string">&#x27;0&#x27;</span><br>        <span class="hljs-keyword">elif</span> fld.name==<span class="hljs-string">&#x27;SJY&#x27;</span> <span class="hljs-keyword">and</span> fld.<span class="hljs-built_in">type</span>==<span class="hljs-string">&#x27;String&#x27;</span><span class="hljs-keyword">and</span> fld.length==<span class="hljs-number">50</span>:<br>            errorcodelist[<span class="hljs-number">3</span>]=<span class="hljs-string">&#x27;0&#x27;</span><br>        <span class="hljs-keyword">elif</span> fld.name==<span class="hljs-string">&#x27;GB&#x27;</span> <span class="hljs-keyword">and</span> fld.<span class="hljs-built_in">type</span>==<span class="hljs-string">&#x27;String&#x27;</span><span class="hljs-keyword">and</span> fld.length==<span class="hljs-number">7</span>:<br>            errorcodelist[<span class="hljs-number">4</span>]=<span class="hljs-string">&#x27;0&#x27;</span><br>        <span class="hljs-keyword">elif</span> fld.name==<span class="hljs-string">&#x27;CJSJ&#x27;</span><span class="hljs-keyword">and</span> fld.<span class="hljs-built_in">type</span>==<span class="hljs-string">&#x27;Date&#x27;</span>:<br>            errorcodelist[<span class="hljs-number">5</span>]=<span class="hljs-string">&#x27;0&#x27;</span><br>        <span class="hljs-keyword">elif</span> fld.name==<span class="hljs-string">&#x27;GXSJ&#x27;</span><span class="hljs-keyword">and</span> fld.<span class="hljs-built_in">type</span>==<span class="hljs-string">&#x27;Date&#x27;</span>:<br>            errorcodelist[<span class="hljs-number">6</span>]=<span class="hljs-string">&#x27;0&#x27;</span><br>        <span class="hljs-keyword">elif</span> fld.name==<span class="hljs-string">&#x27;XWSJ&#x27;</span><span class="hljs-keyword">and</span> fld.<span class="hljs-built_in">type</span>==<span class="hljs-string">&#x27;Date&#x27;</span>:<br>            errorcodelist[<span class="hljs-number">7</span>]=<span class="hljs-string">&#x27;0&#x27;</span><br>    errorcode = <span class="hljs-string">&#x27;&#x27;</span>.join(errorcodelist)<br>    <span class="hljs-keyword">if</span> (errorcode == <span class="hljs-string">&#x27;00000000&#x27;</span>): <span class="hljs-comment">#通用属性检测无误</span><br>        <span class="hljs-built_in">print</span> (<span class="hljs-string">&#x27;ganeral attributes pass.&#x27;</span>)<br>    <span class="hljs-keyword">else</span>:<br>        <span class="hljs-built_in">print</span> (<span class="hljs-string">&#x27;error_code:&#x27;</span>+errorcode)<br><br><span class="hljs-comment"># 主要代码</span><br>fcs=arcpy.ListFeatureClasses() <span class="hljs-comment">#直接获取GDB下的所有要素类</span><br><span class="hljs-keyword">for</span> fc <span class="hljs-keyword">in</span> fcs: <span class="hljs-comment">#循环所有要素类</span><br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;-------&#x27;</span> + fc)  <span class="hljs-comment"># 打印要素类名称便于查看进度</span><br>    <span class="hljs-comment"># cnt=int(arcpy.GetCount_management(fc).getOutput(0)) #获取该要素类的要素总个数</span><br>    <span class="hljs-comment"># print fc,&quot; feature number is &quot;,cnt</span><br>    <span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(outputpath, <span class="hljs-string">&#x27;a&#x27;</span>) <span class="hljs-keyword">as</span> file: <span class="hljs-comment"># 把要素名称也写到文件中</span><br>        file.write(<span class="hljs-string">&#x27;ClassName&#x27;</span>+<span class="hljs-string">&#x27;,&#x27;</span>+fc+<span class="hljs-string">&#x27;\n&#x27;</span>)<br><br>    flds=arcpy.ListFields(fc)<span class="hljs-comment">#获取要素类的字段列表</span><br>    ganeralcheak(flds)<br>    <span class="hljs-keyword">for</span> fld <span class="hljs-keyword">in</span> flds: <span class="hljs-comment">#循环所有字段</span><br>        <span class="hljs-keyword">if</span> (notgeneral(fld.name)): <span class="hljs-comment"># 检测到非通用属性</span><br>            <span class="hljs-built_in">print</span> fld.name,fld.<span class="hljs-built_in">type</span>,fld.length<span class="hljs-comment">#通过循环打印所有的字段名称、类型和长度</span><br>              <span class="hljs-comment"># 以追加写入模式打开txt</span><br>            <span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(outputpath, <span class="hljs-string">&#x27;a&#x27;</span>) <span class="hljs-keyword">as</span> file:<br>              <span class="hljs-comment"># 将结果写入txt文件</span><br>                file.write(fld.name+<span class="hljs-string">&#x27;,&#x27;</span>+fld.<span class="hljs-built_in">type</span>+<span class="hljs-string">&#x27;,&#x27;</span>+<span class="hljs-built_in">str</span>(fld.length)+<span class="hljs-string">&#x27;\n&#x27;</span>)<br><br></code></pre></td></tr></table></figure><p>相比之前增加了核对通用字段的功能，同时调整了一下代码结构。</p><h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>当前算是基本完成了本次任务要实现的功能，但是未来可能还会有很多类似的需求，质检数据库算是经常会用到的刚需工具了，趁此次机会记录下探索过程，以后代码还可以复用。<br>之后还可以实现数据库内容批量检查之类的操作。虽然DataReviewer之类的工具也是挺方便的，但是自由度也比较有限，要一个个图层点点点也比较繁琐。python这种更为原始和直接的手段还是非常有用的。<br>像这样子把质检规则写在代码里其实非常不方便，更好的做法还是把规则写在表里，这样更方便管理。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>学习</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>地理信息</tag>
+      
+      <tag>数据库</tag>
+      
+      <tag>GDB</tag>
+      
+      <tag>Arcpy</tag>
+      
+      <tag>字段检查</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>2023年度总结</title>
+    <link href="/2024/04/26/2023%E5%B9%B4%E5%BA%A6%E6%80%BB%E7%BB%93/"/>
+    <url>/2024/04/26/2023%E5%B9%B4%E5%BA%A6%E6%80%BB%E7%BB%93/</url>
+    
+    <content type="html"><![CDATA[<h1 id="2023年度总结和2024的计划"><a href="#2023年度总结和2024的计划" class="headerlink" title="2023年度总结和2024的计划"></a>2023年度总结和2024的计划</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>不知不觉中，2023年已经过去了，回首过去，今年真的算非常忙碌。去年因为疫情，基本没有新项目落地，就一直在给房地一体善后，可以说比较悠闲。而几年一连搞了好几个项目，房地一体彻底结束、去湛江跑外业画地形图、整理提交村庄规划最终成果、自己完成湛江的三旧入库项目、还有现在年底了还正在弄的新疆国情监测和地理实体数据库。虽然是从年头忙到年尾，但我这一年也做了非常多的积累，</p><h2 id="关于世界"><a href="#关于世界" class="headerlink" title="关于世界"></a>关于世界</h2><h3 id="公信力的流失"><a href="#公信力的流失" class="headerlink" title="公信力的流失"></a>公信力的流失</h3><p>疫情严防死守到守不住了直接放开；郑州给信访群众赋红码；北极鲶鱼事件内部处理；青年人失业率不再公布；法院判决文书不再公开；各种贪污腐败层出不穷，今天还在开会演讲的领导明天可能就带走了；在位领导用画大饼来允诺的奖励，再换人后无法兑现。<br>各种各样可笑的事情真是太多了。<br>现在官方都怕合订本了，我也学会了新闻要看合订本，历史是一个回旋镖，都不用过几年，只要几个月都可能打脸。现在需要警惕各种宣传和口号了，有些人或许并不想团结你一起奋斗享受成果，他们只想从你身上再割一块肉。<br>看问题需要多角度，一方面是一些人在搞破坏，另一方面积极与正面的事情也是存在的：国家在扶贫和救灾方面仍然有人在默默付出；仍然有人在用正直和清廉去对抗体制中的污浊。<br>神圣的从来都不是职业，那些让人敬仰的神殿，只在无知的人心中灵验。</p><h3 id="整体经济情况认识"><a href="#整体经济情况认识" class="headerlink" title="整体经济情况认识"></a>整体经济情况认识</h3><p>现在房地产行业大概是凉的差不多了，或者说不过是回归到了它原本应有的状况。很多地方县城开始降价，一线城市仍然坚挺。涨价去库存、期房、公摊、烂尾楼这些东西本来就不合理，政府拿了大额土地出让金一部分维护城市运营，一部分拿去给公务员发超级福利；开发商超高周转，借钱买地盖楼，银行三头放贷，享受高额利息和稳定收益，整个链条上所有人都可以违约，只有买房人承担了所有，甚至能拿到房就不错了，要是烂尾了那真是哭都没地方去。以前这个行业不是没有问题，拖欠农民工薪水的问题都闹到国家层面了，甚至还是上了春晚小品。后来经过了一波铁拳的大力整顿，现在敢动农民工的工资那就是找死。<br>让出生人口五年内实现腰斩房地产真是功不可没，计划生育几十年都做不到的事情让它给做到了，再给它几年说不定再来个对折，那可太有意思了。</p><p>基建依然在陆续完善；汽车工业取得了全球瞩目的成就；科技依然在不断发展。虽然曾经的一笔笔烂账翻出来真是触目惊心，一切依靠后人智慧的操作实在是非常不负责任，但这日子还得过下去。只是过去不投资就会贬值的逻辑变了，现在是不投资本金还在，乱投资血本无归。</p><h3 id="另外一些有趣的事情"><a href="#另外一些有趣的事情" class="headerlink" title="另外一些有趣的事情"></a>另外一些有趣的事情</h3><p>张雪峰说文科工作都是舔，揭穿了文科没有职业独立性的社会真相。曾经全国一枝独秀的焦点访谈，现在也沦为了新闻联播pro max Ultra版。我们不是没有调查记者、不是没有专业的媒体、律师、法官，可是这些人现在哪个敢说话，哪个能说话？但凡有个官方媒体敢报道中国问题，大家也不至于让马督工涨到几百万粉。<br>现在新闻学都快成为一个笑话了，大家都戏称“学新闻学的”。</p><h3 id="当前整体形势"><a href="#当前整体形势" class="headerlink" title="当前整体形势"></a>当前整体形势</h3><p>科技发展带来的生产力提升经过厚积薄发式的爆发后，现在已经进入了缓慢的增长期，进入了另一个积累理论、等待成果的周期中。<br>当然也可以理解为，随着越来越多受过高等教育的年轻人进入社会，在权利与责任交接的过程中让以前的问题被大量的暴露出来。在人口素质上升和社会职责更替的大背景下，长期角度未来应该是在想着好的方向发展，但短期内必然会有剧烈的动荡。<br>实际上回头看历史，新中国才成立几十年，而经济的爆发增长和房地产的一路狂飙，也不过是近20年的事情，过快的增长带来的就是巨大的时代冲击，秩序的混乱和缺失，以及过高的期望。而当一切归于理性之后，人们才能逐步解决眼下的诸多问题。<br>未来不会很好，但也不会太糟，有些事听着很离谱，但实际影像范围很小；有些事看起来不起眼，实际上却意义深远。无论如何，个人应该做的事情就是不要焦虑，兼听则明，保持自己的独立思考，继续自己的生活。好好吃饭，好好睡觉，才是生活的真谛。<br>另外我希望2024年还有马督工看，要是他都被封了，那还真是让本就薄凉的环境雪上加霜了。（PS马督工还真被关小黑屋了，现在只有小黛晨读能看了。）</p><h2 id="关于工作"><a href="#关于工作" class="headerlink" title="关于工作"></a>关于工作</h2><p>今年是在公司的第三年了，从只会埋头干活的纯纯牛马，到现在逐渐开始主动积累知识和经验，我也是走过了不少弯路的。一开始真的就月薪三千五，纯纯的廉价劳动力，还得在项目上加班加点，通宵熬夜。现在想想还真是不堪回首。<br>现在相比疫情期间动不动就受到管控已经好了很多，放开以后都是大力搞生产，已经没人在乎那些个小病毒了。中病毒会难受很长时间，会死一些扛不住的老人小孩，经济垮了兜里没钱了那可是要饿死大片的。<br>2024年很快大家都会当病毒不曾存在过，回到正常的生活中去。</p><p>今年真是做了不少事情，回想起来还真是感慨颇多。</p><h3 id="工作时间统计"><a href="#工作时间统计" class="headerlink" title="工作时间统计"></a>工作时间统计</h3><p>我老早就想做这个了，好好跟公司算算账，看我加了多少的班，出了多少的差，以及请了多少的假。如果能算算每个项目大概花了多少时间就更好了。毕竟要述职的话，没有什么比数据更真实更直接。</p><p>2023年度1月-12月<br>总共工作日249天，<br>请假3天，加班37天。</p><p>这样算下来，还真是一年到头都在加班，真是纯纯牛马，尤其是晚上加班还没加班费的。即便如此一年下来还是有一丢丢时间可以进行一些积累的。不过和屡屡拿奖的飞行部和嘉慧相比，技术部就显得非常呆逼了。但是方工拿这个出来说事，说技术部没有产品产出，比起飞行部远远落后。其实这么说就有点扯淡了，时间是有限的，探索是有沉默成本的，怎么可能又搞项目又搞创新，既要又要还要。也就飞行部算核心部门人员流动性不大，这要是跑路一两个，豪哥也得头大。公司实际上是一个整体，我还记得2020年的时候，老板自己也说过虽然产改、三调、房地一体这种项目很辛苦很累，但也正是这些牛马项目撑起了公司的现金流，帮助公司度过了疫情期间困难的发展阶段，没有这些历史，就没有现在飞行部的这么多设备、奖项、专利、产品。估计也是老板给方工的压力吧，无所谓，不管怎样这个部门太过牛马、缺少积累是事实，再这么搞下去，最坏的结果就是这些被榨干的牛马们失去利用价值然后被抛弃，职场就是这么残酷。现在不就是这样，技术部底下的牛马已经换了好几茬了。被裁员不可怕，被社会淘汰才致命，不断学习，更新自己，，为自己考虑，非常重要。</p><h3 id="我负责的项目"><a href="#我负责的项目" class="headerlink" title="我负责的项目"></a>我负责的项目</h3><ul><li>提蒙和礼亭村庄规划（2020-2023）。这个东西搞了三年，几经转手，差点烂尾，今年总算是将成果提交入库了，从一知半解到全部统筹，不仅让我技术力有提升，还让我看清了职场规则。曾经要好的部门同事一一离开公司，也让我的心理更加成熟了。</li><li>湛江三旧改造标图建库（2023）。带着一车人火急火燎赶到现场，最后发现这玩意不需要跑外业。后来还自己开车去徐闻雷州补拍了照片，自己出去干活感觉还挺好的，我忘不了自己开着破丰田走在雷州国道上，被迎面而来的大卡车晃瞎眼的危险经历。我实在是不喜欢和陌生人打电话，每次和自然资源规划局联系都害怕的不行，一看到电话就知道材料又要改，唉。好在这项目也算是结束了。</li><li>新疆国情监测内业处理（2023-未结束）。其他人都去做重庆院的新疆小比例地形图去了，只有我在办公室，自己负责买交换机，布置网线，配置内业环境。印象最深刻的是韦总要来讲生产流程的前一天晚上方工还让我连夜给他去机场寄硬盘，搞得我一宿没睡，第二天又得疲惫上班，主要是担心错过项目相关的重要内容，还有环境是我配置的其他人大概率不会，累麻了。这个项目也收获了许多，ArcGIS技术力提升，学会了配置局域网环境实现多人同步生产，甚至因为网上找的工具都是错误的，学会了自己搭建处理模型。</li></ul><h3 id="我参与的项目"><a href="#我参与的项目" class="headerlink" title="我参与的项目"></a>我参与的项目</h3><ul><li>陵水房地一体（2021-2023）。大型牛马项目，从21年进场大干特干，到22年疫情佛系推进度，23年初还去陵水整了一段时间的材料，把剩下的证书发完，然后陵水办公室就撤了，东西全部搬回海口。所有材料都移交给了资规局，也算是彻底结束了。2021年项目开始的时候我就预感到这项目不容易，要每家每户的跑，跟村民接触那是必不可少的了。但实际上有镇里乡里和村委会帮忙协调，还有村长帮忙带队，一户一户的跑，实际上困难并没有那么大。当然也有无理取闹的人存在，但那也是极少数，大部分人还是讲道理的，毕竟这也是给村民办好事，不动产权证这玩意很多城里人想要还没有呢。偶尔去陵水出差也是挺惬意的，不像在海口那么多规矩。</li><li>湛江1:500地形图测绘（2023）。正统测绘老本行，测绘人传统手艺，也是个纯纯牛马项目，自己跑外业自己改图，在外面核对地形图，脑力和体力的双重消耗，在湛江直接呆了两个月，垫了好几千。好在后面没有我参与了，由其他人收尾。一开始出差会很新鲜，出一个星期就有点累了，出俩月直接全麻。期间还生病了一次，上吐下泻浑身无力，难受一整天。期间还有三旧改造的项目来找我，白天跑外业晚上改材料，累麻了。最后和开博回到海口都感觉恍如隔世。</li></ul><h2 id="关于自己"><a href="#关于自己" class="headerlink" title="关于自己"></a>关于自己</h2><p>2024年不一定会变得更好，不如说不变的更糟就不错了。从国家、社会的变化我也明白了，站在风口可以飞的很快，脚踏实地才能走得更远。现在我明白，工作只是工作，可以努力但不必拼命，掌握节奏才能细水长流，透支身体对自己没有半点好处。能够挣到钱自然是好事，但如果暂时还没有很好的机会，慢慢积累知识和经验就是最大的收获。我在魔幻的现实和虚无的网络里漂泊了太久，现在该回神做自己了。<br>要做的事情很简单，控制消费、积极存钱，提升自我，健康生活。<br>今年好不容易修复了资产负债表，明年一定不能再买买买了，要使劲存存存。</p><h3 id="我的进步"><a href="#我的进步" class="headerlink" title="我的进步"></a>我的进步</h3><ul><li>掌握了积累的方法，技术逐步精进，日积月累，无限进步。实力永远是最强大的底气。</li><li>心态成熟，临场表演。今年不少次自己去对接政府单位，也是挺紧张的，但很多时候把自己抽离出来，当一个演员，也是可以应付得来。</li><li>清晰的目标导向。我已经学会了专注于目标，而忽视个人情绪和一时冲动，这样真的免受了很多垃圾情绪和PUA，身心健康得到了极大的保护。</li></ul><h3 id="我的不足"><a href="#我的不足" class="headerlink" title="我的不足"></a>我的不足</h3><ul><li>不擅长与陌生人打交道，经常会紧张。只求尽量改善，不求一飞冲天立马变社牛。</li><li>不喜欢喝酒。当不了舔狗，老实当人也挺好。</li><li>心态改变。小富靠勤，大富靠命，历经种种，已经看淡了许多事情。挑不起的担子就不要强行挑，不值得。</li><li>身体状况日渐变差，该减肥了。</li></ul><h3 id="个人目标"><a href="#个人目标" class="headerlink" title="个人目标"></a>个人目标</h3><p>我希望2024年能够做到的事：</p><ul><li>继续坚持锻炼和健身</li><li>捡起自己的爱好</li><li>继续保持学习和补充知识库的习惯</li><li>保持良好的心态，保持对生活的期待</li><li>继续保持理性与冷静的思考</li><li>继续存钱</li></ul><h2 id="最后一点话"><a href="#最后一点话" class="headerlink" title="最后一点话"></a>最后一点话</h2><p>因为春节期间弄丢了U盘，让我的年终总结都丢了，那时候心情非常低落也没有再重新写，直到四月份意外将硬盘和U盘找回，才重新捡起之前的日记和总结。所以拖了很长时间，一些想法都已经发生了一些变化，甚至连一些事情也有变化，让人始料未及。<br>不变的是，现在依然不知道未来在哪，尽管写下了这么多的文字，大多数也只不过是记录。到现在也不只是得过且过罢了。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>生活</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>年终总结</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>Arcpy解析GDB数据库内容</title>
     <link href="/2024/04/07/Arcpy%E8%A7%A3%E6%9E%90GDB%E6%95%B0%E6%8D%AE%E5%BA%93%E5%86%85%E5%AE%B9/"/>
     <url>/2024/04/07/Arcpy%E8%A7%A3%E6%9E%90GDB%E6%95%B0%E6%8D%AE%E5%BA%93%E5%86%85%E5%AE%B9/</url>
@@ -88,11 +183,11 @@
       
       <tag>Linux</tag>
       
+      <tag>网络</tag>
+      
       <tag>系统</tag>
       
       <tag>服务器</tag>
-      
-      <tag>网络</tag>
       
       <tag>网站部署</tag>
       
@@ -123,15 +218,15 @@
     
     <tags>
       
+      <tag>Linux</tag>
+      
+      <tag>单片机</tag>
+      
       <tag>OrangePI</tag>
       
       <tag>开发板</tag>
       
-      <tag>Linux</tag>
-      
       <tag>系统</tag>
-      
-      <tag>单片机</tag>
       
     </tags>
     
@@ -193,13 +288,13 @@
       
       <tag>Linux</tag>
       
-      <tag>服务器</tag>
-      
       <tag>网络</tag>
       
-      <tag>网站部署</tag>
+      <tag>服务器</tag>
       
       <tag>服务</tag>
+      
+      <tag>网站部署</tag>
       
       <tag>云笔记</tag>
       
@@ -728,11 +823,11 @@
     
     <tags>
       
+      <tag>网络</tag>
+      
       <tag>服务器</tag>
       
       <tag>腾讯云</tag>
-      
-      <tag>网络</tag>
       
       <tag>部署</tag>
       
@@ -996,9 +1091,9 @@
       
       <tag>ArcGIS</tag>
       
-      <tag>gdb</tag>
-      
       <tag>数据库</tag>
+      
+      <tag>gdb</tag>
       
       <tag>分割</tag>
       
@@ -1064,9 +1159,9 @@
       
       <tag>地理信息</tag>
       
-      <tag>gdb</tag>
-      
       <tag>数据库</tag>
+      
+      <tag>gdb</tag>
       
       <tag>分割</tag>
       
@@ -1596,13 +1691,13 @@
     
     <tags>
       
+      <tag>年终总结</tag>
+      
       <tag>闲聊</tag>
       
       <tag>房地产</tag>
       
       <tag>未来期望</tag>
-      
-      <tag>年终总结</tag>
       
       <tag>正能量</tag>
       
