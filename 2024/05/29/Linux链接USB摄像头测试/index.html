@@ -23,10 +23,10 @@
 <meta property="og:site_name" content="kw&#39;s blog">
 <meta property="og:description" content="前言最近在尝试使用RK3588接入摄像头进行实时的模型推理，但是模型一直无法运行，找不到原因，所以先测试测试摄像头。我原以为Linux的摄像头也是和Windows一样只要插进去就能用了。没想到还是有点难度的。 硬件设备核心：RK3588开发板：Orange pi 5 PLUS系统：Ubantu20.04摄像头：野蛮者 Webcom_HD USB摄像头 失败的尝试 安装测试软件1sudo apt-g">
 <meta property="og:locale">
-<meta property="og:image" content="http://kw1649190133.github.io/_resources/42bd543e92c183f0ad21c8bd5b14f943.png">
-<meta property="og:image" content="http://kw1649190133.github.io/_resources/58c81de52724eaa030d01c62076c1a68.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/05/29/Linux%E9%93%BE%E6%8E%A5USB%E6%91%84%E5%83%8F%E5%A4%B4%E6%B5%8B%E8%AF%95/42bd543e92c183f0ad21c8bd5b14f943.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/05/29/Linux%E9%93%BE%E6%8E%A5USB%E6%91%84%E5%83%8F%E5%A4%B4%E6%B5%8B%E8%AF%95/58c81de52724eaa030d01c62076c1a68.png">
 <meta property="article:published_time" content="2024-05-29T06:09:12.000Z">
-<meta property="article:modified_time" content="2024-05-31T08:57:17.919Z">
+<meta property="article:modified_time" content="2024-06-07T09:58:38.351Z">
 <meta property="article:author" content="Kwindy">
 <meta property="article:tag" content="Linux">
 <meta property="article:tag" content="RK3588">
@@ -34,7 +34,7 @@
 <meta property="article:tag" content="开发板">
 <meta property="article:tag" content="摄像头">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://kw1649190133.github.io/_resources/42bd543e92c183f0ad21c8bd5b14f943.png">
+<meta name="twitter:image" content="http://kw1649190133.github.io/2024/05/29/Linux%E9%93%BE%E6%8E%A5USB%E6%91%84%E5%83%8F%E5%A4%B4%E6%B5%8B%E8%AF%95/42bd543e92c183f0ad21c8bd5b14f943.png">
   
   
   
@@ -122,7 +122,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/">
                 <i class="iconfont icon-home-fill"></i>
-                <span>Home</span>
+                <span>Startseite</span>
               </a>
             </li>
           
@@ -134,7 +134,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/archives/">
                 <i class="iconfont icon-archive-fill"></i>
-                <span>Archives</span>
+                <span>Archiv</span>
               </a>
             </li>
           
@@ -146,7 +146,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/categories/">
                 <i class="iconfont icon-category-fill"></i>
-                <span>Categories</span>
+                <span>Kategorien</span>
               </a>
             </li>
           
@@ -158,7 +158,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/tags/">
                 <i class="iconfont icon-tags-fill"></i>
-                <span>Tags</span>
+                <span>Schlagwörter</span>
               </a>
             </li>
           
@@ -170,7 +170,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/about/">
                 <i class="iconfont icon-user-fill"></i>
-                <span>About</span>
+                <span>Über</span>
               </a>
             </li>
           
@@ -227,7 +227,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2k words
+          2k wörter
         
       </span>
     
@@ -238,7 +238,7 @@
         
         
         
-          17 mins
+          17 minuten
         
       </span>
     
@@ -301,7 +301,7 @@
 <li>程序依赖库：opencv和numpy，都是之前装rknnlite环境顺便装的，所以使用rknn环境直接运行。</li>
 </ol>
 <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><code class="hljs css">import cv2<br>import <span class="hljs-selector-tag">time</span><br>import numpy as np<br><br>def <span class="hljs-selector-tag">main</span>():<br>    # 使用GStreamer管道从MIPI摄像头捕获视频，添加视频帧率<br>    cap = cv2.<span class="hljs-built_in">VideoCapture</span>(<span class="hljs-string">&#x27;/dev/video3&#x27;</span>)  # USB摄像头，需要注意设备编码<br>    # cap = cv2.<span class="hljs-built_in">VideoCapture</span>(<span class="hljs-string">&#x27;/dev/video11&#x27;</span>, cv2.CAP_ANY)  # MIPI摄像头<br>    # cap.<span class="hljs-built_in">set</span>(cv2.CAP_PROP_FOURCC, cv2.<span class="hljs-built_in">VideoWriter_fourcc</span>(*<span class="hljs-string">&#x27;NV12&#x27;</span>))<br>    frames, loopTime, initTime = <span class="hljs-number">0</span>, time.<span class="hljs-built_in">time</span>(), time.<span class="hljs-built_in">time</span>()<br>    fps = <span class="hljs-number">0</span><br>    while True:<br>        frames += <span class="hljs-number">1</span><br>        # 从摄像头捕获帧<br>        ret, frame = cap.<span class="hljs-built_in">read</span>()<br>        # 如果捕获到帧，则显示它<br>        if ret:<br>            if frames % <span class="hljs-number">30</span> == <span class="hljs-number">0</span>:<br>                <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;30帧平均帧率:\t&quot;</span>, <span class="hljs-number">30</span> / (time.<span class="hljs-built_in">time</span>() - loopTime), <span class="hljs-string">&quot;帧&quot;</span>)<br>                fps = <span class="hljs-number">30</span> / (time.<span class="hljs-built_in">time</span>() - loopTime)<br>                loopTime = time.<span class="hljs-built_in">time</span>()<br>            # frame = cv2.<span class="hljs-built_in">cvtColor</span>(frame, cv2.COLOR_RGB2BGR) # 这一段是MIPI摄像头做颜色转换用的，USB本身就是RGB，不用转换。<br>            cv2.<span class="hljs-built_in">putText</span>(frame, <span class="hljs-string">&quot;FPS: &#123;:.2f&#125;&quot;</span>.<span class="hljs-built_in">format</span>(fps), (<span class="hljs-number">10</span>, <span class="hljs-number">30</span>), cv2.FONT_HERSHEY_SIMPLEX, <span class="hljs-number">1</span>, (<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">255</span>),<br>                        <span class="hljs-number">2</span>)  # 在图像上显示帧率<br>            cv2.<span class="hljs-built_in">imshow</span>(<span class="hljs-string">&quot;MIPI Camera&quot;</span>, frame)<br>        # 按下<span class="hljs-string">&#x27;q&#x27;</span>键退出循环<br>        if cv2.<span class="hljs-built_in">waitKey</span>(<span class="hljs-number">1</span>) &amp; <span class="hljs-number">0</span>xFF == <span class="hljs-built_in">ord</span>(<span class="hljs-string">&quot;q&quot;</span>):<br>            break<br><br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;总平均帧率\t&quot;</span>, frames / (time.<span class="hljs-built_in">time</span>() - initTime))<br>    # 释放资源并关闭窗口<br>    cap.<span class="hljs-built_in">release</span>()<br>    cv2.<span class="hljs-built_in">destroyAllWindows</span>()<br><br>if __name__ == <span class="hljs-string">&quot;__main__&quot;</span>:<br>    <span class="hljs-built_in">main</span>()<br></code></pre></td></tr></table></figure>
-<p>使用ubantu自带的相机都打不开摄像头，但是使用Camera_demo.py的测试代码却可以正常显示。只能说，敬畏Linux。<br><img src="/../_resources/42bd543e92c183f0ad21c8bd5b14f943.png" srcset="/img/loading.gif" lazyload alt="42bd543e92c183f0ad21c8bd5b14f943.png"><br>甚至可以看到像素点的RGB值，真是有点奇妙。<br><img src="/../_resources/58c81de52724eaa030d01c62076c1a68.png" srcset="/img/loading.gif" lazyload alt="58c81de52724eaa030d01c62076c1a68.png"><br>最后按Q可以退出。<br>最近在搞rknn，碰壁已经碰麻了，这是为数不多成功的尝试，记录一下。</p>
+<p>使用ubantu自带的相机都打不开摄像头，但是使用Camera_demo.py的测试代码却可以正常显示。只能说，敬畏Linux。<br><img src="/2024/05/29/Linux%E9%93%BE%E6%8E%A5USB%E6%91%84%E5%83%8F%E5%A4%B4%E6%B5%8B%E8%AF%95/42bd543e92c183f0ad21c8bd5b14f943.png" srcset="/img/loading.gif" lazyload><br>甚至可以看到像素点的RGB值，真是有点奇妙。<br><img src="/2024/05/29/Linux%E9%93%BE%E6%8E%A5USB%E6%91%84%E5%83%8F%E5%A4%B4%E6%B5%8B%E8%AF%95/58c81de52724eaa030d01c62076c1a68.png" srcset="/img/loading.gif" lazyload><br>最后按Q可以退出。<br>最近在搞rknn，碰壁已经碰麻了，这是为数不多成功的尝试，记录一下。</p>
 
                 
               </div>
@@ -361,20 +361,20 @@
     <div class="license-meta">
       
         <div class="license-meta-item">
-          <div>Author</div>
+          <div>Beitragsautor</div>
           <div>Kwindy</div>
         </div>
       
       
         <div class="license-meta-item license-meta-date">
-          <div>Posted on</div>
+          <div>Veröffentlicht am</div>
           <div>May 29, 2024</div>
         </div>
       
       
       
         <div class="license-meta-item">
-          <div>Licensed under</div>
+          <div>Urheberrechtshinweis</div>
           <div>
             
               
@@ -403,7 +403,7 @@
                       <a href="/2024/05/31/RK3588%E7%AD%89%E5%BC%80%E5%8F%91%E6%9D%BF%E7%9A%84%E8%AE%BE%E5%A4%87%E9%87%87%E8%B4%AD%E6%B8%85%E5%8D%95/" title="RK3588等开发板的设备采购清单">
                         <i class="iconfont icon-arrowleft"></i>
                         <span class="hidden-mobile">RK3588等开发板的设备采购清单</span>
-                        <span class="visible-mobile">Previous</span>
+                        <span class="visible-mobile">Vorheriger</span>
                       </a>
                     
                   </article>
@@ -412,7 +412,7 @@
                     
                       <a href="/2024/05/19/Windows%E9%85%8D%E7%BD%AEyolo%E7%8E%AF%E5%A2%83%E6%97%B6%E7%89%88%E6%9C%AC%E5%8C%B9%E9%85%8D%E9%97%AE%E9%A2%98/" title="Windows配置yolo环境时版本匹配问题">
                         <span class="hidden-mobile">Windows配置yolo环境时版本匹配问题</span>
-                        <span class="visible-mobile">Next</span>
+                        <span class="visible-mobile">Nächster</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
                     
@@ -433,7 +433,7 @@
     <div id="toc">
   <p class="toc-header">
     <i class="iconfont icon-list"></i>
-    <span>Table of Contents</span>
+    <span>Inhaltsverzeichnis</span>
   </p>
   <div class="toc-body" id="toc-body"></div>
 </div>
@@ -489,7 +489,7 @@
   <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <h4 class="modal-title w-100 font-weight-bold">Suchen</h4>
         <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -497,7 +497,7 @@
       <div class="modal-body mx-3">
         <div class="md-form mb-5">
           <input type="text" id="local-search-input" class="form-control validate">
-          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+          <label data-error="x" data-success="v" for="local-search-input">Stichwort</label>
         </div>
         <div class="list-group" id="local-search-result"></div>
       </div>
@@ -676,7 +676,7 @@
   
 
   <noscript>
-    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+    <div class="noscript-warning">Blog funktioniert am besten mit aktiviertem JavaScript</div>
   </noscript>
 </body>
 </html>
