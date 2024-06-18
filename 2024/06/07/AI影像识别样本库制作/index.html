@@ -29,7 +29,7 @@
 <meta property="og:image" content="http://kw1649190133.github.io/2024/06/07/AI%E5%BD%B1%E5%83%8F%E8%AF%86%E5%88%AB%E6%A0%B7%E6%9C%AC%E5%BA%93%E5%88%B6%E4%BD%9C/129bda91548c074a22976ae3443d2cc2.png">
 <meta property="og:image" content="http://kw1649190133.github.io/2024/06/07/AI%E5%BD%B1%E5%83%8F%E8%AF%86%E5%88%AB%E6%A0%B7%E6%9C%AC%E5%BA%93%E5%88%B6%E4%BD%9C/dc7bd30361d850ea43faf7ae245fad7e.png">
 <meta property="article:published_time" content="2024-06-07T09:33:13.000Z">
-<meta property="article:modified_time" content="2024-06-07T09:40:52.070Z">
+<meta property="article:modified_time" content="2024-06-18T03:04:07.815Z">
 <meta property="article:author" content="Kwindy">
 <meta property="article:tag" content="样本库">
 <meta property="article:tag" content="ArcGIS">
@@ -126,7 +126,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/">
                 <i class="iconfont icon-home-fill"></i>
-                <span>Startseite</span>
+                <span>Home</span>
               </a>
             </li>
           
@@ -138,7 +138,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/archives/">
                 <i class="iconfont icon-archive-fill"></i>
-                <span>Archiv</span>
+                <span>Archives</span>
               </a>
             </li>
           
@@ -150,7 +150,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/categories/">
                 <i class="iconfont icon-category-fill"></i>
-                <span>Kategorien</span>
+                <span>Categories</span>
               </a>
             </li>
           
@@ -162,7 +162,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/tags/">
                 <i class="iconfont icon-tags-fill"></i>
-                <span>Schlagwörter</span>
+                <span>Tags</span>
               </a>
             </li>
           
@@ -174,7 +174,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/about/">
                 <i class="iconfont icon-user-fill"></i>
-                <span>Über</span>
+                <span>About</span>
               </a>
             </li>
           
@@ -231,7 +231,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          7.5k wörter
+          7.8k words
         
       </span>
     
@@ -242,7 +242,7 @@
         
         
         
-          63 minuten
+          66 mins
         
       </span>
     
@@ -307,19 +307,21 @@
 <figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs py"><span class="hljs-comment"># 程序功能：生成指定数量的时间戳，并写入到文件</span><br><span class="hljs-keyword">from</span> datetime <span class="hljs-keyword">import</span> datetime<br><span class="hljs-keyword">import</span> time<br><br>outputpath=<span class="hljs-string">&#x27;output.txt&#x27;</span> <span class="hljs-comment">#生成位置</span><br>timestamp_num=<span class="hljs-number">208</span> <span class="hljs-comment">#生成数量</span><br> <br><span class="hljs-comment"># 格式化输出到毫秒精度</span><br><span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(outputpath, <span class="hljs-string">&#x27;w&#x27;</span>) <span class="hljs-keyword">as</span> file:<br>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(timestamp_num):<br>        <span class="hljs-comment"># 获取当前时间</span><br>        now = datetime.now()<br>        timestamp = time.time()<br>        timestamp_int=<span class="hljs-built_in">int</span>(timestamp*<span class="hljs-number">1000</span>) <span class="hljs-comment">#转换成13位，精确到毫秒</span><br>        <span class="hljs-built_in">print</span>(now.strftime(<span class="hljs-string">&#x27;%Y-%m-%d %H:%M:%S.%f&#x27;</span>)[:-<span class="hljs-number">3</span>])  <span class="hljs-comment"># 去掉最后的3个字符，即去掉微秒精度</span><br>        <span class="hljs-built_in">print</span>(timestamp_int)<br>        file.write(<span class="hljs-string">f&#x27;<span class="hljs-subst">&#123;timestamp_int&#125;</span>\n&#x27;</span>) <span class="hljs-comment"># 写入到文件</span><br>        <span class="hljs-comment"># 等待0.1秒</span><br>        time.sleep(<span class="hljs-number">0.1</span>)<br></code></pre></td></tr></table></figure>
 
 <p>虽然打印出了时间戳，但要把它搞进矢量里，还是有点费功夫的。要走一遍Excel-表格连接-字段计算器的流程，但如果我直接用ArcPy，把生成带时间戳的名称直接写成一个ArcGIS工具，那岂不是一次搞定，直接起飞。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># 程序功能：读取指定图层，向指定字段中直接写入时间戳。</span><br><span class="hljs-keyword">import</span> arcpy<br><span class="hljs-keyword">import</span> time<br><span class="hljs-keyword">from</span> datetime <span class="hljs-keyword">import</span> datetime<br><br><span class="hljs-comment"># 设置工作空间</span><br>workspace = <span class="hljs-string">&quot;D:\Project\新疆地理国情普查\样本制作2024\样本制作数据库.gdb&quot;</span><br>arcpy.env.workspace = workspace<br> <br><span class="hljs-comment"># 图层名称和字段名称</span><br>layer_name = <span class="hljs-string">&quot;TestLayer&quot;</span><br>field_name = <span class="hljs-string">&quot;timestamp&quot;</span><br> <br><span class="hljs-comment"># 启动编辑</span><br>arcpy.env.workspace = workspace<br>edit = arcpy.da.Editor(workspace)<br>edit.startEditing(<span class="hljs-literal">False</span>)<br>edit.startOperation()<br><br><span class="hljs-comment"># 读取要素类</span><br><span class="hljs-keyword">with</span> arcpy.da.UpdateCursor(layer_name, field_name) <span class="hljs-keyword">as</span> cursor:<br>    <span class="hljs-keyword">for</span> row <span class="hljs-keyword">in</span> cursor:<br>        <span class="hljs-comment"># 获取当前时间</span><br>        now = datetime.now()<br>        <span class="hljs-comment"># 获取当前时间戳</span><br>        timestamp = time.time()<br>        timestamp_str=<span class="hljs-built_in">str</span>(<span class="hljs-built_in">int</span>(timestamp*<span class="hljs-number">1000</span>)) <span class="hljs-comment"># 乘一千取整，正好截取13位</span><br>        <span class="hljs-comment"># 预览显示 (这里的-3含义是去掉前面打印的字符串的最后三位，多此一举)</span><br>        <span class="hljs-built_in">print</span>(now.strftime(<span class="hljs-string">&#x27;%Y-%m-%d %H:%M:%S.%f&#x27;</span>)[:-<span class="hljs-number">3</span>] + <span class="hljs-string">&#x27; ---&gt; &#x27;</span> + timestamp_str)<br>        <span class="hljs-comment"># 字符串写入</span><br>        row[<span class="hljs-number">0</span>] = timestamp_str<br>        cursor.updateRow(row)<br><br>        <span class="hljs-comment"># 等待间隔</span><br>        time.sleep(<span class="hljs-number">0.1</span>)<br> <br><span class="hljs-comment"># 关闭编辑</span><br>edit.stopOperation()<br>edit.stopEditing(<span class="hljs-literal">True</span>)<br></code></pre></td></tr></table></figure>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><code class="hljs py"><span class="hljs-comment"># 程序功能：读取指定图层，向指定字段中直接写入时间戳。</span><br><span class="hljs-keyword">import</span> arcpy<br><span class="hljs-keyword">import</span> time<br><span class="hljs-keyword">from</span> datetime <span class="hljs-keyword">import</span> datetime<br><br><span class="hljs-comment"># 设置工作空间</span><br>workspace = <span class="hljs-string">&quot;D:\Project\新疆地理国情普查\样本制作2024\样本制作数据库.gdb&quot;</span><br>arcpy.env.workspace = workspace<br> <br><span class="hljs-comment"># 图层名称和字段名称</span><br>layer_name = <span class="hljs-string">&quot;TestLayer&quot;</span><br>field_name = <span class="hljs-string">&quot;timestamp&quot;</span><br> <br><span class="hljs-comment"># 启动编辑</span><br>arcpy.env.workspace = workspace<br>edit = arcpy.da.Editor(workspace)<br>edit.startEditing(<span class="hljs-literal">False</span>)<br>edit.startOperation()<br><br><span class="hljs-comment"># 读取要素类</span><br><span class="hljs-keyword">with</span> arcpy.da.UpdateCursor(layer_name, field_name) <span class="hljs-keyword">as</span> cursor:<br>    <span class="hljs-keyword">for</span> row <span class="hljs-keyword">in</span> cursor:<br>        <span class="hljs-comment"># 获取当前时间</span><br>        now = datetime.now()<br>        <span class="hljs-comment"># 获取当前时间戳</span><br>        timestamp = time.time()<br>        timestamp_str=<span class="hljs-built_in">str</span>(<span class="hljs-built_in">int</span>(timestamp*<span class="hljs-number">1000</span>)) <span class="hljs-comment"># 乘一千取整，正好截取13位</span><br>        <span class="hljs-comment"># 预览显示 (这里的-3含义是去掉前面打印的字符串的最后三位，多此一举)</span><br>        <span class="hljs-built_in">print</span>(now.strftime(<span class="hljs-string">&#x27;%Y-%m-%d %H:%M:%S.%f&#x27;</span>)[:-<span class="hljs-number">3</span>] + <span class="hljs-string">&#x27; ---&gt; &#x27;</span> + timestamp_str)<br>        <span class="hljs-comment"># 字符串写入</span><br>        row[<span class="hljs-number">0</span>] = timestamp_str<br>        cursor.updateRow(row)<br><br>        <span class="hljs-comment"># 等待间隔</span><br>        time.sleep(<span class="hljs-number">0.1</span>)<br> <br><span class="hljs-comment"># 关闭编辑</span><br>edit.stopOperation()<br>edit.stopEditing(<span class="hljs-literal">True</span>)<br></code></pre></td></tr></table></figure>
 <p>运行完之后需要关掉属性表才能刷新内容。<br>理论上还可以更进一步，把影像名称也直接合成了，就是几个字段的拼接。不过要处理的数据也不多，时间有限先不整了。<br>另外虽然关闭了编辑，但运行完之后的Python命令框依然可能会对数据有锁定，所以最好关掉它。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs B">[Class] &amp; [Code] &amp; [IMG_Type] &amp; [IMG_Date] &amp; [timestamp]<br></code></pre></td></tr></table></figure>
+<figure class="highlight vb"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs vb">[<span class="hljs-keyword">Class</span>] &amp; [Code] &amp; [IMG_Type] &amp; [IMG_Date] &amp; [timestamp]<br></code></pre></td></tr></table></figure>
 <p>字段计算器又不是不能用</p>
-<h1 id="数据处理和导出"><a href="#数据处理和导出" class="headerlink" title="数据处理和导出"></a>数据处理和导出</h1><h2 id="像素无法对齐的问题"><a href="#像素无法对齐的问题" class="headerlink" title="像素无法对齐的问题"></a>像素无法对齐的问题</h2><p>使用512 * 512的矢量，却裁剪出513 * 513的栅格，如果是平时倒也无所谓，但训练AI对数据的要求就比较严格，需要做到像素对齐一致，这就比较头疼了。<br>出现这种情况的原因就是坐标没对上，从数字上看，大概也就差了小半米，但这半米是怎么来的就让人摸不着头脑了，明明坐标系是一样的。在10.8上导出就是513，而有些电脑装的老版本10.4就能导出512。再仔细看了一下，有数据的像素也是能对上的，而多出的一行是NoData值。<br><img src="/2024/06/07/AI%E5%BD%B1%E5%83%8F%E8%AF%86%E5%88%AB%E6%A0%B7%E6%9C%AC%E5%BA%93%E5%88%B6%E4%BD%9C/f34025ccc99cc5afbcdecbba0b6c9bf1.png" srcset="/img/loading.gif" lazyload><br><del>试图用Arcpy解决问题，找到Nodata值然后删除，但运行之后没用，下面这段代码就权当备份了。</del><br>并不是没有用，ArcGIS按掩膜提取的矢量直接变成黑色了，好像是因为Nodata值的存在，使位深、色彩通道出了问题。而跑一趟这个就可以修复问题。很奇妙，误打误撞的解决了一个莫名其妙的问题。</p>
+<h1 id="数据处理和导出"><a href="#数据处理和导出" class="headerlink" title="数据处理和导出"></a>数据处理和导出</h1><h2 id="像素无法对齐的问题"><a href="#像素无法对齐的问题" class="headerlink" title="像素无法对齐的问题"></a>像素无法对齐的问题</h2><p>使用512 * 512的矢量，却裁剪出513 * 513的栅格，如果是平时倒也无所谓，但训练AI对数据的要求就比较严格，需要做到像素对齐一致，这就比较头疼了。<br>出现这种情况的原因就是坐标没对上，从数字上看，大概也就差了小半米，但这半米是怎么来的就让人摸不着头脑了，明明坐标系是一样的。在10.8上导出就是513，而有些电脑装的老版本10.4就能导出512。再仔细看了一下，有数据的像素也是能对上的，而多出的一行是NoData值。<br><img src="/2024/06/07/AI%E5%BD%B1%E5%83%8F%E8%AF%86%E5%88%AB%E6%A0%B7%E6%9C%AC%E5%BA%93%E5%88%B6%E4%BD%9C/f34025ccc99cc5afbcdecbba0b6c9bf1.png" srcset="/img/loading.gif" lazyload><br><del>试图用Arcpy解决问题，找到Nodata值然后删除，但运行之后没用，下面这段代码就权当备份了。</del><br>并不是没有用，ArcGIS按掩膜提取的矢量直接变成黑色了，好像是因为Nodata值的存在，使位深、色彩通道出了问题。而跑一趟这个就可以修复问题。很奇妙，误打误撞的解决了一个莫名其妙的问题。【后来在家又试了一下，10.4导出的影像好像就不需要这一步处理，就是正常的8位RGB，很奇妙】</p>
 <figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs py"><span class="hljs-comment"># -*- coding: utf-8 -*-</span><br><span class="hljs-keyword">import</span> arcpy, datetime<br><span class="hljs-comment"># 这里使用的方法为“复制栅格”</span><br><br><span class="hljs-comment"># tif影像输入路径</span><br>tif_file_path = <span class="hljs-string">&quot;D:/Arcpy/ArcPy ArcToolbox/Out Data/&quot;</span><br><span class="hljs-comment"># 结果输出路径</span><br>out_file_path = <span class="hljs-string">&quot;D:/Arcpy/ArcPy ArcToolbox/Fill/&quot;</span><br>arcpy.env.workspace = tif_file_path<br><br><span class="hljs-comment"># 开始计算时间</span><br>startTime = datetime.datetime.now()<br><span class="hljs-built_in">print</span> startTime<br><br><span class="hljs-comment"># 遍历工作空间下的所有tif影像</span><br>tif_file_name = arcpy.ListRasters(<span class="hljs-string">&quot;*&quot;</span>, <span class="hljs-string">&quot;tif&quot;</span>)<br><span class="hljs-keyword">for</span> tif_file <span class="hljs-keyword">in</span> tif_file_name:<br>    <span class="hljs-built_in">print</span>(tif_file)<br>    Cope_file_name = tif_file<br>    <span class="hljs-comment"># 执行Cope Raster</span><br>    arcpy.CopyRaster_management(tif_file, out_file_path + Cope_file_name,<span class="hljs-string">&quot;DEFAULTS&quot;</span>, <span class="hljs-string">&quot;0&quot;</span>, <span class="hljs-string">&quot;nodata&quot;</span>, <span class="hljs-string">&quot;&quot;</span>, <span class="hljs-string">&quot;&quot;</span>, <span class="hljs-string">&quot;8_BIT_UNSIGNED&quot;</span>)<br><span class="hljs-built_in">print</span> <span class="hljs-string">&quot;Finish!&quot;</span><br>endTime = datetime.datetime.now()<br><span class="hljs-built_in">print</span> <span class="hljs-string">&quot;Time use: &quot;</span> + <span class="hljs-built_in">str</span>((endTime - startTime).seconds) + <span class="hljs-string">&quot; (second)&quot;</span><br><span class="hljs-built_in">print</span> <span class="hljs-string">&quot;-------------------------------------------&quot;</span><br></code></pre></td></tr></table></figure>
-<p>放大以后可以明显的看到绿色这块是nodata值，并且刚好是一行一列。这就是512变成513的元凶。<br><img src="/2024/06/07/AI%E5%BD%B1%E5%83%8F%E8%AF%86%E5%88%AB%E6%A0%B7%E6%9C%AC%E5%BA%93%E5%88%B6%E4%BD%9C/129bda91548c074a22976ae3443d2cc2.png" srcset="/img/loading.gif" lazyload><br>既然如此，干脆不整那些弯弯绕绕的了，直接上像素处理，删除掉第一行和最后一列。<br>这里的代码有缺陷，就是它会直接替换原文件，但是能用，也没空管这么多了，所以使用之前需要做好备份。<br>另外使用cv2库需要安装openCV，而这里不需要Arcpy，可以用自己的python3。ArcGIS的Python2好像还不能直接用pip，比较麻烦。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> cv2<br><span class="hljs-keyword">import</span> os<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">delete_first_last_column</span>(<span class="hljs-params">image_path</span>):<br>    <span class="hljs-comment"># 读取图像</span><br>    img = cv2.imread(image_path, cv2.IMREAD_UNCHANGED)<br>    <span class="hljs-keyword">if</span> img <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;WARNING: 无法读取图像 <span class="hljs-subst">&#123;image_path&#125;</span>&quot;</span>)<br>        <span class="hljs-keyword">return</span><br>    <br>    <span class="hljs-comment"># 删除第一列和最后一列</span><br>    img = img[<span class="hljs-number">1</span>:,:]<br>    img = img[:, :-<span class="hljs-number">1</span>]<br>    <br>    <span class="hljs-comment"># 保存修改后的图像</span><br>    cv2.imwrite(image_path, img)<br> <br><span class="hljs-comment"># 指定文件夹路径</span><br>folder_path = <span class="hljs-string">&#x27;D:\Project\English\input&#x27;</span><br> <br><span class="hljs-comment"># 遍历文件夹中的所有tif图像</span><br><span class="hljs-keyword">for</span> filename <span class="hljs-keyword">in</span> os.listdir(folder_path):<br>    <span class="hljs-keyword">if</span> filename.lower().endswith(<span class="hljs-string">&#x27;.tif&#x27;</span>):<br>		file_path = os.path.join(folder_path, filename)<br>		<span class="hljs-built_in">print</span>(file_path)<br>        delete_first_last_column(file_path)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;&lt;----END----&gt;&quot;</span>)<br></code></pre></td></tr></table></figure>
+<p>放大以后可以明显的看到绿色这块是nodata值，并且刚好是一行一列。这就是512变成513的元凶。<br><img src="/2024/06/07/AI%E5%BD%B1%E5%83%8F%E8%AF%86%E5%88%AB%E6%A0%B7%E6%9C%AC%E5%BA%93%E5%88%B6%E4%BD%9C/129bda91548c074a22976ae3443d2cc2.png" srcset="/img/loading.gif" lazyload><br>既然如此，干脆不整那些弯弯绕绕的了，直接上像素处理，删除掉第一行和最后一列。<br>这里的代码有缺陷，就是它会直接替换原文件，但是能用，也没空管这么多了，所以使用之前需要做好备份。<br>另外使用cv2库需要安装openCV，而这里不需要Arcpy，可以用自己的python3。ArcGIS的Python2好像还不能直接用pip，比较麻烦。<br><strong>使用openCV文件路径必须是英文</strong></p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs py"><span class="hljs-keyword">import</span> cv2<br><span class="hljs-keyword">import</span> os<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">delete_first_last_column</span>(<span class="hljs-params">image_path</span>):<br>    <span class="hljs-comment"># 读取图像</span><br>    img = cv2.imread(image_path, cv2.IMREAD_UNCHANGED)<br>    <span class="hljs-keyword">if</span> img <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;WARNING: 无法读取图像 <span class="hljs-subst">&#123;image_path&#125;</span>&quot;</span>)<br>        <span class="hljs-keyword">return</span><br>    <br>    <span class="hljs-comment"># 删除第一列和最后一列</span><br>    img = img[<span class="hljs-number">1</span>:,:]<br>    img = img[:, :-<span class="hljs-number">1</span>]<br>    <span class="hljs-comment"># img = img[1:,:-1] 这里可以简化为一体的写法。究竟是+1还是-1，看具体情况，有时候有点玄妙，可以多试几次。</span><br>    <br>    <span class="hljs-comment"># 保存修改后的图像</span><br>    cv2.imwrite(image_path, img)<br> <br><span class="hljs-comment"># 指定文件夹路径</span><br>folder_path = <span class="hljs-string">&#x27;D:\Project\English\input&#x27;</span><br> <br><span class="hljs-comment"># 遍历文件夹中的所有tif图像</span><br><span class="hljs-keyword">for</span> filename <span class="hljs-keyword">in</span> os.listdir(folder_path):<br>    <span class="hljs-keyword">if</span> filename.lower().endswith(<span class="hljs-string">&#x27;.tif&#x27;</span>):<br>		file_path = os.path.join(folder_path, filename)<br>		<span class="hljs-built_in">print</span>(file_path)<br>        delete_first_last_column(file_path)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;&lt;----END----&gt;&quot;</span>)<br></code></pre></td></tr></table></figure>
 <p>openCV强大如斯，在极致的底层抛瓦作用下，问题解决了……但……<br><img src="/2024/06/07/AI%E5%BD%B1%E5%83%8F%E8%AF%86%E5%88%AB%E6%A0%B7%E6%9C%AC%E5%BA%93%E5%88%B6%E4%BD%9C/dc7bd30361d850ea43faf7ae245fad7e.png" srcset="/img/loading.gif" lazyload><br>好消息是像素的问题解决了，坏消息是投影信息没了，需要重新定义投影。不过批量定义投影，应该不是什么难事，理论上用模型构建器或者Arcpy都可以实现。</p>
-<h2 id="影像批量裁切"><a href="#影像批量裁切" class="headerlink" title="影像批量裁切"></a>影像批量裁切</h2><p>使用按掩膜提取就可以获取小范围的影像了，而影像的输入端是自己创建的镶嵌数据集。但几百幅影像，总不能一个个导出，所以还是要做一个批量导出的程序。<br>但自己做程序真的太麻烦了，刚好看到别人做的超级工具箱里有这一项，就直接拿来用了。嘿还真别说，挺好用的，该有的裁剪和命名功能都能满足。当需要裁剪的影像是多幅的时候，可以先建一个镶嵌数据集，然后导入影像，把镶嵌数据集作为栅格输入参数。<br>要自己做工具的话，原理也不复杂，核心工具就是按掩膜提取，但要处理好循环输入输出，以及要素类型的接口对齐，折腾起来又得花一两天，时间有限就先不搞了。另外，在10.8上跑出来的行列数还是513。<br>但工具的问题解决了，难搞的是项目的问题，目前还没有一整个拼好的影像，我还得自己手搓一个。</p>
+<h2 id="影像批量裁切"><a href="#影像批量裁切" class="headerlink" title="影像批量裁切"></a>影像批量裁切</h2><p>使用按掩膜提取就可以获取小范围的影像了，而影像的输入端是自己创建的镶嵌数据集。但几百幅影像，总不能一个个导出，所以还是要做一个批量导出的程序。<br>但自己做程序真的太麻烦了，刚好看到别人做的超级工具箱里有这一项，就直接拿来用了。嘿还真别说，挺好用的，该有的裁剪和命名功能都能满足。当需要裁剪的影像是多幅的时候，可以先建一个镶嵌数据集，然后导入影像，把镶嵌数据集作为栅格输入参数。<br>要自己做工具的话，原理也不复杂，核心工具就是按掩膜提取，但要处理好循环输入输出，以及要素类型的接口对齐，折腾起来又得花一两天，时间有限就先不搞了。另外，在10.8上跑出来的行列数还是513。<br>但工具的问题解决了，难搞的是项目的问题，目前还没有一整个拼好的影像，我还得自己手搓一个。只需要在数据库里创建一个影像镶嵌数据集，然后把影像的文件夹路径加载进去就可以了，不需要导出一整幅影像，那样会很慢很慢。<br>另外在导出影像的时候，有概率出现有一幅影像导出后名字为NONE的情况，但重复几次后有没有了，摸不着头脑。导出路径最好是<strong>纯英文</strong>。</p>
+<p>【20240610 PS 这里的影像裁剪会出现容差问题，最好还是使用Arcpy的方式来处理，在新的文档中有说明。】</p>
 <h2 id="矢量数据批量导出"><a href="#矢量数据批量导出" class="headerlink" title="矢量数据批量导出"></a>矢量数据批量导出</h2><p>模型训练一般来说需要有一个影像对应一个标签，所以需要将矢量要素类中的要素导出为单个的shp作为标签。选择要素+导出shp，麻瓜都会，但要想导出成百上千条数据，一个个搞就太慢了，直接上Arcpy。</p>
 <figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs py"><span class="hljs-keyword">import</span> arcpy<br><br><span class="hljs-comment"># 设置工作空间和要导出的图层</span><br>arcpy.env.workspace = <span class="hljs-string">&quot;D:\Project\样本制作2024\样本制作数据库.gdb&quot;</span><br>layer = <span class="hljs-string">&quot;样本成果_耕地棉花_87度带&quot;</span><br><span class="hljs-comment"># 自定义输出路径</span><br>output_folder = <span class="hljs-string">&quot;D:\Project\样本制作2024\样本导出&quot;</span><br><br><span class="hljs-comment"># 输入要素图层</span><br>input_layer = arcpy.mapping.Layer(layer)<br><br><span class="hljs-comment"># 获取要素图层的空间参考</span><br>spatial_ref = arcpy.Describe(input_layer).spatialReference<br><br><span class="hljs-comment"># 使用SearchCursor遍历要素</span><br><span class="hljs-keyword">with</span> arcpy.da.SearchCursor(layer, [<span class="hljs-string">&quot;IMG_Name&quot;</span>, <span class="hljs-string">&quot;SHAPE@&quot;</span>]) <span class="hljs-keyword">as</span> cursor:<br>    <span class="hljs-keyword">for</span> row <span class="hljs-keyword">in</span> cursor:<br>        img_name = row[<span class="hljs-number">0</span>]<br>        geometry = row[<span class="hljs-number">1</span>]<br>        <span class="hljs-comment"># 将img_name作为输出图层的名称</span><br>        out_name = <span class="hljs-string">&quot;&#123;&#125;.shp&quot;</span>.<span class="hljs-built_in">format</span>(img_name)<br>        out_path = output_folder + <span class="hljs-string">&quot;\\&quot;</span> + out_name<br>        <span class="hljs-built_in">print</span>(out_path)<br>        <span class="hljs-comment"># arcpy.CopyFeatures_management(geometry, out_name)</span><br>        <span class="hljs-comment"># 创建新的shp文件 </span><br>        arcpy.CreateFeatureclass_management(output_folder, out_name, <span class="hljs-string">&quot;POLYGON&quot;</span>, spatial_reference=spatial_ref)<br>        <span class="hljs-keyword">with</span> arcpy.da.InsertCursor(out_path, [<span class="hljs-string">&quot;SHAPE@&quot;</span>]) <span class="hljs-keyword">as</span> insert_cursor:<br>            insert_cursor.insertRow([geometry])<br>			<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;---is finish----&#x27;</span>)<br></code></pre></td></tr></table></figure>
 
+<p>【20240518 PS 矢量的导出这里的代码有个很大的问题：无法保留属性表内容，所以最好使用模型构建器来导出，再使用Arcpy批量改名。在新的文档中有说明】</p>
 <h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>AI写的代码大部分时候还是非常好使的，但偶尔也会有抽风的时候，需要自己分辨，甚至理解一下主要函数的功能以及各种变量的类型，AI有时候不理解具体的业务内容，会把代码写错的。<br>在使用ArcGIS自带的Python2的IDLE时，它的编码规则是cp936，使用它保存的代码在UTF8中打开，中文会变成乱码。所以最好是在VScode之类的编辑器里写代码，再粘贴到IDLE里运行。或者直接把Python2的环境配置到其他的编辑器里。</p>
 
                 
@@ -382,20 +384,20 @@
     <div class="license-meta">
       
         <div class="license-meta-item">
-          <div>Beitragsautor</div>
+          <div>Author</div>
           <div>Kwindy</div>
         </div>
       
       
         <div class="license-meta-item license-meta-date">
-          <div>Veröffentlicht am</div>
+          <div>Posted on</div>
           <div>June 7, 2024</div>
         </div>
       
       
       
         <div class="license-meta-item">
-          <div>Urheberrechtshinweis</div>
+          <div>Licensed under</div>
           <div>
             
               
@@ -421,13 +423,19 @@
                   <article class="post-prev col-6">
                     
                     
+                      <a href="/2024/06/18/Arcpy%E5%AE%9E%E7%8E%B0%E5%BD%B1%E5%83%8F%E6%89%B9%E9%87%8F%E6%8C%89%E6%8E%A9%E8%86%9C%E6%8F%90%E5%8F%96/" title="Arcpy实现影像批量按掩膜提取">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Arcpy实现影像批量按掩膜提取</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
                   </article>
                   <article class="post-next col-6">
                     
                     
                       <a href="/2024/05/31/RK3588%E7%AD%89%E5%BC%80%E5%8F%91%E6%9D%BF%E7%9A%84%E8%AE%BE%E5%A4%87%E9%87%87%E8%B4%AD%E6%B8%85%E5%8D%95/" title="RK3588等开发板的设备采购清单">
                         <span class="hidden-mobile">RK3588等开发板的设备采购清单</span>
-                        <span class="visible-mobile">Nächster</span>
+                        <span class="visible-mobile">Next</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
                     
@@ -448,7 +456,7 @@
     <div id="toc">
   <p class="toc-header">
     <i class="iconfont icon-list"></i>
-    <span>Inhaltsverzeichnis</span>
+    <span>Table of Contents</span>
   </p>
   <div class="toc-body" id="toc-body"></div>
 </div>
@@ -504,7 +512,7 @@
   <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold">Suchen</h4>
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
         <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -512,7 +520,7 @@
       <div class="modal-body mx-3">
         <div class="md-form mb-5">
           <input type="text" id="local-search-input" class="form-control validate">
-          <label data-error="x" data-success="v" for="local-search-input">Stichwort</label>
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
         </div>
         <div class="list-group" id="local-search-result"></div>
       </div>
@@ -691,7 +699,7 @@
   
 
   <noscript>
-    <div class="noscript-warning">Blog funktioniert am besten mit aktiviertem JavaScript</div>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
   </noscript>
 </body>
 </html>
