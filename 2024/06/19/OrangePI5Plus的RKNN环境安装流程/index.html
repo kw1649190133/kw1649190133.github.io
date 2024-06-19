@@ -1,0 +1,720 @@
+
+
+<!DOCTYPE html>
+<html lang="CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Kwindy">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="哥几个今天又来装OrangePI了这次是给公司的开发板写系统、装环境，我还得垫钱买，足足花了两千块。第一次装的时候留下了一些遗憾，比如我的板子怎么也打不了中文，在平时使用的时候是真的难受，这次准备换一个系统镜像试一试。RKNN支持18，20，22三个版本，所以我准备试一试22.04。这次也顺便记录一下整个部署的流程。 设备windows11电脑OrangePI 5 Plus 开发板 刷系统安装Ub">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OrangePI5Plus的RKNN环境安装流程">
+<meta property="og:url" content="http://kw1649190133.github.io/2024/06/19/OrangePI5Plus%E7%9A%84RKNN%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85%E6%B5%81%E7%A8%8B/index.html">
+<meta property="og:site_name" content="kw&#39;s blog">
+<meta property="og:description" content="哥几个今天又来装OrangePI了这次是给公司的开发板写系统、装环境，我还得垫钱买，足足花了两千块。第一次装的时候留下了一些遗憾，比如我的板子怎么也打不了中文，在平时使用的时候是真的难受，这次准备换一个系统镜像试一试。RKNN支持18，20，22三个版本，所以我准备试一试22.04。这次也顺便记录一下整个部署的流程。 设备windows11电脑OrangePI 5 Plus 开发板 刷系统安装Ub">
+<meta property="og:locale">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/06/19/OrangePI5Plus%E7%9A%84RKNN%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85%E6%B5%81%E7%A8%8B/18434bf051b550d66e092b67987c51f8.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/06/19/OrangePI5Plus%E7%9A%84RKNN%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85%E6%B5%81%E7%A8%8B/fd94df85ff50ded99c3bfdc1b23e9b8e.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/06/19/OrangePI5Plus%E7%9A%84RKNN%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85%E6%B5%81%E7%A8%8B/758f4badd10e79961ea8899da7220a13.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/06/19/OrangePI5Plus%E7%9A%84RKNN%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85%E6%B5%81%E7%A8%8B/f13c5d3c039225bf3f2893f7cae9bad9.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/06/19/OrangePI5Plus%E7%9A%84RKNN%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85%E6%B5%81%E7%A8%8B/f6a79541032dff68c8129dc2059c6778.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/06/19/OrangePI5Plus%E7%9A%84RKNN%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85%E6%B5%81%E7%A8%8B/3cc9339aee543e262355fab19cfccaa0.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/06/19/OrangePI5Plus%E7%9A%84RKNN%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85%E6%B5%81%E7%A8%8B/48466abcd65785cebc7a6fd2c0d1d49b.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/06/19/OrangePI5Plus%E7%9A%84RKNN%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85%E6%B5%81%E7%A8%8B/285f2878689774d92ac29f895e95ed92.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/06/19/OrangePI5Plus%E7%9A%84RKNN%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85%E6%B5%81%E7%A8%8B/03ab9262d0eab3144ef38a6e64cf58da.png">
+<meta property="article:published_time" content="2024-06-19T10:21:45.000Z">
+<meta property="article:modified_time" content="2024-06-19T10:24:30.389Z">
+<meta property="article:author" content="Kwindy">
+<meta property="article:tag" content="计算机视觉">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="RK3588">
+<meta property="article:tag" content="开发板">
+<meta property="article:tag" content="RKNN">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://kw1649190133.github.io/2024/06/19/OrangePI5Plus%E7%9A%84RKNN%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85%E6%B5%81%E7%A8%8B/18434bf051b550d66e092b67987c51f8.png">
+  
+  
+  
+  <title>OrangePI5Plus的RKNN环境安装流程 - kw&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"kw1649190133.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="OrangePI5Plus的RKNN环境安装流程"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-06-19 18:21" pubdate>
+          June 19, 2024 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          34 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">OrangePI5Plus的RKNN环境安装流程</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="哥几个今天又来装OrangePI了"><a href="#哥几个今天又来装OrangePI了" class="headerlink" title="哥几个今天又来装OrangePI了"></a>哥几个今天又来装OrangePI了</h1><p>这次是给公司的开发板写系统、装环境，我还得垫钱买，足足花了两千块。<br>第一次装的时候留下了一些遗憾，比如我的板子怎么也打不了中文，在平时使用的时候是真的难受，这次准备换一个系统镜像试一试。RKNN支持18，20，22三个版本，所以我准备试一试22.04。<br>这次也顺便记录一下整个部署的流程。</p>
+<h2 id="设备"><a href="#设备" class="headerlink" title="设备"></a>设备</h2><p>windows11电脑<br>OrangePI 5 Plus 开发板</p>
+<h1 id="刷系统"><a href="#刷系统" class="headerlink" title="刷系统"></a>刷系统</h1><h2 id="安装Ubantu22-04"><a href="#安装Ubantu22-04" class="headerlink" title="安装Ubantu22.04"></a>安装Ubantu22.04</h2><p>这次遇到了安装失败的情况，因为过于自信没有完全按照官方文档的步骤来，结果就翻车了。</p>
+<h3 id="使用RKDevTool清空SPIFlash"><a href="#使用RKDevTool清空SPIFlash" class="headerlink" title="使用RKDevTool清空SPIFlash"></a>使用RKDevTool清空SPIFlash</h3><ol>
+<li>选择开发工具的第三页选项卡-高级功能</li>
+<li>boot选择MiniloaderALL.bin文件</li>
+<li>关闭电源再重新连接，和之前一样按住MaskROM再通电，进入MASKROM模式。</li>
+<li>列表中选择【5.SPINOR】，点击切换存储，点击擦除所有。</li>
+<li>看到右边清除成功后，重新刷系统。<br><img src="/2024/06/19/OrangePI5Plus%E7%9A%84RKNN%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85%E6%B5%81%E7%A8%8B/18434bf051b550d66e092b67987c51f8.png" srcset="/img/loading.gif" lazyload></li>
+</ol>
+<h3 id="稳健刷系统"><a href="#稳健刷系统" class="headerlink" title="稳健刷系统"></a>稳健刷系统</h3><ol>
+<li>在表格中按右键，导入配置，选择Emmc的配置文件（根据实际需要）。我就是少了这一步结果翻车了，系统镜像写不进去。<br><img src="/2024/06/19/OrangePI5Plus%E7%9A%84RKNN%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85%E6%B5%81%E7%A8%8B/fd94df85ff50ded99c3bfdc1b23e9b8e.png" srcset="/img/loading.gif" lazyload></li>
+<li>替换文件路径，改为自己的路径。包括MiniloaderALL.bin配置文件和ubantu的系统镜像【一定要点击右边的小白框，在文件选择框里去选，自信复制粘贴没用】</li>
+<li>关闭电源再重新连接，和之前一样按住MaskROM再通电，进入MASKROM模式。【之前如果进行过清空SPIFlash操作，就需要断电重连一遍】</li>
+<li>勾上强制按地址写，然后执行，狠狠写。成功的话右边会有进度，并且开发板会自动重启进入系统。<br><img src="/2024/06/19/OrangePI5Plus%E7%9A%84RKNN%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85%E6%B5%81%E7%A8%8B/758f4badd10e79961ea8899da7220a13.png" srcset="/img/loading.gif" lazyload></li>
+</ol>
+<h2 id="感觉比以前的20-04好"><a href="#感觉比以前的20-04好" class="headerlink" title="感觉比以前的20.04好"></a>感觉比以前的20.04好</h2><p>虽然安装22.04遇到了一点小问题，但系统成功启动之后，一切付出都是值得的。<br>首先，它支持4K！之前我用的20.04插上我的4K显示器根本无法使用，但现在装的第二台机器就没有这样的问题。我记得官方的硬件手册里也是说了支持4K甚至8K的，果然还是被垃圾系统坑了。<br>另外，它的中文输入法也没有问题！可以正常打汉字！我就说怎么会有操作系统不能打中文啊。等公司的这个装好了，我也要给我自己的机器也刷一个22.04。</p>
+<h2 id="配置中文"><a href="#配置中文" class="headerlink" title="配置中文"></a>配置中文</h2><p>第一次进入系统时就可以选择语言和地区，但这只会改变一部分界面的语言。设置完密码之后正式进入系统，在设置里找到区域和语言（Language），选择管理已安装的语言，就会自动安装当前配置的语言包（需要先联网）。把汉语拖到最上面一栏第一个，再点击应用到整个系统。然后重启之后就全是中文了。</p>
+<h1 id="装软件"><a href="#装软件" class="headerlink" title="装软件"></a>装软件</h1><h2 id="Miniconda"><a href="#Miniconda" class="headerlink" title="Miniconda"></a>Miniconda</h2><p>无论是Windows电脑还是Linux电脑，都需要安装Anaconda用来管理环境，还是很有必要装这个。但是Anaconda真的太大了，装完就好几个G，全都是根本用不上的什么花里胡哨的界面。最近才了解到有Miniconda这种小巧精悍的软件，根本不占空间，于是现在无论是PC还是开发板都偏爱Miniconda了。<br>可以去官网下载Miniconda，但是官方很鸡贼的把下载地址藏到了说明文档里面，其他地方通篇都是他们的Anaconda。<br><a target="_blank" rel="noopener" href="https://docs.anaconda.com/miniconda/">https://docs.anaconda.com/miniconda/</a><br>在文档的页面找到Miniconda的内容，就能看到各个版本的Miniconda了。选择相应的版本进行下载，3588开发板是Arm架构，要使用aarch64版本。</p>
+<p><del>下载完之后，使用<code>sudo sh *.sh</code>指令安装.sh格式的安装包。</del><br>还是使用<code>bash *.sh</code>来安装比较好，使用sudo指令会直接把程序干到root目录里面，然后想更新系统变量就麻烦了。</p>
+<p>最后的时候会冒出一句：<code>You can undo this by running conda init --reverse $SHELL?</code>，建议直接选择yes，否则还要自己去shell激活conda。</p>
+<p>在使用bash把程序安装到home目录下之后，【更新变量】只需要简单一句话。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs linux">source ~/.bashrc <br></code></pre></td></tr></table></figure>
+<p>更新玩之后conda的base环境标签立刻就会显示在命令栏里。使用conda指令后出现一大串提示说明安装成功。</p>
+<p>还可以去清华大学镜像站去下载Miniconda，也很方便，还能顺便把pip源换了。<br>pip换清华源：</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cmd">pip config <span class="hljs-built_in">set</span> global.index-url https://pypi.tuna.tsinghua.edu.cn/simple<br></code></pre></td></tr></table></figure>
+<p>【清华大学镜像站】<a target="_blank" rel="noopener" href="https://mirrors.tuna.tsinghua.edu.cn/help/anaconda/">https://mirrors.tuna.tsinghua.edu.cn/help/anaconda/</a></p>
+<h2 id="NoMachine"><a href="#NoMachine" class="headerlink" title="NoMachine"></a>NoMachine</h2><p>远程控制软件，虽然不是很有必要装，但装了之后会比较方便。尤其是做一些截图的时候，就可以直接用windows电脑来截图了。另外打字和控制也方便，需要在Linux主机中输入的时候，只需要切换到Linux的远程对话框，而不用切换键盘的连接模式，还少用一个鼠标。</p>
+<p>【Nomachine官网】<a target="_blank" rel="noopener" href="https://www.nomachine.com/">https://www.nomachine.com/</a><br>需要选择对应的版本，开发板选择Arm64版本。</p>
+<p>Linux最奇妙的就是，在图形界面里直接双击或者右键是无法安装应用的，除非单独安装一个用来安装应用的应用（我之前就是这么干的）。然而实际上根本不需要，直接用指令来安装才是最方便的。<br>使用命令行来安装dbe文件：<code>sudo dpkg -i nomachine.deb</code></p>
+<p>这个软件之前安装的时候也并不顺利，第一次使用发现花屏了，但后面又莫名其妙的可以用了。但是后面我装了WIFI模块之后，就再也没折腾过了。这次安装了之后又用不了，暂时不明白原因。<br>放了一晚上又能用了……第二天来了之后重新连了另一个频段的WIFI，然后IP地址变了一下，又好了。算了，也不是第一次碰到这种玄学问题了。<br><img src="/2024/06/19/OrangePI5Plus%E7%9A%84RKNN%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85%E6%B5%81%E7%A8%8B/f13c5d3c039225bf3f2893f7cae9bad9.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="RKNN-toolkit-lite"><a href="#RKNN-toolkit-lite" class="headerlink" title="RKNN-toolkit-lite"></a>RKNN-toolkit-lite</h2><p>这方面之前的文档也有比较完善的记录，就按着步骤依次安装即可。<br>安装之前先给pip换上清华源</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs vim">pip config <span class="hljs-keyword">set</span> <span class="hljs-keyword">global</span>.<span class="hljs-built_in">index</span>-url https://pypi.tuna.tsinghua.edu.<span class="hljs-keyword">cn</span>/simple<br></code></pre></td></tr></table></figure>
+
+<h3 id="创建RKNN环境"><a href="#创建RKNN环境" class="headerlink" title="创建RKNN环境"></a>创建RKNN环境</h3><p>使用Conda创建RKNN的环境。为了区分新的rknn1.6版本，在后面加上了14。新版的rknn模型结构和老版本不太一样，装老版本主要是现成的案例比较多，不用自己写代码和导出模型。</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">conda</span> create -n rknn14 python=<span class="hljs-number">3</span>.<span class="hljs-number">9</span><br></code></pre></td></tr></table></figure>
+<h3 id="安装1-4版本的rknn-toolkit-lite"><a href="#安装1-4版本的rknn-toolkit-lite" class="headerlink" title="安装1.4版本的rknn_toolkit_lite"></a>安装1.4版本的rknn_toolkit_lite</h3><p>可以用提前准备好的，也可以挂上网址现下。</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">pip</span> install rknn_toolkit_lite2-<span class="hljs-number">1</span>.<span class="hljs-number">4</span>.<span class="hljs-number">0</span>-cp39-cp39-linux_aarch64.whl<br></code></pre></td></tr></table></figure>
+
+<h3 id="复制RKNNruntime文件"><a href="#复制RKNNruntime文件" class="headerlink" title="复制RKNNruntime文件"></a>复制RKNNruntime文件</h3><p>RKNN的运行库文件需要手动放入到自己的开发板里，<code>/usr/lib</code>路径下。之前因为没搞懂放哪碰了很多次壁。<br>如果不出意外遇到权限问题，就通过指令来复制，或者直接修改权限：</p>
+<ol>
+<li>通过sudo指令来复制<code>sudo cp librknnrt.so /usr/lib</code>。</li>
+<li>可以通过<code>chmod u+w destination_folder</code>修改文件夹的权限，允许用户写入。如果文件属于其他用户可以用<code>sudo chown your_username destination_folder</code>修改文件的所有者。对应名字改成自己的文件名。</li>
+</ol>
+<h3 id="安装OpenCV"><a href="#安装OpenCV" class="headerlink" title="安装OpenCV"></a>安装OpenCV</h3><p>图形的读取以及接入摄像头都需要OpenCV，必须装一下。</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cmake">pip <span class="hljs-keyword">install</span> opencv-python<br></code></pre></td></tr></table></figure>
+<h3 id="运行测试"><a href="#运行测试" class="headerlink" title="运行测试"></a>运行测试</h3><p>做到这一步理论上就可以运行了，随便找一个样例程序来测试一下。<br><img src="/2024/06/19/OrangePI5Plus%E7%9A%84RKNN%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85%E6%B5%81%E7%A8%8B/f6a79541032dff68c8129dc2059c6778.png" srcset="/img/loading.gif" lazyload><br>RKNN一次运行成功，可以看到直接打出了结果坐标。将结果打印在画面上显示以及摄像头实时识别的效果都是通过后处理来实现的，只要核心的推理过程没问题，其他的都比较容易。</p>
+<h3 id="接入摄像头"><a href="#接入摄像头" class="headerlink" title="接入摄像头"></a>接入摄像头</h3><p>像之前一样准备使用v4l2，但这次遇到了找不到指令的问题，原来这个不是系统自带的包。我之前的20.04有，而现在这个22.04就没有了。<br>ubantu贴心提示了可以通过v4l-utils来安装v4l2，那就试一下。</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cmake">sudo apt <span class="hljs-keyword">install</span> v4l-utils<br></code></pre></td></tr></table></figure>
+<p>现在应该没问题了，使用v4l2查看一下端口吧。【中间是”L”，不是”1“】</p>
+<figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ada">v4l2-ctl <span class="hljs-comment">--list-devices</span><br></code></pre></td></tr></table></figure>
+<p>可以看到目前就接了1个USB摄像头，端口是第一个video0。如果下次换了个USB端口插摄像头，这个编号可能会不一样，所以最好检查一下。<br><img src="/2024/06/19/OrangePI5Plus%E7%9A%84RKNN%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85%E6%B5%81%E7%A8%8B/3cc9339aee543e262355fab19cfccaa0.png" srcset="/img/loading.gif" lazyload><br>去程序里修改摄像头端口<br><img src="/2024/06/19/OrangePI5Plus%E7%9A%84RKNN%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85%E6%B5%81%E7%A8%8B/48466abcd65785cebc7a6fd2c0d1d49b.png" srcset="/img/loading.gif" lazyload><br>运行python样例程序<code>python XXX.py</code><br><img src="/2024/06/19/OrangePI5Plus%E7%9A%84RKNN%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85%E6%B5%81%E7%A8%8B/285f2878689774d92ac29f895e95ed92.png" srcset="/img/loading.gif" lazyload><br>很好，一口气成功。</p>
+<p>另外尝试了一下同事的1080P摄像头，这清晰度立马就不一样了。<br><img src="/2024/06/19/OrangePI5Plus%E7%9A%84RKNN%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85%E6%B5%81%E7%A8%8B/03ab9262d0eab3144ef38a6e64cf58da.png" srcset="/img/loading.gif" lazyload></p>
+<p>这里只是安装和部署了开发板端的RKNN_toolkit_lite环境，直接运行别人打包好的模型和程序，而训练自己的模型需要再PC上的飞浆或者ultralytics，然后将训练好的模型导入部署在LinuxPC上的RKNN_toolkit中进行转换。这一部分的内容后续有空再补充。</p>
+<h2 id="SimpleScreenRecorder录屏软件"><a href="#SimpleScreenRecorder录屏软件" class="headerlink" title="SimpleScreenRecorder录屏软件"></a>SimpleScreenRecorder录屏软件</h2><p>之前需要录制一下实时识别的画面，又不能当场改程序，就想了个办法曲线救国，把分辨率调低之后，使用录屏软件直接录制。<br>上次找的这个录屏软件还挺不错的，体积小还功能丰富，甚至可以指定录制的范围，省的我去剪辑了。之前是直接在ubantu商店里安装的，而新板子没有整那么多花里胡哨的程序，现在学精了，直接用指令安装最方便。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs linux">sudo apt-get update #更新安装管理程序<br>sudo apt-get install simplescreenrecorder<br></code></pre></td></tr></table></figure>
+
+<h1 id="后续计划"><a href="#后续计划" class="headerlink" title="后续计划"></a>后续计划</h1><p>目前做到这一步就已经和我自己的Linux电脑同个进度了。说实话如果不踩坑的话，其实是非常快的。但是玩Linux哪有不踩坑的，经验都是在坑里积累出来的，没有以前的折腾就没有现在的熟练。<br>后面还需要完善一下算法、丰富一下程序的内容。<br>后面需要解决的另一个关键问题就是流媒体的拉取和推送，把AI识别的画面整合成视频流通过网络推送出去，把流程跑通。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0/" class="category-chain-item">学习</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/">#计算机视觉</a>
+      
+        <a href="/tags/Linux/">#Linux</a>
+      
+        <a href="/tags/RK3588/">#RK3588</a>
+      
+        <a href="/tags/%E5%BC%80%E5%8F%91%E6%9D%BF/">#开发板</a>
+      
+        <a href="/tags/RKNN/">#RKNN</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>OrangePI5Plus的RKNN环境安装流程</div>
+      <div>http://kw1649190133.github.io/2024/06/19/OrangePI5Plus的RKNN环境安装流程/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Kwindy</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>June 19, 2024</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/06/18/Arcpy%E5%AE%9E%E7%8E%B0%E5%BD%B1%E5%83%8F%E6%89%B9%E9%87%8F%E6%8C%89%E6%8E%A9%E8%86%9C%E6%8F%90%E5%8F%96/" title="Arcpy实现影像批量按掩膜提取">
+                        <span class="hidden-mobile">Arcpy实现影像批量按掩膜提取</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>
