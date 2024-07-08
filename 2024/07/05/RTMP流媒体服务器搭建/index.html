@@ -1,0 +1,761 @@
+
+
+<!DOCTYPE html>
+<html lang="CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Kwindy">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="理论学习基础概念RTMP协议RTMP协议是Real Time Message Protocol(实时信息传输协议)的缩写，它是由Adobe公司提出的一种应用层的协议，用来解决多媒体数据传输流的多路复用（Multiplexing）和分包（packetizing）的问题。该协议基于 TCP，是一个协议族，包括 RTMP 基本协议及 RTMPT&#x2F;RTMPS&#x2F;RTMPE 等多种变种。 流媒体流媒体 (st">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RTMP流媒体服务器搭建">
+<meta property="og:url" content="http://kw1649190133.github.io/2024/07/05/RTMP%E6%B5%81%E5%AA%92%E4%BD%93%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E5%BB%BA/index.html">
+<meta property="og:site_name" content="kw&#39;s blog">
+<meta property="og:description" content="理论学习基础概念RTMP协议RTMP协议是Real Time Message Protocol(实时信息传输协议)的缩写，它是由Adobe公司提出的一种应用层的协议，用来解决多媒体数据传输流的多路复用（Multiplexing）和分包（packetizing）的问题。该协议基于 TCP，是一个协议族，包括 RTMP 基本协议及 RTMPT&#x2F;RTMPS&#x2F;RTMPE 等多种变种。 流媒体流媒体 (st">
+<meta property="og:locale">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/07/05/RTMP%E6%B5%81%E5%AA%92%E4%BD%93%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E5%BB%BA/c33f72eef2ef0a93b120203720c48576.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/07/05/RTMP%E6%B5%81%E5%AA%92%E4%BD%93%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E5%BB%BA/9daf7802eca4cf7682f593076f7ea7b8.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/07/05/RTMP%E6%B5%81%E5%AA%92%E4%BD%93%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E5%BB%BA/e3c906ec3cfb4e2d92c7cc0a5784294f.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/07/05/RTMP%E6%B5%81%E5%AA%92%E4%BD%93%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E5%BB%BA/456543ef67c9c50d6ac9963aa9158ab8.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/07/05/RTMP%E6%B5%81%E5%AA%92%E4%BD%93%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E5%BB%BA/9307ce4c0b38fa9210d120ae2645256e.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/07/05/RTMP%E6%B5%81%E5%AA%92%E4%BD%93%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E5%BB%BA/9759badb9e32f25918cca3025de3260d.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/07/05/RTMP%E6%B5%81%E5%AA%92%E4%BD%93%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E5%BB%BA/0d704b9728be6a1a06205a967ad5f5df.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/07/05/RTMP%E6%B5%81%E5%AA%92%E4%BD%93%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E5%BB%BA/700e1b92723f2b4b3f12cac48e43ec04.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/07/05/RTMP%E6%B5%81%E5%AA%92%E4%BD%93%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E5%BB%BA/6fa17bfb1983c221b1c7c9e692c26dda.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/07/05/RTMP%E6%B5%81%E5%AA%92%E4%BD%93%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E5%BB%BA/3cb5b7955cfa42084e9d4ac58c08653d.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/07/05/RTMP%E6%B5%81%E5%AA%92%E4%BD%93%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E5%BB%BA/cea6aeeede3613b22db6346a5b23a58a.png">
+<meta property="article:published_time" content="2024-07-05T06:18:28.000Z">
+<meta property="article:modified_time" content="2024-07-08T05:43:42.614Z">
+<meta property="article:author" content="Kwindy">
+<meta property="article:tag" content="yolo">
+<meta property="article:tag" content="服务器">
+<meta property="article:tag" content="RKNN">
+<meta property="article:tag" content="RTMP">
+<meta property="article:tag" content="推流">
+<meta property="article:tag" content="拉流">
+<meta property="article:tag" content="ffmpeg">
+<meta property="article:tag" content="OBS">
+<meta property="article:tag" content="VLC">
+<meta property="article:tag" content="流媒体">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://kw1649190133.github.io/2024/07/05/RTMP%E6%B5%81%E5%AA%92%E4%BD%93%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E5%BB%BA/c33f72eef2ef0a93b120203720c48576.png">
+  
+  
+  
+  <title>RTMP流媒体服务器搭建 - kw&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"kw1649190133.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Hejmpaĝo</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Arkivoj</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Kategorio</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Etikedoj</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>Pri</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="RTMP流媒体服务器搭建"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-07-05 14:18" pubdate>
+          July 5, 2024 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          7k vortoj
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          59 minutoj
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">RTMP流媒体服务器搭建</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="理论学习"><a href="#理论学习" class="headerlink" title="理论学习"></a>理论学习</h1><h2 id="基础概念"><a href="#基础概念" class="headerlink" title="基础概念"></a>基础概念</h2><h3 id="RTMP协议"><a href="#RTMP协议" class="headerlink" title="RTMP协议"></a>RTMP协议</h3><p>RTMP协议是Real Time Message Protocol(实时信息传输协议)的缩写，它是由Adobe公司提出的一种应用层的协议，用来解决多媒体数据传输流的多路复用（Multiplexing）和分包（packetizing）的问题。该协议基于 TCP，是一个协议族，包括 RTMP 基本协议及 RTMPT/RTMPS/RTMPE 等多种变种。</p>
+<h3 id="流媒体"><a href="#流媒体" class="headerlink" title="流媒体"></a>流媒体</h3><p><strong>流媒体 (streaming media)</strong> 是指将一连串的媒体数据压缩后，经过网络分段发送数据，在网络上即时传输影音以供观赏的一种技术与过程，此技术使得数据包得以像流水一样发送；如果不使用此技术，就必须在使用前下载整个媒体文件。</p>
+<h3 id="推流与拉流"><a href="#推流与拉流" class="headerlink" title="推流与拉流"></a>推流与拉流</h3><p><strong>推流</strong>是将本地的音视频流推送到流媒体服务器上<br><strong>拉流</strong>是拉流是从流媒体服务器上接收音视频流并在本地播放或处理的过程。</p>
+<h3 id="推拉流工具"><a href="#推拉流工具" class="headerlink" title="推拉流工具"></a>推拉流工具</h3><p><strong>FFmpeg</strong>是一套可以用来记录、转换数字音频、视频，并能将其转化为流的开源计算机程序。采用LGPL或GPL许可证。它提供了录制、转换以及流化音视频的完整解决方案。它包含了非常先进的音频/视频编解码库libavcodec，为了保证高可移植性和编解码质量，libavcodec里很多code都是从头开发的。</p>
+<h2 id="流媒体的运行流程"><a href="#流媒体的运行流程" class="headerlink" title="流媒体的运行流程"></a>流媒体的运行流程</h2><p>通过FFmpeg等工具推送到服务器上保存，然后用户端再通过访问服务器来获取流媒体画面，或者直接下载文件。</p>
+<p>流媒体系统示意图：<br><img src="/2024/07/05/RTMP%E6%B5%81%E5%AA%92%E4%BD%93%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E5%BB%BA/c33f72eef2ef0a93b120203720c48576.png" srcset="/img/loading.gif" lazyload></p>
+<h1 id="实现过程"><a href="#实现过程" class="headerlink" title="实现过程"></a>实现过程</h1><p>推流端需要使用ffmpeg，而服务器端需要安装nginx和nginx-rtmp模块。</p>
+<h2 id="设备规格"><a href="#设备规格" class="headerlink" title="设备规格"></a>设备规格</h2><ul>
+<li>腾讯服务器 2核 2GB内存 40GB云硬盘SSD</li>
+<li>服务器系统 宝塔Linux面包-PnCX</li>
+<li>ffmpeg推流端 ubantu22.04 Orange pi 5 plus 16GB</li>
+</ul>
+<h2 id="推送端安装ffmpeg"><a href="#推送端安装ffmpeg" class="headerlink" title="推送端安装ffmpeg"></a>推送端安装ffmpeg</h2><p>【ffmpeg官网】<a target="_blank" rel="noopener" href="https://ffmpeg.org/download.html">https://ffmpeg.org/download.html</a><br>因为发送端使用的是Ubantu系统，所以直接通过包管理器来获取并安装。如果是其他情况可以下载源码再编译安装。（最近安装各种东西真是越来越熟练了）<br>Ubantu系统直接通过包管理安装ffmpeg：</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs routeros">sudo apt-<span class="hljs-built_in">get</span> install ffmpeg<br></code></pre></td></tr></table></figure>
+
+<h2 id="服务器安装Nginx"><a href="#服务器安装Nginx" class="headerlink" title="服务器安装Nginx"></a>服务器安装Nginx</h2><p>安装nginx可以通过宝塔安装，也可以自己下载之后编译安装。一开始是尝试通过宝塔的，但后来遇到了很多问题，现在唯一能跑通的就是单独下载之后编译安装。这样文件的结构会比较简单清晰，不会出现找不到配置文件的情况。</p>
+<p>备选方案：<br>可以使用docker来运行nginx-rtmp。没尝试过，并且不熟悉docker。<br><code>git clone https://github.com/tiangolo/nginx-rtmp-docker.git</code></p>
+<h3 id="获取nginx"><a href="#获取nginx" class="headerlink" title="获取nginx"></a>获取nginx</h3><p>直接去官网下载<br>【官网】<a target="_blank" rel="noopener" href="https://nginx.org/en/download.html">https://nginx.org/en/download.html</a></p>
+<h3 id="获取nginx-rtmp-module"><a href="#获取nginx-rtmp-module" class="headerlink" title="获取nginx-rtmp-module"></a>获取nginx-rtmp-module</h3><p>可以先CD到自己想要的路径，然后用git直接下载模块。如果没有git就先安装git。这里我选择clone在/root/module目录下。</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">git clone https:<span class="hljs-regexp">//gi</span>thub.com<span class="hljs-regexp">/arut/</span>nginx-rtmp-module.git<br></code></pre></td></tr></table></figure>
+
+<h3 id="安装依赖"><a href="#安装依赖" class="headerlink" title="安装依赖"></a>安装依赖</h3><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cmake">yum -y <span class="hljs-keyword">install</span> pcre-devel openssl openssl-devel<br></code></pre></td></tr></table></figure>
+
+<h3 id="nginx编译"><a href="#nginx编译" class="headerlink" title="nginx编译"></a>nginx编译</h3><p>CD到nginx目录下，运行configure，然后编译安装。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs javascript">./configure --prefix=<span class="hljs-regexp">/usr/</span>local/nginx  --add-<span class="hljs-variable language_">module</span>=./nginx-rtmp-<span class="hljs-variable language_">module</span>  --<span class="hljs-keyword">with</span>-http_ssl_module<br>make<br>make install<br></code></pre></td></tr></table></figure>
+<p><code>--prefix</code>可指定安装路径，不过就算不指定它也会自动安装到/usr/local下。<code>--add-module</code>需要指定正确的rtmp-module路径，最好是完整的绝对地址。</p>
+<h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><p>配置文件可能会有很多个，但这种自己进行编译安装的模式，需要修改的就是编译安装后的配置文件。<br>按照上面默认的安装方式，配置文件的路径就是：/usr/local/nginx/conf/nginx.conf<br>打开之后添加rtmp模块和stat页面。</p>
+<h4 id="1-rtmp端口配置"><a href="#1-rtmp端口配置" class="headerlink" title="1. rtmp端口配置"></a>1. rtmp端口配置</h4><p>在配置文件中加入rtmp{}</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs js">rtmp &#123;  <br>    server &#123;  <br>        listen <span class="hljs-number">1935</span>;  #监听的端口号<br>        chunk_size <span class="hljs-number">4096</span>; #数据传输块大小<br>        application vod &#123;<br>        play /opt/video;  #视频文件位置<br>      &#125;<br>        application mylive &#123;     #自定义直播的名字<br>            live on;  <br>            hls on; #直播服务器改为实时回放服务器<br>            wait_key on; #对视频切片进行保护，防止马赛克<br>            hls_path /tmp/hls; #hls切片视频文件保存目录<br>            hls_fragment 10s; #<span class="hljs-variable constant_">HLS</span>片段长度<br>            hls_playlist_length 1m; #<span class="hljs-variable constant_">HLS</span>播放长度列表<br>            hls_continuous on; #连续模式<br>            hls_cleanup on; #删除多余切片<br>            hls_nested on; #嵌套模式<br>       &#125;  <br>    &#125; <br>&#125;<br></code></pre></td></tr></table></figure>
+<h4 id="2-网页和端口"><a href="#2-网页和端口" class="headerlink" title="2.网页和端口"></a>2.网页和端口</h4><p>网页端口可以改成自己开放的端口，服务名称也可以随意。</p>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs abnf">···<br>server &#123;<br>    listen  <span class="hljs-number">801</span><span class="hljs-comment">;</span><br>    server_name  rtmpserver<span class="hljs-comment">;</span><br>···<br></code></pre></td></tr></table></figure>
+
+<p>在http{server{中，添加站点位置。这里的作用应该是方便查看实时数据。按照这个思路，如果需要将推流收到的画面再推送到网页上显示的话，应该还需要其他的推送和显示机制。</p>
+<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs crmsh">  ···<br><span class="hljs-keyword">location</span> <span class="hljs-title">/stat</span>&#123;<br>          rtmp_stat all;<br>          rtmp_stat_stylesheet stat.xsl;<br>      &#125;<br>      <span class="hljs-keyword">location</span> <span class="hljs-title">/stat</span>.xsl&#123;<br>          root /usr/local/nginx/nginx-rtmp-module/;<br>      &#125;<br>  ···<br></code></pre></td></tr></table></figure>
+
+<h4 id="完整配置文件"><a href="#完整配置文件" class="headerlink" title="完整配置文件"></a>完整配置文件</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><code class="hljs js">worker_processes  <span class="hljs-number">1</span>;<br><br>events &#123;<br>    worker_connections  <span class="hljs-number">1024</span>;<br>&#125;<br><br>rtmp &#123;  <br>    server &#123;  <br>        listen <span class="hljs-number">1935</span>;      #监听的端口号<br>        chunk_size <span class="hljs-number">4096</span>; #数据传输块大小<br>        application vod &#123;<br>        play /opt/video;  #视频文件位置<br>      &#125;<br>        application mylive &#123;     #自定义直播的名字<br>            live on;  <br>            hls on; #直播服务器改为实时回放服务器<br>            wait_key on; #对视频切片进行保护，防止马赛克<br>            hls_path /tmp/hls; #hls切片视频文件保存目录<br>            hls_fragment 10s; #<span class="hljs-variable constant_">HLS</span>片段长度<br>            hls_playlist_length 1m; #<span class="hljs-variable constant_">HLS</span>播放长度列表<br>            hls_continuous on; #连续模式<br>            hls_cleanup on; #删除多余切片<br>            hls_nested on; #嵌套模式<br>       &#125;  <br>    &#125; <br>&#125;<br><br>http &#123;<br>    include       mime.<span class="hljs-property">types</span>;<br>    default_type  application/octet-stream;<br>    sendfile        on;<br>    keepalive_timeout  <span class="hljs-number">65</span>;<br>    server &#123;<br>        listen       <span class="hljs-number">801</span>;<br>        server_name  rtmpserver;<br><br>        location / &#123;<br>            root   html;<br>            index  index.<span class="hljs-property">html</span> index.<span class="hljs-property">htm</span>;<br>        &#125;<br>        error_page   <span class="hljs-number">500</span> <span class="hljs-number">502</span> <span class="hljs-number">503</span> <span class="hljs-number">504</span>  /50x.<span class="hljs-property">html</span>;<br>        location = /50x.<span class="hljs-property">html</span> &#123;<br>            root   html;<br>        &#125;<br>        <br>        location /stat&#123;<br>            rtmp_stat all;<br>            rtmp_stat_stylesheet stat.<span class="hljs-property">xsl</span>;<br>        &#125;<br>        location /stat.<span class="hljs-property">xsl</span>&#123;<br>            root /usr/local/nginx/nginx-rtmp-<span class="hljs-variable language_">module</span>/;<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="运行"><a href="#运行" class="headerlink" title="运行"></a>运行</h3><p>配置完成后执行测试和运行。</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs cmd">/usr/local/nginx/sbin/nginx -t<br>/usr/local/nginx/sbin/nginx<br></code></pre></td></tr></table></figure>
+<p><img src="/2024/07/05/RTMP%E6%B5%81%E5%AA%92%E4%BD%93%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E5%BB%BA/9daf7802eca4cf7682f593076f7ea7b8.png" srcset="/img/loading.gif" lazyload><br>这里遇到一点情况就是宝塔里面的终端必须输绝对地址，哪怕CD到当前路径，它也不认。</p>
+<h4 id="nginx使用指南"><a href="#nginx使用指南" class="headerlink" title="nginx使用指南"></a>nginx使用指南</h4><p>当我们修改了nginx的配置文件 nginx.conf 时，不需要关闭 nginx后重新启动nginx，只需要执行命令<code>nginx -s reload</code>即可让改动生效</p>
+<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs crmsh">nginx -s quit <span class="hljs-comment"># 有序停止（没有重要进程后退出）</span><br>nginx -s <span class="hljs-literal">stop</span> <span class="hljs-comment"># 快速停止（可能会丢数据）</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="访问"><a href="#访问" class="headerlink" title="访问"></a>访问</h3><p>nginx安装完成后，只需要正常启动即可看到欢迎界面<br>访问<a target="_blank" rel="noopener" href="http://1.14.204.238:801/">http://1.14.204.238:801/</a><br><img src="/2024/07/05/RTMP%E6%B5%81%E5%AA%92%E4%BD%93%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E5%BB%BA/e3c906ec3cfb4e2d92c7cc0a5784294f.png" srcset="/img/loading.gif" lazyload></p>
+<p>在完成了stat配置之后，就可以访问到数据查看的页面<br>访问<a target="_blank" rel="noopener" href="http://1.14.204.238:801/stat">http://1.14.204.238:801/stat</a><br><img src="/2024/07/05/RTMP%E6%B5%81%E5%AA%92%E4%BD%93%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E5%BB%BA/456543ef67c9c50d6ac9963aa9158ab8.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="ffmpeg推流测试"><a href="#ffmpeg推流测试" class="headerlink" title="ffmpeg推流测试"></a>ffmpeg推流测试</h2><p>推流服务器地址格式：<br>rtmp://+ip+”:”端口+/直播间名字/+”数据流名称”     //数据流是我们任意起的名字，用于区分不同的数据来源。<br>ip地址由服务器决定。<br>端口和直播名称由配置文件nginx.conf设置，这里的端口是rtmp服务的端口。端口默认为1935，需要注意<strong>去服务器防火墙管理开启相应的端口</strong>。<br>直播间名字就是配置文件<code>rtmp&#123;server&#123;application</code>后面的参数名称，而我的配置文件中写的是mylive，所以这里是mylive。<br>例如：<br><code>rtmp://1.14.204.238:1935/mylive/test</code></p>
+<h3 id="推送视频文件"><a href="#推送视频文件" class="headerlink" title="推送视频文件"></a>推送视频文件</h3><p>ffmpeg -re -i +视频路径 -c copy -f flv +推流服务器地址<br>例如这里尝试一下将本地的视频文件推送到服务器：</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">ffmpeg -re -i <span class="hljs-regexp">/home/</span>kwindy<span class="hljs-regexp">/vidio/</span>VID_20240627_174543.mp4 -c copy -f flv rtmp:<span class="hljs-regexp">//</span><span class="hljs-number">1.14</span>.<span class="hljs-number">204.238</span>:<span class="hljs-number">1935</span><span class="hljs-regexp">/mylive/</span>test<br></code></pre></td></tr></table></figure>
+<p>之前在ubantu上装好了ffmpeg，现在尝试使用上面的指令推送视频文件。成功运行后，在推送端的命令行可以查看到当前的推送状态。可以看到当视频结束之后，进程自动停止。<br>如果需要无限循环播放，可以在指令中加上参数<code>-stream_loop -1</code>。<br><img src="/2024/07/05/RTMP%E6%B5%81%E5%AA%92%E4%BD%93%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E5%BB%BA/9307ce4c0b38fa9210d120ae2645256e.png" srcset="/img/loading.gif" lazyload></p>
+<p>在stat页面查看到了推流信息<br><img src="/2024/07/05/RTMP%E6%B5%81%E5%AA%92%E4%BD%93%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E5%BB%BA/9759badb9e32f25918cca3025de3260d.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="推送USB摄像头画面"><a href="#推送USB摄像头画面" class="headerlink" title="推送USB摄像头画面"></a>推送USB摄像头画面</h3><p>让AI写了推送摄像头画面的代码，直接放到ubantu里面运行。居然成功了。效果还可以，延时和之前一样大概10S左右。<br>这下可以吹牛逼说可以给无人机做远程推流了，只要无人机有linxu系统，并且联网，再接个摄像头，再搭建一下服务器，就可以从后台远程查看无人机的画面了。就是延时有点大，这一点和图传还是不一样的。</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">ffmpeg -f v4l2 -framerate <span class="hljs-number">30</span> -video_size <span class="hljs-number">1280</span>x720 -i <span class="hljs-regexp">/dev/</span>video0 -f flv rtmp:<span class="hljs-regexp">//</span>server<span class="hljs-regexp">/live/</span>streamKey<br></code></pre></td></tr></table></figure>
+
+<p>参数解析：</p>
+<blockquote>
+<p>-f v4l2: 指定输入格式为Video4Linux2，通常用于Linux系统中的摄像头。<br>-framerate 30: 设置帧率为30帧/秒。<br>-video_size 1280x720: 设置视频分辨率为1280像素宽和720像素高。<br>-i /dev/video0: 指定输入设备文件路径。取决于摄像头在系统中的编号。<br>-f flv: 输出格式设置为FLV，FLV是一种流媒体格式，常用于RTMP协议传输。<br>rtmp://server/live/streamKey: 替换为你的RTMP服务器地址和流的键。这里server需要带端口，例如1.14.204.238：1935</p>
+</blockquote>
+<p>其中摄像头编号可以用<code>v4l2-ctl --list-devices</code>指令来查看其他的都是比较固定的参数了。</p>
+<h2 id="使用其他工具进行推拉流测试"><a href="#使用其他工具进行推拉流测试" class="headerlink" title="使用其他工具进行推拉流测试"></a>使用其他工具进行推拉流测试</h2><h3 id="OBS推流测试"><a href="#OBS推流测试" class="headerlink" title="OBS推流测试"></a>OBS推流测试</h3><p>【OBS studio网站】<a target="_blank" rel="noopener" href="https://obsproject.com/zh-cn">https://obsproject.com/zh-cn</a><br>这是一个开源的轻量化直播平台，可以比较方便的进行实时推流的测试。<br>打开OBS之后，要<strong>修改直播推流的地址</strong>。选择自定义服务，服务器填的是和上面一样的推流服务器地址：<code>rtmp://+ip+&quot;:&quot;端口+/直播间名字</code><br>而推流码就是类似ffmpeg的推流”数据流名称”，可以自己定义，获取画面的时候要用到。<br>除此之外还需要<strong>设置数据来源</strong>，比如将当前显示器画面作为推送画面。设置好之后点击开始直播就可以推送直播画面了。<br>这算是顺便弄懂了直播是怎么玩的了，所以经常看到游戏主播们开一台电脑作为直播推流机器，另一台专门主机用来专门打游戏，输出画面，这种分布的方式可以避免游戏机器高负载之后把直播卡掉的情况。还有就是用多个画面和图片来组合自己的直播推流画面，做出精美的效果。这还算是复杂的，如果是唱歌跳舞话疗，那甚至可以只用一部手机。<br><img src="/2024/07/05/RTMP%E6%B5%81%E5%AA%92%E4%BD%93%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E5%BB%BA/0d704b9728be6a1a06205a967ad5f5df.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="VLC视频流查看"><a href="#VLC视频流查看" class="headerlink" title="VLC视频流查看"></a>VLC视频流查看</h3><p>使用VLC media player可以播放网络来源视频流，查看视频流服务器的推流效果。开源的，很好用。VideoLAN是一个非盈利项目，他们还有个VLMC剪辑工具，但是目前只有源码，还没有测试版可以下载。<br>【VLC官网】<a target="_blank" rel="noopener" href="https://www.videolan.org/">https://www.videolan.org/</a><br>主菜单-媒体-打开网络串流。然后输入视频流的地址。<br>这里需要注意，输入的视频流地址<strong>不带端口号</strong><br>例如推流时是:<code>rtmp://1.14.204.238:1935/mylive/test</code><br>拉流时就是<code>rtmp://1.14.204.238/mylive/test</code><br>这里使用了OBS推流的画面。实测延时大概在10S左右。考虑到这是自己手搓的，我觉得算不错了。而之前测试的商用4G图传，后台查看延时只有5-6S，好的时候甚至可以缩短到3-4S。<br><img src="/2024/07/05/RTMP%E6%B5%81%E5%AA%92%E4%BD%93%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E5%BB%BA/700e1b92723f2b4b3f12cac48e43ec04.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="Nginx宝塔安装【失败】"><a href="#Nginx宝塔安装【失败】" class="headerlink" title="Nginx宝塔安装【失败】"></a>Nginx宝塔安装【失败】</h2><p>因为对宝塔系统不了解，网上资料也有限，在尝试使用宝塔安装nginx-rtmp时并不顺利，配置文件太多了不知道生效的是哪一个，于是后面放弃了。但笔记没白做，失败的尝试也是重要的经验积累。后面回顾来看，许多步骤和细节其实也是相通的。</p>
+<h3 id="卸载Nginx"><a href="#卸载Nginx" class="headerlink" title="卸载Nginx"></a>卸载Nginx</h3><p>如果当前有已经安装的Nginx，可以选择直接卸载掉，省事。避免宝塔内有配置冲突。如果有在使用网站还是不要删了。</p>
+<h3 id="修改安装脚本"><a href="#修改安装脚本" class="headerlink" title="修改安装脚本"></a>修改安装脚本</h3><p>这里可以选择安装自己下载的Nginx，也可以使用宝塔系统内自带的Nginx，要做的事情就是在安装脚本中添加rtmp模块的安装。</p>
+<p>宝塔系统下的Nginx安装脚本路径：/www/server/panel/install/nginx.sh<br>需要在安装脚本中找到<code>./configure</code>，在后面添加模块路径，也就是刚才从github下载的rtmp模块的位置。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs javascript">--add-<span class="hljs-variable language_">module</span>=<span class="hljs-regexp">/root/m</span>odule/nginx-rtmp-<span class="hljs-variable language_">module</span><br></code></pre></td></tr></table></figure>
+<p><img src="/2024/07/05/RTMP%E6%B5%81%E5%AA%92%E4%BD%93%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E5%BB%BA/6fa17bfb1983c221b1c7c9e692c26dda.png" srcset="/img/loading.gif" lazyload><br>修改后保存退出</p>
+<h3 id="运行安装脚本"><a href="#运行安装脚本" class="headerlink" title="运行安装脚本"></a>运行安装脚本</h3><p>这里是直接运行了宝塔系统里的nginx安装脚本，最后面的数字是版本号。如果使用的是自己下载的Nginx，需要更改一下脚本的路径。</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">sh <span class="hljs-regexp">/www/</span>server<span class="hljs-regexp">/panel/i</span>nstall/nginx.sh install <span class="hljs-number">1.22</span><br></code></pre></td></tr></table></figure>
+
+<p>安装完成之后，使用<code>nginx -V</code>可以查看是否安装了rtmp-module<br><img src="/2024/07/05/RTMP%E6%B5%81%E5%AA%92%E4%BD%93%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E5%BB%BA/3cb5b7955cfa42084e9d4ac58c08653d.png" srcset="/img/loading.gif" lazyload></p>
+<p>使用宝塔系统里的nginx安装脚本，安装好之后nginx就可以被软件商店识别到，方便后面的设置。<br><img src="/2024/07/05/RTMP%E6%B5%81%E5%AA%92%E4%BD%93%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E5%BB%BA/cea6aeeede3613b22db6346a5b23a58a.png" srcset="/img/loading.gif" lazyload></p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-section">rtmp</span> &#123;  <br>    <span class="hljs-section">server</span> &#123;  <br>        <span class="hljs-attribute">listen</span> <span class="hljs-number">1935</span>;      <span class="hljs-comment">#监听的端口号</span><br>        <span class="hljs-attribute">chunk_size</span> <span class="hljs-number">4096</span>; <span class="hljs-comment">#数据传输块大小</span><br>        <span class="hljs-attribute">application</span> vod &#123;<br>        <span class="hljs-attribute">play</span> /opt/video;  <span class="hljs-comment">#视频文件位置</span><br>      &#125;<br>        <span class="hljs-attribute">application</span> mylive &#123;     <span class="hljs-comment">#自定义直播的名字</span><br>            <span class="hljs-attribute">live</span> <span class="hljs-literal">on</span>;  <br>            <span class="hljs-attribute">hls</span> <span class="hljs-literal">on</span>; <span class="hljs-comment">#直播服务器改为实时回放服务器</span><br>            <span class="hljs-attribute">wait_key</span> <span class="hljs-literal">on</span>; <span class="hljs-comment">#对视频切片进行保护，防止马赛克</span><br>            <span class="hljs-attribute">hls_path</span> /tmp/hls; <span class="hljs-comment">#hls切片视频文件保存目录</span><br>            <span class="hljs-attribute">hls_fragment</span> <span class="hljs-number">10s</span>; <span class="hljs-comment">#HLS片段长度</span><br>            <span class="hljs-attribute">hls_playlist_length</span> <span class="hljs-number">1m</span>; <span class="hljs-comment">#HLS播放长度列表</span><br>            <span class="hljs-attribute">hls_continuous</span> <span class="hljs-literal">on</span>; <span class="hljs-comment">#连续模式</span><br>            <span class="hljs-attribute">hls_cleanup</span> <span class="hljs-literal">on</span>; <span class="hljs-comment">#删除多余切片</span><br>            <span class="hljs-attribute">hls_nested</span> <span class="hljs-literal">on</span>; <span class="hljs-comment">#嵌套模式</span><br>       &#125;  <br>    &#125; <br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="遇到问题"><a href="#遇到问题" class="headerlink" title="遇到问题"></a>遇到问题</h4><p>在设置地址时遇到个问题，当地址是<code>hls_path /tmp/hls</code>时，就不会报错；而<code>hls_path /opt/video/hls;</code>就不行。不理解。<br>这是宝塔才有的配置文件检查，检查不通过的话就无法保存，而使用自己安装的nginx理论上就没有遇到这种问题。</p>
+<h3 id="重启nginx"><a href="#重启nginx" class="headerlink" title="重启nginx"></a>重启nginx</h3><p>如果之前Nginx正在运行中，修改配置后需要重启才会生效。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>这次的rtmp尝试算是比较成功了，主要的得益于这方面网上的参考资料比较多，并且本身也并不复杂，已经有很多成熟工具。<br>本来还想尝试一下通过网页直接播放视频画面的。理论上来说应该不难，但实际上遇到不少问题，毕竟网页开发接触的更少了。只能后面再找机会试了。<br>rtmp后面要进行的下一步尝试，就是把rknn跑出来的Yolo识别画面，通过rtmp推流到网页上面进行显示。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0/" class="category-chain-item">学习</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/yolo/">#yolo</a>
+      
+        <a href="/tags/%E6%9C%8D%E5%8A%A1%E5%99%A8/">#服务器</a>
+      
+        <a href="/tags/RKNN/">#RKNN</a>
+      
+        <a href="/tags/RTMP/">#RTMP</a>
+      
+        <a href="/tags/%E6%8E%A8%E6%B5%81/">#推流</a>
+      
+        <a href="/tags/%E6%8B%89%E6%B5%81/">#拉流</a>
+      
+        <a href="/tags/ffmpeg/">#ffmpeg</a>
+      
+        <a href="/tags/OBS/">#OBS</a>
+      
+        <a href="/tags/VLC/">#VLC</a>
+      
+        <a href="/tags/%E6%B5%81%E5%AA%92%E4%BD%93/">#流媒体</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>RTMP流媒体服务器搭建</div>
+      <div>http://kw1649190133.github.io/2024/07/05/RTMP流媒体服务器搭建/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Aŭtoro</div>
+          <div>Kwindy</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Postigita</div>
+          <div>July 5, 2024</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Lizenta</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/07/08/ffmpeg%E6%8E%A8%E9%80%81RKNN%E7%9B%AE%E6%A0%87%E8%AF%86%E5%88%AB%E7%BB%93%E6%9E%9C/" title="ffmpeg推送RKNN目标识别结果">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">ffmpeg推送RKNN目标识别结果</span>
+                        <span class="visible-mobile">Antaŭa afiŝo</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/06/28/ORB-SLAM%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%88%9D%E6%AC%A1%E5%B0%9D%E8%AF%95/" title="ORB_SLAM项目的初次尝试">
+                        <span class="hidden-mobile">ORB_SLAM项目的初次尝试</span>
+                        <span class="visible-mobile">Sekva afiŝo</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Enhavtabelo</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Serĉi</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">ŝlosivorto</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blogo funkcias plej bone kun JavaScript ebligita</div>
+  </noscript>
+</body>
+</html>
