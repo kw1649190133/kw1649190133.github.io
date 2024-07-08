@@ -59,11 +59,9 @@
     
     <tags>
       
-      <tag>yolo</tag>
+      <tag>RKNN</tag>
       
       <tag>服务器</tag>
-      
-      <tag>RKNN</tag>
       
       <tag>RTMP</tag>
       
@@ -78,6 +76,8 @@
       <tag>VLC</tag>
       
       <tag>流媒体</tag>
+      
+      <tag>yolo</tag>
       
     </tags>
     
@@ -102,10 +102,6 @@
     
     <tags>
       
-      <tag>摄像头</tag>
-      
-      <tag>CMake</tag>
-      
       <tag>SLAM</tag>
       
       <tag>重构</tag>
@@ -113,6 +109,10 @@
       <tag>定位</tag>
       
       <tag>激光雷达</tag>
+      
+      <tag>摄像头</tag>
+      
+      <tag>CMake</tag>
       
       <tag>ORB-SLAM</tag>
       
@@ -172,8 +172,6 @@
     
     <tags>
       
-      <tag>摄像头</tag>
-      
       <tag>SLAM</tag>
       
       <tag>重构</tag>
@@ -181,6 +179,8 @@
       <tag>定位</tag>
       
       <tag>激光雷达</tag>
+      
+      <tag>摄像头</tag>
       
     </tags>
     
@@ -382,11 +382,11 @@
       
       <tag>RK3588</tag>
       
+      <tag>摄像头</tag>
+      
       <tag>OrangePI</tag>
       
       <tag>开发板</tag>
-      
-      <tag>摄像头</tag>
       
     </tags>
     
@@ -549,9 +549,9 @@
       
       <tag>Linux</tag>
       
-      <tag>RK3588</tag>
-      
       <tag>嵌入式</tag>
+      
+      <tag>RK3588</tag>
       
       <tag>arm64</tag>
       
@@ -778,11 +778,11 @@
       
       <tag>Linux</tag>
       
+      <tag>单片机</tag>
+      
       <tag>OrangePI</tag>
       
       <tag>开发板</tag>
-      
-      <tag>单片机</tag>
       
       <tag>系统</tag>
       
@@ -879,9 +879,9 @@
     
     <tags>
       
-      <tag>yolov8</tag>
-      
       <tag>Android</tag>
+      
+      <tag>yolov8</tag>
       
       <tag>Python</tag>
       
@@ -920,15 +920,15 @@
     
     <tags>
       
+      <tag>Java</tag>
+      
+      <tag>Android</tag>
+      
       <tag>开发</tag>
       
       <tag>yolov8</tag>
       
-      <tag>Android</tag>
-      
       <tag>helloworld</tag>
-      
-      <tag>Java</tag>
       
       <tag>安卓</tag>
       
@@ -957,15 +957,15 @@
     
     <tags>
       
+      <tag>Java</tag>
+      
+      <tag>Android</tag>
+      
       <tag>开发</tag>
       
       <tag>yolov8</tag>
       
-      <tag>Android</tag>
-      
       <tag>helloworld</tag>
-      
-      <tag>Java</tag>
       
       <tag>安卓</tag>
       
@@ -1111,13 +1111,13 @@
     
     <tags>
       
-      <tag>环境部署</tag>
-      
-      <tag>开发</tag>
+      <tag>Java</tag>
       
       <tag>Android</tag>
       
-      <tag>Java</tag>
+      <tag>环境部署</tag>
+      
+      <tag>开发</tag>
       
     </tags>
     
@@ -1144,11 +1144,11 @@
       
       <tag>python</tag>
       
-      <tag>JavAnaconda</tag>
-      
       <tag>环境部署</tag>
       
       <tag>开发</tag>
+      
+      <tag>JavAnaconda</tag>
       
       <tag>环境管理</tag>
       
@@ -1175,9 +1175,9 @@
     
     <tags>
       
-      <tag>yolov8</tag>
-      
       <tag>Android</tag>
+      
+      <tag>yolov8</tag>
       
       <tag>Python</tag>
       
@@ -1350,11 +1350,11 @@
       
       <tag>腾讯云</tag>
       
+      <tag>windows</tag>
+      
       <tag>视频</tag>
       
       <tag>图传</tag>
-      
-      <tag>windows</tag>
       
       <tag>云端</tag>
       
@@ -1387,9 +1387,9 @@
       
       <tag>腾讯云</tag>
       
-      <tag>windows</tag>
-      
       <tag>部署</tag>
+      
+      <tag>windows</tag>
       
     </tags>
     
@@ -1978,13 +1978,13 @@
     
     <tags>
       
-      <tag>环境部署</tag>
-      
-      <tag>开发</tag>
+      <tag>Java</tag>
       
       <tag>Android</tag>
       
-      <tag>Java</tag>
+      <tag>环境部署</tag>
+      
+      <tag>开发</tag>
       
     </tags>
     
@@ -2146,35 +2146,6 @@
   
   
   <entry>
-    <title>Hexo博客的迁移</title>
-    <link href="/2023/02/10/Hexo%E5%8D%9A%E5%AE%A2%E7%9A%84%E8%BF%81%E7%A7%BB/"/>
-    <url>/2023/02/10/Hexo%E5%8D%9A%E5%AE%A2%E7%9A%84%E8%BF%81%E7%A7%BB/</url>
-    
-    <content type="html"><![CDATA[<h1 id="Hexo博客的迁移"><a href="#Hexo博客的迁移" class="headerlink" title="Hexo博客的迁移"></a>Hexo博客的迁移</h1><p>因为各种各样的原因，比如换电脑了，或者因为设备的玄学问题不得不迁移一下环境（我的笔记本连不上github，每次上传同步都报错，头都大了，家里的台式却能轻松链接）。</p><p>总之迁移Hexo环境也是一件非常重要的事情，因为我之前的迁移都是通过看自己以前写的博客创建文档，以及自己的一些写进DNA的经验，所以时间久了难免有些遗忘和不靠谱。特此记录一下迁移的步骤，以便以后查看。</p><h2 id="1-安装Node-js、git和npm"><a href="#1-安装Node-js、git和npm" class="headerlink" title="1. 安装Node.js、git和npm"></a>1. 安装Node.js、git和npm</h2><p>【<strong>这一条是给新电脑用的，如果已经有了就跳过。</strong>】具体步骤也不再赘述，关于系统环境参数的配置也有一大堆教程和说明了。</p><h2 id="2-运行Hexo的一键部署命令"><a href="#2-运行Hexo的一键部署命令" class="headerlink" title="2. 运行Hexo的一键部署命令"></a>2. 运行Hexo的一键部署命令</h2><figure class="highlight avrasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs avrasm">npm install hexo-<span class="hljs-keyword">cli</span> -g<br></code></pre></td></tr></table></figure><h2 id="3-安装依赖库"><a href="#3-安装依赖库" class="headerlink" title="3. 安装依赖库"></a>3. 安装依赖库</h2><p>在命令指令行<strong>进入博客目录下</strong>安装相关的配置</p><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cmake">npm <span class="hljs-keyword">install</span><br></code></pre></td></tr></table></figure><p>如果有报错的话，就配置一下淘宝源，用cnpm。</p><h2 id="4-安装一键上传的插件：hexo-deployer-git"><a href="#4-安装一键上传的插件：hexo-deployer-git" class="headerlink" title="4. 安装一键上传的插件：hexo-deployer-git"></a>4. 安装一键上传的插件：hexo-deployer-git</h2><figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ada">npm install hexo-deployer-git <span class="hljs-comment">--save</span><br></code></pre></td></tr></table></figure><p>这也就是我们熟悉的hexo g 、hexo d命令的插件。</p><p>如果因为404原因安装失败的话，就使用<strong>cnpm+淘宝源</strong>，大概率成功。<br>用npm安装cnpm，再使用cnpm安装hexo插件</p><figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs jboss-cli">npm install -g cnpm <span class="hljs-params">--registry=https</span>:<span class="hljs-string">//registry.npm.taobao.org</span><br>cnpm install hexo-deployer-git <span class="hljs-params">--save</span><br></code></pre></td></tr></table></figure><h2 id="5-账户信息设置"><a href="#5-账户信息设置" class="headerlink" title="5. 账户信息设置"></a>5. 账户信息设置</h2><p>因为是新的电脑第一次使用git仓库，可能需要填一下相关信息。（还是在指令框中）</p><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs stylus">git config <span class="hljs-attr">--global</span> user<span class="hljs-selector-class">.email</span> <span class="hljs-string">&quot;在这填你的github邮箱&quot;</span><br>git config <span class="hljs-attr">--global</span> user<span class="hljs-selector-class">.name</span> <span class="hljs-string">&quot;填你的用户名&quot;</span> <br></code></pre></td></tr></table></figure><p>这个如果没输入的话，运行上传时也会提示你who are you的。</p><h2 id="6-检查是否能上传"><a href="#6-检查是否能上传" class="headerlink" title="6. 检查是否能上传"></a>6. 检查是否能上传</h2><p>其实到上一步配置就基本已经完成了，可以直接执行上传指令。</p><figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs ebnf"><span class="hljs-attribute">hexo clean</span><br><span class="hljs-attribute">hexo g</span><br><span class="hljs-attribute">hexo d</span><br></code></pre></td></tr></table></figure><p>如果配置文件不对的话，也是会出现<code>spawn failed 128</code>错误的。（我最近真是被这个问题锤得头疼）。而检测是不是配置导致的无法上传，方法就是看能不能直接打开<a href="https://github.com/">github.com</a>。能打开基本就是配置问题。</p><p>检查<code>_config.yml</code>文件</p><ol><li><p>url是博客的访问地址，要设置对。例如我的是：</p><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">url: http:<span class="hljs-regexp">//</span>kw1649190133.github.io<br></code></pre></td></tr></table></figure></li><li><p>还有一项就是推送更新的设置，一般在配置文件的最后，现在可以不用ssh了，用token很方便，但是要注意保存好令牌代码。token的使用方法就是放在http访问链接里，github的前面，然后再加上一个<code>@</code>符号</p><figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs dts"><span class="hljs-symbol">deploy:</span><br><span class="hljs-symbol">  type:</span> git<br><span class="hljs-symbol">  repo:</span> https:<span class="hljs-comment">//【这里放token，然后删掉括号】@github.com/kw1649190133/kw1649190133.github.io</span><br><span class="hljs-symbol">  branch:</span> master<br></code></pre></td></tr></table></figure><h2 id="结尾"><a href="#结尾" class="headerlink" title="结尾"></a>结尾</h2><p>搬一次家挺麻烦的，可以的话还是少搬比较好。</p></li></ol>]]></content>
-    
-    
-    <categories>
-      
-      <category>学习</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>Hexo</tag>
-      
-      <tag>迁移</tag>
-      
-      <tag>博客</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
     <title>Hexo的复活和升级计划</title>
     <link href="/2023/02/10/Hexo%E7%9A%84%E5%A4%8D%E6%B4%BB%E5%92%8C%E5%8D%87%E7%BA%A7%E8%AE%A1%E5%88%92/"/>
     <url>/2023/02/10/Hexo%E7%9A%84%E5%A4%8D%E6%B4%BB%E5%92%8C%E5%8D%87%E7%BA%A7%E8%AE%A1%E5%88%92/</url>
@@ -2193,9 +2164,38 @@
       
       <tag>Hexo</tag>
       
+      <tag>fluid主题</tag>
+      
       <tag>博客</tag>
       
-      <tag>fluid主题</tag>
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>Hexo博客的迁移</title>
+    <link href="/2023/02/10/Hexo%E5%8D%9A%E5%AE%A2%E7%9A%84%E8%BF%81%E7%A7%BB/"/>
+    <url>/2023/02/10/Hexo%E5%8D%9A%E5%AE%A2%E7%9A%84%E8%BF%81%E7%A7%BB/</url>
+    
+    <content type="html"><![CDATA[<h1 id="Hexo博客的迁移"><a href="#Hexo博客的迁移" class="headerlink" title="Hexo博客的迁移"></a>Hexo博客的迁移</h1><p>因为各种各样的原因，比如换电脑了，或者因为设备的玄学问题不得不迁移一下环境（我的笔记本连不上github，每次上传同步都报错，头都大了，家里的台式却能轻松链接）。</p><p>总之迁移Hexo环境也是一件非常重要的事情，因为我之前的迁移都是通过看自己以前写的博客创建文档，以及自己的一些写进DNA的经验，所以时间久了难免有些遗忘和不靠谱。特此记录一下迁移的步骤，以便以后查看。</p><h2 id="1-安装Node-js、git和npm"><a href="#1-安装Node-js、git和npm" class="headerlink" title="1. 安装Node.js、git和npm"></a>1. 安装Node.js、git和npm</h2><p>【<strong>这一条是给新电脑用的，如果已经有了就跳过。</strong>】具体步骤也不再赘述，关于系统环境参数的配置也有一大堆教程和说明了。</p><h2 id="2-运行Hexo的一键部署命令"><a href="#2-运行Hexo的一键部署命令" class="headerlink" title="2. 运行Hexo的一键部署命令"></a>2. 运行Hexo的一键部署命令</h2><figure class="highlight avrasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs avrasm">npm install hexo-<span class="hljs-keyword">cli</span> -g<br></code></pre></td></tr></table></figure><h2 id="3-安装依赖库"><a href="#3-安装依赖库" class="headerlink" title="3. 安装依赖库"></a>3. 安装依赖库</h2><p>在命令指令行<strong>进入博客目录下</strong>安装相关的配置</p><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cmake">npm <span class="hljs-keyword">install</span><br></code></pre></td></tr></table></figure><p>如果有报错的话，就配置一下淘宝源，用cnpm。</p><h2 id="4-安装一键上传的插件：hexo-deployer-git"><a href="#4-安装一键上传的插件：hexo-deployer-git" class="headerlink" title="4. 安装一键上传的插件：hexo-deployer-git"></a>4. 安装一键上传的插件：hexo-deployer-git</h2><figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ada">npm install hexo-deployer-git <span class="hljs-comment">--save</span><br></code></pre></td></tr></table></figure><p>这也就是我们熟悉的hexo g 、hexo d命令的插件。</p><p>如果因为404原因安装失败的话，就使用<strong>cnpm+淘宝源</strong>，大概率成功。<br>用npm安装cnpm，再使用cnpm安装hexo插件</p><figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs jboss-cli">npm install -g cnpm <span class="hljs-params">--registry=https</span>:<span class="hljs-string">//registry.npm.taobao.org</span><br>cnpm install hexo-deployer-git <span class="hljs-params">--save</span><br></code></pre></td></tr></table></figure><h2 id="5-账户信息设置"><a href="#5-账户信息设置" class="headerlink" title="5. 账户信息设置"></a>5. 账户信息设置</h2><p>因为是新的电脑第一次使用git仓库，可能需要填一下相关信息。（还是在指令框中）</p><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs stylus">git config <span class="hljs-attr">--global</span> user<span class="hljs-selector-class">.email</span> <span class="hljs-string">&quot;在这填你的github邮箱&quot;</span><br>git config <span class="hljs-attr">--global</span> user<span class="hljs-selector-class">.name</span> <span class="hljs-string">&quot;填你的用户名&quot;</span> <br></code></pre></td></tr></table></figure><p>这个如果没输入的话，运行上传时也会提示你who are you的。</p><h2 id="6-检查是否能上传"><a href="#6-检查是否能上传" class="headerlink" title="6. 检查是否能上传"></a>6. 检查是否能上传</h2><p>其实到上一步配置就基本已经完成了，可以直接执行上传指令。</p><figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs ebnf"><span class="hljs-attribute">hexo clean</span><br><span class="hljs-attribute">hexo g</span><br><span class="hljs-attribute">hexo d</span><br></code></pre></td></tr></table></figure><p>如果配置文件不对的话，也是会出现<code>spawn failed 128</code>错误的。（我最近真是被这个问题锤得头疼）。而检测是不是配置导致的无法上传，方法就是看能不能直接打开<a href="https://github.com/">github.com</a>。能打开基本就是配置问题。</p><p>检查<code>_config.yml</code>文件</p><ol><li><p>url是博客的访问地址，要设置对。例如我的是：</p><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">url: http:<span class="hljs-regexp">//</span>kw1649190133.github.io<br></code></pre></td></tr></table></figure></li><li><p>还有一项就是推送更新的设置，一般在配置文件的最后，现在可以不用ssh了，用token很方便，但是要注意保存好令牌代码。token的使用方法就是放在http访问链接里，github的前面，然后再加上一个<code>@</code>符号</p><figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs dts"><span class="hljs-symbol">deploy:</span><br><span class="hljs-symbol">  type:</span> git<br><span class="hljs-symbol">  repo:</span> https:<span class="hljs-comment">//【这里放token，然后删掉括号】@github.com/kw1649190133/kw1649190133.github.io</span><br><span class="hljs-symbol">  branch:</span> master<br></code></pre></td></tr></table></figure><h2 id="结尾"><a href="#结尾" class="headerlink" title="结尾"></a>结尾</h2><p>搬一次家挺麻烦的，可以的话还是少搬比较好。</p></li></ol>]]></content>
+    
+    
+    <categories>
+      
+      <category>学习</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Hexo</tag>
+      
+      <tag>博客</tag>
+      
+      <tag>迁移</tag>
       
     </tags>
     
