@@ -1,0 +1,717 @@
+
+
+<!DOCTYPE html>
+<html lang="CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Kwindy">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="前言为什么需要ROS？最近在研究Astra相机，发现要想ORB-SLAM3程序中调用Astra，或者其他的镜头，网上大多数参考资料都是需要通过ROS系统的。经过一些资料查阅，ROS（Robot OS）是标准化的机器人控制系统。它把传感器和机器人抽象化了，把数据格式规范化了，这样开发的时候就不用亲自处理每一个细节，而使用标准化指令就可以了，大大提升效率。举例来说，就像USB一样，大家用同一个标准，即">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ubuntu22_04安装ROS2_humble">
+<meta property="og:url" content="http://kw1649190133.github.io/2024/07/15/ubuntu22-04%E5%AE%89%E8%A3%85ROS2-humble/index.html">
+<meta property="og:site_name" content="kw&#39;s blog">
+<meta property="og:description" content="前言为什么需要ROS？最近在研究Astra相机，发现要想ORB-SLAM3程序中调用Astra，或者其他的镜头，网上大多数参考资料都是需要通过ROS系统的。经过一些资料查阅，ROS（Robot OS）是标准化的机器人控制系统。它把传感器和机器人抽象化了，把数据格式规范化了，这样开发的时候就不用亲自处理每一个细节，而使用标准化指令就可以了，大大提升效率。举例来说，就像USB一样，大家用同一个标准，即">
+<meta property="og:locale">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/07/15/ubuntu22-04%E5%AE%89%E8%A3%85ROS2-humble/728bbc791efae7d0ba9a234b4361ca48.png">
+<meta property="article:published_time" content="2024-07-15T09:01:49.000Z">
+<meta property="article:modified_time" content="2024-07-16T08:08:59.289Z">
+<meta property="article:author" content="Kwindy">
+<meta property="article:tag" content="摄像头">
+<meta property="article:tag" content="ROS">
+<meta property="article:tag" content="ROS2">
+<meta property="article:tag" content="ubuntu">
+<meta property="article:tag" content="linux">
+<meta property="article:tag" content="RGBD相机">
+<meta property="article:tag" content="Astra">
+<meta property="article:tag" content="奥比中光">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://kw1649190133.github.io/2024/07/15/ubuntu22-04%E5%AE%89%E8%A3%85ROS2-humble/728bbc791efae7d0ba9a234b4361ca48.png">
+  
+  
+  
+  <title>ubuntu22_04安装ROS2_humble - kw&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"kw1649190133.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="ubuntu22_04安装ROS2_humble"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-07-15 17:01" pubdate>
+          July 15, 2024 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.6k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          31 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">ubuntu22_04安装ROS2_humble</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><h2 id="为什么需要ROS？"><a href="#为什么需要ROS？" class="headerlink" title="为什么需要ROS？"></a>为什么需要ROS？</h2><p>最近在研究Astra相机，发现要想ORB-SLAM3程序中调用Astra，或者其他的镜头，网上大多数参考资料都是需要通过ROS系统的。<br>经过一些资料查阅，ROS（Robot OS）是标准化的机器人控制系统。它把传感器和机器人抽象化了，把数据格式规范化了，这样开发的时候就不用亲自处理每一个细节，而使用标准化指令就可以了，大大提升效率。<br>举例来说，就像USB一样，大家用同一个标准，即插即用，可以减少很多工作量，快速出结果。而更成熟的企业如果有需要可以自己制作自己的工具，逐渐摆脱标准化工具。</p>
+<p>ROS目前分为1代和2代，ROS1仅支持Linux，而ROS2可以支持更多操作系统，并且很多地方有重大升级，结构变化很大。如果可以的话还是选择ROS2。</p>
+<p>而ROS2又可以细分成很多个版本，目前最新的应该就是humble版本了。</p>
+<h2 id="参考资料："><a href="#参考资料：" class="headerlink" title="参考资料："></a>参考资料：</h2><ul>
+<li>【可以查看各个版本ROS】<a target="_blank" rel="noopener" href="https://docs.ros.org/en/foxy/Releases.html">https://docs.ros.org/en/foxy/Releases.html</a><br>Astar奥比中光相机的驱动需要在开发者中心下载。</li>
+<li>【适用ROS2的ORB-SLAM3修改版】<a target="_blank" rel="noopener" href="https://github.com/zang09/ORB-SLAM3-STEREO-FIXED">https://github.com/zang09/ORB-SLAM3-STEREO-FIXED</a><br>大概1.4个G，可以使用git很快下好。</li>
+<li>【Humble Hawksbill】<a target="_blank" rel="noopener" href="https://github.com/zang09/ORB_SLAM3_ROS2/">https://github.com/zang09/ORB_SLAM3_ROS2/</a></li>
+<li>【ROS维基站】<a target="_blank" rel="noopener" href="http://wiki.ros.org/ROS/Installation">http://wiki.ros.org/ROS/Installation</a></li>
+<li>【ROS官网】<a target="_blank" rel="noopener" href="https://docs.ros.org/">https://docs.ros.org/</a></li>
+<li>【奥比中光开发者中心】<a target="_blank" rel="noopener" href="https://vcp.developer.orbbec.com.cn/resourceCenter">https://vcp.developer.orbbec.com.cn/resourceCenter</a></li>
+</ul>
+<p>好像有说法可以给apt换上中科大的源，但实测不换也可以下载，慢点就慢点。</p>
+<h1 id="ROS2安装方法"><a href="#ROS2安装方法" class="headerlink" title="ROS2安装方法"></a>ROS2安装方法</h1><p>参考资料<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s?__biz=MzU1NjEwMTY0Mw==&mid=2247555708&idx=2&sn=55b2fbc07a213d22897026f6fc484ab9&chksm=fbc86318ccbfea0e12e6f9a5e04b17cc9ad63b62965bc3ef8e99aa24ece0913e1450b39d8bcc&scene=27%5D">【古月居-ROS2安装-轮椅级教程】</a><br>这个参考资料甚至从linux系统安装讲起了，非常详尽。</p>
+<h2 id="设置编码"><a href="#设置编码" class="headerlink" title="设置编码"></a>设置编码</h2><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs routeros">sudo apt update &amp;&amp; sudo apt install locales<br>sudo locale-gen en_US en_US.UTF-8<br>sudo update-locale <span class="hljs-attribute">LC_ALL</span>=en_US.UTF-8 <span class="hljs-attribute">LANG</span>=en_US.UTF-8 <br><span class="hljs-built_in">export</span> <span class="hljs-attribute">LANG</span>=en_US.UTF-8<br></code></pre></td></tr></table></figure>
+
+<h2 id="添加源"><a href="#添加源" class="headerlink" title="添加源"></a>添加源</h2><p>在添加源的时候国服用户基本上一定会遇到连接失败的问题，可以先去看错误处理的第二条，把hosts改了。</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs awk">update &amp;&amp; sudo apt install curl gnupg lsb-release <br>sudo curl -sSL https:<span class="hljs-regexp">//</span>raw.githubusercontent.com<span class="hljs-regexp">/ros/</span>rosdistro<span class="hljs-regexp">/master/</span>ros.key -o <span class="hljs-regexp">/usr/</span>share<span class="hljs-regexp">/keyrings/</span>ros-archive-keyring.gpg <br>echo <span class="hljs-string">&quot;deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(source /etc/os-release &amp;&amp; echo $UBUNTU_CODENAME) main&quot;</span> | sudo tee <span class="hljs-regexp">/etc/</span>apt<span class="hljs-regexp">/sources.list.d/</span>ros2.list &gt; <span class="hljs-regexp">/dev/</span>null<br></code></pre></td></tr></table></figure>
+
+<h2 id="安装ROS2-humble桌面版"><a href="#安装ROS2-humble桌面版" class="headerlink" title="安装ROS2-humble桌面版"></a>安装ROS2-humble桌面版</h2><p>我也不知道各个版本有什么区别，就随大流跟着别人的攻略随便装一个先。</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs cmake">sudo apt update<br>sudo apt upgrade<br>sudo apt <span class="hljs-keyword">install</span> ros-humble-desktop<br></code></pre></td></tr></table></figure>
+
+<h2 id="错误处理"><a href="#错误处理" class="headerlink" title="错误处理"></a>错误处理</h2><h3 id="1-无法定位软件包"><a href="#1-无法定位软件包" class="headerlink" title="1.无法定位软件包"></a>1.无法定位软件包</h3><p>不按操作来就一定会遇到这个问题。前人的步骤真是一步都少不了，从设置编码到添加源，一个都不能少。（但是某些攻略里有upgrade可以不要，谁没事更新全部软件包啊）<br>指令解释：<br><code>sudo apt update</code> 更新已安装软件包的索引（查询是否存在新版本）<br><code>sudo apt upgrade</code> 升级所有可升级的软件包</p>
+<h3 id="2-添加源时报错"><a href="#2-添加源时报错" class="headerlink" title="2.添加源时报错"></a>2.添加源时报错</h3><p>在国服大概率会遇到的问题，通过该hosts解决。<br>报错提示：<code>Failed to connect to raw.githubusercontent.com</code><br>【参考资料】<a target="_blank" rel="noopener" href="https://www.guyuehome.com/37844">https://www.guyuehome.com/37844</a><br>简单来说就是去<code>https://www.ipaddress.com/</code>查IP，然后把地址写进hosts里。<br>实际上查完就4个，随便选一个写到hosts里。（185.199.108.133）（185.199.109.133）（185.199.110.133）（185.199.111.133）<br>打开/etc/hosts文件，在里面追加写入：</p>
+<figure class="highlight accesslog"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs accesslog"><span class="hljs-number">185.199.108.133</span> raw.githubusercontent.com<br></code></pre></td></tr></table></figure>
+<p>hosts使用文本编辑器打开是只读模式，只能先另存为到其他地方。<br>使用<code>sudo cp</code>强制替换hosts文件，把当前目录下的hosts复制粘贴到etc目录下。（虽然感觉不太优雅，但Window也是这么干的）<br>例如：<code>sudo cp hosts /etc/hosts</code></p>
+<h2 id="设置环境变量"><a href="#设置环境变量" class="headerlink" title="设置环境变量"></a>设置环境变量</h2><p>运行install安装指令之后，需要等待很长一段时间，待进度条跑到100%之后，表示安装完成，然后使用以下指令配置环境变量，便于通过命令行启动ros2。</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs gradle"><span class="hljs-keyword">source</span> <span class="hljs-regexp">/opt/</span>ros<span class="hljs-regexp">/humble/</span>setup.bash<br>echo <span class="hljs-string">&quot; source /opt/ros/humble/setup.bash&quot;</span> &gt;&gt; ~/.bashrc<br></code></pre></td></tr></table></figure>
+
+<h2 id="测试运行"><a href="#测试运行" class="headerlink" title="测试运行"></a>测试运行</h2><h3 id="1-小乌龟示例"><a href="#1-小乌龟示例" class="headerlink" title="1.小乌龟示例"></a>1.小乌龟示例</h3><p>打开一个终端输入指令</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs routeros">ros2 <span class="hljs-built_in">run</span> turtlesim turtlesim_node<br></code></pre></td></tr></table></figure>
+<p>再打开另一个终端，输入第二个指令。</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs routeros">ros2 <span class="hljs-built_in">run</span> turtlesim turtle_teleop_key<br></code></pre></td></tr></table></figure>
+<p>第一条是启动小乌龟界面，第二条是启动控制器，锁定控制器的命令行为活跃窗口时，就能用方向键控制小乌龟了。（把焦点锁定在图形框上是没用的。）</p>
+<p><img src="/2024/07/15/ubuntu22-04%E5%AE%89%E8%A3%85ROS2-humble/728bbc791efae7d0ba9a234b4361ca48.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="2-通讯系统DDS测试"><a href="#2-通讯系统DDS测试" class="headerlink" title="2.通讯系统DDS测试"></a>2.通讯系统DDS测试</h3><p>打开一个终端发消息</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs routeros">ros2 <span class="hljs-built_in">run</span> demo_nodes_cpp talker<br></code></pre></td></tr></table></figure>
+
+<p>打开另一个终端接受</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs routeros">ros2 <span class="hljs-built_in">run</span> demo_nodes_py listener<br></code></pre></td></tr></table></figure>
+
+<p>还有一个测试的方法，时间有限就暂时没有进行测试了。</p>
+<h1 id="关于ROS2与Anaconda的冲突"><a href="#关于ROS2与Anaconda的冲突" class="headerlink" title="关于ROS2与Anaconda的冲突"></a>关于ROS2与Anaconda的冲突</h1><p>如果是先安装ROS2后安装Anaconda的话，就会遇到环境冲突的问题。但我的miniconda是先装的，好像没有遇到明显的问题。但如果需要的话可以取消miniconda的自启动。进入原本的Linux系统环境。</p>
+<p>打开配置文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">sudo gedit ~/.bashrc<br></code></pre></td></tr></table></figure>
+
+<p>找到conda相关的栏目，这是安装miniconda时自动添加到系统中的（当然也可以设置不添加），然后全部注释掉。这样conda的base环境就不会再开启命令行的时候直接进入了。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_"># </span><span class="language-bash">&gt;&gt;&gt; conda initialize &gt;&gt;&gt;</span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">__conda_setup=<span class="hljs-string">&quot;<span class="hljs-subst">$(&#x27;/home/fishros/miniconda3/bin/conda&#x27; &#x27;shell.bash&#x27; &#x27;hook&#x27; 2&gt; /dev/null)</span>&quot;</span></span><br><span class="hljs-meta prompt_"># </span><span class="language-bash"><span class="hljs-keyword">if</span> [ $? -eq 0 ]; <span class="hljs-keyword">then</span></span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">    <span class="hljs-built_in">eval</span> <span class="hljs-string">&quot;<span class="hljs-variable">$__conda_setup</span>&quot;</span></span><br><span class="hljs-meta prompt_"># </span><span class="language-bash"><span class="hljs-keyword">else</span></span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">    <span class="hljs-keyword">if</span> [ -f <span class="hljs-string">&quot;/home/fishros/miniconda3/etc/profile.d/conda.sh&quot;</span> ]; <span class="hljs-keyword">then</span></span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">        . <span class="hljs-string">&quot;/home/fishros/miniconda3/etc/profile.d/conda.sh&quot;</span></span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">    <span class="hljs-keyword">else</span></span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">        <span class="hljs-built_in">export</span> PATH=<span class="hljs-string">&quot;/home/fishros/miniconda3/bin:<span class="hljs-variable">$PATH</span>&quot;</span></span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">    <span class="hljs-keyword">fi</span></span><br><span class="hljs-meta prompt_"># </span><span class="language-bash"><span class="hljs-keyword">fi</span></span><br><span class="hljs-meta prompt_"># </span><span class="language-bash"><span class="hljs-built_in">unset</span> __conda_setup</span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">&lt;&lt;&lt; <span class="hljs-string">conda initialize &lt;&lt;&lt;</span></span><br></code></pre></td></tr></table></figure>
+
+<p>然后，再添加上一个alias，将miniconda3的环境启动项添加到系统变量中，这样就可以随时在命令行中使用activate唤醒conda环境了。</p>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs applescript"><span class="hljs-comment"># 注意自己的实际路径，不要照抄</span><br><span class="hljs-built_in">alias</span> <span class="hljs-built_in">activate</span>=<span class="hljs-string">&quot;source /home/kwindy/softwork/miniconda3/bin/activate&quot;</span><br></code></pre></td></tr></table></figure>
+<p>保存关闭，最后更新环境变量</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">source</span> ~/.bashrc<br></code></pre></td></tr></table></figure>
+
+<p>修改之后以后就要使用<code>activate</code>先进入base环境，再使用conda命令。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0/" class="category-chain-item">学习</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%91%84%E5%83%8F%E5%A4%B4/">#摄像头</a>
+      
+        <a href="/tags/ROS/">#ROS</a>
+      
+        <a href="/tags/ROS2/">#ROS2</a>
+      
+        <a href="/tags/ubuntu/">#ubuntu</a>
+      
+        <a href="/tags/linux/">#linux</a>
+      
+        <a href="/tags/RGBD%E7%9B%B8%E6%9C%BA/">#RGBD相机</a>
+      
+        <a href="/tags/Astra/">#Astra</a>
+      
+        <a href="/tags/%E5%A5%A5%E6%AF%94%E4%B8%AD%E5%85%89/">#奥比中光</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>ubuntu22_04安装ROS2_humble</div>
+      <div>http://kw1649190133.github.io/2024/07/15/ubuntu22-04安装ROS2-humble/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Kwindy</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>July 15, 2024</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/07/08/ffmpeg%E6%8E%A8%E9%80%81RKNN%E7%9B%AE%E6%A0%87%E8%AF%86%E5%88%AB%E7%BB%93%E6%9E%9C/" title="ffmpeg推送RKNN目标识别结果">
+                        <span class="hidden-mobile">ffmpeg推送RKNN目标识别结果</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>
