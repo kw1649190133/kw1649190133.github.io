@@ -1,0 +1,777 @@
+
+
+<!DOCTYPE html>
+<html lang="CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Kwindy">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="基本信息Astra 单目结构光参数如下 【参考资料】https:&#x2F;&#x2F;www.bilibili.com&#x2F;video&#x2F;BV1NN4y1C7td【奥比中光资源下载中心】https:&#x2F;&#x2F;vcp.developer.orbbec.com.cn&#x2F;resourceCenter【奥比中光文档库】https:&#x2F;&#x2F;vcp.developer.orbbec.com.cn&#x2F;documentation 关于相机的一些安装方">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Astar深度相机测试">
+<meta property="og:url" content="http://kw1649190133.github.io/2024/07/22/Astar%E6%B7%B1%E5%BA%A6%E7%9B%B8%E6%9C%BA%E6%B5%8B%E8%AF%95/index.html">
+<meta property="og:site_name" content="kw&#39;s blog">
+<meta property="og:description" content="基本信息Astra 单目结构光参数如下 【参考资料】https:&#x2F;&#x2F;www.bilibili.com&#x2F;video&#x2F;BV1NN4y1C7td【奥比中光资源下载中心】https:&#x2F;&#x2F;vcp.developer.orbbec.com.cn&#x2F;resourceCenter【奥比中光文档库】https:&#x2F;&#x2F;vcp.developer.orbbec.com.cn&#x2F;documentation 关于相机的一些安装方">
+<meta property="og:locale">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/07/22/Astar%E6%B7%B1%E5%BA%A6%E7%9B%B8%E6%9C%BA%E6%B5%8B%E8%AF%95/d36e1697380da8a729be7a1013b312a2.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/07/22/Astar%E6%B7%B1%E5%BA%A6%E7%9B%B8%E6%9C%BA%E6%B5%8B%E8%AF%95/526b6670349aef5e20b75da9fd93bc8d.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/07/22/Astar%E6%B7%B1%E5%BA%A6%E7%9B%B8%E6%9C%BA%E6%B5%8B%E8%AF%95/51c2008cd6b331f43937d7048c6ca28b.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/07/22/Astar%E6%B7%B1%E5%BA%A6%E7%9B%B8%E6%9C%BA%E6%B5%8B%E8%AF%95/4061e3475024264a829948cc9aafd074.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/07/22/Astar%E6%B7%B1%E5%BA%A6%E7%9B%B8%E6%9C%BA%E6%B5%8B%E8%AF%95/358b1c01676bdede0307e2328a1a2d63.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/07/22/Astar%E6%B7%B1%E5%BA%A6%E7%9B%B8%E6%9C%BA%E6%B5%8B%E8%AF%95/6b48511090969fbb073a90247f84a567.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/07/22/Astar%E6%B7%B1%E5%BA%A6%E7%9B%B8%E6%9C%BA%E6%B5%8B%E8%AF%95/b20b5f450141bb468d8cca938bcb8877.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/07/22/Astar%E6%B7%B1%E5%BA%A6%E7%9B%B8%E6%9C%BA%E6%B5%8B%E8%AF%95/3f63dcfe8b0562c562f658b001d665ad.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/07/22/Astar%E6%B7%B1%E5%BA%A6%E7%9B%B8%E6%9C%BA%E6%B5%8B%E8%AF%95/dfeecdedbcde195caeac3179f9c8472a.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/07/22/Astar%E6%B7%B1%E5%BA%A6%E7%9B%B8%E6%9C%BA%E6%B5%8B%E8%AF%95/3797dc3e34a5377978e98ecc8ee034de.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/07/22/Astar%E6%B7%B1%E5%BA%A6%E7%9B%B8%E6%9C%BA%E6%B5%8B%E8%AF%95/2bf2659e6bb5d8d8be45d2610e307ed1.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/07/22/Astar%E6%B7%B1%E5%BA%A6%E7%9B%B8%E6%9C%BA%E6%B5%8B%E8%AF%95/6fc59cca1fddc493c94c7a619606c0e6.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/07/22/Astar%E6%B7%B1%E5%BA%A6%E7%9B%B8%E6%9C%BA%E6%B5%8B%E8%AF%95/8ebdc1290915769f3f7af275bfc2dc0f.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/07/22/Astar%E6%B7%B1%E5%BA%A6%E7%9B%B8%E6%9C%BA%E6%B5%8B%E8%AF%95/ca947a7e1430746378582244d3d8e07a.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/07/22/Astar%E6%B7%B1%E5%BA%A6%E7%9B%B8%E6%9C%BA%E6%B5%8B%E8%AF%95/ea88254b41c63edc08e9568b338afeda.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/07/22/Astar%E6%B7%B1%E5%BA%A6%E7%9B%B8%E6%9C%BA%E6%B5%8B%E8%AF%95/7b40eefa1c58d4f857cbf3fca54cbb86.png">
+<meta property="article:published_time" content="2024-07-22T12:36:31.000Z">
+<meta property="article:modified_time" content="2024-07-22T12:41:17.891Z">
+<meta property="article:author" content="Kwindy">
+<meta property="article:tag" content="摄像头">
+<meta property="article:tag" content="ROS">
+<meta property="article:tag" content="ROS2">
+<meta property="article:tag" content="ubuntu">
+<meta property="article:tag" content="linux">
+<meta property="article:tag" content="RGBD相机">
+<meta property="article:tag" content="Astra">
+<meta property="article:tag" content="奥比中光">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://kw1649190133.github.io/2024/07/22/Astar%E6%B7%B1%E5%BA%A6%E7%9B%B8%E6%9C%BA%E6%B5%8B%E8%AF%95/d36e1697380da8a729be7a1013b312a2.png">
+  
+  
+  
+  <title>Astar深度相机测试 - kw&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"kw1649190133.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Astar深度相机测试"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-07-22 20:36" pubdate>
+          July 22, 2024 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          6.7k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          56 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Astar深度相机测试</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="基本信息"><a href="#基本信息" class="headerlink" title="基本信息"></a>基本信息</h1><p>Astra 单目结构光<br>参数如下<br><img src="/2024/07/22/Astar%E6%B7%B1%E5%BA%A6%E7%9B%B8%E6%9C%BA%E6%B5%8B%E8%AF%95/d36e1697380da8a729be7a1013b312a2.png" srcset="/img/loading.gif" lazyload></p>
+<p>【参考资料】<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1NN4y1C7td">https://www.bilibili.com/video/BV1NN4y1C7td</a><br>【奥比中光资源下载中心】<a target="_blank" rel="noopener" href="https://vcp.developer.orbbec.com.cn/resourceCenter">https://vcp.developer.orbbec.com.cn/resourceCenter</a><br>【奥比中光文档库】<a target="_blank" rel="noopener" href="https://vcp.developer.orbbec.com.cn/documentation">https://vcp.developer.orbbec.com.cn/documentation</a></p>
+<p>关于相机的一些安装方法就藏在文档库里，不太好找。<br>因为Astra型号实在是太老了，官方直接不维护了，也没有集成在他们最新的Orbbec SDK里，属实是孤儿产品了。没办法，一分钱一分货，别的深度相机都要大几百上千，自己的钱烧起来真心疼。</p>
+<h2 id="在Window环境初次使用"><a href="#在Window环境初次使用" class="headerlink" title="在Window环境初次使用"></a>在Window环境初次使用</h2><p>先在Window环境下试用一下，看相机是不是好的。<br>在下载中心找到驱动一栏，下载SensorDriver。这是Windows上用的驱动，安装之后设备管理器可以识别到接入的相机。<br><img src="/2024/07/22/Astar%E6%B7%B1%E5%BA%A6%E7%9B%B8%E6%9C%BA%E6%B5%8B%E8%AF%95/526b6670349aef5e20b75da9fd93bc8d.png" srcset="/img/loading.gif" lazyload></p>
+<p>在OpenNI2 SDK工具栏目中，找到老版本的OrbbecViewer（OrbbecViewer for OpenNI2_v1.1.13_20220722_windows_x64.zip），直接解压后就可以启动。装好驱动并插入相机后就能被程序识别到。</p>
+<p>需要注意：</p>
+<ul>
+<li>使用USB延长线的话，可能会导致相机无法被设备管理器正确识别（这还是卖家发的延长线，什么破玩意。），如果遇到了还是试试USB直接插电脑吧。</li>
+<li>老版本的OrbbecViewer只能在Window10上打开，在Window11上无法启动，不知道是不是个例。</li>
+</ul>
+<h2 id="ROS2的补充插件安装"><a href="#ROS2的补充插件安装" class="headerlink" title="ROS2的补充插件安装"></a>ROS2的补充插件安装</h2><h3 id="安装colcon"><a href="#安装colcon" class="headerlink" title="安装colcon"></a>安装colcon</h3><p>这个算是ROS2安装的补充，这个是ROS2系统的辅助工具，手动安装的时候不会一起装上。<br><code>colcon build --symlink-install</code>这个语句看起来真的像极了CMake，但colcon是什么我完全没见过，感觉很可能会运行失败。不出所料报错“找不到colcon”，没办法，只好安装一下，顺便查一查colcon是什么。简单来说就是和CMake类似，编译代码的，不过它是ROS2专用。直接安装一下就能用了。</p>
+<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs armasm"><span class="hljs-symbol">sudo</span> apt-<span class="hljs-meta">get</span> install python3-colcon-<span class="hljs-meta">common</span>-extensions<br></code></pre></td></tr></table></figure>
+
+<p>继续使用colcon，但编译时又遇到很多问题，其实也并不复杂，就是缺一大堆模块。<br>【参考资料】<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_57633442/article/details/137858606">https://blog.csdn.net/qq_57633442/article/details/137858606</a></p>
+<h3 id="安装EM模块"><a href="#安装EM模块" class="headerlink" title="安装EM模块"></a>安装EM模块</h3><p>全局安装：<code>sudo apt-get install python-empy</code>，但是可能因为我安装了miniconda，所以没法用，只能用pip。<br>需要指定版本，不然版本太高了不匹配。</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">pip</span> install empy==<span class="hljs-number">3</span>.<span class="hljs-number">3</span>.<span class="hljs-number">2</span><br></code></pre></td></tr></table></figure>
+<h3 id="安装catkin-pkg和lark"><a href="#安装catkin-pkg和lark" class="headerlink" title="安装catkin_pkg和lark"></a>安装catkin_pkg和lark</h3><p>根据参考资料看到后面还有两个包，我肯定也是没有的干脆一并安装了。</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs cmake">pip <span class="hljs-keyword">install</span> catkin_pkg<br>pip <span class="hljs-keyword">install</span> lark<br></code></pre></td></tr></table></figure>
+
+<h3 id="缺少numpy"><a href="#缺少numpy" class="headerlink" title="缺少numpy"></a>缺少numpy</h3><p>另外，因为我装过miniconda了，所以已进入终端就是base环境，再次编译时居然会报错没有Numpy，而直接使用pip安装时又会提示我已经有了一个numpy。<br><img src="/2024/07/22/Astar%E6%B7%B1%E5%BA%A6%E7%9B%B8%E6%9C%BA%E6%B5%8B%E8%AF%95/51c2008cd6b331f43937d7048c6ca28b.png" srcset="/img/loading.gif" lazyload><br>可以看到目前CMake使用的是miniconda3的Python环境，所以直接给它装个numpy就可以了。使用<code>-m</code>就能精准的给指定环境安装插件了。<br><code>/home/kwindy/softwork/miniconda3/bin/python3 -m pip install numpy</code></p>
+<h3 id="缺少camera-info-manager"><a href="#缺少camera-info-manager" class="headerlink" title="缺少camera_info_manager"></a>缺少camera_info_manager</h3><p>继续编译，又报错了。<br>【参考资料-ROS2所有依赖包详解】<br><a target="_blank" rel="noopener" href="https://blog.csdn.net/BIT_HXZ/article/details/123908947?spm=1001.2014.3001.5506">https://blog.csdn.net/BIT_HXZ/article/details/123908947?spm=1001.2014.3001.5506</a><br>原文里面要我通过指令<code>sudo apt-get install ros-melodic-camera-info-manager</code>来安装这个组件，但是我尝试之后怎么也安装不了。隔了一天之后，冷静分析仔细思考，然后鬼使神差的把<code>melodic</code>改成了<code>humble</code>，然后安装成功？！</p>
+<h3 id="安装pydantic"><a href="#安装pydantic" class="headerlink" title="安装pydantic"></a>安装pydantic</h3><p>安装pydantic时指定版本很重要，<br>pip install pydantic==1.10.14</p>
+<h1 id="原来它只支持ROS"><a href="#原来它只支持ROS" class="headerlink" title="原来它只支持ROS"></a>原来它只支持ROS</h1><p>我还妄想着通过ROS2来运行，然而，使我too yuang了，没想到这个破玩意居然这么拉胯。<br>现在冷静想想怎么办，要么斥巨资再买一个新相机，要么花时间搞一个ubuntu老版本来安装ROS，或者把ROS Melodic放到Docker里运行？或者我应该暂时放弃尝试这什么破奥比中光的相机，先把普通的USB相机跑通？唉，头大了有点。<br>中文互联网想找点真正有用的资料还真不容易，垃圾废料实在是太多了。</p>
+<p><img src="/2024/07/22/Astar%E6%B7%B1%E5%BA%A6%E7%9B%B8%E6%9C%BA%E6%B5%8B%E8%AF%95/4061e3475024264a829948cc9aafd074.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="唉"><a href="#唉" class="headerlink" title="唉"></a>唉</h2><p>最气的就是为什么明明看别人的流程顺畅得跟窜稀一样，而我不是这里报错就是那里报错，麻了。<br><img src="/2024/07/22/Astar%E6%B7%B1%E5%BA%A6%E7%9B%B8%E6%9C%BA%E6%B5%8B%E8%AF%95/358b1c01676bdede0307e2328a1a2d63.png" srcset="/img/loading.gif" lazyload></p>
+<h1 id="用虚拟机再次尝试"><a href="#用虚拟机再次尝试" class="headerlink" title="用虚拟机再次尝试"></a>用虚拟机再次尝试</h1><p>这次决定直接使用虚拟机，在笔记本上运行VMware，然后新建ubuntu18.04的虚拟环境，再上面重新安装ros环境。</p>
+<h2 id="主要参考资料"><a href="#主要参考资料" class="headerlink" title="主要参考资料"></a>主要参考资料</h2><p>官方驱动地址：<a target="_blank" rel="noopener" href="https://github.com/orbbec/ros_astra_camera">https://github.com/orbbec/ros_astra_camera</a><br>流程参考资料：<a target="_blank" rel="noopener" href="https://www.codetd.com/article/12644285">https://www.codetd.com/article/12644285</a><br>按照官方驱动的说明来进行安装基本上就没有太大的问题，别人的流程也可以用来参考。但是需要注意这个博主有些代码有问题，英文单词瞎几把写，直接复制粘贴会有大问题。</p>
+<h2 id="虚拟机安装ubuntu"><a href="#虚拟机安装ubuntu" class="headerlink" title="虚拟机安装ubuntu"></a>虚拟机安装ubuntu</h2><p>下载安装VMware，然后在ubuntu官网下载18.04版本的桌面端系统.iso文件<br>【Ubuntu下载】<a target="_blank" rel="noopener" href="https://www.ubuntu.org.cn/downloads/">https://www.ubuntu.org.cn/downloads/</a><br>使用VMware新建虚拟环境，然后在新建过程中选择.iso文件进行系统部署。因为都是比较成熟的程序，就不过多描述了。</p>
+<h2 id="安装ROS-Melodic版本"><a href="#安装ROS-Melodic版本" class="headerlink" title="安装ROS-Melodic版本"></a>安装ROS-Melodic版本</h2><p>之前试过从头到尾手动安装ROS2，真的太麻烦了，后来发现了鱼香ROS，一键安装简直巨方便，感谢前人铺路。</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">wget http:<span class="hljs-regexp">//</span>fishros.com/install -O fishros &amp;&amp; . fishros<br></code></pre></td></tr></table></figure>
+
+<h2 id="安装依赖包"><a href="#安装依赖包" class="headerlink" title="安装依赖包"></a>安装依赖包</h2><p>这里使用了一个长命令来同时安装多个包，参考资料里原来的代码有问题，自己改了一下空格之后才能用，如果遇到问题就改成一个一个安装。其中的<code>$ROS_DISTRO</code>是ros系统的版本名称，如果ros安装正确这个常量就会被正确调用。<br>安装依赖包的指令：</p>
+<figure class="highlight mel"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs mel"># Assuming you have sourced the ros environment, same below<br>sudo apt install libgflags-dev ros-$ROS_DISTRO-<span class="hljs-keyword">image</span>-geometry ros-$ROS_DISTRO-<span class="hljs-keyword">camera</span>-info-manager ros-$ROS_DISTRO-<span class="hljs-keyword">image</span>-transport ros-$ROS_DISTRO-<span class="hljs-keyword">image</span>-publisher libusb<span class="hljs-number">-1.0</span><span class="hljs-number">-0</span>-dev libeigen3-dev<br></code></pre></td></tr></table></figure>
+
+<h2 id="安装-libuvc"><a href="#安装-libuvc" class="headerlink" title="安装 libuvc"></a>安装 libuvc</h2><p>这个需要编译的依赖项是单独安装的。这个名称一看就知道，是USB视频设备使用的UVC协议，这个难道系统没有自带吗？不是很理解。</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs cmd">git clone https://github.com/libuvc/libuvc.git<br><span class="hljs-built_in">cd</span> libuvc<br><span class="hljs-built_in">mkdir</span> build &amp;&amp; <span class="hljs-built_in">cd</span> build<br>cmake .. &amp;&amp; make<br>sudo make install<br>sudo ldconfig<br></code></pre></td></tr></table></figure>
+
+<h2 id="创建工作区"><a href="#创建工作区" class="headerlink" title="创建工作区"></a>创建工作区</h2><p>如果有桌面系统，大可不必用命令来创建文件夹。<br><code>-p</code>可以一次创建多级路径的文件夹。</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cmd"><span class="hljs-built_in">mkdir</span> -p ~/home/kwindy/ros_ws/src<br></code></pre></td></tr></table></figure>
+
+<p>跳转到工作区的代码文件夹，把官方驱动程序clone进去。</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs cmd"><span class="hljs-built_in">cd</span> ~/home/kwindy/ros_ws/src<br>git clone https://github.com/orbbec/ros_astra_camera.git<br></code></pre></td></tr></table></figure>
+
+<p>编译。这里的catkin_make是Melodic版本的ros用的，如果是其他ros可能会用其他的编译工具，比如colcon之类的。</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs cmd"><span class="hljs-built_in">cd</span> ~/ros_ws<br>catkin_make<br></code></pre></td></tr></table></figure>
+
+<p>安装 udev 规则</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs cmd"><span class="hljs-built_in">cd</span> ~/ros_ws<br>source ./devel/setup.bash<br>roscd astra_camera<br>./scripts/create_udev_rules<br>sudo udevadm control --reload &amp;&amp; sudo  udevadm trigger<br></code></pre></td></tr></table></figure>
+
+<h2 id="插入相机"><a href="#插入相机" class="headerlink" title="插入相机"></a>插入相机</h2><p>将相机的USB接口连上电脑，<br>使用<code>lsusb</code>可以查看当前接口的ID，其中“2bc5:0401”就是当前Astra相机的编号，系统就是根据这个编号来调用相机的。<br><img src="/2024/07/22/Astar%E6%B7%B1%E5%BA%A6%E7%9B%B8%E6%9C%BA%E6%B5%8B%E8%AF%95/6b48511090969fbb073a90247f84a567.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="启动相机"><a href="#启动相机" class="headerlink" title="启动相机"></a>启动相机</h2><p>这里是找到astra_carma文件夹内，执行astra.launch文件，然后就启动了相机节点，保持这个对话框不动，再去新建一个对话框执行后面的程序。不同型号的相机使用的是不同的配置文件，如果是astrapro相机，可能就是astrapro.launch。这个配置文件里面是可以连接到相机的镜头校准参数的，也就是.yaml文件的地址，这里暂时没有做校准。<br>另外这个版本的ros安装的时候没有设置自启动，所以需要手动启动ros先。要注意单词拼写。</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs cmd">roscore # 启动ros master<br>source ./devel/setup.bash #需要新开一个端口<br>roslaunch astra_camera astra.launch #启动相机节点<br></code></pre></td></tr></table></figure>
+
+<h2 id="运行相机测试"><a href="#运行相机测试" class="headerlink" title="运行相机测试"></a>运行相机测试</h2><p>打开rqt程序。<br>不是很懂为什么这里是输入两遍的，一遍不能运行。</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cmd">rosrun rqt_image_view rqt_image_view <br></code></pre></td></tr></table></figure>
+<p>输入之后成功看到相机画面！这一幕出现的时候简直惊喜得满地打滚，我都试了一个星期了，太不容易了。<br><img src="/2024/07/22/Astar%E6%B7%B1%E5%BA%A6%E7%9B%B8%E6%9C%BA%E6%B5%8B%E8%AF%95/b20b5f450141bb468d8cca938bcb8877.png" srcset="/img/loading.gif" lazyload><br>点击左上角的选项，可以切换数据源，下面切换成深度模式<br><img src="/2024/07/22/Astar%E6%B7%B1%E5%BA%A6%E7%9B%B8%E6%9C%BA%E6%B5%8B%E8%AF%95/3f63dcfe8b0562c562f658b001d665ad.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="启动rviz"><a href="#启动rviz" class="headerlink" title="启动rviz"></a>启动rviz</h2><p>rviz是ros本来就自带的程序，装好ros就能启动，只是调用其他设备需要相应的驱动</p>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ebnf"><span class="hljs-attribute">rviz</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="启动rviz时出现找不到ros-master"><a href="#启动rviz时出现找不到ros-master" class="headerlink" title="启动rviz时出现找不到ros_master"></a>启动rviz时出现找不到ros_master</h3><p>输入<code>rviz</code>启动时报错提示：<code>Could not contact ROS master at [http://localhost:11311], retrying...</code><br>参考资料:<a target="_blank" rel="noopener" href="https://blog.csdn.net/qyt_722/article/details/118416152">https://blog.csdn.net/qyt_722/article/details/118416152</a><br>报错内容是找不到发布在11311端口的ros主程序，好像是因为这个版本的ros主控程序是需要手动启动的。新建一个进程专门来启动它。</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-attribute">roscore</span> <span class="hljs-comment"># 启动ros master</span><br>rosrun rviz rviz <span class="hljs-comment">#另一种启动rviz的方式</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="添加Camera"><a href="#添加Camera" class="headerlink" title="添加Camera"></a>添加Camera</h2><p>在列表左下角的Add添加设备，先选择添加Camera，最后一个框改名称。<br><img src="/2024/07/22/Astar%E6%B7%B1%E5%BA%A6%E7%9B%B8%E6%9C%BA%E6%B5%8B%E8%AF%95/dfeecdedbcde195caeac3179f9c8472a.png" srcset="/img/loading.gif" lazyload></p>
+<p>添加之后在列表里的Image Topic选项修改数据来源，当相机节点正常运行后，这里就会出现画面来源列表。只有rgb画面和深度画面可以调用，红外调用之后会显示一片黑，可能是因为位深的问题，Ir好像是16位的。<br><img src="/2024/07/22/Astar%E6%B7%B1%E5%BA%A6%E7%9B%B8%E6%9C%BA%E6%B5%8B%E8%AF%95/3797dc3e34a5377978e98ecc8ee034de.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="添加map"><a href="#添加map" class="headerlink" title="添加map"></a>添加map</h2><p>添加Camera之后，下面的镜头框中没有立刻显示画面，Frame选项会报错：<br><code>For frame [camera_color_optical_frame]: Fixed Frame [map] does not exist</code><br>需要修改Global Options中的Fixed Frame选项，默认是map，但实际上现在是没有地图的，需要改成其他的。改成中间带optical字眼的配置，就可以正常显示画面了。<br><img src="/2024/07/22/Astar%E6%B7%B1%E5%BA%A6%E7%9B%B8%E6%9C%BA%E6%B5%8B%E8%AF%95/2bf2659e6bb5d8d8be45d2610e307ed1.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="在rviz中加入点云"><a href="#在rviz中加入点云" class="headerlink" title="在rviz中加入点云"></a>在rviz中加入点云</h2><p>在设备栏点击add，添加PointCloud2（不是很懂为什么是2）然后在topic中选择相应的数据来源。然后就能看到主框中显示模型了。目前还没有进行相机校准，所以显示结果可能并不准确，甚至乱点配置可能会因为计算量过大卡死。<br><img src="/2024/07/22/Astar%E6%B7%B1%E5%BA%A6%E7%9B%B8%E6%9C%BA%E6%B5%8B%E8%AF%95/6fc59cca1fddc493c94c7a619606c0e6.png" srcset="/img/loading.gif" lazyload></p>
+<h1 id="相机标定"><a href="#相机标定" class="headerlink" title="相机标定"></a>相机标定</h1><p>【标定板生成网站】<a target="_blank" rel="noopener" href="https://calib.io/pages/camera-calibration-pattern-generator">https://calib.io/pages/camera-calibration-pattern-generator</a><br>【标定过程视频】<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1Fe4y1z725">https://www.bilibili.com/video/BV1Fe4y1z725</a></p>
+<h2 id="普通相机"><a href="#普通相机" class="headerlink" title="普通相机"></a>普通相机</h2><h3 id="安装Calibration"><a href="#安装Calibration" class="headerlink" title="安装Calibration"></a>安装Calibration</h3><p>安装标定程序。这里的$后面是ros2版本</p>
+<figure class="highlight mel"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mel">sudo apt install ros-$ROS_DISTRO-<span class="hljs-keyword">camera</span>-calibration<br></code></pre></td></tr></table></figure>
+
+<h3 id="启动标定程序"><a href="#启动标定程序" class="headerlink" title="启动标定程序"></a>启动标定程序</h3><p>启动标定程序，需要先运行相机节点。这里直接就是一个Python程序，但需要注意调整自己的参数。查看当前的节点列表使用<code>rostopic list</code>。</p>
+<figure class="highlight mel"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mel">rosrun camera_calibration cameracalibrator.py --<span class="hljs-keyword">size</span> <span class="hljs-number">7</span>x5 --square <span class="hljs-number">0.02</span> <span class="hljs-keyword">image</span>:=/<span class="hljs-keyword">camera</span>/<span class="hljs-keyword">color</span>/image_raw <span class="hljs-keyword">camera</span>:=/<span class="hljs-keyword">camera</span> --no-service-check<br></code></pre></td></tr></table></figure>
+<p><img src="/2024/07/22/Astar%E6%B7%B1%E5%BA%A6%E7%9B%B8%E6%9C%BA%E6%B5%8B%E8%AF%95/8ebdc1290915769f3f7af275bfc2dc0f.png" srcset="/img/loading.gif" lazyload><br><strong>参数说明：</strong></p>
+<ul>
+<li>size 标记特征点的数量（在标定板生成页面设置）</li>
+<li>square 每个格子的边长（打印之后拿尺子量）</li>
+<li>image 指定图像源</li>
+<li>camera 指定相机</li>
+</ul>
+<p>需要注意的是，这里的size指的是标定板内圈的节点数量，也就是四个格子的中心点，8x6的标定板参数就是7x5。如果显示了界面却识别不出标定板，就需要检查参数。</p>
+<p>其中X、Y，就是标定板在相机取景框内的横纵坐标，让标定板在整个画面内游一圈，尤其是边缘的地方，就可以把它拉成绿色。<br>size是大小，拉近拉远，近到整个画面，远到特征点不识别。<br>skew是倾斜，左右、上下都倾斜一下，即可完成。</p>
+<p>标定完成之后Calibrate按钮亮起，点击Calibrate，然后在命令行内得到解算的相机参数。点击save会将结果保存到压缩包内（/tmp/calibrationdata.tar.gz），点击commit是关闭程序。<br><img src="/2024/07/22/Astar%E6%B7%B1%E5%BA%A6%E7%9B%B8%E6%9C%BA%E6%B5%8B%E8%AF%95/ca947a7e1430746378582244d3d8e07a.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="ir红外相机"><a href="#ir红外相机" class="headerlink" title="ir红外相机"></a>ir红外相机</h2><p>关于这方面的尝试没有成功，只能先作为失败经验积累下来。好像要查看和标定红外相机，就需要<br>【灰度图16bit转8bit代码】<a target="_blank" rel="noopener" href="https://gitee.com/tangyang/image_transformer">https://gitee.com/tangyang/image_transformer</a></p>
+<h3 id="下载编译安装"><a href="#下载编译安装" class="headerlink" title="下载编译安装"></a>下载编译安装</h3><p>这里面src其实就一点点代码，还是C语言写的，很好看懂。其中还有rosdep下载依赖的过程，但我的虚拟机连不上网，就没有运行这句，也能编译。</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs awk">mkdir -p ~<span class="hljs-regexp">/catkin_ws/</span>src<br>cd ~<span class="hljs-regexp">/catkin_ws/</span>src<br>git clone https:<span class="hljs-regexp">//gi</span>tee.com<span class="hljs-regexp">/tangyang/im</span>age_transformer.git<br>cd ..<br>rosdep install --from-paths src -i -y --rosdistro <span class="hljs-variable">$ROS_DISTRO</span><br>catkin_make -j4<br></code></pre></td></tr></table></figure>
+<h3 id="运行"><a href="#运行" class="headerlink" title="运行"></a>运行</h3><p>运行这个转换节点</p>
+<figure class="highlight plaintext"><figcaption><span>devel/setup.bash</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs source">rosrun image_transformer gray_image_transformer<br></code></pre></td></tr></table></figure>
+
+<h3 id="查看结果"><a href="#查看结果" class="headerlink" title="查看结果"></a>查看结果</h3><p>使用<code>rostopic list</code>查看话题列表，明显多了mono8节点<br><img src="/2024/07/22/Astar%E6%B7%B1%E5%BA%A6%E7%9B%B8%E6%9C%BA%E6%B5%8B%E8%AF%95/ea88254b41c63edc08e9568b338afeda.png" srcset="/img/loading.gif" lazyload></p>
+<p>经过一番费劲的折腾，启动rqt之后还是没有画面，最终我猜测，可能是这个相机的问题，型号太老了，这个ir镜头可能不支持单独启动，他本来就是两个镜头来实现深度测量的。实际使用中，感觉不标定也没什么大问题，因为是通过两个镜头实现的深度，近了就会有重影，远了其实还好。先这么用吧，后面有条件换其他设备再继续这方面的探索。<br><img src="/2024/07/22/Astar%E6%B7%B1%E5%BA%A6%E7%9B%B8%E6%9C%BA%E6%B5%8B%E8%AF%95/7b40eefa1c58d4f857cbf3fca54cbb86.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="双目标定法"><a href="#双目标定法" class="headerlink" title="双目标定法"></a>双目标定法</h3><p>看到了别人同时标定两个镜头的方法，我觉得有参考价值，可以先留着。</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs gradle">ros2 run camera_calibration cameracalibrator --<span class="hljs-keyword">size</span> <span class="hljs-number">6</span>x7 --square <span class="hljs-number">0.015</span> --approximate <span class="hljs-number">0.1</span> --no-service-check left:=<span class="hljs-regexp">/camera/i</span>r<span class="hljs-regexp">/image_raw left_camera:=/</span>camera<span class="hljs-regexp">/ir right:=/</span>camera<span class="hljs-regexp">/color/im</span>age_raw right_camera:=<span class="hljs-regexp">/camera/</span>color<br></code></pre></td></tr></table></figure>
+<h2 id="其他指令"><a href="#其他指令" class="headerlink" title="其他指令"></a>其他指令</h2><p>查看当前话题、服务、参数</p>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs lsl">rostopic <span class="hljs-type">list</span><br>rosservice <span class="hljs-type">list</span><br>rosparam <span class="hljs-type">list</span><br></code></pre></td></tr></table></figure>
+
+<p>检查相机参数</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs awk">rostopic echo <span class="hljs-regexp">/camera/</span>depth/camera_info<br>rostopic echo <span class="hljs-regexp">/camera/</span>color/camera_info<br></code></pre></td></tr></table></figure>
+
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>本次尝试最终还是成功了大半，花了不少时间，踩了很多坑。最后红外镜头的校准还是没有完成，原本想用来跑ORB-SLAM也暂时没有实现</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0/" class="category-chain-item">学习</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%91%84%E5%83%8F%E5%A4%B4/">#摄像头</a>
+      
+        <a href="/tags/ROS/">#ROS</a>
+      
+        <a href="/tags/ROS2/">#ROS2</a>
+      
+        <a href="/tags/ubuntu/">#ubuntu</a>
+      
+        <a href="/tags/linux/">#linux</a>
+      
+        <a href="/tags/RGBD%E7%9B%B8%E6%9C%BA/">#RGBD相机</a>
+      
+        <a href="/tags/Astra/">#Astra</a>
+      
+        <a href="/tags/%E5%A5%A5%E6%AF%94%E4%B8%AD%E5%85%89/">#奥比中光</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Astar深度相机测试</div>
+      <div>http://kw1649190133.github.io/2024/07/22/Astar深度相机测试/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Kwindy</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>July 22, 2024</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/07/15/ubuntu22-04%E5%AE%89%E8%A3%85ROS2-humble/" title="ubuntu22_04安装ROS2_humble">
+                        <span class="hidden-mobile">ubuntu22_04安装ROS2_humble</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>
