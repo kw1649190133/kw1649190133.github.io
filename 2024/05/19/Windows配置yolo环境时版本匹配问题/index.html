@@ -26,8 +26,9 @@
 <meta property="og:image" content="http://kw1649190133.github.io/2024/05/19/Windows%E9%85%8D%E7%BD%AEyolo%E7%8E%AF%E5%A2%83%E6%97%B6%E7%89%88%E6%9C%AC%E5%8C%B9%E9%85%8D%E9%97%AE%E9%A2%98/7143d9c3df57de6aebec5bc90f4a5163.png">
 <meta property="og:image" content="http://kw1649190133.github.io/2024/05/19/Windows%E9%85%8D%E7%BD%AEyolo%E7%8E%AF%E5%A2%83%E6%97%B6%E7%89%88%E6%9C%AC%E5%8C%B9%E9%85%8D%E9%97%AE%E9%A2%98/962d95e56e95586e70114e0b35e22ae2.png">
 <meta property="og:image" content="http://kw1649190133.github.io/2024/05/19/Windows%E9%85%8D%E7%BD%AEyolo%E7%8E%AF%E5%A2%83%E6%97%B6%E7%89%88%E6%9C%AC%E5%8C%B9%E9%85%8D%E9%97%AE%E9%A2%98/441829e743f09b269529fef278239b89.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/05/19/Windows%E9%85%8D%E7%BD%AEyolo%E7%8E%AF%E5%A2%83%E6%97%B6%E7%89%88%E6%9C%AC%E5%8C%B9%E9%85%8D%E9%97%AE%E9%A2%98/%E5%AE%89%E8%A3%85torch%E5%92%8Ctorchvision.jpg">
 <meta property="article:published_time" content="2024-05-19T14:41:51.000Z">
-<meta property="article:modified_time" content="2024-05-27T10:12:44.606Z">
+<meta property="article:modified_time" content="2024-07-30T08:39:19.305Z">
 <meta property="article:author" content="Kwindy">
 <meta property="article:tag" content="yolov8">
 <meta property="article:tag" content="Python">
@@ -232,7 +233,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          928 words
+          2.9k words
         
       </span>
     
@@ -243,7 +244,7 @@
         
         
         
-          8 mins
+          25 mins
         
       </span>
     
@@ -306,6 +307,27 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> torch<br><span class="hljs-built_in">print</span>(torch.__version__)  <span class="hljs-comment">#查看当前torch版本</span><br><span class="hljs-built_in">print</span>(torch.cuda.is_available()) <span class="hljs-comment">#检查cuda和torch是否匹配</span><br>torch.backends.cudnn.is_available()  <span class="hljs-comment"># 检查cudnn是否可用</span><br>torch.backends.cudnn.version()     <span class="hljs-comment"># 查看cudnn版本</span><br></code></pre></td></tr></table></figure>
 
 <p>cudnn好像不用专门去搞了，好像装好CUDA工具之后，cudnn就自己装好了。可能是已经内置了？</p>
+<h1 id="又遇到问题了"><a href="#又遇到问题了" class="headerlink" title="又遇到问题了"></a>又遇到问题了</h1><p>20240730 补充记录</p>
+<p>问题描述：之前给笔记本装过环境的，但是为了从Anaconda3换成miniconda，我又把环境删了。现在不得不再次重装环境，我以为不会有什么意外了，结果意外还是发生了。</p>
+<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs stata">(yolo) C:\Users\kw164&gt;Python<br>Python 3.12.4 | packaged <span class="hljs-keyword">by</span> Anaconda, Inc. | (main, Jun 18 2024, 15:03:56) [MSC v.1929 64 bit (AMD64)] <span class="hljs-keyword">on</span> win32<br><span class="hljs-keyword">Type</span> <span class="hljs-string">&quot;help&quot;</span>, <span class="hljs-string">&quot;copyright&quot;</span>, <span class="hljs-string">&quot;credits&quot;</span> or <span class="hljs-string">&quot;license&quot;</span> <span class="hljs-keyword">for</span> <span class="hljs-keyword">more</span> information.<br>&gt;&gt;&gt; import torch<br>Traceback (most recent call last):<br>  <span class="hljs-keyword">File</span> <span class="hljs-string">&quot;&lt;stdin&gt;&quot;</span>, <span class="hljs-keyword">line</span> 1, <span class="hljs-keyword">in</span> &lt;module&gt;<br>  <span class="hljs-keyword">File</span> <span class="hljs-string">&quot;D:\app\miniconda3\envs\yolo\Lib\site-packages\torch\__init__.py&quot;</span>, <span class="hljs-keyword">line</span> 148, <span class="hljs-keyword">in</span> &lt;module&gt;<br>    raise <span class="hljs-keyword">err</span><br>OSError: [WinError 126] 找不到指定的模块。 <span class="hljs-keyword">Error</span> loading <span class="hljs-string">&quot;D:\app\miniconda3\envs\yolo\Lib\site-packages\torch\lib\fbgemm.dll&quot;</span> or <span class="hljs-keyword">one</span> of its dependencies.<br></code></pre></td></tr></table></figure>
+
+<h2 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h2><p>很显然，程序报错的原因是在torch文件夹内没找到运行库文件fbgemm.dll，我顺着路径去找了一下，确实没有。<br>这个东西实际上是VC运行库里的东西，我看到网上有人说通过安装VC_redist就可以解决，但尝试了一下并没有用。</p>
+<p><strong>最终解决办法：</strong><br>去TMD垃圾pip，改成用conda就没问题了。</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cmake">conda <span class="hljs-keyword">install</span> -c pytorch pytorch<br></code></pre></td></tr></table></figure>
+
+<p>算了，pip捡起来擦擦还能用。</p>
+<h2 id="再次安装torch和torchvison"><a href="#再次安装torch和torchvison" class="headerlink" title="再次安装torch和torchvison"></a>再次安装torch和torchvison</h2><p>现在运行库没有问题了，回到这篇文章的问题本身，只要torch和torchvison版本匹配就可以了。这里我试了一下使用的是torch2.2.0<br>（后来发现不行，还得是2.2.1）<br><img src="/2024/05/19/Windows%E9%85%8D%E7%BD%AEyolo%E7%8E%AF%E5%A2%83%E6%97%B6%E7%89%88%E6%9C%AC%E5%8C%B9%E9%85%8D%E9%97%AE%E9%A2%98/%E5%AE%89%E8%A3%85torch%E5%92%8Ctorchvision.jpg" srcset="/img/loading.gif" lazyload alt="安装torch和torchvision"></p>
+<p>然后我又仔细看了一下，原来是torchvison版本没对上，根本就没安装上。</p>
+<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs asciidoc">(yolo) C:\Users\kw164&gt;pip uninstall torchvision<br><span class="hljs-symbol">WARNING: </span>Skipping torchvision as it is not installed.<br></code></pre></td></tr></table></figure>
+<p>更换为torchvision=0.17.0</p>
+<h2 id="成功import"><a href="#成功import" class="headerlink" title="成功import"></a>成功import</h2><p>再次尝试import，成功；监测CUDA匹配，成功！这下搞定了。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs python">(yolo) C:\Users\kw164&gt;python<br>Python <span class="hljs-number">3.12</span><span class="hljs-number">.4</span> | packaged by Anaconda, Inc. | (main, Jun <span class="hljs-number">18</span> <span class="hljs-number">2024</span>, <span class="hljs-number">15</span>:03:<span class="hljs-number">56</span>) [MSC v<span class="hljs-number">.1929</span> <span class="hljs-number">64</span> bit (AMD64)] on win32<br><span class="hljs-type">Type</span> <span class="hljs-string">&quot;help&quot;</span>, <span class="hljs-string">&quot;copyright&quot;</span>, <span class="hljs-string">&quot;credits&quot;</span> <span class="hljs-keyword">or</span> <span class="hljs-string">&quot;license&quot;</span> <span class="hljs-keyword">for</span> more information.<br><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> torch<br><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(torch.cuda.is_available())<br><span class="hljs-literal">True</span><br><span class="hljs-meta">&gt;&gt;&gt; </span>torch.backends.cudnn.is_available()<br><span class="hljs-literal">True</span><br><span class="hljs-meta">&gt;&gt;&gt; </span>torch.backends.cudnn.version()<br><span class="hljs-number">8801</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="查询依赖库"><a href="#查询依赖库" class="headerlink" title="查询依赖库"></a>查询依赖库</h2><p>另外，在尝试解决问题的过程中找到了一个查询文件依赖的软件，虽然这次没有用上，但感觉以后可能会用到，特此记录一下。<br><a target="_blank" rel="noopener" href="https://github.com/lucasg/Dependencies">https://github.com/lucasg/Dependencies</a></p>
+<h2 id="大起大落"><a href="#大起大落" class="headerlink" title="大起大落"></a>大起大落</h2><p>高兴早了，怎么还有问题</p>
+<figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ada">importlib.metadata.PackageNotFoundError: No <span class="hljs-keyword">package</span> <span class="hljs-title">metadata was found for torchv</span>ision<br></code></pre></td></tr></table></figure>
+<p>不是，这个问题怎么还存在啊，自检不是都通过了吗。只能先试试重启了，实在不行再换一下torch版本。</p>
+<h2 id="再次重装torch"><a href="#再次重装torch" class="headerlink" title="再次重装torch"></a>再次重装torch</h2><p>最后更换为了<strong>torch 2.2.1和torchvision 1.7.1</strong>，后面这个.1的颗粒度对齐非常重要，更换完之后就成功了。只有这个版本能用，真是服了。看来以后再重装环境，认准这个版本就行了。实测就是2.2.0的torch有问题，垃圾玩意。</p>
 
                 
               </div>
