@@ -31,7 +31,7 @@
 <meta property="og:image" content="http://kw1649190133.github.io/2024/08/06/ROS2%E8%BF%9E%E9%80%9APIX%E9%A3%9E%E6%8E%A7/da33706312eaf9b5cb00042330f077ca.png">
 <meta property="og:image" content="http://kw1649190133.github.io/2024/08/06/ROS2%E8%BF%9E%E9%80%9APIX%E9%A3%9E%E6%8E%A7/4cab8a049b96d0a1f6b8d3cbfd7f9b39.png">
 <meta property="article:published_time" content="2024-08-06T09:16:15.000Z">
-<meta property="article:modified_time" content="2024-08-12T07:46:26.152Z">
+<meta property="article:modified_time" content="2024-09-12T09:26:44.319Z">
 <meta property="article:author" content="Kwindy">
 <meta property="article:tag" content="ROS2">
 <meta property="article:tag" content="PIX">
@@ -130,7 +130,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/">
                 <i class="iconfont icon-home-fill"></i>
-                <span>Hejmpaĝo</span>
+                <span>Inicio</span>
               </a>
             </li>
           
@@ -142,7 +142,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/archives/">
                 <i class="iconfont icon-archive-fill"></i>
-                <span>Arkivoj</span>
+                <span>Archivo</span>
               </a>
             </li>
           
@@ -154,7 +154,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/categories/">
                 <i class="iconfont icon-category-fill"></i>
-                <span>Kategorio</span>
+                <span>Categorías</span>
               </a>
             </li>
           
@@ -166,7 +166,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/tags/">
                 <i class="iconfont icon-tags-fill"></i>
-                <span>Etikedoj</span>
+                <span>Etiquetas</span>
               </a>
             </li>
           
@@ -178,7 +178,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/about/">
                 <i class="iconfont icon-user-fill"></i>
-                <span>Pri</span>
+                <span>Acerca</span>
               </a>
             </li>
           
@@ -235,7 +235,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          4.9k vortoj
+          4.9k palabras
         
       </span>
     
@@ -246,7 +246,7 @@
         
         
         
-          41 minutoj
+          41 minutos
         
       </span>
     
@@ -326,7 +326,7 @@
 
 <p>这里的prefix安装位置默认是/usr/local，建议修改成其他的地址。默认地址有时候会受到管理员权限的限制。</p>
 <p>安装完成之后就可以直接打开命令行使用获取坐标模型的指令了，指令在安装路径的sbin文件里。因为默认的安装和调用路径都是/usr/share/GeographicLib，需要管理员权限才能操作。</p>
-<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs applescript">sudo geographicalib-<span class="hljs-keyword">get</span>-geoids egm96<span class="hljs-number">-5</span> <span class="hljs-comment">#最后的是模型名称，报错缺什么就下什么</span><br>sudo geographicalib-<span class="hljs-keyword">get</span>-geoids all <span class="hljs-comment">#获取全部的文件，时间会很久</span><br>sudo geographicalib-<span class="hljs-keyword">get</span>-magnetic <span class="hljs-comment">#这个没有用到</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs applescript">sudo geographiclib-<span class="hljs-keyword">get</span>-geoids egm96<span class="hljs-number">-5</span> <span class="hljs-comment">#最后的是模型名称，报错缺什么就下什么</span><br>sudo geographiclib-<span class="hljs-keyword">get</span>-geoids all <span class="hljs-comment">#获取全部的文件，时间会很久</span><br>sudo geographiclib-<span class="hljs-keyword">get</span>-magnetic <span class="hljs-comment">#这个没有用到</span><br></code></pre></td></tr></table></figure>
 
 <p>然后寻找安装程序时，意外在/opt/ros/humble/lib/mavros/中找到了别人文章里说的安装脚本install_geographiclib_datasets.sh。好家伙，你咋不在share文件夹里。算了，已经自己下载安装了。</p>
 <h3 id="报错处理：连接失败"><a href="#报错处理：连接失败" class="headerlink" title="报错处理：连接失败"></a>报错处理：连接失败</h3><p>启动px4.launch后，程序可以一直运行了，但显示的内容是连接失败。<br>报错情况：</p>
@@ -417,26 +417,26 @@
     <div class="license-meta">
       
         <div class="license-meta-item">
-          <div>Aŭtoro</div>
+          <div>Autor</div>
           <div>Kwindy</div>
         </div>
       
       
         <div class="license-meta-item license-meta-date">
-          <div>Postigita</div>
+          <div>Publicado el</div>
           <div>August 6, 2024</div>
         </div>
       
       
       
         <div class="license-meta-item">
-          <div>Lizenta</div>
+          <div>Licencia bajo</div>
           <div>
             
               
               
                 <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
-                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                  <span class="hint--top hint--rounded" aria-label="BY - Atribución">
                     <i class="iconfont icon-by"></i>
                   </span>
                 </a>
@@ -459,7 +459,7 @@
                       <a href="/2024/08/12/HDMI%E8%BD%ACCVBS%E6%A8%A1%E6%8B%9F%E4%BF%A1%E5%8F%B7/" title="HDMI转CVBS模拟信号">
                         <i class="iconfont icon-arrowleft"></i>
                         <span class="hidden-mobile">HDMI转CVBS模拟信号</span>
-                        <span class="visible-mobile">Antaŭa afiŝo</span>
+                        <span class="visible-mobile">Anterior</span>
                       </a>
                     
                   </article>
@@ -468,7 +468,7 @@
                     
                       <a href="/2024/07/22/Astar%E6%B7%B1%E5%BA%A6%E7%9B%B8%E6%9C%BA%E6%B5%8B%E8%AF%95/" title="Astar深度相机测试">
                         <span class="hidden-mobile">Astar深度相机测试</span>
-                        <span class="visible-mobile">Sekva afiŝo</span>
+                        <span class="visible-mobile">Siguiente</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
                     
@@ -489,7 +489,7 @@
     <div id="toc">
   <p class="toc-header">
     <i class="iconfont icon-list"></i>
-    <span>Enhavtabelo</span>
+    <span>Tabla de Contenidos</span>
   </p>
   <div class="toc-body" id="toc-body"></div>
 </div>
@@ -545,7 +545,7 @@
   <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold">Serĉi</h4>
+        <h4 class="modal-title w-100 font-weight-bold">Buscar</h4>
         <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -553,7 +553,7 @@
       <div class="modal-body mx-3">
         <div class="md-form mb-5">
           <input type="text" id="local-search-input" class="form-control validate">
-          <label data-error="x" data-success="v" for="local-search-input">ŝlosivorto</label>
+          <label data-error="x" data-success="v" for="local-search-input">Palabra clave</label>
         </div>
         <div class="list-group" id="local-search-result"></div>
       </div>
@@ -732,7 +732,7 @@
   
 
   <noscript>
-    <div class="noscript-warning">Blogo funkcias plej bone kun JavaScript ebligita</div>
+    <div class="noscript-warning">El blog funciona mejor con JavaScript habilitado</div>
   </noscript>
 </body>
 </html>
