@@ -1,0 +1,730 @@
+
+
+<!DOCTYPE html>
+<html lang="CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Kwindy">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="前言这一篇其实早该写了，但之前一直没时间弄。而最近因为需要重装服务器环境，不得不弄了，所以这才顺便记录一下。另一个原因是我自己的水平有限，一开始都是直接使用别人建好的数据库，后来大佬走了，又发生了一些变故，只能靠自己重构生产环境，才不得不学习与整理这些知识。到现在，自己的能力也有了提高，我已经将整个部署和维护方法，以及自己遇到的一些问题悉数记下来了，足以应对大部分情况。 【参考资料】https:&#x2F;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Arcgis_Oracle环境安装流程">
+<meta property="og:url" content="http://kw1649190133.github.io/2024/09/17/Arcgis-Oracle%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85%E6%B5%81%E7%A8%8B/index.html">
+<meta property="og:site_name" content="kw&#39;s blog">
+<meta property="og:description" content="前言这一篇其实早该写了，但之前一直没时间弄。而最近因为需要重装服务器环境，不得不弄了，所以这才顺便记录一下。另一个原因是我自己的水平有限，一开始都是直接使用别人建好的数据库，后来大佬走了，又发生了一些变故，只能靠自己重构生产环境，才不得不学习与整理这些知识。到现在，自己的能力也有了提高，我已经将整个部署和维护方法，以及自己遇到的一些问题悉数记下来了，足以应对大部分情况。 【参考资料】https:&#x2F;">
+<meta property="og:locale">
+<meta property="og:image" content="http://kw1649190133.github.io/_resources/b023a1d63b4e4a3459ea8411202256dc.png">
+<meta property="article:published_time" content="2024-09-17T03:06:21.000Z">
+<meta property="article:modified_time" content="2024-09-17T03:09:29.462Z">
+<meta property="article:author" content="Kwindy">
+<meta property="article:tag" content="地理信息">
+<meta property="article:tag" content="Arcgis">
+<meta property="article:tag" content="Oracle">
+<meta property="article:tag" content="数据库">
+<meta property="article:tag" content="ArcServer">
+<meta property="article:tag" content="影像服务">
+<meta property="article:tag" content="协同">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://kw1649190133.github.io/_resources/b023a1d63b4e4a3459ea8411202256dc.png">
+  
+  
+  
+  <title>Arcgis_Oracle环境安装流程 - kw&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"kw1649190133.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Startseite</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archiv</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Kategorien</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Schlagwörter</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>Über</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Arcgis_Oracle环境安装流程"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-09-17 11:06" pubdate>
+          September 17, 2024 am
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          6k wörter
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          50 minuten
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Arcgis_Oracle环境安装流程</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>这一篇其实早该写了，但之前一直没时间弄。而最近因为需要重装服务器环境，不得不弄了，所以这才顺便记录一下。<br>另一个原因是我自己的水平有限，一开始都是直接使用别人建好的数据库，后来大佬走了，又发生了一些变故，只能靠自己重构生产环境，才不得不学习与整理这些知识。到现在，自己的能力也有了提高，我已经将整个部署和维护方法，以及自己遇到的一些问题悉数记下来了，足以应对大部分情况。</p>
+<p>【参考资料】<br><a target="_blank" rel="noopener" href="https://blog.csdn.net/ZUFE_ZXh/article/details/100765283">https://blog.csdn.net/ZUFE_ZXh/article/details/100765283</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_41872328/article/details/122296955">https://blog.csdn.net/qq_41872328/article/details/122296955</a><br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/three-fighter/p/12630251.html">https://www.cnblogs.com/three-fighter/p/12630251.html</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_45015198/article/details/107498301">https://blog.csdn.net/qq_45015198/article/details/107498301</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_40625478/article/details/108486160">https://blog.csdn.net/weixin_40625478/article/details/108486160</a></p>
+<h1 id="环境安装"><a href="#环境安装" class="headerlink" title="环境安装"></a>环境安装</h1><h2 id="Arcgis-Server"><a href="#Arcgis-Server" class="headerlink" title="Arcgis Server"></a>Arcgis Server</h2><h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>ArcServer的安装非常简单，基本上就是一直下一步。Server的授权体系就是一个esp文件，一般仅有创建站点和创建企业级地理数据库的时候会用到。<br>另外，简单提一下兼容性的问题，Arcmap可以不与ArcServer匹配，桌面端10.8.2与Server10.4.1并不会冲突。但是如果需要使用Oracle数据库，Server必须与Oracle的版本匹配。例如10.4匹配Oracle11g，具体匹配表在官方文档或者网上的野鸡论坛都有参考。</p>
+<h3 id="创建站点"><a href="#创建站点" class="headerlink" title="创建站点"></a>创建站点</h3><p>ArcgisServer服务启动后，访问ArcgisServerManager，可以查看各项服务的启动状态，暂停、修改、删除服务。<br>【<a target="_blank" rel="noopener" href="https://localhost:6443/arcgis/manager/settings.html%E3%80%91">https://localhost:6443/arcgis/manager/settings.html】</a><br>在发布影像之前，需要先通过6443端口去管理页面创建站点。创建过程比较简单就不细说了。</p>
+<h3 id="影像发布"><a href="#影像发布" class="headerlink" title="影像发布"></a>影像发布</h3><p>在地图文档中加载好影像，然后保存文档，在ArcCatalog中右键选择地图文档→共享为服务，即可将影像服务发布到ArcServer上。【需要注意先注册文件夹】<br>在发布之前可以看到选项卡中有【分析】按钮，可以按一下检测有没有什么问题，比如文件夹未注册。</p>
+<h3 id="关于连接使用"><a href="#关于连接使用" class="headerlink" title="关于连接使用"></a>关于连接使用</h3><p>在ArcCatalog中找到GIS服务器→添加ArcgisServer，输入url连接和用户名密码访问影像服务。</p>
+<h3 id="遇到无法创建站点"><a href="#遇到无法创建站点" class="headerlink" title="遇到无法创建站点"></a>遇到无法创建站点</h3><p>报错内容</p>
+<blockquote>
+<p>Failed to create the site. The machine does not have a valid license. Please authorize ArcGIS Server by clicking Start &gt; Programs &gt; ArcGIS &gt; Software Authorization。</p>
+</blockquote>
+<p>其实就是没找到授权文件，需要重新设置一下授权文件路径。<br>解决办法：<br>在开始目录找到Software Authorization，然后添加Server的esp授权文件。</p>
+<p>另一种可能是登录账户的问题，但我暂时没有遇到过。<br>如果遇到的话，解决方案如下：</p>
+<ol>
+<li>右击【我的电脑】–【管理】–【服务和应用程序】–【服务】，找到服务项目【ArcGIS Server】–右键打开【属性】。</li>
+<li>打开【登录选项卡】。</li>
+<li>将【登录身份】更改为【本地系统账户】。最后确认。</li>
+</ol>
+<h3 id="关于影像原文件位置（注册文件夹）"><a href="#关于影像原文件位置（注册文件夹）" class="headerlink" title="关于影像原文件位置（注册文件夹）"></a>关于影像原文件位置（注册文件夹）</h3><p>ArcServer安装后，在发布影像服务之前，需要进行<strong>路径注册</strong>。如果存放影像的路径没有被ArcServer注册为可访问，那电脑就会把影像复制一份到服务器的安装路径，如果是几个G的影像可能就表现为发布的比较慢（因为在复制数据），如果是TB级别的影像，那直接爆炸。所以为了节约宝贵的存储空间，<strong>必须注册路径</strong>。<br>进入管理站点：<a target="_blank" rel="noopener" href="https://localhost:6443/arcgis/manager">https://localhost:6443/arcgis/manager</a><br>选择【站点】选项卡，【Data Store】，添加注册文件夹路径。<br><img src="/../_resources/b023a1d63b4e4a3459ea8411202256dc.png" srcset="/img/loading.gif" lazyload alt="b023a1d63b4e4a3459ea8411202256dc.png"><br>选择注册文件夹后，输入名称、发布文件夹路径可以直接写本机的盘符，发布者文件夹主机名写<strong>本机名称</strong>（在系统设置中可以查到），服务器文件夹路径选择与发布者文件夹路径相同（默认设置）。<br>如果是在路径中写IP地址的话，要确保IP地址可访问，理论上是这样，实际上没试过，遇到问题再想办法解决。（这个图片是网上截图的，用到是IP地址。）<br>另外可以看到ArcServer是支持分布式资源管理的，也就是可以几台电脑都安装Server，然后组成一个服务器集群，对于大型企业可能会用到。</p>
+<h2 id="安装Oracle"><a href="#安装Oracle" class="headerlink" title="安装Oracle"></a>安装Oracle</h2><p>需要注意选择安装的版本，本次使用的是Oracle11gr2。电脑系统是64位所以需要安装64位版本。再次强调选择的Oracle版本需要和Arcgis server的版本匹配，例如10.4的Server匹配的版本是Oracle11g。<br>服务器端需要匹配计算机系统，所以需要64位。<br>而使用数据库的Arcgis是32位，所以需要使用32位的clint客户端。（我都不知道为什么会有如此奇葩的设计。）<br>在安装过程中，可以选择创建或配置数据库，或者仅安装数据库软件，如果选择了直接创建数据库，需要注意选择服务器类，否则会有最大内存8G的限制。但实际上最好还是不要在安装的时候自动创建数据库，自动创建的数据库里面会有一堆表，不便于后面创建地理数据库。</p>
+<p>网格安装选项-单实例数据库安装<br>安装类型-典型安装<br>随后需要输入Oracle基目录、软件位置、数据库文件位置、全局数据库名、管理口令</p>
+<p>安装完之后再打开电脑的主菜单程序列表，就会看到多了一堆东西，简单介绍一下。</p>
+<h3 id="Database-Configuration-Assistant"><a href="#Database-Configuration-Assistant" class="headerlink" title="Database Configuration Assistant"></a>Database Configuration Assistant</h3><p>可以创建、修改和删除数据库。<br>创建数据库的过程一般都是使用默认设置，一直下一步即可。</p>
+<p>选择一般用途或事务<br>输入全局数据库名。全局数据库名一般可以直接和SID一致，后面使用<code>IP/全局数据库名</code>的方式直接访问。</p>
+<p>所有账户使用统一管理口令（比较省事）<br>使用模板中的数据库文件位置<br>指定快速恢复区<br>内存大小调整，这里只有安装时选择了服务器类，才能把内存拉到8G以上。</p>
+<h3 id="Net-Manager"><a href="#Net-Manager" class="headerlink" title="Net Manager"></a>Net Manager</h3><p>用来管理网络服务和监听程序，还可以用来测试数据库连接。监听程序就是一台电脑有一个就可以了，如果安装数据库的时候选择安装并新建，那系统就会自动设置一个监听程序；但真正的老司机还是应该选择仅安装数据库软件，然后自己去新建监听程序，这样就不会多出来莫名其妙的数据库。</p>
+<h2 id="Oracle-Clint客户端安装"><a href="#Oracle-Clint客户端安装" class="headerlink" title="Oracle Clint客户端安装"></a>Oracle Clint客户端安装</h2><p>因为Arcgis10.4是32位的，所以需要使用32位的客户端程序。<br>安装类型选择管理员，然后其他的基本上一直下一步即可。<br>安装完成之后，<strong>一般而言是不需要进行其他设置的</strong>，直接就能用。<br>使用Net Configuration Assistant配置监听程序，输入需要访问到数据库或其他服务名称。<br>使用TIP/IP协议与数据库通信，输入主机名和端口号。一般主机名使用localhost，端口使用默认的1521。</p>
+<h2 id="ArcServer创建企业级地理数据库"><a href="#ArcServer创建企业级地理数据库" class="headerlink" title="ArcServer创建企业级地理数据库"></a>ArcServer创建企业级地理数据库</h2><p>在Arcgis工具箱中，找到创建企业级地理数据库<br>数据库平台选择Oracle，实例输入localhost/btjc（IP/全局名称，需要注意斜杠的方向，windows系统是左斜杠）<br>数据库管理员sys<br>地理数据库管理员sde<br>最后需要授权文件（.ecp）</p>
+<h1 id="数据库环境的维护"><a href="#数据库环境的维护" class="headerlink" title="数据库环境的维护"></a>数据库环境的维护</h1><p>数据库的维护主要针对Oracle，像Arcgis的影像服务器好像都不用怎么维护，只要设置好就能用，是真的方便。</p>
+<h2 id="日常使用"><a href="#日常使用" class="headerlink" title="日常使用"></a>日常使用</h2><p>扩充表空间，版本管理，协调提交，冲突处理，压缩数据库，备份。</p>
+<h2 id="关于锁库的处理"><a href="#关于锁库的处理" class="headerlink" title="关于锁库的处理"></a>关于锁库的处理</h2><p>当账号的密码过期，或者多次登录密码错误，就可能触发锁库的情况，也就是该账号被数据库ban掉了。<br>使用ALTER USER命令可以用来修改用户的口令,设置口令过期,锁定以及解锁用户等等。需要用高权限的账号登录到数据库先。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs SQL"><span class="hljs-comment">--1、修改用户的口令，将用户的口令修改为新的密码</span><br><br><span class="hljs-keyword">ALTER</span> <span class="hljs-keyword">USER</span> SCOTT IDENTIFIED <span class="hljs-keyword">BY</span> NEWPASSWORD;<br><br><span class="hljs-comment">--2、设置用户口令过期，通过设置用户过期，这样该用户在下次登录的时候就必须要修改密码。</span><br><span class="hljs-keyword">ALTER</span> <span class="hljs-keyword">USER</span> SCOTT PASSWORD EXPIRE;<br><br><span class="hljs-comment">--3、锁定用户，将用户锁定之后，被锁定的用户是不能够再次登录到系统中。</span><br><span class="hljs-keyword">ALTER</span> <span class="hljs-keyword">USER</span> SCOTT ACCOUNT LOCK;<br><br><span class="hljs-comment">--4、解锁用户，解锁用户的锁定状态。</span><br><span class="hljs-keyword">ALTER</span> <span class="hljs-keyword">USER</span> SCOTT ACCOUNT UNLOCK;<br><br><span class="hljs-comment">--5、应该还有一个可以更改错误次数的指令，多次登录错误也不会锁账号，但现在忘记了，以后再补充。</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="关于密码过期"><a href="#关于密码过期" class="headerlink" title="关于密码过期"></a>关于密码过期</h2><p>Oracle数据库默认的账户密码有效期为1年，密码快到期的时候登录数据库就会提示更改密码。但是Arcgis的自动访问可不管这个，密码更改之后如果没有在Arcgis中更改登录设置，它就会自动反复登录，然后多次密码错误导致Oracle锁库。<br>如果锁库了就按上面锁库的方法来处理。如果不想遇到有效期的问题，就提前处理一下账号的有效期限制。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs SQL"><span class="hljs-comment">--1、查看用户的profile(概要文件)是哪一个，一般是default</span><br><span class="hljs-keyword">SELECT</span> username,PROFILE <span class="hljs-keyword">FROM</span> dba_users;<br><span class="hljs-comment">--2、查看概要文件的密码有效期</span><br><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> dba_profiles s <span class="hljs-keyword">WHERE</span> s.profile<span class="hljs-operator">=</span><span class="hljs-string">&#x27;DEFAULT&#x27;</span> <span class="hljs-keyword">AND</span> resource_name<span class="hljs-operator">=</span><span class="hljs-string">&#x27;PASSWORD_LIFE_TIME&#x27;</span>;<br><span class="hljs-comment">--3、将密码有效期由默认改成无限制。</span><br><span class="hljs-keyword">ALTER</span> PROFILE <span class="hljs-keyword">DEFAULT</span> LIMIT PASSWORD_LIFE_TIME UNLIMITED;<br></code></pre></td></tr></table></figure>
+<p>前两步都是查看信息的，可以直接执行第三步。修改后会立刻生效，不需要重启电脑。</p>
+<h2 id="关于表空间不足"><a href="#关于表空间不足" class="headerlink" title="关于表空间不足"></a>关于表空间不足</h2><p>表空间一般分为一个索引空间和N个数据表空间。<br>新建的Oracle数据库表空间是比较有限的，例如11g版本的默认表空间为32M，用来存超大的gdb矢量数据的时候必然会遇到表空间不足无法写入的问题，此时就需要修改表空间大小，增加一个dbf文件。而我在项目中使用的数据库，是必须扩充表空间的，不然一定不够。<br>使用sqlplus登录到数据库<br><code>sqlplus &lt;账号名称&gt;/&lt;账号密码&gt;@&lt;实例地址&gt; as &lt;登录模式&gt;</code><br>例如：</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">sqlplus system<span class="hljs-regexp">/gqjc2023@/</span><span class="hljs-regexp">/localhost/</span>btjc as sysdba<br></code></pre></td></tr></table></figure>
+
+<p>成功进入数据库后，使用SQL指令修改表空间。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs SQL"><span class="hljs-keyword">ALTER</span> <span class="hljs-keyword">TABLE</span>SPACE SDE_TBS<br><span class="hljs-keyword">ADD</span> DATAFILE <span class="hljs-string">&#x27;F:\app\SDE_TAB_02.dbf&#x27;</span><br>size <span class="hljs-number">2048</span>M AUTOEXTEND <span class="hljs-keyword">ON</span>;<br></code></pre></td></tr></table></figure>
+
+<p>回车后提示表空间已更改，则表示修改成功。</p>
+<h1 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h1><h2 id="默认密码"><a href="#默认密码" class="headerlink" title="默认密码"></a>默认密码</h2><p>当锁库的时候可能就需要试一下了。如果建库的时候选择了统一密码，那其他账户也是输入那一个密码。</p>
+<p>用户名/密码 |登录身份|说明<br>|-|-|-|<br>sys/change_on_install|SYSDBA 或 SYSOPER|不能以 NORMAL 登录，可作为默认的系统管理员<br>system/manager|SYSDBA 或 NORMAL|不能以 SYSOPER 登录，可作为默认的系统管理员<br>sysman/oem_temp|sysman|为 oms 的用户名<br>scott/tiger| NORMAL |普通用户<br>aqadm /aqadm| SYSDBA 或 NORMAL|高级队列管理员<br>Dbsnmp/dbsnmp | SYSDBA 或 NORMAL|复制管理员</p>
+<h2 id="其他指令"><a href="#其他指令" class="headerlink" title="其他指令"></a>其他指令</h2><figure class="highlight moonscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs moonscript"><span class="hljs-comment">--查询当前所有账号</span><br><span class="hljs-built_in">select</span> username <span class="hljs-keyword">from</span> dba_users<br></code></pre></td></tr></table></figure>
+
+<h2 id="错误处理"><a href="#错误处理" class="headerlink" title="错误处理"></a>错误处理</h2><p>错误描述：</p>
+<blockquote>
+<p>连接到数据库失败，基础DBMS错误ORA-12518:TNS:监听程序无法分发客户机连接No extended error</p>
+</blockquote>
+<p>后面发现压根不是数据库的问题，而是大势的保密程序把相关的服务和进程全锁了。MD吓死我了，我还以为我装的数据库又出问题了，都准备重装系统了。</p>
+<h2 id="Listener-ora文件"><a href="#Listener-ora文件" class="headerlink" title="Listener.ora文件"></a>Listener.ora文件</h2><p>LISTENER.ORA文件同样位于$ORACLE_HOME/network/admin目录，它定义了监听器的行为和它所监听的服务，如果该文件配置不正确，也会导致ora-12154错误。</p>
+<h2 id="关于彻底删除"><a href="#关于彻底删除" class="headerlink" title="关于彻底删除"></a>关于彻底删除</h2><p>遇到了无论如何也无法检测到监听程序的情况，完全摸不着头脑，实在是没办法了，只有老师傅才能研究明白并且精准的修复，像我这样的菜鸟，只能破罐子破摔，直接全部删除重新安装最简单。</p>
+<ol>
+<li>在服务中停止所有Oracle的服务。</li>
+<li>打开Universal Installer工具运行卸载程序。但它一般会提示你到数据库安装路径下的deinstall文件夹找deinstall.bat脚本自己运行。</li>
+<li>清理注册表<ul>
+<li>删除HKEY_LOCAL_MACHINE\SOFTWARE\ORACLE及其子项。</li>
+<li>删除HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services下的所有Oracle相关项。</li>
+<li>删除HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\Eventlog\Application下的所有Oracle相关项。</li>
+<li>删除HKEY_CLASSES_ROOT下所有以Ora、Oracle、Orcl或EnumOra为前缀的键。</li>
+</ul>
+</li>
+<li>清除环境变量</li>
+<li>删除Oracle安装目录的所有文件</li>
+<li>手动删除开始路径下的Oracle内容。<code>C:\User（用户）\用户名\Appdata\Roaming\Microsoft\Windows\Start Menu（开始菜单）\Programs（程序）</code>或<code>C:\Users\Administrator\AppData\Roaming\Microsoft\Windows\Start Menu</code>。虽然不删也可以，后面重新安装会覆写，但会很乱。</li>
+</ol>
+<p>大体上是这样，细节方面可能会有一些些遗漏，但是并不影响。主要清理的还是服务、注册表、环境变量、主目录文件以及开始菜单。</p>
+<h2 id="关于版本控制和协调提交"><a href="#关于版本控制和协调提交" class="headerlink" title="关于版本控制和协调提交"></a>关于版本控制和协调提交</h2><p>版本控制我自己倒是比较熟悉了，但还是总结一下，以防忘记。<br>首先需要在要素数据集注册版本。<br>然后在Arcgis中打开版本控制的工具栏，可以选择新建版本。在数据来源或者是版本控制工具栏中，都可以进行版本切换。</p>
+<p>在子版本中修改的内容，需要协调提交后才会显示在父版本中；<br>父版本中变化的内容，需要协调后才会同步到子版本中。<br>遇到版本冲突时，必须进行处理，否则会同时保留多个版本的同一要素。<br>综上所述，勤协调勤提交，才能尽量避免版本冲突。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0/" class="category-chain-item">学习</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E5%9C%B0%E7%90%86%E4%BF%A1%E6%81%AF/">#地理信息</a>
+      
+        <a href="/tags/Arcgis/">#Arcgis</a>
+      
+        <a href="/tags/Oracle/">#Oracle</a>
+      
+        <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/">#数据库</a>
+      
+        <a href="/tags/ArcServer/">#ArcServer</a>
+      
+        <a href="/tags/%E5%BD%B1%E5%83%8F%E6%9C%8D%E5%8A%A1/">#影像服务</a>
+      
+        <a href="/tags/%E5%8D%8F%E5%90%8C/">#协同</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Arcgis_Oracle环境安装流程</div>
+      <div>http://kw1649190133.github.io/2024/09/17/Arcgis-Oracle环境安装流程/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Beitragsautor</div>
+          <div>Kwindy</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Veröffentlicht am</div>
+          <div>September 17, 2024</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Urheberrechtshinweis</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/09/02/ubuntu%E5%88%9B%E5%BB%BAsh%E8%84%9A%E6%9C%AC%E5%92%8C%E6%A1%8C%E9%9D%A2%E7%A8%8B%E5%BA%8F/" title="ubuntu创建sh脚本和桌面程序">
+                        <span class="hidden-mobile">ubuntu创建sh脚本和桌面程序</span>
+                        <span class="visible-mobile">Nächster</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Inhaltsverzeichnis</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Suchen</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Stichwort</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog funktioniert am besten mit aktiviertem JavaScript</div>
+  </noscript>
+</body>
+</html>
