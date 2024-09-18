@@ -25,7 +25,7 @@
 <meta property="og:locale">
 <meta property="og:image" content="http://kw1649190133.github.io/2024/09/17/Arcgis-Oracle%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85%E6%B5%81%E7%A8%8B/b023a1d63b4e4a3459ea8411202256dc.png">
 <meta property="article:published_time" content="2024-09-17T03:06:21.000Z">
-<meta property="article:modified_time" content="2024-09-18T02:52:20.803Z">
+<meta property="article:modified_time" content="2024-09-18T06:23:30.955Z">
 <meta property="article:author" content="Kwindy">
 <meta property="article:tag" content="地理信息">
 <meta property="article:tag" content="Arcgis">
@@ -123,7 +123,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/">
                 <i class="iconfont icon-home-fill"></i>
-                <span>Startseite</span>
+                <span>Home</span>
               </a>
             </li>
           
@@ -135,7 +135,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/archives/">
                 <i class="iconfont icon-archive-fill"></i>
-                <span>Archiv</span>
+                <span>Archives</span>
               </a>
             </li>
           
@@ -147,7 +147,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/categories/">
                 <i class="iconfont icon-category-fill"></i>
-                <span>Kategorien</span>
+                <span>Categories</span>
               </a>
             </li>
           
@@ -159,7 +159,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/tags/">
                 <i class="iconfont icon-tags-fill"></i>
-                <span>Schlagwörter</span>
+                <span>Tags</span>
               </a>
             </li>
           
@@ -171,7 +171,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/about/">
                 <i class="iconfont icon-user-fill"></i>
-                <span>Über</span>
+                <span>About</span>
               </a>
             </li>
           
@@ -228,7 +228,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          6.2k wörter
+          6.4k words
         
       </span>
     
@@ -239,7 +239,7 @@
         
         
         
-          52 minuten
+          54 mins
         
       </span>
     
@@ -287,7 +287,7 @@
 <h1 id="环境安装"><a href="#环境安装" class="headerlink" title="环境安装"></a>环境安装</h1><h2 id="Arcgis-Server"><a href="#Arcgis-Server" class="headerlink" title="Arcgis Server"></a>Arcgis Server</h2><h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>ArcServer的安装非常简单，基本上就是一直下一步。Server的授权体系就是一个esp文件，一般仅有创建站点和创建企业级地理数据库的时候会用到。<br>另外，简单提一下兼容性的问题，Arcmap可以不与ArcServer匹配，桌面端10.8.2与Server10.4.1并不会冲突。但是如果需要使用Oracle数据库，Server必须与Oracle的版本匹配。例如10.4匹配Oracle11g，具体匹配表在官方文档或者网上的野鸡论坛都有参考。</p>
 <h3 id="创建站点"><a href="#创建站点" class="headerlink" title="创建站点"></a>创建站点</h3><p>ArcgisServer服务启动后，访问ArcgisServerManager，可以查看各项服务的启动状态，暂停、修改、删除服务。<br>【<a target="_blank" rel="noopener" href="https://localhost:6443/arcgis/manager/settings.html%E3%80%91">https://localhost:6443/arcgis/manager/settings.html】</a><br>在发布影像之前，需要先通过6443端口去管理页面创建站点。创建过程比较简单就不细说了。</p>
 <h4 id="关于重置站点的密码"><a href="#关于重置站点的密码" class="headerlink" title="关于重置站点的密码"></a>关于重置站点的密码</h4><p>有一次我还忘记账号了，死活登不上管理页面，然后查了一下找回方法。<br>前往目录<code>&lt;ArcGIS Server 安装目录&gt;/server/tools/passwordreset</code><br>找回主账号名称：<code>./passwordreset.sh -l</code><br>重置密码：<code>./passwordreset.sh -p mynewpassword</code><br>这是linux环境的，而windows使用的脚本是<code>./Passwordreset.bat</code>，不过道理是一样的。</p>
-<h3 id="影像发布"><a href="#影像发布" class="headerlink" title="影像发布"></a>影像发布</h3><p>在地图文档中加载好影像，然后保存文档，在ArcCatalog中右键选择地图文档→共享为服务，即可将影像服务发布到ArcServer上。【需要注意先注册文件夹】<br>在发布之前可以看到选项卡中有【分析】按钮，可以按一下检测有没有什么问题，比如文件夹未注册。</p>
+<h3 id="影像发布"><a href="#影像发布" class="headerlink" title="影像发布"></a>影像发布</h3><p>在地图文档中加载好影像，然后保存文档，在ArcCatalog中右键选择地图文档→共享为服务，即可将影像服务发布到ArcServer上。【需要注意先注册文件夹】<br>在发布之前可以看到选项卡中有【分析】按钮，可以按一下检测有没有什么问题，比如文件夹未注册。<br>文件夹一般是可以直接使用盘符来注册的，这样硬盘里的所有数据就都可以直接发布了。但有时候又会失灵，比较奇妙，只能多试几次。以盘符为路径时，机器名称必填。</p>
 <h3 id="关于连接使用"><a href="#关于连接使用" class="headerlink" title="关于连接使用"></a>关于连接使用</h3><p>在ArcCatalog中找到GIS服务器→添加ArcgisServer，输入url连接和用户名密码访问影像服务。</p>
 <h3 id="遇到无法创建站点"><a href="#遇到无法创建站点" class="headerlink" title="遇到无法创建站点"></a>遇到无法创建站点</h3><p>报错内容</p>
 <blockquote>
@@ -334,6 +334,7 @@
 <p>连接到数据库失败，基础DBMS错误ORA-12518:TNS:监听程序无法分发客户机连接No extended error</p>
 </blockquote>
 <p>后面发现压根不是数据库的问题，而是大势的保密程序把相关的服务和进程全锁了。MD吓死我了，我还以为我装的数据库又出问题了，都准备重装系统了。</p>
+<h2 id="数据库无法访问"><a href="#数据库无法访问" class="headerlink" title="数据库无法访问"></a>数据库无法访问</h2><p>给新服务器安装环境的时候还遇到了这个问题，本机可以访问数据库，但其他电脑却无法访问，可以ping通，可以访问共享文件夹，但就是无法访问数据库。然后把服务器的防火墙关了就解决了。</p>
 <h2 id="Listener-ora文件"><a href="#Listener-ora文件" class="headerlink" title="Listener.ora文件"></a>Listener.ora文件</h2><p>LISTENER.ORA文件同样位于$ORACLE_HOME/network/admin目录，它定义了监听器的行为和它所监听的服务，如果该文件配置不正确，也会导致ora-12154错误。</p>
 <h2 id="关于彻底删除"><a href="#关于彻底删除" class="headerlink" title="关于彻底删除"></a>关于彻底删除</h2><p>遇到了无论如何也无法检测到监听程序的情况，完全摸不着头脑，实在是没办法了，只有老师傅才能研究明白并且精准的修复，像我这样的菜鸟，只能破罐子破摔，直接全部删除重新安装最简单。</p>
 <ol>
@@ -416,20 +417,20 @@
     <div class="license-meta">
       
         <div class="license-meta-item">
-          <div>Beitragsautor</div>
+          <div>Author</div>
           <div>Kwindy</div>
         </div>
       
       
         <div class="license-meta-item license-meta-date">
-          <div>Veröffentlicht am</div>
+          <div>Posted on</div>
           <div>September 17, 2024</div>
         </div>
       
       
       
         <div class="license-meta-item">
-          <div>Urheberrechtshinweis</div>
+          <div>Licensed under</div>
           <div>
             
               
@@ -458,7 +459,7 @@
                       <a href="/2024/09/17/Ubuntu%E5%AE%89%E8%A3%85RTMP%E6%9C%8D%E5%8A%A1%E5%99%A8/" title="Ubuntu安装RTMP服务器">
                         <i class="iconfont icon-arrowleft"></i>
                         <span class="hidden-mobile">Ubuntu安装RTMP服务器</span>
-                        <span class="visible-mobile">Vorheriger</span>
+                        <span class="visible-mobile">Previous</span>
                       </a>
                     
                   </article>
@@ -467,7 +468,7 @@
                     
                       <a href="/2024/09/02/ubuntu%E5%88%9B%E5%BB%BAsh%E8%84%9A%E6%9C%AC%E5%92%8C%E6%A1%8C%E9%9D%A2%E7%A8%8B%E5%BA%8F/" title="ubuntu创建sh脚本和桌面程序">
                         <span class="hidden-mobile">ubuntu创建sh脚本和桌面程序</span>
-                        <span class="visible-mobile">Nächster</span>
+                        <span class="visible-mobile">Next</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
                     
@@ -488,7 +489,7 @@
     <div id="toc">
   <p class="toc-header">
     <i class="iconfont icon-list"></i>
-    <span>Inhaltsverzeichnis</span>
+    <span>Table of Contents</span>
   </p>
   <div class="toc-body" id="toc-body"></div>
 </div>
@@ -544,7 +545,7 @@
   <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold">Suchen</h4>
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
         <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -552,7 +553,7 @@
       <div class="modal-body mx-3">
         <div class="md-form mb-5">
           <input type="text" id="local-search-input" class="form-control validate">
-          <label data-error="x" data-success="v" for="local-search-input">Stichwort</label>
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
         </div>
         <div class="list-group" id="local-search-result"></div>
       </div>
@@ -731,7 +732,7 @@
   
 
   <noscript>
-    <div class="noscript-warning">Blog funktioniert am besten mit aktiviertem JavaScript</div>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
   </noscript>
 </body>
 </html>

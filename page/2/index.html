@@ -104,7 +104,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/">
                 <i class="iconfont icon-home-fill"></i>
-                <span>Startseite</span>
+                <span>Home</span>
               </a>
             </li>
           
@@ -116,7 +116,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/archives/">
                 <i class="iconfont icon-archive-fill"></i>
-                <span>Archiv</span>
+                <span>Archives</span>
               </a>
             </li>
           
@@ -128,7 +128,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/categories/">
                 <i class="iconfont icon-category-fill"></i>
-                <span>Kategorien</span>
+                <span>Categories</span>
               </a>
             </li>
           
@@ -140,7 +140,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/tags/">
                 <i class="iconfont icon-tags-fill"></i>
-                <span>Schlagwörter</span>
+                <span>Tags</span>
               </a>
             </li>
           
@@ -152,7 +152,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/about/">
                 <i class="iconfont icon-user-fill"></i>
-                <span>Über</span>
+                <span>About</span>
               </a>
             </li>
           
@@ -217,6 +217,79 @@
               <div class="col-12 col-md-10 m-auto">
                 
 
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2024/06/28/ORB-SLAM%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%88%9D%E6%AC%A1%E5%B0%9D%E8%AF%95/" target="_self">
+          ORB_SLAM项目的初次尝试
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/06/28/ORB-SLAM%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%88%9D%E6%AC%A1%E5%B0%9D%E8%AF%95/" target="_self">
+        <div>
+          前言这次尝试一下ORB-SLAM3项目。据说这个项目时支持单目、双目、RGBD相机、激光雷达等多种模式的。 硬件版本：OrangePI 5 Plus RK3588 16Gubantu 22.04 【官方项目仓库】https://github.com/UZ-SLAMLab/ORB_SLAM3 把项目下载下来之后，尝试一下进行编译，看看需要哪些部件。可以看到主要缺少的就是DBoW2、g2o、Sophu
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-06-28 11:30" pubdate>
+              2024-06-28
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0/" class="category-chain-item">学习</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%91%84%E5%83%8F%E5%A4%B4/">#摄像头</a>
+            
+              <a href="/tags/SLAM/">#SLAM</a>
+            
+              <a href="/tags/%E9%87%8D%E6%9E%84/">#重构</a>
+            
+              <a href="/tags/%E5%AE%9A%E4%BD%8D/">#定位</a>
+            
+              <a href="/tags/%E6%BF%80%E5%85%89%E9%9B%B7%E8%BE%BE/">#激光雷达</a>
+            
+              <a href="/tags/CMake/">#CMake</a>
+            
+              <a href="/tags/ORB-SLAM/">#ORB-SLAM</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
 
   <div class="row mx-auto index-card">
     
@@ -855,71 +928,6 @@
     </article>
   </div>
 
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2024/05/17/Oracle%E6%95%B0%E6%8D%AE%E5%BA%93%E7%94%A8%E6%88%B7%E8%A2%AB%E9%94%81%E5%A4%84%E7%90%86/" target="_self">
-          Oracle数据库用户被锁处理
-        </a>
-      </h1>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/05/17/Oracle%E6%95%B0%E6%8D%AE%E5%BA%93%E7%94%A8%E6%88%B7%E8%A2%AB%E9%94%81%E5%A4%84%E7%90%86/" target="_self">
-        <div>
-          情况Oracle数据库创建时间太久，默认1年就需要修改一次密码，否则就无法使用。于是就跟着提示修改了一下密码。然后使用其他电脑登录时，打开.mxd会默认使用之前的密码反复登录，然后输入密码次数过多触发了Oracle默认的账号锁死机制，直接把sde账户锁了。 Oracle数据库+企业级地理信息数据库版本：11g匹配ArcServer：10.4错误代码：28000 解决思路 新建一个备用数据库先用着。
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-05-17 15:55" pubdate>
-              2024-05-17
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E5%AD%A6%E4%B9%A0/" class="category-chain-item">学习</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/Oracle/">#Oracle</a>
-            
-              <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/">#数据库</a>
-            
-              <a href="/tags/%E9%94%81%E5%AE%9A/">#锁定</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
 
 
   <nav aria-label="navigation">
@@ -949,7 +957,7 @@
   <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold">Suchen</h4>
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
         <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -957,7 +965,7 @@
       <div class="modal-body mx-3">
         <div class="md-form mb-5">
           <input type="text" id="local-search-input" class="form-control validate">
-          <label data-error="x" data-success="v" for="local-search-input">Stichwort</label>
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
         </div>
         <div class="list-group" id="local-search-result"></div>
       </div>
@@ -1043,7 +1051,7 @@
   
 
   <noscript>
-    <div class="noscript-warning">Blog funktioniert am besten mit aktiviertem JavaScript</div>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
   </noscript>
 </body>
 </html>
