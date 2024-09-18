@@ -1,0 +1,732 @@
+
+
+<!DOCTYPE html>
+<html lang="CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Kwindy">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="前言因为想实现本地画面推流的效果，所以准备以OrangePi自己为服务器，然后向其他终端推送画面，以实现直播的效果。ubuntu上安装RTMP与之前在服务器上安装类似，但也有一些不一样的地方。特此记录一下。 免编译直接安装直接安装非常方便，但是会将nginx安装到默认路径下，默认路径太乱了，我担心以后找起来不方便，就没有选择这种安装方式。但是看起来真的很方便，还是记录一下以后备用。 12sudo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ubuntu安装RTMP服务器">
+<meta property="og:url" content="http://kw1649190133.github.io/2024/09/17/Ubuntu%E5%AE%89%E8%A3%85RTMP%E6%9C%8D%E5%8A%A1%E5%99%A8/index.html">
+<meta property="og:site_name" content="kw&#39;s blog">
+<meta property="og:description" content="前言因为想实现本地画面推流的效果，所以准备以OrangePi自己为服务器，然后向其他终端推送画面，以实现直播的效果。ubuntu上安装RTMP与之前在服务器上安装类似，但也有一些不一样的地方。特此记录一下。 免编译直接安装直接安装非常方便，但是会将nginx安装到默认路径下，默认路径太乱了，我担心以后找起来不方便，就没有选择这种安装方式。但是看起来真的很方便，还是记录一下以后备用。 12sudo">
+<meta property="og:locale">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/09/17/Ubuntu%E5%AE%89%E8%A3%85RTMP%E6%9C%8D%E5%8A%A1%E5%99%A8/ef672f96f7e1d5c1f2f78d5451b3a641.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/09/17/Ubuntu%E5%AE%89%E8%A3%85RTMP%E6%9C%8D%E5%8A%A1%E5%99%A8/189c07232691e8e73387bc7261b35d53.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/09/17/Ubuntu%E5%AE%89%E8%A3%85RTMP%E6%9C%8D%E5%8A%A1%E5%99%A8/19e6214c1d54c117e7e7393e31bba4d7.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/09/17/Ubuntu%E5%AE%89%E8%A3%85RTMP%E6%9C%8D%E5%8A%A1%E5%99%A8/78770903f66ce9abe3309a00ed99c7c3.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/09/17/Ubuntu%E5%AE%89%E8%A3%85RTMP%E6%9C%8D%E5%8A%A1%E5%99%A8/7830f8269ec76b1c14b8ad440fc4609e.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/09/17/Ubuntu%E5%AE%89%E8%A3%85RTMP%E6%9C%8D%E5%8A%A1%E5%99%A8/dac911b059bfecd89159288839195a87.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/09/17/Ubuntu%E5%AE%89%E8%A3%85RTMP%E6%9C%8D%E5%8A%A1%E5%99%A8/9387a90e6126dcaeae59706e7a08386f.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/09/17/Ubuntu%E5%AE%89%E8%A3%85RTMP%E6%9C%8D%E5%8A%A1%E5%99%A8/1900a6edb6cfb25d4d8d5d594ee1e477.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/09/17/Ubuntu%E5%AE%89%E8%A3%85RTMP%E6%9C%8D%E5%8A%A1%E5%99%A8/57d888a9d6b1eb586ad4be73efff7bcf.png">
+<meta property="article:published_time" content="2024-09-17T05:22:22.000Z">
+<meta property="article:modified_time" content="2024-09-17T08:45:41.654Z">
+<meta property="article:author" content="Kwindy">
+<meta property="article:tag" content="ubuntu">
+<meta property="article:tag" content="服务器">
+<meta property="article:tag" content="RTMP">
+<meta property="article:tag" content="推流">
+<meta property="article:tag" content="拉流">
+<meta property="article:tag" content="ffmpeg">
+<meta property="article:tag" content="VLC">
+<meta property="article:tag" content="流媒体">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://kw1649190133.github.io/2024/09/17/Ubuntu%E5%AE%89%E8%A3%85RTMP%E6%9C%8D%E5%8A%A1%E5%99%A8/ef672f96f7e1d5c1f2f78d5451b3a641.png">
+  
+  
+  
+  <title>Ubuntu安装RTMP服务器 - kw&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"kw1649190133.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Startseite</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archiv</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Kategorien</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Schlagwörter</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>Über</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Ubuntu安装RTMP服务器"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-09-17 13:22" pubdate>
+          September 17, 2024 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4.2k wörter
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          36 minuten
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Ubuntu安装RTMP服务器</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>因为想实现本地画面推流的效果，所以准备以OrangePi自己为服务器，然后向其他终端推送画面，以实现直播的效果。ubuntu上安装RTMP与之前在服务器上安装类似，但也有一些不一样的地方。特此记录一下。</p>
+<h1 id="免编译直接安装"><a href="#免编译直接安装" class="headerlink" title="免编译直接安装"></a>免编译直接安装</h1><p>直接安装非常方便，但是会将nginx安装到默认路径下，默认路径太乱了，我担心以后找起来不方便，就没有选择这种安装方式。<br>但是看起来真的很方便，还是记录一下以后备用。</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs cmake">sudo apt <span class="hljs-keyword">install</span> nginx<br>sudo apt <span class="hljs-keyword">install</span> libnginx-mod-rtmp<br></code></pre></td></tr></table></figure>
+<h1 id="编译安装"><a href="#编译安装" class="headerlink" title="编译安装"></a>编译安装</h1><p>编译安装可以指定安装位置，也是我之前在服务器上安装的方式，虽然麻烦一点，但比较自由。</p>
+<h2 id="前期准备"><a href="#前期准备" class="headerlink" title="前期准备"></a>前期准备</h2><h3 id="获取nginx"><a href="#获取nginx" class="headerlink" title="获取nginx"></a>获取nginx</h3><p>直接去官网下载<br>【官网】<a target="_blank" rel="noopener" href="https://nginx.org/en/download.html">https://nginx.org/en/download.html</a></p>
+<h3 id="获取rtmp模块"><a href="#获取rtmp模块" class="headerlink" title="获取rtmp模块"></a>获取rtmp模块</h3><p><code>git clone https://github.com/arut/nginx-rtmp-module.git</code><br>我直接下载在nginx的安装路径下</p>
+<h3 id="安装编译器"><a href="#安装编译器" class="headerlink" title="安装编译器"></a>安装编译器</h3><p>make和cmake</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs cmake">sudo apt <span class="hljs-keyword">install</span> make<br>sudo apt <span class="hljs-keyword">install</span> cmake<br></code></pre></td></tr></table></figure>
+
+<h2 id="开始安装"><a href="#开始安装" class="headerlink" title="开始安装"></a>开始安装</h2><p>CD到下载的nginx源码包目录下，运行configure脚本，并且指定安装路径和刚刚下载的rtmp模块位置。</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs awk">.<span class="hljs-regexp">/configure --prefix=/</span>home<span class="hljs-regexp">/kwindy/</span>softwork<span class="hljs-regexp">/nginx  --add-module=/</span>home<span class="hljs-regexp">/kwindy/</span>softwork<span class="hljs-regexp">/nginx/</span>nginx-rtmp-module  --with-http_ssl_module<br>make<br>make install<br></code></pre></td></tr></table></figure>
+<p>运行配置文件既是设置安装路径，也是编译前完整性检查。大概率会缺少依赖库，见招拆招就可以了。</p>
+<h2 id="报错处理"><a href="#报错处理" class="headerlink" title="报错处理"></a>报错处理</h2><p>之前在服务器上使用yum安装依赖，在ubuntu环境可能有些不同，所以就没有安装依赖，看报什么错误就打什么补丁。</p>
+<h3 id="缺少gcc"><a href="#缺少gcc" class="headerlink" title="缺少gcc"></a>缺少gcc</h3><p>描述：C compiler cc is not found<br>这个错误表明在尝试编译C语言程序时，系统无法找到名为“cc”的C编译器。在一些系统中，C编译器可能被称为“gcc”而不是“cc”。<br>解决办法很简单，就是安装gcc模块</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs routeros">sudo apt-<span class="hljs-built_in">get</span> install gcc<br></code></pre></td></tr></table></figure>
+
+<h3 id="缺少OpenSSL库"><a href="#缺少OpenSSL库" class="headerlink" title="缺少OpenSSL库"></a>缺少OpenSSL库</h3><p>描述：SSL modules require the OpenSSL library<br>安装它：</p>
+<figure class="highlight q"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs q">sudo apt-<span class="hljs-built_in">get</span> install libssl-<span class="hljs-built_in">dev</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="缺少zlib库"><a href="#缺少zlib库" class="headerlink" title="缺少zlib库"></a>缺少zlib库</h3><p>描述：HTML gzip modules require the zlib library<br>这个错误表明你正在尝试在一个需要gzip压缩的HTML页面上使用一个需要zlib库支持的模块。zlib库是一个广泛使用的数据压缩库。<br>安它：</p>
+<figure class="highlight q"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs q">sudo apt-<span class="hljs-built_in">get</span> install zlib1g-<span class="hljs-built_in">dev</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="继续安装nginx"><a href="#继续安装nginx" class="headerlink" title="继续安装nginx"></a>继续安装nginx</h2><p>继续在nginx的路径下，执行编译安装。</p>
+<figure class="highlight gauss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs gauss"><span class="hljs-built_in">make</span><br><span class="hljs-built_in">make</span> install<br></code></pre></td></tr></table></figure>
+<p>安装成功后，很明显指定的安装位置除了我之前放进来的rtmp-module，还多了conf、html、Logs、sbin四个文件夹，这就是nginx的结构。显然它们分别是，配置文件、网页、日志、运行程序。<br><img src="/2024/09/17/Ubuntu%E5%AE%89%E8%A3%85RTMP%E6%9C%8D%E5%8A%A1%E5%99%A8/ef672f96f7e1d5c1f2f78d5451b3a641.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="修改配置"><a href="#修改配置" class="headerlink" title="修改配置"></a>修改配置</h2><p>安装完成后，需要修改一下页面的配置文件，添加rtmp服务，从nginx-rtmp-module的位置获取stat页面，以及修改网页的端口。</p>
+<p><img src="/2024/09/17/Ubuntu%E5%AE%89%E8%A3%85RTMP%E6%9C%8D%E5%8A%A1%E5%99%A8/189c07232691e8e73387bc7261b35d53.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="启动服务"><a href="#启动服务" class="headerlink" title="启动服务"></a>启动服务</h2><p>启动服务<strong>必须使用普通用户权限，不能用sudo</strong>，如果用sudo来启动nginx，会让其他用户无法访问网页。</p>
+<h2 id="尝试解决"><a href="#尝试解决" class="headerlink" title="尝试解决"></a>尝试解决</h2><p>之前因为不懂所以经常遇到打不开网页的情况，想办法解决。<br>安装网络工具<br><code>sudo apt install net-tools</code></p>
+<p>查看当前监听的端口<br><code>sudo netstat -tuln</code></p>
+<p>但还是无事于补，网站依然403无法访问。这……整不明白了。算了，或许我还是应该老老实实用ROS话题来搭建视频推流。<br>PS:后来查了一下，403表示网站找到了相关的资源，但是因为权限问题无法访问。<br><img src="/2024/09/17/Ubuntu%E5%AE%89%E8%A3%85RTMP%E6%9C%8D%E5%8A%A1%E5%99%A8/19e6214c1d54c117e7e7393e31bba4d7.png" srcset="/img/loading.gif" lazyload></p>
+<p>在网上查了一下，listen后面直接写数字，是监听所有地址的同一端口。加上地址之后，就只会监听指定地址的端口。一般服务器就用一个公网地址，所以一般也不加。（加了也没什么用，后面又删掉了。）<br>更重要的是Ubuntu默认将1024之前的端口设为高权限，必须通过管理员sudo指令才能启用。<strong>但是通过管理员权限启动的Nginx服务进程，就会导致其他一般用户无法访问</strong>。所以，只能将服务的端口号改到1024之后。在修改成8801之后，可以不用管理员权限直接启动了。<br><img src="/2024/09/17/Ubuntu%E5%AE%89%E8%A3%85RTMP%E6%9C%8D%E5%8A%A1%E5%99%A8/78770903f66ce9abe3309a00ed99c7c3.png" srcset="/img/loading.gif" lazyload><br>现在可以在本地访问nginx了，但使用同一局域网下的其他电脑却还是无法访问，结果还是没跑通。又给我难住了。</p>
+<p>然后突然想起来，之前试着开了801端口，但是8801端口可能还没有开，于是<br><code>sudo ufw allow 8801/tcp</code><br>成功访问！<br><img src="/2024/09/17/Ubuntu%E5%AE%89%E8%A3%85RTMP%E6%9C%8D%E5%8A%A1%E5%99%A8/7830f8269ec76b1c14b8ad440fc4609e.png" srcset="/img/loading.gif" lazyload><br>这样一来Ubuntu本地rtmp服务器也算是做通了。</p>
+<h1 id="RTMP和RTSP的区别"><a href="#RTMP和RTSP的区别" class="headerlink" title="RTMP和RTSP的区别"></a>RTMP和RTSP的区别</h1><p>为了搞懂RTSP要怎么弄，就得首先搞懂他们俩的区别。<br>虽然rtmp和rtsp都是流媒体传输协议，都可以传输视频画面，但他们在其他方面的区别还是比较大的，并不能混为一谈。<br>||RTMP|RTSP|<br>|-|-|-|<br>|协议类型|TCP|UDP|<br>|传输方式|单向|双向|<br>|控制协议|可以播放、暂停、停止|只负责流媒体传输|<br>|安全性|较低|较高|<br>|应用场景|直播、点播|监控、安防|</p>
+<h1 id="RTSP服务器"><a href="#RTSP服务器" class="headerlink" title="RTSP服务器"></a>RTSP服务器</h1><h2 id="live555"><a href="#live555" class="headerlink" title="live555"></a>live555</h2><p>【live555官网】<a target="_blank" rel="noopener" href="http://www.live555.com/">http://www.live555.com/</a><br>好像这个软件主要还是在X86架构的linux或window上使用，不清楚arm架构的RK3588能不能运行。尝试下载了源码进行编译，反正就是会报错，感觉跑不起来，还是算了，换一个吧。<br>报错：<br><img src="/2024/09/17/Ubuntu%E5%AE%89%E8%A3%85RTMP%E6%9C%8D%E5%8A%A1%E5%99%A8/dac911b059bfecd89159288839195a87.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="ZLMediaKit服务器"><a href="#ZLMediaKit服务器" class="headerlink" title="ZLMediaKit服务器"></a>ZLMediaKit服务器</h2><p>【官网】<a target="_blank" rel="noopener" href="https://docs.zlmediakit.com/zh/tutorial/">https://docs.zlmediakit.com/zh/tutorial/</a></p>
+<h3 id="安装编译器-1"><a href="#安装编译器-1" class="headerlink" title="安装编译器"></a>安装编译器</h3><figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs mipsasm">sudo apt <span class="hljs-keyword">install </span><span class="hljs-keyword">build-essential</span><br><span class="hljs-keyword"></span>sudo apt <span class="hljs-keyword">install </span>cmake<br></code></pre></td></tr></table></figure>
+<p>官方文档里面还提到需要Cmake，但这个之前装过了，就跳过。</p>
+<h3 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h3><p>只能通过git下载，不能直接下载zip包，会缺少依赖项。</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-comment"># 国内用户推荐从 Gitee 下载</span><br>git clone --depth <span class="hljs-number">1</span> https:<span class="hljs-regexp">//gi</span>tee.com<span class="hljs-regexp">/xia-chu/</span>ZLMediaKit<br>cd ZLMediaKit<br><span class="hljs-comment"># 初始化子模块 （必须执行）</span><br>git submodule update --init<br></code></pre></td></tr></table></figure>
+<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs vim"><span class="hljs-keyword">cd</span> ZLMediaKit<br><span class="hljs-built_in">mkdir</span> build<br><span class="hljs-keyword">cd</span> build<br>cmake ..<br><span class="hljs-keyword">make</span> -j4<br></code></pre></td></tr></table></figure>
+
+<h3 id="修改配置文件"><a href="#修改配置文件" class="headerlink" title="修改配置文件"></a>修改配置文件</h3><p>在ZLMediaKit/conf目录下，可以找到一个config.ini配置文件。但文件中也写得很清楚，这只是个范例配置文件，当执行cmake时，会拷贝到<code>ZLMediaKit/release/linux/Debug</code>目录下，所以建议直接去这个目录下改程序使用的配置文件。</p>
+<h3 id="运行"><a href="#运行" class="headerlink" title="运行"></a>运行</h3><p>通过运行程序目录下的启动程序，就可以启动服流媒体服务了：/ZLMediaKit/release/linux/Debug/MediaServer</p>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs jboss-cli"><span class="hljs-keyword">cd</span> ZLMediaKit/release/linux/Debug<br><span class="hljs-comment"># 通过 -h 可以了解启动参数</span><br><span class="hljs-string">./MediaServer</span> -h<br><span class="hljs-comment"># 以守护进程模式启动</span><br><span class="hljs-string">./MediaServer</span> -d &amp;<br></code></pre></td></tr></table></figure>
+
+<h3 id="开放端口"><a href="#开放端口" class="headerlink" title="开放端口"></a>开放端口</h3><p>运行之前如果看到端口无法访问的报错，可能是防火墙的问题，需要去开启一下对应的端口。</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">sudo</span> ufw <span class="hljs-literal">allow</span> <span class="hljs-number">8800</span>/udp<br><span class="hljs-attribute">sudo</span> ufw <span class="hljs-literal">allow</span> <span class="hljs-number">8802</span>/udp<br></code></pre></td></tr></table></figure>
+
+<p>运行之后，有时会显示报错，8802端口被占用。我怀疑是重复启动的问题。<br><img src="/2024/09/17/Ubuntu%E5%AE%89%E8%A3%85RTMP%E6%9C%8D%E5%8A%A1%E5%99%A8/9387a90e6126dcaeae59706e7a08386f.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="推拉流测试"><a href="#推拉流测试" class="headerlink" title="推拉流测试"></a>推拉流测试</h2><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs awk">ffmpeg -re -stream_loop -<span class="hljs-number">1</span> -i <span class="hljs-regexp">/home/</span>fxz<span class="hljs-regexp">/07_yolov5/</span>test2.avi -vcodec h264 -f resp rtsp:<span class="hljs-regexp">//</span><span class="hljs-number">192.168</span>.<span class="hljs-number">3.198</span>:<span class="hljs-number">8802</span><span class="hljs-regexp">/live/</span>test <span class="hljs-comment">#推流地址</span><br>rtmp:<span class="hljs-regexp">//</span><span class="hljs-number">192.168</span>.<span class="hljs-number">3.198</span><span class="hljs-regexp">/live/</span>test <span class="hljs-comment">#拉流地址</span><br><br>ffmpeg <br></code></pre></td></tr></table></figure>
+<p>居然推流和拉流都成功了？<br><img src="/2024/09/17/Ubuntu%E5%AE%89%E8%A3%85RTMP%E6%9C%8D%E5%8A%A1%E5%99%A8/1900a6edb6cfb25d4d8d5d594ee1e477.png" srcset="/img/loading.gif" lazyload><br>冷静分析，我向着8802端口推送了rtsp流，然后通过rtmp开头的地址拉取成功了。理论上这个工具还支持很多种形式的推拉流，所以目前至少可以说明，程序是可以正常运行的，虽然没有像rtmp那样做一个界面。<br>但是实际使用的时候，需要rtsp来拉流。理论上来说这个全能的软件应该是支持拉取rtsp流的，但尝试将rtmp改成rtsp时，会报错无法访问554端口。我怀疑又是ubuntu系统的权限问题害的。<br><img src="/2024/09/17/Ubuntu%E5%AE%89%E8%A3%85RTMP%E6%9C%8D%E5%8A%A1%E5%99%A8/57d888a9d6b1eb586ad4be73efff7bcf.png" srcset="/img/loading.gif" lazyload></p>
+<p>从网上找到一条<br>说可以使用setcap命令给ZLMediaKit可执行文件设置权限，允许它作为非root用户监听低端口号。但是实测并没有用。</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">sudo setcap <span class="hljs-string">&#x27;cap_net_bind_service=+ep&#x27;</span> <span class="hljs-regexp">/path/</span>to/MediaServer<br></code></pre></td></tr></table></figure>
+
+<p>目前暂时解决不了，只能后面再想办法了。</p>
+<h1 id="尝试了一些推流码"><a href="#尝试了一些推流码" class="headerlink" title="尝试了一些推流码"></a>尝试了一些推流码</h1><p>主要是测试不同参数对画面的影响……差别不是很大，都很卡。原因不明。<br>UDP协议的推流<br><code>ffmpeg -re -i /dev/video0 -c copy -f rtp rtp://192.186.2.3:8802/live/test</code></p>
+<p>RTMP的推流</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs awk">ffmpeg -f v4l2 -framerate <span class="hljs-number">30</span> -video_size <span class="hljs-number">1920</span>x1080 -i <span class="hljs-regexp">/dev/</span>video0 \<br>       -c:v libx264 -preset veryfast -b:v <span class="hljs-number">5</span>M -maxrate <span class="hljs-number">25000</span>k -bufsize <span class="hljs-number">5000</span>k -pix_fmt yuv420p \<br>       -crf <span class="hljs-number">20</span> -g <span class="hljs-number">50</span> -r <span class="hljs-number">20</span> -s <span class="hljs-number">1920</span>x1080 \<br>       -f flv rtmp:<span class="hljs-regexp">//</span><span class="hljs-number">192.168</span>.<span class="hljs-number">2.3</span>:<span class="hljs-number">1935</span><span class="hljs-regexp">/live/</span>rtmp<br></code></pre></td></tr></table></figure>
+
+
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs awk">ffmpeg -f v4l2 -framerate <span class="hljs-number">15</span> -video_size <span class="hljs-number">1920</span>X1080 -i <span class="hljs-regexp">/dev/</span>video0 \<br>       -f h264 -vcodec libx264 -preset veryfast -g <span class="hljs-number">50</span> -qp <span class="hljs-number">20</span> -payload_type <span class="hljs-number">99</span> \<br>       -ssrc <span class="hljs-number">1</span> -f rtp_mpegts udp:<span class="hljs-regexp">//</span><span class="hljs-number">192.168</span>.<span class="hljs-number">2.1</span>:<span class="hljs-number">8000</span><br>       <br>       <br>ffmpeg -f v4l2 -framerate <span class="hljs-number">30</span> -video_size <span class="hljs-number">1920</span>x1080 -i <span class="hljs-regexp">/dev/</span>video0 \<br>       -c:v libx264 -preset ultrafast -b:v <span class="hljs-number">4</span>M \<br>       -f flv rtmp:<span class="hljs-regexp">//</span><span class="hljs-number">192.168</span>.<span class="hljs-number">2.3</span>:<span class="hljs-number">1935</span><span class="hljs-regexp">/live/</span>rtmp<br></code></pre></td></tr></table></figure>
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0/" class="category-chain-item">学习</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/ubuntu/">#ubuntu</a>
+      
+        <a href="/tags/%E6%9C%8D%E5%8A%A1%E5%99%A8/">#服务器</a>
+      
+        <a href="/tags/RTMP/">#RTMP</a>
+      
+        <a href="/tags/%E6%8E%A8%E6%B5%81/">#推流</a>
+      
+        <a href="/tags/%E6%8B%89%E6%B5%81/">#拉流</a>
+      
+        <a href="/tags/ffmpeg/">#ffmpeg</a>
+      
+        <a href="/tags/VLC/">#VLC</a>
+      
+        <a href="/tags/%E6%B5%81%E5%AA%92%E4%BD%93/">#流媒体</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Ubuntu安装RTMP服务器</div>
+      <div>http://kw1649190133.github.io/2024/09/17/Ubuntu安装RTMP服务器/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Beitragsautor</div>
+          <div>Kwindy</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Veröffentlicht am</div>
+          <div>September 17, 2024</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Urheberrechtshinweis</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/09/17/Arcgis-Oracle%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85%E6%B5%81%E7%A8%8B/" title="Arcgis_Oracle环境安装流程">
+                        <span class="hidden-mobile">Arcgis_Oracle环境安装流程</span>
+                        <span class="visible-mobile">Nächster</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Inhaltsverzeichnis</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Suchen</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Stichwort</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog funktioniert am besten mit aktiviertem JavaScript</div>
+  </noscript>
+</body>
+</html>

@@ -23,19 +23,19 @@
 <meta property="og:site_name" content="kw&#39;s blog">
 <meta property="og:description" content="前言这一篇其实早该写了，但之前一直没时间弄。而最近因为需要重装服务器环境，不得不弄了，所以这才顺便记录一下。另一个原因是我自己的水平有限，一开始都是直接使用别人建好的数据库，后来大佬走了，又发生了一些变故，只能靠自己重构生产环境，才不得不学习与整理这些知识。到现在，自己的能力也有了提高，我已经将整个部署和维护方法，以及自己遇到的一些问题悉数记下来了，足以应对大部分情况。 【参考资料】https:&#x2F;">
 <meta property="og:locale">
-<meta property="og:image" content="http://kw1649190133.github.io/_resources/b023a1d63b4e4a3459ea8411202256dc.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/09/17/Arcgis-Oracle%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85%E6%B5%81%E7%A8%8B/b023a1d63b4e4a3459ea8411202256dc.png">
 <meta property="article:published_time" content="2024-09-17T03:06:21.000Z">
-<meta property="article:modified_time" content="2024-09-17T03:09:29.462Z">
+<meta property="article:modified_time" content="2024-09-18T02:52:20.803Z">
 <meta property="article:author" content="Kwindy">
 <meta property="article:tag" content="地理信息">
+<meta property="article:tag" content="Arcgis">
 <meta property="article:tag" content="Oracle">
 <meta property="article:tag" content="数据库">
-<meta property="article:tag" content="Arcgis">
 <meta property="article:tag" content="ArcServer">
 <meta property="article:tag" content="影像服务">
 <meta property="article:tag" content="协同">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://kw1649190133.github.io/_resources/b023a1d63b4e4a3459ea8411202256dc.png">
+<meta name="twitter:image" content="http://kw1649190133.github.io/2024/09/17/Arcgis-Oracle%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85%E6%B5%81%E7%A8%8B/b023a1d63b4e4a3459ea8411202256dc.png">
   
   
   
@@ -228,7 +228,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          6k wörter
+          6.2k wörter
         
       </span>
     
@@ -239,7 +239,7 @@
         
         
         
-          50 minuten
+          52 minuten
         
       </span>
     
@@ -286,6 +286,7 @@
 <p>【参考资料】<br><a target="_blank" rel="noopener" href="https://blog.csdn.net/ZUFE_ZXh/article/details/100765283">https://blog.csdn.net/ZUFE_ZXh/article/details/100765283</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_41872328/article/details/122296955">https://blog.csdn.net/qq_41872328/article/details/122296955</a><br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/three-fighter/p/12630251.html">https://www.cnblogs.com/three-fighter/p/12630251.html</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_45015198/article/details/107498301">https://blog.csdn.net/qq_45015198/article/details/107498301</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_40625478/article/details/108486160">https://blog.csdn.net/weixin_40625478/article/details/108486160</a></p>
 <h1 id="环境安装"><a href="#环境安装" class="headerlink" title="环境安装"></a>环境安装</h1><h2 id="Arcgis-Server"><a href="#Arcgis-Server" class="headerlink" title="Arcgis Server"></a>Arcgis Server</h2><h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>ArcServer的安装非常简单，基本上就是一直下一步。Server的授权体系就是一个esp文件，一般仅有创建站点和创建企业级地理数据库的时候会用到。<br>另外，简单提一下兼容性的问题，Arcmap可以不与ArcServer匹配，桌面端10.8.2与Server10.4.1并不会冲突。但是如果需要使用Oracle数据库，Server必须与Oracle的版本匹配。例如10.4匹配Oracle11g，具体匹配表在官方文档或者网上的野鸡论坛都有参考。</p>
 <h3 id="创建站点"><a href="#创建站点" class="headerlink" title="创建站点"></a>创建站点</h3><p>ArcgisServer服务启动后，访问ArcgisServerManager，可以查看各项服务的启动状态，暂停、修改、删除服务。<br>【<a target="_blank" rel="noopener" href="https://localhost:6443/arcgis/manager/settings.html%E3%80%91">https://localhost:6443/arcgis/manager/settings.html】</a><br>在发布影像之前，需要先通过6443端口去管理页面创建站点。创建过程比较简单就不细说了。</p>
+<h4 id="关于重置站点的密码"><a href="#关于重置站点的密码" class="headerlink" title="关于重置站点的密码"></a>关于重置站点的密码</h4><p>有一次我还忘记账号了，死活登不上管理页面，然后查了一下找回方法。<br>前往目录<code>&lt;ArcGIS Server 安装目录&gt;/server/tools/passwordreset</code><br>找回主账号名称：<code>./passwordreset.sh -l</code><br>重置密码：<code>./passwordreset.sh -p mynewpassword</code><br>这是linux环境的，而windows使用的脚本是<code>./Passwordreset.bat</code>，不过道理是一样的。</p>
 <h3 id="影像发布"><a href="#影像发布" class="headerlink" title="影像发布"></a>影像发布</h3><p>在地图文档中加载好影像，然后保存文档，在ArcCatalog中右键选择地图文档→共享为服务，即可将影像服务发布到ArcServer上。【需要注意先注册文件夹】<br>在发布之前可以看到选项卡中有【分析】按钮，可以按一下检测有没有什么问题，比如文件夹未注册。</p>
 <h3 id="关于连接使用"><a href="#关于连接使用" class="headerlink" title="关于连接使用"></a>关于连接使用</h3><p>在ArcCatalog中找到GIS服务器→添加ArcgisServer，输入url连接和用户名密码访问影像服务。</p>
 <h3 id="遇到无法创建站点"><a href="#遇到无法创建站点" class="headerlink" title="遇到无法创建站点"></a>遇到无法创建站点</h3><p>报错内容</p>
@@ -299,7 +300,7 @@
 <li>打开【登录选项卡】。</li>
 <li>将【登录身份】更改为【本地系统账户】。最后确认。</li>
 </ol>
-<h3 id="关于影像原文件位置（注册文件夹）"><a href="#关于影像原文件位置（注册文件夹）" class="headerlink" title="关于影像原文件位置（注册文件夹）"></a>关于影像原文件位置（注册文件夹）</h3><p>ArcServer安装后，在发布影像服务之前，需要进行<strong>路径注册</strong>。如果存放影像的路径没有被ArcServer注册为可访问，那电脑就会把影像复制一份到服务器的安装路径，如果是几个G的影像可能就表现为发布的比较慢（因为在复制数据），如果是TB级别的影像，那直接爆炸。所以为了节约宝贵的存储空间，<strong>必须注册路径</strong>。<br>进入管理站点：<a target="_blank" rel="noopener" href="https://localhost:6443/arcgis/manager">https://localhost:6443/arcgis/manager</a><br>选择【站点】选项卡，【Data Store】，添加注册文件夹路径。<br><img src="/../_resources/b023a1d63b4e4a3459ea8411202256dc.png" srcset="/img/loading.gif" lazyload alt="b023a1d63b4e4a3459ea8411202256dc.png"><br>选择注册文件夹后，输入名称、发布文件夹路径可以直接写本机的盘符，发布者文件夹主机名写<strong>本机名称</strong>（在系统设置中可以查到），服务器文件夹路径选择与发布者文件夹路径相同（默认设置）。<br>如果是在路径中写IP地址的话，要确保IP地址可访问，理论上是这样，实际上没试过，遇到问题再想办法解决。（这个图片是网上截图的，用到是IP地址。）<br>另外可以看到ArcServer是支持分布式资源管理的，也就是可以几台电脑都安装Server，然后组成一个服务器集群，对于大型企业可能会用到。</p>
+<h3 id="关于影像原文件位置（注册文件夹）"><a href="#关于影像原文件位置（注册文件夹）" class="headerlink" title="关于影像原文件位置（注册文件夹）"></a>关于影像原文件位置（注册文件夹）</h3><p>ArcServer安装后，在发布影像服务之前，需要进行<strong>路径注册</strong>。如果存放影像的路径没有被ArcServer注册为可访问，那电脑就会把影像复制一份到服务器的安装路径，如果是几个G的影像可能就表现为发布的比较慢（因为在复制数据），如果是TB级别的影像，那直接爆炸。所以为了节约宝贵的存储空间，<strong>必须注册路径</strong>。<br>进入管理站点：<a target="_blank" rel="noopener" href="https://localhost:6443/arcgis/manager">https://localhost:6443/arcgis/manager</a><br>选择【站点】选项卡，【Data Store】，添加注册文件夹路径。<br><img src="/2024/09/17/Arcgis-Oracle%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85%E6%B5%81%E7%A8%8B/b023a1d63b4e4a3459ea8411202256dc.png" srcset="/img/loading.gif" lazyload><br>选择注册文件夹后，输入名称、发布文件夹路径可以直接写本机的盘符，发布者文件夹主机名写<strong>本机名称</strong>（在系统设置中可以查到），服务器文件夹路径选择与发布者文件夹路径相同（默认设置）。<br>如果是在路径中写IP地址的话，要确保IP地址可访问，理论上是这样，实际上没试过，遇到问题再想办法解决。（这个图片是网上截图的，用到是IP地址。）<br>另外可以看到ArcServer是支持分布式资源管理的，也就是可以几台电脑都安装Server，然后组成一个服务器集群，对于大型企业可能会用到。</p>
 <h2 id="安装Oracle"><a href="#安装Oracle" class="headerlink" title="安装Oracle"></a>安装Oracle</h2><p>需要注意选择安装的版本，本次使用的是Oracle11gr2。电脑系统是64位所以需要安装64位版本。再次强调选择的Oracle版本需要和Arcgis server的版本匹配，例如10.4的Server匹配的版本是Oracle11g。<br>服务器端需要匹配计算机系统，所以需要64位。<br>而使用数据库的Arcgis是32位，所以需要使用32位的clint客户端。（我都不知道为什么会有如此奇葩的设计。）<br>在安装过程中，可以选择创建或配置数据库，或者仅安装数据库软件，如果选择了直接创建数据库，需要注意选择服务器类，否则会有最大内存8G的限制。但实际上最好还是不要在安装的时候自动创建数据库，自动创建的数据库里面会有一堆表，不便于后面创建地理数据库。</p>
 <p>网格安装选项-单实例数据库安装<br>安装类型-典型安装<br>随后需要输入Oracle基目录、软件位置、数据库文件位置、全局数据库名、管理口令</p>
 <p>安装完之后再打开电脑的主菜单程序列表，就会看到多了一堆东西，简单介绍一下。</p>
@@ -387,11 +388,11 @@
       
         <a href="/tags/%E5%9C%B0%E7%90%86%E4%BF%A1%E6%81%AF/">#地理信息</a>
       
+        <a href="/tags/Arcgis/">#Arcgis</a>
+      
         <a href="/tags/Oracle/">#Oracle</a>
       
         <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/">#数据库</a>
-      
-        <a href="/tags/Arcgis/">#Arcgis</a>
       
         <a href="/tags/ArcServer/">#ArcServer</a>
       
@@ -453,6 +454,12 @@
                 <div class="post-prevnext my-3">
                   <article class="post-prev col-6">
                     
+                    
+                      <a href="/2024/09/17/Ubuntu%E5%AE%89%E8%A3%85RTMP%E6%9C%8D%E5%8A%A1%E5%99%A8/" title="Ubuntu安装RTMP服务器">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Ubuntu安装RTMP服务器</span>
+                        <span class="visible-mobile">Vorheriger</span>
+                      </a>
                     
                   </article>
                   <article class="post-next col-6">
