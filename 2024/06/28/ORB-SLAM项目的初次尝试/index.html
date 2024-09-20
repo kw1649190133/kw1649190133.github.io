@@ -31,7 +31,7 @@
 <meta property="og:image" content="http://kw1649190133.github.io/2024/06/28/ORB-SLAM%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%88%9D%E6%AC%A1%E5%B0%9D%E8%AF%95/50be2aacd92af8d5248cc10460703dba.png">
 <meta property="og:image" content="http://kw1649190133.github.io/2024/06/28/ORB-SLAM%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%88%9D%E6%AC%A1%E5%B0%9D%E8%AF%95/6c35cbc0c6dd8fb8369433c5506c8669.png">
 <meta property="article:published_time" content="2024-06-28T03:30:37.000Z">
-<meta property="article:modified_time" content="2024-06-28T03:38:17.527Z">
+<meta property="article:modified_time" content="2024-09-19T17:03:09.931Z">
 <meta property="article:author" content="Kwindy">
 <meta property="article:tag" content="摄像头">
 <meta property="article:tag" content="SLAM">
@@ -129,7 +129,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/">
                 <i class="iconfont icon-home-fill"></i>
-                <span>Home</span>
+                <span>Startseite</span>
               </a>
             </li>
           
@@ -141,7 +141,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/archives/">
                 <i class="iconfont icon-archive-fill"></i>
-                <span>Archives</span>
+                <span>Archiv</span>
               </a>
             </li>
           
@@ -153,7 +153,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/categories/">
                 <i class="iconfont icon-category-fill"></i>
-                <span>Categories</span>
+                <span>Kategorien</span>
               </a>
             </li>
           
@@ -165,7 +165,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/tags/">
                 <i class="iconfont icon-tags-fill"></i>
-                <span>Tags</span>
+                <span>Schlagwörter</span>
               </a>
             </li>
           
@@ -177,7 +177,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/about/">
                 <i class="iconfont icon-user-fill"></i>
-                <span>About</span>
+                <span>Über</span>
               </a>
             </li>
           
@@ -234,7 +234,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          6.5k words
+          6.5k wörter
         
       </span>
     
@@ -245,7 +245,7 @@
         
         
         
-          55 mins
+          55 minuten
         
       </span>
     
@@ -298,7 +298,7 @@
 <figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ada">sudo snap install cmake <span class="hljs-comment">--classic</span><br></code></pre></td></tr></table></figure>
 <p>装好之后的提示：<br><img src="/2024/06/28/ORB-SLAM%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%88%9D%E6%AC%A1%E5%B0%9D%E8%AF%95/ad1b055801c7cbd9efbc38035a1f6677.png" srcset="/img/loading.gif" lazyload></p>
 <p>【卸载命令】以防万一也记录一下卸载的方法。</p>
-<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs cmake">sudo apt <span class="hljs-keyword">remove</span> cmake <span class="hljs-comment">#保留配置文件</span><br>sudo apt purge cmake <span class="hljs-comment">#卸载干净</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs cmake">sudo apt <span class="hljs-keyword">remove</span> cmake <span class="hljs-comment">#保留配置文件</span><br>sudo apt purge cmake <span class="hljs-comment">#卸载干净</span><br><br>snap <span class="hljs-keyword">remove</span> cmake <span class="hljs-comment">#后来发现还是无法彻底清除，还得手动删目录</span><br></code></pre></td></tr></table></figure>
 
 <h2 id="2、OpenCV"><a href="#2、OpenCV" class="headerlink" title="2、OpenCV"></a>2、OpenCV</h2><p>之前也用过OpenCV，但是安装的是OpenCV-python库，这次是直接编译OpenCV本体进行安装，还是有区别的。OpenCV只能进行编译安装，比较麻烦。</p>
 <p>这里因为3588的Arm环境和一般的X86的linux有一些差别，所以选择了找3588的资料来看。<br>【参考资料】<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_43999691/article/details/135219474">https://blog.csdn.net/weixin_43999691/article/details/135219474</a></p>
@@ -461,20 +461,20 @@
     <div class="license-meta">
       
         <div class="license-meta-item">
-          <div>Author</div>
+          <div>Beitragsautor</div>
           <div>Kwindy</div>
         </div>
       
       
         <div class="license-meta-item license-meta-date">
-          <div>Posted on</div>
+          <div>Veröffentlicht am</div>
           <div>June 28, 2024</div>
         </div>
       
       
       
         <div class="license-meta-item">
-          <div>Licensed under</div>
+          <div>Urheberrechtshinweis</div>
           <div>
             
               
@@ -503,7 +503,7 @@
                       <a href="/2024/07/05/RTMP%E6%B5%81%E5%AA%92%E4%BD%93%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E5%BB%BA/" title="RTMP流媒体服务器搭建">
                         <i class="iconfont icon-arrowleft"></i>
                         <span class="hidden-mobile">RTMP流媒体服务器搭建</span>
-                        <span class="visible-mobile">Previous</span>
+                        <span class="visible-mobile">Vorheriger</span>
                       </a>
                     
                   </article>
@@ -512,7 +512,7 @@
                     
                       <a href="/2024/06/28/%E5%85%B3%E4%BA%8ECMake%E5%92%8Cmake/" title="关于CMake和make">
                         <span class="hidden-mobile">关于CMake和make</span>
-                        <span class="visible-mobile">Next</span>
+                        <span class="visible-mobile">Nächster</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
                     
@@ -533,7 +533,7 @@
     <div id="toc">
   <p class="toc-header">
     <i class="iconfont icon-list"></i>
-    <span>Table of Contents</span>
+    <span>Inhaltsverzeichnis</span>
   </p>
   <div class="toc-body" id="toc-body"></div>
 </div>
@@ -589,7 +589,7 @@
   <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <h4 class="modal-title w-100 font-weight-bold">Suchen</h4>
         <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -597,7 +597,7 @@
       <div class="modal-body mx-3">
         <div class="md-form mb-5">
           <input type="text" id="local-search-input" class="form-control validate">
-          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+          <label data-error="x" data-success="v" for="local-search-input">Stichwort</label>
         </div>
         <div class="list-group" id="local-search-result"></div>
       </div>
@@ -776,7 +776,7 @@
   
 
   <noscript>
-    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+    <div class="noscript-warning">Blog funktioniert am besten mit aktiviertem JavaScript</div>
   </noscript>
 </body>
 </html>

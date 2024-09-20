@@ -104,7 +104,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/">
                 <i class="iconfont icon-home-fill"></i>
-                <span>Home</span>
+                <span>Startseite</span>
               </a>
             </li>
           
@@ -116,7 +116,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/archives/">
                 <i class="iconfont icon-archive-fill"></i>
-                <span>Archives</span>
+                <span>Archiv</span>
               </a>
             </li>
           
@@ -128,7 +128,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/categories/">
                 <i class="iconfont icon-category-fill"></i>
-                <span>Categories</span>
+                <span>Kategorien</span>
               </a>
             </li>
           
@@ -140,7 +140,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/tags/">
                 <i class="iconfont icon-tags-fill"></i>
-                <span>Tags</span>
+                <span>Schlagwörter</span>
               </a>
             </li>
           
@@ -152,7 +152,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/about/">
                 <i class="iconfont icon-user-fill"></i>
-                <span>About</span>
+                <span>Über</span>
               </a>
             </li>
           
@@ -217,6 +217,83 @@
               <div class="col-12 col-md-10 m-auto">
                 
 
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2024/09/20/ROS2%E9%80%9A%E8%BF%87v4l2%E8%B0%83%E7%94%A8USB%E7%9B%B8%E6%9C%BA%E5%B9%B6%E4%BC%A0%E8%BE%93%E7%94%BB%E9%9D%A2%E5%88%B0%E5%B1%80%E5%9F%9F%E7%BD%91/" target="_self">
+          ROS2通过v4l2调用USB相机并传输画面到局域网
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/09/20/ROS2%E9%80%9A%E8%BF%87v4l2%E8%B0%83%E7%94%A8USB%E7%9B%B8%E6%9C%BA%E5%B9%B6%E4%BC%A0%E8%BE%93%E7%94%BB%E9%9D%A2%E5%88%B0%E5%B1%80%E5%9F%9F%E7%BD%91/" target="_self">
+        <div>
+          背景介绍本篇的实践背景是对水下机器人的升级改造。水下机器人原来的主板是直接烧录了别人做好的树莓派固件，包括IP地址设置和mavlink通信，以及摄像头画面获取。而这次升级改造直接将整个主板换掉，自己重装了Ubuntu系统，使用ROS2+Mavros与飞控进行通信，在地面端后台用QGC进行控制；使用ROS2_v4l2获取摄像头画面，通过web_video_server-ros2将画面转发到网页上，以
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-09-20 13:52" pubdate>
+              2024-09-20
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0/" class="category-chain-item">学习</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/ROS/">#ROS</a>
+            
+              <a href="/tags/ROS2/">#ROS2</a>
+            
+              <a href="/tags/humble/">#humble</a>
+            
+              <a href="/tags/mavros/">#mavros</a>
+            
+              <a href="/tags/%E6%9C%BA%E5%99%A8%E4%BA%BA/">#机器人</a>
+            
+              <a href="/tags/%E9%A6%99%E6%A9%99%E6%B4%BE/">#香橙派</a>
+            
+              <a href="/tags/v4l2/">#v4l2</a>
+            
+              <a href="/tags/web/">#web</a>
+            
+              <a href="/tags/web-video-server/">#web_video_server</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
 
   <div class="row mx-auto index-card">
     
@@ -869,85 +946,6 @@
     </article>
   </div>
 
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2024/07/05/RTMP%E6%B5%81%E5%AA%92%E4%BD%93%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E5%BB%BA/" target="_self">
-          RTMP流媒体服务器搭建
-        </a>
-      </h1>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/07/05/RTMP%E6%B5%81%E5%AA%92%E4%BD%93%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E5%BB%BA/" target="_self">
-        <div>
-          理论学习基础概念RTMP协议RTMP协议是Real Time Message Protocol(实时信息传输协议)的缩写，它是由Adobe公司提出的一种应用层的协议，用来解决多媒体数据传输流的多路复用（Multiplexing）和分包（packetizing）的问题。该协议基于 TCP，是一个协议族，包括 RTMP 基本协议及 RTMPT/RTMPS/RTMPE 等多种变种。 流媒体流媒体 (st
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-07-05 14:18" pubdate>
-              2024-07-05
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E5%AD%A6%E4%B9%A0/" class="category-chain-item">学习</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/RKNN/">#RKNN</a>
-            
-              <a href="/tags/%E6%9C%8D%E5%8A%A1%E5%99%A8/">#服务器</a>
-            
-              <a href="/tags/RTMP/">#RTMP</a>
-            
-              <a href="/tags/%E6%8E%A8%E6%B5%81/">#推流</a>
-            
-              <a href="/tags/%E6%8B%89%E6%B5%81/">#拉流</a>
-            
-              <a href="/tags/ffmpeg/">#ffmpeg</a>
-            
-              <a href="/tags/OBS/">#OBS</a>
-            
-              <a href="/tags/VLC/">#VLC</a>
-            
-              <a href="/tags/%E6%B5%81%E5%AA%92%E4%BD%93/">#流媒体</a>
-            
-              <a href="/tags/yolo/">#yolo</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
 
 
   <nav aria-label="navigation">
@@ -977,7 +975,7 @@
   <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <h4 class="modal-title w-100 font-weight-bold">Suchen</h4>
         <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -985,7 +983,7 @@
       <div class="modal-body mx-3">
         <div class="md-form mb-5">
           <input type="text" id="local-search-input" class="form-control validate">
-          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+          <label data-error="x" data-success="v" for="local-search-input">Stichwort</label>
         </div>
         <div class="list-group" id="local-search-result"></div>
       </div>
@@ -1071,7 +1069,7 @@
   
 
   <noscript>
-    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+    <div class="noscript-warning">Blog funktioniert am besten mit aktiviertem JavaScript</div>
   </noscript>
 </body>
 </html>

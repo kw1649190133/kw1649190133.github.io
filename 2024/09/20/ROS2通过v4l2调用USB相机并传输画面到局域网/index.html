@@ -1,0 +1,727 @@
+
+
+<!DOCTYPE html>
+<html lang="CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Kwindy">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="背景介绍本篇的实践背景是对水下机器人的升级改造。水下机器人原来的主板是直接烧录了别人做好的树莓派固件，包括IP地址设置和mavlink通信，以及摄像头画面获取。而这次升级改造直接将整个主板换掉，自己重装了Ubuntu系统，使用ROS2+Mavros与飞控进行通信，在地面端后台用QGC进行控制；使用ROS2_v4l2获取摄像头画面，通过web_video_server-ros2将画面转发到网页上，以">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ROS2通过v4l2调用USB相机并传输画面到局域网">
+<meta property="og:url" content="http://kw1649190133.github.io/2024/09/20/ROS2%E9%80%9A%E8%BF%87v4l2%E8%B0%83%E7%94%A8USB%E7%9B%B8%E6%9C%BA%E5%B9%B6%E4%BC%A0%E8%BE%93%E7%94%BB%E9%9D%A2%E5%88%B0%E5%B1%80%E5%9F%9F%E7%BD%91/index.html">
+<meta property="og:site_name" content="kw&#39;s blog">
+<meta property="og:description" content="背景介绍本篇的实践背景是对水下机器人的升级改造。水下机器人原来的主板是直接烧录了别人做好的树莓派固件，包括IP地址设置和mavlink通信，以及摄像头画面获取。而这次升级改造直接将整个主板换掉，自己重装了Ubuntu系统，使用ROS2+Mavros与飞控进行通信，在地面端后台用QGC进行控制；使用ROS2_v4l2获取摄像头画面，通过web_video_server-ros2将画面转发到网页上，以">
+<meta property="og:locale">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/09/20/ROS2%E9%80%9A%E8%BF%87v4l2%E8%B0%83%E7%94%A8USB%E7%9B%B8%E6%9C%BA%E5%B9%B6%E4%BC%A0%E8%BE%93%E7%94%BB%E9%9D%A2%E5%88%B0%E5%B1%80%E5%9F%9F%E7%BD%91/30c7b28db87e624d530ba1e6218b0589.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/09/20/ROS2%E9%80%9A%E8%BF%87v4l2%E8%B0%83%E7%94%A8USB%E7%9B%B8%E6%9C%BA%E5%B9%B6%E4%BC%A0%E8%BE%93%E7%94%BB%E9%9D%A2%E5%88%B0%E5%B1%80%E5%9F%9F%E7%BD%91/16800bf211d9016b918c4bdcc8eb9a67.png">
+<meta property="article:published_time" content="2024-09-20T05:52:08.000Z">
+<meta property="article:modified_time" content="2024-09-20T05:55:43.551Z">
+<meta property="article:author" content="Kwindy">
+<meta property="article:tag" content="ROS">
+<meta property="article:tag" content="ROS2">
+<meta property="article:tag" content="humble">
+<meta property="article:tag" content="mavros">
+<meta property="article:tag" content="机器人">
+<meta property="article:tag" content="香橙派">
+<meta property="article:tag" content="v4l2">
+<meta property="article:tag" content="web">
+<meta property="article:tag" content="web_video_server">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://kw1649190133.github.io/2024/09/20/ROS2%E9%80%9A%E8%BF%87v4l2%E8%B0%83%E7%94%A8USB%E7%9B%B8%E6%9C%BA%E5%B9%B6%E4%BC%A0%E8%BE%93%E7%94%BB%E9%9D%A2%E5%88%B0%E5%B1%80%E5%9F%9F%E7%BD%91/30c7b28db87e624d530ba1e6218b0589.png">
+  
+  
+  
+  <title>ROS2通过v4l2调用USB相机并传输画面到局域网 - kw&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"kw1649190133.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Startseite</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archiv</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Kategorien</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Schlagwörter</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>Über</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="ROS2通过v4l2调用USB相机并传输画面到局域网"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-09-20 13:52" pubdate>
+          September 20, 2024 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          5.2k wörter
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          44 minuten
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">ROS2通过v4l2调用USB相机并传输画面到局域网</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="背景介绍"><a href="#背景介绍" class="headerlink" title="背景介绍"></a>背景介绍</h1><p>本篇的实践背景是对水下机器人的升级改造。水下机器人原来的主板是直接烧录了别人做好的树莓派固件，包括IP地址设置和mavlink通信，以及摄像头画面获取。<br>而这次升级改造直接将整个主板换掉，自己重装了Ubuntu系统，使用ROS2+Mavros与飞控进行通信，在地面端后台用QGC进行控制；使用ROS2_v4l2获取摄像头画面，通过web_video_server-ros2将画面转发到网页上，以便在地面端通过网页直接查看直播画面。<br>而为了保证以上一切能够正常运作，还使用了HDMI欺骗器，让新主板一直输出画面，在地面端可以通过NoMachine进入ubuntu系统的桌面。地面端与水下机器人使用“网线-电力载波-网线”的方式进行连接，也就是它们在同一局域网内。<br>说实话，这种改造实际上是比较冒险的，因为还没有做一些稳定性可靠性方面的测试，如果出了问题，最坏的情况就是需要把整台机器拆开进行调整维修，在现场是不具备这个条件的，到时候只能宣告任务失败。<br>但是无所谓，大闹一场又如何，充满挑战才是人生的常态。</p>
+<h1 id="相机节点"><a href="#相机节点" class="headerlink" title="相机节点"></a>相机节点</h1><h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p> ROS2 usb相机发布web查看【<a target="_blank" rel="noopener" href="http://blog.cvosrobot.com/?post=720%E3%80%91">http://blog.cvosrobot.com/?post=720】</a><br> ros2_v4l2项目地址【<a target="_blank" rel="noopener" href="https://gitlab.com/boldhearts/ros2_v4l2_camera%E3%80%91">https://gitlab.com/boldhearts/ros2_v4l2_camera】</a></p>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs applescript">sudo apt-<span class="hljs-keyword">get</span> install ros-humble-v4l2-camera <span class="hljs-comment">#直接安装工具包</span><br>ros2 <span class="hljs-built_in">run</span> v4l2_camera v4l2_camera_node <span class="hljs-comment">#启动节点（默认参数）</span><br></code></pre></td></tr></table></figure>
+
+<p>除此之外，还可以用源码编译的安装形式，需要用到编译工具colcon。</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs awk">git clone --branch <span class="hljs-variable">$&#123;ROS_DISTRO&#125;</span> https:<span class="hljs-regexp">//gi</span>tlab.com<span class="hljs-regexp">/boldhearts/</span>ros2_v4l2_camera.git src/v4l2_camera<br>rosdep install --from-paths src/v4l2_camera --ignore-src -r -y<br>colcon build<br></code></pre></td></tr></table></figure>
+
+<h3 id="查看画面"><a href="#查看画面" class="headerlink" title="查看画面"></a>查看画面</h3><p>看画面可以使用rviz2，也可以用简单一些的rqt-image-view</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs routeros">sudo apt-<span class="hljs-built_in">get</span> install ros-<span class="hljs-variable">$&#123;ROS_DISTRO&#125;</span>-rqt-image-view #安装<br>ros2 <span class="hljs-built_in">run</span> rqt_image_view rqt_image_view<br></code></pre></td></tr></table></figure>
+
+<h2 id="运行"><a href="#运行" class="headerlink" title="运行"></a>运行</h2><p>运行之后，摄像头画面将发布为话题/image_raw<br>如果使用默认参数运行相机节点，相机默认分辨率为480P，非常之糊。所以还是建议使用参数启动，720P明显比1080P会好很多。<br>使用参数启动时，前面必须带上<code>--ros-args -p</code>，后面的语法也需要加上冒号等号，另外可能因为分辨率可以比较灵活，在这是个数组，也不知道原作者是怎么设计的，说明书里也写的不是很清楚，好不容易才找到别人写的参考。</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs stylus">ros2 run v4l2_camera v4l2_camera_node <span class="hljs-attr">--ros-args</span> -<span class="hljs-selector-tag">p</span> image_size:=<span class="hljs-selector-attr">[1920,1080]</span> <br><br>ros2 run v4l2_camera v4l2_camera_node <span class="hljs-attr">--ros-args</span> -<span class="hljs-selector-tag">p</span> image_size:=<span class="hljs-selector-attr">[1280,720]</span> <br></code></pre></td></tr></table></figure>
+
+<h2 id="其他参数"><a href="#其他参数" class="headerlink" title="其他参数"></a>其他参数</h2><p>虽然没用上，暂时记录一下。都是从作者的说明中抄来的，目前只用上了修改分辨率。</p>
+<ul>
+<li><p>video_device - string格式：”/dev/video0”    相机所在的设备。</p>
+</li>
+<li><p>pixel_format - string格式：”YUYV”    要从摄像机请求的像素格式。必须是有效的 4 支持的字符 ‘FOURCC’ 代码V4L2 和您的相机。该节点输出可用格式启动时由您的相机支持。当前支持的： “YUYV”、”UYVY”、”GREY”</p>
+</li>
+<li><p>output_encoding - string格式：”rgb8”<br>用于输出图像的编码。可以是给定输入像素格式支持的任何格式。目前这些是：cv_bridge<br>“YUYV”：（无转换），或 、 和 ，以及它们的 16 位变体”yuv422_yuy2””mono8””rgb8””bgr8””rgba8””bgra8”<br>“UYVY”：（无转换），或 、 和 ，以及它们的 16 位变体”yuv422””mono8””rgb8””bgr8””rgba8””bgra8”<br>“GREY”：（无转换）、、 、 和 ，以及它们的 16 位变体”mono8””rgb8””bgr8””rgba8””bgra8”</p>
+</li>
+<li><p>image_size - integer_array格式：[640, 480]<br>图像的宽度和高度。</p>
+</li>
+</ul>
+<p>除此之外还有相机曝光、白平衡之类的复杂参数，我也没用上。</p>
+<h2 id="压缩传输"><a href="#压缩传输" class="headerlink" title="压缩传输"></a>压缩传输</h2><p>装上压缩插件之后，就可以优化画面传输。安装后会多一个话题/image_raw/comperssed，按照项目说明，安装后会自动使用。实测效果不是非常拔群，有点聊胜于无。</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs routeros">sudo apt-<span class="hljs-built_in">get</span> install ros-<span class="hljs-variable">$&#123;ROS_DISTRO&#125;</span>-image-transport-plugins<br></code></pre></td></tr></table></figure>
+
+<p>启动压缩视频流的指令：<br><code>http://localhost:8080/stream?topic=/usb_cam/image_raw&amp;type=ros_compressed</code></p>
+<h1 id="web查看"><a href="#web查看" class="headerlink" title="web查看"></a>web查看</h1><p>将画面通过Web服务推送到网页进行查看，这样理论上会比直接使用Nomachine的远程桌面损耗更小。</p>
+<h2 id="web-video-server-ros2项目"><a href="#web-video-server-ros2项目" class="headerlink" title="web_video_server-ros2项目"></a>web_video_server-ros2项目</h2><p>这个项目其实是整合了 ros_web_video 和 mjpeg_server 两个节点的功能到一个节点中。但这个项目好像比较小众，使用的人好像不多，所以后面我也遇到了<br>项目仓库【<a target="_blank" rel="noopener" href="https://github.com/horo2016/web_video_server-ros2%E3%80%91">https://github.com/horo2016/web_video_server-ros2】</a></p>
+<p>按照里面的说明进行安装。不得不说这位老哥的文档写的真是不拘小节，还好我不是纯小白，还能勉强理解他的意思。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs bash">sudo apt-get install ros-humble-async-web-server-cpp   <span class="hljs-comment">#不知道安装什么东西。  </span><br>git <span class="hljs-built_in">clone</span> this repo <span class="hljs-comment">#这句是clone这个项目的意思，所以实际应该是下面这句</span><br>git <span class="hljs-built_in">clone</span> https://github.com/horo2016/web_video_server-ros2.git 克隆项目<br>colcon  build  <span class="hljs-comment"># 编译项目文件</span><br><span class="hljs-built_in">source</span> install/setup.bash <span class="hljs-comment">#启动之前必须要做的事情</span><br>ros2 run web_video_server --prefix web_video_server <span class="hljs-comment">#多了一个--prefix参数不知道什么用</span><br>ros2 run web_video_server web_video_server <span class="hljs-comment">#平时用这个启动节点 </span><br></code></pre></td></tr></table></figure>
+
+<p>安装完成后，每次重启系统都得输入<code>source install/setup.bash</code>，然后才能ros2 run，而且这还是相对目录，得先进文件夹。但因为之前看过类似的代码，所以我立刻就想起来了，然后通过举一反三，把source写进.bashrc里，以后就可以直接输启动指令了。【但是后来试了并不行，究竟是哪里出了问题呢？】</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;source /home/orangepi/ROS2/web_video_server-ros2/install/setup.bash&quot;</span> &gt;&gt; ~/.bashrc<br></code></pre></td></tr></table></figure>
+
+<p>之前安装colcon的时候可能是因为手动安装的ROS2环境，所以缺一堆插件，不过这次好像没有遇到这些问题，直接一句话安装成功了。<br><code>sudo apt-get install python3-colcon-common-extensions</code></p>
+<p><img src="/2024/09/20/ROS2%E9%80%9A%E8%BF%87v4l2%E8%B0%83%E7%94%A8USB%E7%9B%B8%E6%9C%BA%E5%B9%B6%E4%BC%A0%E8%BE%93%E7%94%BB%E9%9D%A2%E5%88%B0%E5%B1%80%E5%9F%9F%E7%BD%91/30c7b28db87e624d530ba1e6218b0589.png" srcset="/img/loading.gif" lazyload></p>
+<p>成功！总算是运行起来了，也不枉我费了这么多天的功夫，好几天觉都没睡好。</p>
+<p>但是经过后面的尝试，过一段时间之后，画面还是会有些卡顿。但是可以通过重启摄像头节点解决。就很奇妙。而Mavros节点、网络服务节点则不需要重启，可以一直开着，只要摄像头重启能跟得上，画面就会继续显示。<br>这样一来，只要只要完成一下开机自动启动的程序，让整个系统能够稳定运行，基本上就大功告成了。</p>
+<h2 id="使用VLC进行查看"><a href="#使用VLC进行查看" class="headerlink" title="使用VLC进行查看"></a>使用VLC进行查看</h2><p>可以使用F12打开浏览器的页面，然后直接复制视频流的链接，就可以直接用VLC打开。好处是画面更纯净了，可以直接全屏，不像网页播放器那样还有个白边。<br>（来自中央电视台节目编导的精彩操作）</p>
+<h2 id="关于稳定性"><a href="#关于稳定性" class="headerlink" title="关于稳定性"></a>关于稳定性</h2><p>另外测试了一下这种模式的稳定性，当直接拔掉网线的时候，画面传输会中断，但位于ubuntu上的相机节点进程和web服务进程不会中断，只需要把网线重新插回去，又可以正常使用了。</p>
+<h2 id="编译失败"><a href="#编译失败" class="headerlink" title="编译失败"></a>编译失败</h2><p>我在新买的开发板上实验成功了，但是在自己的板上又失败了，主要卡在编译这个web服务器的项目上，我猜测可能是因为我的环境比较复杂，装了ROS2又装了miniconda，然后直接让编译程序懵了，指针找不到路径。只能后面再想其他办法进行测试了。<br>后来发现cmake好像有毛病，然后删掉cmake重装了，但ros2又出问题了，指令无法使用……最后祭出大招，删除ros2。这要是还不行，那我只能刷系统了。<br>删除ros2：<code>sudo apt remove ~nros-humble-* &amp;&amp; sudo apt autoremove</code></p>
+<p>好吧，还是不行，只能重装系统了，淦。</p>
+<h2 id="尝试原始方案"><a href="#尝试原始方案" class="headerlink" title="尝试原始方案"></a>尝试原始方案</h2><p>既然这个项目是两个节点的整合，那么，单独安装和启动两个节点，理论上也一样能够实现画面转发的效果。<br>但是进去后发现，前面两个节点都已经弃用，整合为一个项目了。可能这个才是大多数人在使用的项目，而我之前找到的那个都没几个star。<br>项目仓库【<a target="_blank" rel="noopener" href="https://github.com/RobotWebTools/web_video_server%E3%80%91">https://github.com/RobotWebTools/web_video_server】</a><br>说明书【<a target="_blank" rel="noopener" href="https://wiki.ros.org/web_video_server%E3%80%91">https://wiki.ros.org/web_video_server】</a></p>
+<h1 id="记录一下之前的失败尝试"><a href="#记录一下之前的失败尝试" class="headerlink" title="记录一下之前的失败尝试"></a>记录一下之前的失败尝试</h1><p>之前尝试过在本地部署nginx服务器，然后用ffmpeg推送画面，再用VLC去拉取视频流，但是这么搞延迟实在是高的离谱；ZLMediaKit，也一样卡。最终还是只能走ROS方案。不过好在网上有别人成功的案例，实现过程还算比较顺利。</p>
+<p><img src="/2024/09/20/ROS2%E9%80%9A%E8%BF%87v4l2%E8%B0%83%E7%94%A8USB%E7%9B%B8%E6%9C%BA%E5%B9%B6%E4%BC%A0%E8%BE%93%E7%94%BB%E9%9D%A2%E5%88%B0%E5%B1%80%E5%9F%9F%E7%BD%91/16800bf211d9016b918c4bdcc8eb9a67.png" srcset="/img/loading.gif" lazyload></p>
+<h1 id="关于一些后续的改进"><a href="#关于一些后续的改进" class="headerlink" title="关于一些后续的改进"></a>关于一些后续的改进</h1><p>另外在网上找到了别人做的1080P视频流的案例，别人说画面卡顿主要还是USB2.0的带宽问题，只要修改一下压缩方法，就可以解决。感觉有一些参考价值，可惜现在没时间尝试了，如果有机会做的话再进行补充。<br>【<a target="_blank" rel="noopener" href="http://doc.bwbot.org/zh-cn/books-online/xq-manual/topic/145.html%E3%80%91">http://doc.bwbot.org/zh-cn/books-online/xq-manual/topic/145.html】</a></p>
+<h1 id="一键启动脚本"><a href="#一键启动脚本" class="headerlink" title="一键启动脚本"></a>一键启动脚本</h1><p>开机之后要启动三个节点，才能正常运作，分别是负责连通飞控的mavros、负责推送网页的web_video_server、以及摄像头节点v4l2_camera。</p>
+<p>【但是嘛目前还没有尝试成功，随系统启动的设置里面，只有<code>sudo chmod 666 /dev/ttyACM0</code>这一句修改权限的指令能够运行，而那几个source都没有运行成功，所以ROS指令会找不到命令。】</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-meta">#!/bin/bash</span><br><br><span class="hljs-built_in">source</span> /opt/ros/humble/setup.bash<br>ros2 launch mavros px4.launch<br><br><span class="hljs-built_in">source</span> /home/orangepi/ROS2/web_video_server-ros2/install/setup.bash<br>ros2 run web_video_server web_video_server<br><br>ros2 run v4l2_camera v4l2_camera_node --ros-args -p image_size:=[1280*720]<br></code></pre></td></tr></table></figure>
+
+<p>运行sh文件需要右键属性，然后在Permissions栏目下，把“Allow this file to run as a program”勾选上。然后就可以按右键执行了。</p>
+<p>为了方便，又做了下节点单独启动的脚本。避免出现某个节点挂掉需要单独启动的情况。一般而言，飞控的线一直连着板子，Mavros就不会挂；摄像头也是同理，只要USB接口没松就行，就怕需要插拔，那就只能拆机了，是大工程。</p>
+<h2 id="Mavros单独启动脚本"><a href="#Mavros单独启动脚本" class="headerlink" title="Mavros单独启动脚本"></a>Mavros单独启动脚本</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-meta">#!/bin/bash</span><br><span class="hljs-built_in">source</span> /opt/ros/humble/setup.bash<br><br>ros2 launch mavros px4.launch<br></code></pre></td></tr></table></figure>
+
+<h2 id="网络服务器"><a href="#网络服务器" class="headerlink" title="网络服务器"></a>网络服务器</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-meta">#!/bin/bash</span><br><span class="hljs-built_in">source</span> /home/orangepi/ROS2/web_video_server-ros2/install/setup.bash<br>ros2 run web_video_server web_video_server<br></code></pre></td></tr></table></figure>
+
+<h2 id="摄像头节点"><a href="#摄像头节点" class="headerlink" title="摄像头节点"></a>摄像头节点</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-meta">#!/bin/bash</span><br><span class="hljs-built_in">source</span> /opt/ros/humble/setup.bash<br>ros2 run v4l2_camera v4l2_camera_node --ros-args -p image_size:=[1280*720]<br></code></pre></td></tr></table></figure>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0/" class="category-chain-item">学习</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/ROS/">#ROS</a>
+      
+        <a href="/tags/ROS2/">#ROS2</a>
+      
+        <a href="/tags/humble/">#humble</a>
+      
+        <a href="/tags/mavros/">#mavros</a>
+      
+        <a href="/tags/%E6%9C%BA%E5%99%A8%E4%BA%BA/">#机器人</a>
+      
+        <a href="/tags/%E9%A6%99%E6%A9%99%E6%B4%BE/">#香橙派</a>
+      
+        <a href="/tags/v4l2/">#v4l2</a>
+      
+        <a href="/tags/web/">#web</a>
+      
+        <a href="/tags/web-video-server/">#web_video_server</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>ROS2通过v4l2调用USB相机并传输画面到局域网</div>
+      <div>http://kw1649190133.github.io/2024/09/20/ROS2通过v4l2调用USB相机并传输画面到局域网/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Beitragsautor</div>
+          <div>Kwindy</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Veröffentlicht am</div>
+          <div>September 20, 2024</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Urheberrechtshinweis</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/09/18/%E5%88%AB%E4%BA%BA%E5%81%9A%E7%9A%84%E5%B8%A6GUI%E7%9A%84yolov8%E8%AF%86%E5%88%AB%E7%A8%8B%E5%BA%8F/" title="别人做的带GUI的yolov8识别程序">
+                        <span class="hidden-mobile">别人做的带GUI的yolov8识别程序</span>
+                        <span class="visible-mobile">Nächster</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Inhaltsverzeichnis</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Suchen</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Stichwort</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog funktioniert am besten mit aktiviertem JavaScript</div>
+  </noscript>
+</body>
+</html>
