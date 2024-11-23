@@ -1,0 +1,675 @@
+
+
+<!DOCTYPE html>
+<html lang="CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Kwindy">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="前言最近在处理样本照片，需要把一堆烂七八糟的照片重命名还要对应它的拍摄位置。好在这些照片本身自带拍摄时间和拍摄位置的信息，只需要将它们从文件附带信息中调出来。另外还可以统一给它们写入信息，把原本的名字写入到附加信息中做备份。 更名工具感谢前人的开源。 更名大师使用更名大师的特定文件名变更功能，将附加信息中的拍摄时间和拍摄坐标调出来，组合成新的文件名。使用更名大师可以读取和修改文件的内置扩展信息，不">
+<meta property="og:type" content="article">
+<meta property="og:title" content="文件重命名与正则表达式">
+<meta property="og:url" content="http://kw1649190133.github.io/2024/11/23/%E6%96%87%E4%BB%B6%E9%87%8D%E5%91%BD%E5%90%8D%E4%B8%8E%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/index.html">
+<meta property="og:site_name" content="kw&#39;s blog">
+<meta property="og:description" content="前言最近在处理样本照片，需要把一堆烂七八糟的照片重命名还要对应它的拍摄位置。好在这些照片本身自带拍摄时间和拍摄位置的信息，只需要将它们从文件附带信息中调出来。另外还可以统一给它们写入信息，把原本的名字写入到附加信息中做备份。 更名工具感谢前人的开源。 更名大师使用更名大师的特定文件名变更功能，将附加信息中的拍摄时间和拍摄坐标调出来，组合成新的文件名。使用更名大师可以读取和修改文件的内置扩展信息，不">
+<meta property="og:locale">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/11/23/%E6%96%87%E4%BB%B6%E9%87%8D%E5%91%BD%E5%90%8D%E4%B8%8E%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/cb74807488f4b0ce6638a651f3ca8adc.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/11/23/%E6%96%87%E4%BB%B6%E9%87%8D%E5%91%BD%E5%90%8D%E4%B8%8E%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/84303d8caaeadd16faa74f01cee88bf9.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/11/23/%E6%96%87%E4%BB%B6%E9%87%8D%E5%91%BD%E5%90%8D%E4%B8%8E%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/c44f7682f297ba872c0c6629d36894ac.png">
+<meta property="article:published_time" content="2024-11-23T07:56:23.000Z">
+<meta property="article:modified_time" content="2024-11-23T08:11:10.490Z">
+<meta property="article:author" content="Kwindy">
+<meta property="article:tag" content="重命名">
+<meta property="article:tag" content="正则表达式">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://kw1649190133.github.io/2024/11/23/%E6%96%87%E4%BB%B6%E9%87%8D%E5%91%BD%E5%90%8D%E4%B8%8E%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/cb74807488f4b0ce6638a651f3ca8adc.png">
+  
+  
+  
+  <title>文件重命名与正则表达式 - kw&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"kw1649190133.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Hejmpaĝo</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Arkivoj</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Kategorio</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Etikedoj</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>Pri</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="文件重命名与正则表达式"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-11-23 15:56" pubdate>
+          November 23, 2024 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.8k vortoj
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          24 minutoj
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">文件重命名与正则表达式</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>最近在处理样本照片，需要把一堆烂七八糟的照片重命名还要对应它的拍摄位置。好在这些照片本身自带拍摄时间和拍摄位置的信息，只需要将它们从文件附带信息中调出来。另外还可以统一给它们写入信息，把原本的名字写入到附加信息中做备份。</p>
+<h1 id="更名工具"><a href="#更名工具" class="headerlink" title="更名工具"></a>更名工具</h1><p>感谢前人的开源。</p>
+<h2 id="更名大师"><a href="#更名大师" class="headerlink" title="更名大师"></a>更名大师</h2><p>使用更名大师的特定文件名变更功能，将附加信息中的拍摄时间和拍摄坐标调出来，组合成新的文件名。<br><img src="/2024/11/23/%E6%96%87%E4%BB%B6%E9%87%8D%E5%91%BD%E5%90%8D%E4%B8%8E%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/cb74807488f4b0ce6638a651f3ca8adc.png" srcset="/img/loading.gif" lazyload><br>使用更名大师可以读取和修改文件的内置扩展信息，不同类型文件的扩展信息内容不一样，主要的就是图片、视频、音乐。里面的内容主要就是时间、位置，设备参数、作者等等。也可以从详细信息中提取内容，作为修改文件名的参数，这一点是我在其他软件上没见过的。</p>
+<h2 id="rename工具"><a href="#rename工具" class="headerlink" title="rename工具"></a>rename工具</h2><p>这个工具界面比更名大师简洁许多，使用规则也更加清晰明了，甚至还能导出文件列表，一般来说我更喜欢用这个。虽然这个免费版本最多只能设置五条规则，但是也完全够用了。主要是这个用起来是真简单又方便，界面特别友好。<br><img src="/2024/11/23/%E6%96%87%E4%BB%B6%E9%87%8D%E5%91%BD%E5%90%8D%E4%B8%8E%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/84303d8caaeadd16faa74f01cee88bf9.png" srcset="/img/loading.gif" lazyload></p>
+<h1 id="正则表达式"><a href="#正则表达式" class="headerlink" title="正则表达式"></a>正则表达式</h1><p>一般简单的改名使用更名工具内的简单查找替换和序列号就可以搞定，只有处理复杂问题才不得不用到正则表达式。理解正则表达式的原理之后，就可以在很多地方应用上，虽然写法可能不一样，但逻辑是相通的。</p>
+<h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>正则表达式就是包含了规则的字符串，它可以对其他字符串进行校验，判断其是否满足自身的规则。常用来搜索、编辑、处理文本，不限于一种语言，但才不同的语言中有不同的语法差别。</p>
+<h2 id="简单应用案例"><a href="#简单应用案例" class="headerlink" title="简单应用案例"></a>简单应用案例</h2><p>原文件名为“八年级001班”，通过正则表达，<code>年级(\d)(\d)(\d)</code>，然后替换栏输入<code>年级$3</code>，结果就会替换成“八年级3班”。<br>使用<code>(\d)</code>代表单个数字，在下面的替换结果中再用$n进行调用。与C语言中的变量存储和调用非常类似，是按顺序来识别变量的。<br><img src="/2024/11/23/%E6%96%87%E4%BB%B6%E9%87%8D%E5%91%BD%E5%90%8D%E4%B8%8E%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/c44f7682f297ba872c0c6629d36894ac.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="其他预定义字符"><a href="#其他预定义字符" class="headerlink" title="其他预定义字符"></a>其他预定义字符</h2><figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs lsl"><span class="hljs-string">&quot;.&quot;</span>     ：匹配任何字符(常用)<br><span class="hljs-string">&quot;<span class="hljs-subst">\\</span>d&quot;</span>    ：任何数字[<span class="hljs-number">0</span><span class="hljs-number">-9</span>]的简写(常用)<br><span class="hljs-string">&quot;<span class="hljs-subst">\\</span>D&quot;</span>    ：任何非数字[^<span class="hljs-number">0</span><span class="hljs-number">-9</span>]的简写<br><span class="hljs-string">&quot;<span class="hljs-subst">\\</span>w&quot;</span>    ：单词字符：[a-zA-Z_0<span class="hljs-number">-9</span>]的简写 (常用)<br><span class="hljs-string">&quot;<span class="hljs-subst">\\</span>W&quot;</span>    ：非单词字符：[^\w] 的简写<br><span class="hljs-string">&quot;<span class="hljs-subst">\\</span>s&quot;</span>    ：空白字符(空格)：[ \t\n\x0B\f\r] 的简写<br><span class="hljs-string">&quot;<span class="hljs-subst">\\</span>S&quot;</span>    ：非空白字符：[^\s] 的简写<br></code></pre></td></tr></table></figure>
+
+<p>文件名不包含扩展名：<code>([^&lt;&gt;/\\\|:&quot;&quot;\*\?]+)\.\w+$</code><br>文件名包含扩展名<code>([^&lt;&gt;/\\\|:&quot;&quot;\*\?]+\.\w+$)</code></p>
+<h2 id="语法规则与完整写法"><a href="#语法规则与完整写法" class="headerlink" title="语法规则与完整写法"></a>语法规则与完整写法</h2><p>一般而言，使用预定义的字符规则就非常方便而优雅了，如果需要更多更细致的功能，就需要了解其语法和完整的定义写法。</p>
+<h3 id="特殊字符"><a href="#特殊字符" class="headerlink" title="特殊字符"></a>特殊字符</h3><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs swift"><span class="hljs-operator">^</span>    ：为匹配输入字符串的开始位置<span class="hljs-operator">。</span>如果设置了 <span class="hljs-type">RegExp</span> 对象的 <span class="hljs-type">Multiline</span> 属性，<span class="hljs-operator">^</span> 还会与<span class="hljs-string">&quot;<span class="hljs-subst">\n</span>&quot;</span>或<span class="hljs-string">&quot;<span class="hljs-subst">\r</span>&quot;</span>之后的位置匹配<span class="hljs-operator">。</span><br>$    ：为匹配输入字符串的结束位置<span class="hljs-operator">。</span>如果设置了 <span class="hljs-type">RegExp</span> 对象的 <span class="hljs-type">Multiline</span> 属性，$ 还会与<span class="hljs-string">&quot;<span class="hljs-subst">\n</span>&quot;</span>或<span class="hljs-string">&quot;<span class="hljs-subst">\r</span>&quot;</span>之前的位置匹配<span class="hljs-operator">。</span><br>\    ：转义符<br>[ ]  ：表示一个区间，区间的范围可以自己定义<br></code></pre></td></tr></table></figure>
+
+<h3 id="字符类"><a href="#字符类" class="headerlink" title="字符类"></a>字符类</h3><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs css"><span class="hljs-selector-attr">[abc]</span>    ：代表<span class="hljs-selector-tag">a</span>或者<span class="hljs-selector-tag">b</span>，或者c字符中的一个。<br><span class="hljs-selector-attr">[^abc]</span>    ：代表除<span class="hljs-selector-tag">a</span>,<span class="hljs-selector-tag">b</span>,c以外的任何字符。<br><span class="hljs-selector-attr">[a-z]</span>    ：代表<span class="hljs-selector-tag">a</span>-z的所有小写字符中的一个。<br><span class="hljs-selector-attr">[A-Z]</span>    ：代表<span class="hljs-selector-tag">A</span>-Z的所有大写字符中的一个。<br><span class="hljs-selector-attr">[0-9]</span>    ：代表<span class="hljs-number">0</span>-<span class="hljs-number">9</span>之间的某一个数字字符。<br><span class="hljs-selector-attr">[a-zA-Z0-9]</span>    ：代表<span class="hljs-selector-tag">a</span>-z或者<span class="hljs-selector-tag">A</span>-Z或者<span class="hljs-number">0</span>-<span class="hljs-number">9</span>之间的任意一个字符。<br><span class="hljs-selector-attr">[a-dm-p]</span>    ：<span class="hljs-selector-tag">a</span> 到 d 或 m 到 <span class="hljs-selector-tag">p</span>之间的任意一个字符。<br></code></pre></td></tr></table></figure>
+
+<h3 id="逻辑运算符"><a href="#逻辑运算符" class="headerlink" title="逻辑运算符"></a>逻辑运算符</h3><figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs 1c"><span class="hljs-meta">&amp;&amp;    ：并且。多个条件同时满足</span><br><span class="hljs-string">||    ：或者。满足其中一个条件即可</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="次数限定符"><a href="#次数限定符" class="headerlink" title="次数限定符"></a>次数限定符</h3><figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">X</span>*     : <span class="hljs-number">0</span>次到多次  任意次<br><span class="hljs-attribute">X</span>?     : <span class="hljs-number">0</span>次或<span class="hljs-number">1</span>次   <span class="hljs-number">0</span>,<span class="hljs-number">1</span><br><span class="hljs-attribute">X</span>+     : <span class="hljs-number">1</span>次或多次  X&gt;=<span class="hljs-number">1</span><br><span class="hljs-attribute">X</span>&#123;n&#125;     : 恰好n次  X==n次<br><span class="hljs-attribute">X</span>&#123;n,&#125;     : 至少n次 X&gt;=n次<br><span class="hljs-attribute">X</span>&#123;n,m&#125;    : n到m次(n和m都是包含的)   n=&lt;X&lt;=m<br></code></pre></td></tr></table></figure>
+
+<h3 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h3><figure class="highlight gams"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><code class="hljs gams"><span class="hljs-comment">// 纯数字</span><br>^[<span class="hljs-number">0</span><span class="hljs-number">-9</span>]*<span class="hljs-symbol">$</span><br><span class="hljs-comment">// 正整数</span><br>^[<span class="hljs-number">1</span><span class="hljs-number">-9</span>]\d*<span class="hljs-symbol">$</span><br><span class="hljs-comment">// 负整数</span><br>^-[<span class="hljs-number">1</span><span class="hljs-number">-9</span>]\d*<span class="hljs-symbol">$</span><br><span class="hljs-comment">// 非零整数（正整数 + 负整数）</span><br>^-?[<span class="hljs-number">1</span><span class="hljs-number">-9</span>]\d*<span class="hljs-symbol">$</span><br><span class="hljs-comment">// 非零正整数</span><br>^[<span class="hljs-number">1</span><span class="hljs-number">-9</span>]\d*<span class="hljs-symbol">$</span><br><span class="hljs-comment">// 非负整数（正整数 + 0）</span><br>^[<span class="hljs-number">1</span><span class="hljs-number">-9</span>]\d*|<span class="hljs-number">0</span><span class="hljs-symbol">$</span>    或    ^\d+<span class="hljs-symbol">$</span><br><span class="hljs-comment">// 非正整数（负整数 + 0）</span><br>^-[<span class="hljs-number">1</span><span class="hljs-number">-9</span>]\d*|<span class="hljs-number">0</span><span class="hljs-symbol">$</span><br><br><span class="hljs-comment">// 正浮点数</span><br>^[<span class="hljs-number">1</span><span class="hljs-number">-9</span>]\d*\.\d*|<span class="hljs-number">0</span>\.\d*[<span class="hljs-number">1</span><span class="hljs-number">-9</span>]\d*<span class="hljs-symbol">$</span>        <br><span class="hljs-comment">// 负浮点数</span><br>^-([<span class="hljs-number">1</span><span class="hljs-number">-9</span>]\d*\.\d*|<span class="hljs-number">0</span>\.\d*[<span class="hljs-number">1</span><span class="hljs-number">-9</span>]\d*)<span class="hljs-symbol">$</span>    <br><span class="hljs-comment">// 浮点数</span><br>^-?([<span class="hljs-number">1</span><span class="hljs-number">-9</span>]\d*\.\d*|<span class="hljs-number">0</span>\.\d*[<span class="hljs-number">1</span><span class="hljs-number">-9</span>]\d*|<span class="hljs-number">0</span>?\<span class="hljs-number">.0</span>+|<span class="hljs-number">0</span>)<span class="hljs-symbol">$</span><br><span class="hljs-comment">// 非负浮点数（正浮点数 + 0）</span><br>^[<span class="hljs-number">1</span><span class="hljs-number">-9</span>]\d*\.\d*|<span class="hljs-number">0</span>\.\d*[<span class="hljs-number">1</span><span class="hljs-number">-9</span>]\d*|<span class="hljs-number">0</span>?\<span class="hljs-number">.0</span>+|<span class="hljs-number">0</span><span class="hljs-symbol">$</span><br><span class="hljs-comment">// 非正浮点数（负浮点数 + 0）</span><br>^(-([<span class="hljs-number">1</span><span class="hljs-number">-9</span>]\d*\.\d*|<span class="hljs-number">0</span>\.\d*[<span class="hljs-number">1</span><span class="hljs-number">-9</span>]\d*))|<span class="hljs-number">0</span>?\<span class="hljs-number">.0</span>+|<span class="hljs-number">0</span><span class="hljs-symbol">$</span><br><br><span class="hljs-number">1.</span> 汉字：^[\u4e00-\u9fa5]&#123;<span class="hljs-number">0</span>,&#125;<span class="hljs-symbol">$</span><br><span class="hljs-number">2.</span> 英文和数字：^[A-Za-z0<span class="hljs-number">-9</span>]+<span class="hljs-symbol">$</span> 或 ^[A-Za-z0<span class="hljs-number">-9</span>]&#123;<span class="hljs-number">4</span>,<span class="hljs-number">40</span>&#125;<span class="hljs-symbol">$</span><br><span class="hljs-number">3.</span> 长度为<span class="hljs-number">3</span><span class="hljs-number">-20</span>的所有字符：^.&#123;<span class="hljs-number">3</span>,<span class="hljs-number">20</span>&#125;<span class="hljs-symbol">$</span><br><span class="hljs-number">4.</span> 由<span class="hljs-number">26</span>个英文字母组成的字符串：^[A-Za-z]+<span class="hljs-symbol">$</span><br><span class="hljs-number">5.</span> 由<span class="hljs-number">26</span>个大写英文字母组成的字符串：^[A-Z]+<span class="hljs-symbol">$</span><br><span class="hljs-number">6.</span> 由<span class="hljs-number">26</span>个小写英文字母组成的字符串：^[a-z]+<span class="hljs-symbol">$</span><br><span class="hljs-number">7.</span> 由数字和<span class="hljs-number">26</span>个英文字母组成的字符串：^[A-Za-z0<span class="hljs-number">-9</span>]+<span class="hljs-symbol">$</span><br><span class="hljs-number">8.</span> 由数字、<span class="hljs-number">26</span>个英文字母或者下划线组成的字符串：^\w+<span class="hljs-symbol">$</span> 或 ^\w&#123;<span class="hljs-number">3</span>,<span class="hljs-number">20</span>&#125;<span class="hljs-symbol">$</span><br><span class="hljs-number">9.</span> 中文、英文、数字包括下划线：^[\u4E00-\u9FA5A-Za-z0<span class="hljs-number">-9</span>_]+<span class="hljs-symbol">$</span><br><span class="hljs-number">10.</span> 中文、英文、数字但不包括下划线等符号：^[\u4E00-\u9FA5A-Za-z0<span class="hljs-number">-9</span>]+<span class="hljs-symbol">$</span> 或 ^[\u4E00-\u9FA5A-Za-z0<span class="hljs-number">-9</span>]&#123;<span class="hljs-number">2</span>,<span class="hljs-number">20</span>&#125;<span class="hljs-symbol">$</span><br><span class="hljs-number">11.</span> 可以输入含有^%&amp;<span class="hljs-string">&#x27;,;=?$\&quot;等字符：[^%&amp;&#x27;</span>,;=?<span class="hljs-symbol">$</span>\x22]+ <br><span class="hljs-number">12.</span> 禁止输入含有~的字符：[^~\x22]+<br></code></pre></td></tr></table></figure>
+
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><p>[<a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1896302]">https://cloud.tencent.com/developer/article/1896302]</a><br>[<a target="_blank" rel="noopener" href="https://developer.aliyun.com/article/1156746]">https://developer.aliyun.com/article/1156746]</a></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0/" class="category-chain-item">学习</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E9%87%8D%E5%91%BD%E5%90%8D/">#重命名</a>
+      
+        <a href="/tags/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/">#正则表达式</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>文件重命名与正则表达式</div>
+      <div>http://kw1649190133.github.io/2024/11/23/文件重命名与正则表达式/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Aŭtoro</div>
+          <div>Kwindy</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Postigita</div>
+          <div>November 23, 2024</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Lizenta</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/11/23/Arcgis%E8%84%9A%E6%9C%AC%E5%B7%A5%E5%85%B7%E5%88%B6%E4%BD%9C/" title="Arcgis脚本工具制作">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Arcgis脚本工具制作</span>
+                        <span class="visible-mobile">Antaŭa afiŝo</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/09/24/%E3%80%90%E8%AD%A6%E9%92%9F%E9%95%BF%E9%B8%A3%E3%80%91%E5%93%80%E6%82%BC%E9%80%9D%E5%8E%BB%E7%9A%84OrangePi5plus/" title="【警钟长鸣】哀悼逝去的OrangePi5plus">
+                        <span class="hidden-mobile">【警钟长鸣】哀悼逝去的OrangePi5plus</span>
+                        <span class="visible-mobile">Sekva afiŝo</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Enhavtabelo</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Serĉi</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">ŝlosivorto</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blogo funkcias plej bone kun JavaScript ebligita</div>
+  </noscript>
+</body>
+</html>

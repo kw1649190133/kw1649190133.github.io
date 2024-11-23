@@ -1,0 +1,720 @@
+
+
+<!DOCTYPE html>
+<html lang="CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Kwindy">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="前言之前处理样本时，很暴力的直接用自带的万年python2.7调用Arcpy，来对矢量和影像进行一系列的处理。但今年的情况比较特殊，影像全是加密数据，尝试过直接运行python程序会报错失败，（而且后来还发现影像的通道数量和位深还跟去年不一样），所以这就需要再原来的基础上更进一步，将python脚本放在ArcGIS的进程中运行，这样就不会被加密程序阻拦。 脚本工具制作掏出之前的代码之前做的裁剪工具">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Arcgis脚本工具制作">
+<meta property="og:url" content="http://kw1649190133.github.io/2024/11/23/Arcgis%E8%84%9A%E6%9C%AC%E5%B7%A5%E5%85%B7%E5%88%B6%E4%BD%9C/index.html">
+<meta property="og:site_name" content="kw&#39;s blog">
+<meta property="og:description" content="前言之前处理样本时，很暴力的直接用自带的万年python2.7调用Arcpy，来对矢量和影像进行一系列的处理。但今年的情况比较特殊，影像全是加密数据，尝试过直接运行python程序会报错失败，（而且后来还发现影像的通道数量和位深还跟去年不一样），所以这就需要再原来的基础上更进一步，将python脚本放在ArcGIS的进程中运行，这样就不会被加密程序阻拦。 脚本工具制作掏出之前的代码之前做的裁剪工具">
+<meta property="og:locale">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/11/23/Arcgis%E8%84%9A%E6%9C%AC%E5%B7%A5%E5%85%B7%E5%88%B6%E4%BD%9C/e6ebe0d6724666c02f9a10bcaabbd07d.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/11/23/Arcgis%E8%84%9A%E6%9C%AC%E5%B7%A5%E5%85%B7%E5%88%B6%E4%BD%9C/f0977446ebf6f737275df85508154dd8.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/11/23/Arcgis%E8%84%9A%E6%9C%AC%E5%B7%A5%E5%85%B7%E5%88%B6%E4%BD%9C/9486ba5aaa9b5db57b865857f9886f8e.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/11/23/Arcgis%E8%84%9A%E6%9C%AC%E5%B7%A5%E5%85%B7%E5%88%B6%E4%BD%9C/447e6ccd4fda1eb3de5ef74ddf5d7856.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/11/23/Arcgis%E8%84%9A%E6%9C%AC%E5%B7%A5%E5%85%B7%E5%88%B6%E4%BD%9C/16514b9e444ea837ce44b02dddbee829.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/11/23/Arcgis%E8%84%9A%E6%9C%AC%E5%B7%A5%E5%85%B7%E5%88%B6%E4%BD%9C/c8850fe0f43ad4b986ff95fc94634ae7.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/11/23/Arcgis%E8%84%9A%E6%9C%AC%E5%B7%A5%E5%85%B7%E5%88%B6%E4%BD%9C/dcf25722ef713362daeb7392b184cd20.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/11/23/Arcgis%E8%84%9A%E6%9C%AC%E5%B7%A5%E5%85%B7%E5%88%B6%E4%BD%9C/dfc0f1e515daa988ab040bab942c936b.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/11/23/Arcgis%E8%84%9A%E6%9C%AC%E5%B7%A5%E5%85%B7%E5%88%B6%E4%BD%9C/c1ce4cade9824b9c3441a1c4b9b281cc.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/11/23/Arcgis%E8%84%9A%E6%9C%AC%E5%B7%A5%E5%85%B7%E5%88%B6%E4%BD%9C/2b49be1d98fb96d0a4fabba1a953c5c6.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/11/23/Arcgis%E8%84%9A%E6%9C%AC%E5%B7%A5%E5%85%B7%E5%88%B6%E4%BD%9C/cca0a6c082fa7dd7e9fe1ff4cc91c3e4.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2024/11/23/Arcgis%E8%84%9A%E6%9C%AC%E5%B7%A5%E5%85%B7%E5%88%B6%E4%BD%9C/f65f122af1a841ae24067351dcd1f3e0.png">
+<meta property="article:published_time" content="2024-11-23T08:02:13.000Z">
+<meta property="article:modified_time" content="2024-11-23T09:51:56.244Z">
+<meta property="article:author" content="Kwindy">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="脚本工具">
+<meta property="article:tag" content="arcgis">
+<meta property="article:tag" content="arcpy">
+<meta property="article:tag" content="工具箱">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://kw1649190133.github.io/2024/11/23/Arcgis%E8%84%9A%E6%9C%AC%E5%B7%A5%E5%85%B7%E5%88%B6%E4%BD%9C/e6ebe0d6724666c02f9a10bcaabbd07d.png">
+  
+  
+  
+  <title>Arcgis脚本工具制作 - kw&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"kw1649190133.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Hejmpaĝo</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Arkivoj</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Kategorio</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Etikedoj</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>Pri</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Arcgis脚本工具制作"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-11-23 16:02" pubdate>
+          November 23, 2024 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          6.2k vortoj
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          52 minutoj
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Arcgis脚本工具制作</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>之前处理样本时，很暴力的直接用自带的万年python2.7调用Arcpy，来对矢量和影像进行一系列的处理。但今年的情况比较特殊，影像全是加密数据，尝试过直接运行python程序会报错失败，（而且后来还发现影像的通道数量和位深还跟去年不一样），所以这就需要再原来的基础上更进一步，将python脚本放在ArcGIS的进程中运行，这样就不会被加密程序阻拦。</p>
+<h1 id="脚本工具制作"><a href="#脚本工具制作" class="headerlink" title="脚本工具制作"></a>脚本工具制作</h1><h2 id="掏出之前的代码"><a href="#掏出之前的代码" class="headerlink" title="掏出之前的代码"></a>掏出之前的代码</h2><p>之前做的裁剪工具：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> arcpy<br><span class="hljs-keyword">from</span> arcpy.sa <span class="hljs-keyword">import</span> *<br><span class="hljs-keyword">import</span> os<br> <br><span class="hljs-comment">#设定栅格、掩膜、输出路径</span><br>raster_path = <span class="hljs-string">r&quot;E:\\WORK\\样本制作2024\\参考数据\\影像拼接数据库.gdb\\影像87度带_kwindyGTX&quot;</span><br>folder_path = <span class="hljs-string">r&quot;E:\\input&quot;</span><br>out_path = <span class="hljs-string">r&#x27;E:\\output&#x27;</span><br> <br>arcpy.env.workspace = folder_path<br>shp_files = arcpy.ListFeatureClasses(<span class="hljs-string">&quot;*.shp&quot;</span>)<br> <br><span class="hljs-comment">#循环多个矢量</span><br><span class="hljs-keyword">for</span> shp_file <span class="hljs-keyword">in</span> shp_files:<br> <br>    shp_name = os.path.splitext(shp_file)[<span class="hljs-number">0</span>]<br>    out_raster = os.path.join(out_path, shp_name + <span class="hljs-string">&quot;.tif&quot;</span>)<span class="hljs-comment">#输出路径+名称</span><br>    mask = os.path.join(folder_path, shp_file)<br>    outExtractByMask = ExtractByMask(raster_path, mask)<br>    outExtractByMask.save(out_raster)<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Mask extracted for &quot;</span> + shp_file)<br></code></pre></td></tr></table></figure>
+
+<h2 id="创建脚本"><a href="#创建脚本" class="headerlink" title="创建脚本"></a>创建脚本</h2><ul>
+<li><p>在工具箱中右键，选择添加脚本，然后编辑名称、标签、描述。需要注意的是，标签才是显示在工具箱列表中的名称，相当于“别名”。<br><img src="/2024/11/23/Arcgis%E8%84%9A%E6%9C%AC%E5%B7%A5%E5%85%B7%E5%88%B6%E4%BD%9C/e6ebe0d6724666c02f9a10bcaabbd07d.png" srcset="/img/loading.gif" lazyload></p>
+</li>
+<li><p>下一步，添加脚本文件。这里的脚本文件必须是.py结尾的python文件，可以随便建一个py文件导入先。<br><img src="/2024/11/23/Arcgis%E8%84%9A%E6%9C%AC%E5%B7%A5%E5%85%B7%E5%88%B6%E4%BD%9C/f0977446ebf6f737275df85508154dd8.png" srcset="/img/loading.gif" lazyload></p>
+</li>
+<li><p>添加脚本参数，也就是脚本工具打开后显示的对话框中，参数的名称和数据类型。这里需要和脚本中实际的输入类型对应。<br><img src="/2024/11/23/Arcgis%E8%84%9A%E6%9C%AC%E5%B7%A5%E5%85%B7%E5%88%B6%E4%BD%9C/9486ba5aaa9b5db57b865857f9886f8e.png" srcset="/img/loading.gif" lazyload><br>设置参数这块其实有很多可以完善的地方，但如果只要求工具能用就行，只要设置好名称和数据类型。</p>
+<ul>
+<li>类型：分别为 必选（Required）、可选（Optional）、派生（Derived）；前两个依据字面意思理解，表示该项参数为必须填写以及可以填写，派生一般用做输出参数；</li>
+<li>方向：分别为 输入（Input）、输出（Output）；大部分情况参数都作为输入参数，若作为输出，运行完成后该项可在运行结果窗口内查看；</li>
+<li>多值：Yes（可在该参数内输入一组值）No（略）；<br>默认：用于给该参数设置一个默认值，多值为Yes，默认值可通过“；”进行分隔；</li>
+<li>环境：可以将参数的默认值设置为环境设置的值；</li>
+<li>过滤器：可用于过滤文件格式、输入值的范围、值列表（参数下拉选择值）多过滤可用“；”进行分隔；</li>
+<li>获取自：本项参数从其他参数内获取的可选值；</li>
+</ul>
+</li>
+</ul>
+<p>【参考文献】<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_62354792/article/details/133991408">https://blog.csdn.net/weixin_62354792/article/details/133991408</a></p>
+<ul>
+<li><p>右键选择导入脚本，脚本才会导入到工具箱中（之前是外置的）。脚本导入之后，再点击编辑，进入脚本的文本编辑。因为导入前后的编码不一样，所以之前的中文注释都会变成乱码，所以最好是导入后再编辑。<br><img src="/2024/11/23/Arcgis%E8%84%9A%E6%9C%AC%E5%B7%A5%E5%85%B7%E5%88%B6%E4%BD%9C/447e6ccd4fda1eb3de5ef74ddf5d7856.png" srcset="/img/loading.gif" lazyload></p>
+</li>
+<li><p>修改代码输入输出。这里修改的地方，主要是添加了输入文本框函数，还有一点不知道有没有的Import，还顺便补充了一点注释，核心的代码并没有变。</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs mipsasm">import sys<br>import arcpy<br>from arcpy.sa import *<br>import os<br><span class="hljs-comment"># 据说添加这两行可以解决乱码问题</span><br>reload(sys)<br>sys.setdefaultencoding(<span class="hljs-string">&quot;utf-8&quot;</span>)<br><br><span class="hljs-comment">#设定栅格、掩膜、输出路径</span><br>raster_path = arcpy.GetParameterAsText(<span class="hljs-number">0</span>)<br>folder_path =  arcpy.GetParameterAsText(<span class="hljs-number">1</span>)<br>out_path = arcpy.GetParameterAsText(<span class="hljs-number">2</span>)<br><br><span class="hljs-comment"># 将格网矢量路径所在文件夹设置为当前空间环境</span><br>arcpy.env.workspace = folder_path<br><span class="hljs-comment"># 建立shp文件列表</span><br><span class="hljs-keyword">shp_files </span>= arcpy.ListFeatureClasses(<span class="hljs-string">&quot;*.shp&quot;</span>)<br> <br><span class="hljs-comment">#循环多个矢量</span><br>for <span class="hljs-keyword">shp_file </span>in <span class="hljs-keyword">shp_files:</span><br><span class="hljs-keyword"></span> <br>    <span class="hljs-keyword">shp_name </span>= os.path.splitext(<span class="hljs-keyword">shp_file)[0]</span><br><span class="hljs-keyword"></span>    out_raster = os.path.<span class="hljs-keyword">join(out_path, </span><span class="hljs-keyword">shp_name </span>+ <span class="hljs-string">&quot;.tif&quot;</span>)<span class="hljs-comment">#输出路径+名称</span><br>    mask = os.path.<span class="hljs-keyword">join(folder_path, </span><span class="hljs-keyword">shp_file)</span><br><span class="hljs-keyword"></span>    outExtractByMask = <span class="hljs-keyword">ExtractByMask(raster_path, </span>mask)<br>    outExtractByMask.save(out_raster)<br>    print(<span class="hljs-string">&quot;Mask extracted for &quot;</span> + <span class="hljs-keyword">shp_file)</span><br></code></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="运行脚本"><a href="#运行脚本" class="headerlink" title="运行脚本"></a>运行脚本</h2><p>现在运行脚本之后，可以看到工具界面了。而更详细的工具说明，可以按右键选择项目描述进行补充。<br><img src="/2024/11/23/Arcgis%E8%84%9A%E6%9C%AC%E5%B7%A5%E5%85%B7%E5%88%B6%E4%BD%9C/16514b9e444ea837ce44b02dddbee829.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="数据前提"><a href="#数据前提" class="headerlink" title="数据前提"></a>数据前提</h2><p>需要注意的是，使用该工具的时候，输入栅格影像时，如果输入是镶嵌的栅格数据集，要设置坐标系为与矢量一致的投影坐标系，否则会出现错位黑边。而制作镶嵌数据集，需要其中的每个栅格影像具有<strong>相同的像元大小和投影坐标系</strong>，这样才能保证裁剪出来是按照矢量设定的512*512正方形。<br><img src="/2024/11/23/Arcgis%E8%84%9A%E6%9C%AC%E5%B7%A5%E5%85%B7%E5%88%B6%E4%BD%9C/c8850fe0f43ad4b986ff95fc94634ae7.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h2><p>另外脚本中的print打印提示的语句肯定是不奏效了，要改成在数据框显示的格式<br>arcpy.AddMessage(“”)</p>
+<h1 id="时间戳生成工具"><a href="#时间戳生成工具" class="headerlink" title="时间戳生成工具"></a>时间戳生成工具</h1><p>趁热打铁，把时间戳生成的脚本也进行一下工具化。已经轻车熟路了，就是把输入路径改为arcpy.GetParameterAsText()方法获取，还有print()改为arcpy.AddMessage()便于显示信息。</p>
+<figure class="highlight clean"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><code class="hljs clean"># 程序功能：读取指定图层，向指定字段中直接写入时间戳。<br><span class="hljs-keyword">import</span> arcpy<br><span class="hljs-keyword">import</span> time<br><span class="hljs-keyword">from</span> datetime <span class="hljs-keyword">import</span> datetime<br><span class="hljs-keyword">import</span> sys<br><br># 【修改路径】设置工作空间<br>workspace = arcpy.GetParameterAsText(<span class="hljs-number">0</span>) #工作空间从文本框获取<br>arcpy.env.workspace = workspace<br> <br># 【修改图层名称】图层名称和字段名称<br># layer_name = <span class="hljs-string">&quot;TestLayer&quot;</span> # 图层名称<br># field_name = <span class="hljs-string">&quot;timestamp&quot;</span> # 字段名称<br>layer_name = arcpy.GetParameterAsText(<span class="hljs-number">1</span>) # 图层从文本框获取<br>field_name = arcpy.GetParameterAsText(<span class="hljs-number">2</span>) # 字段从文本框获取<br> <br># 启动编辑<br>arcpy.env.workspace = workspace<br>edit = arcpy.da.Editor(workspace)<br>edit.startEditing(<span class="hljs-literal">False</span>)<br>edit.startOperation()<br><br># 读取要素类<br><span class="hljs-keyword">with</span> arcpy.da.UpdateCursor(layer_name, field_name) <span class="hljs-keyword">as</span> cursor:<br>    for row <span class="hljs-keyword">in</span> cursor:<br>        # 获取当前时间<br>        now = datetime.now()<br>        # 获取当前时间戳<br>        timestamp_float = time.time()<br>        timestamp_str=str(int(timestamp_float*<span class="hljs-number">1000</span>)) # 乘一千取整，正好截取<span class="hljs-number">13</span>位<br>        # 预览显示<br>        arcpy.AddMessage(now.strftime(<span class="hljs-string">&#x27;%Y-%m-%d %H:%M:%S.%f&#x27;</span>) + <span class="hljs-string">&#x27; ---&gt; &#x27;</span> + timestamp_str)<br>        # 字符串写入<br>        row[<span class="hljs-number">0</span>] = timestamp_str<br>        cursor.updateRow(row)<br>        # 等待间隔<br>        time.sleep(<span class="hljs-number">0.1</span>)<br># 关闭编辑<br>edit.stopOperation()<br>edit.stopEditing(<span class="hljs-literal">True</span>)<br></code></pre></td></tr></table></figure>
+
+<p>创建脚本时有个细节，时间戳字段是可以从要素中获取的，所以可以在参数属性中的获取自填入指向时间戳要素。<br><img src="/2024/11/23/Arcgis%E8%84%9A%E6%9C%AC%E5%B7%A5%E5%85%B7%E5%88%B6%E4%BD%9C/dcf25722ef713362daeb7392b184cd20.png" srcset="/img/loading.gif" lazyload></p>
+<p>运行成功：<br><img src="/2024/11/23/Arcgis%E8%84%9A%E6%9C%AC%E5%B7%A5%E5%85%B7%E5%88%B6%E4%BD%9C/dfc0f1e515daa988ab040bab942c936b.png" srcset="/img/loading.gif" lazyload></p>
+<h1 id="重命名工具"><a href="#重命名工具" class="headerlink" title="重命名工具"></a>重命名工具</h1><p>重命名工具是直接修改并覆盖原文件的，只需要输入矢量文件所在文件夹和指定重命名字段。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment">## 【功能】给文件夹内的shp按照指定的字段重命名</span><br><span class="hljs-keyword">import</span> arcpy<br><span class="hljs-keyword">import</span> os<br><span class="hljs-keyword">import</span> sys<br><br><span class="hljs-comment">## 【修改路径】（Python使用双右斜杠）</span><br>workspace_folder = arcpy.GetParameterAsText(<span class="hljs-number">0</span>) <span class="hljs-comment"># 设置工作空间</span><br>field_name = arcpy.GetParameterAsText(<span class="hljs-number">1</span>) <span class="hljs-comment"># 设置指定字段名</span><br><br><span class="hljs-comment"># 获取文件夹内的所有Shapefile</span><br>arcpy.env.workspace = workspace_folder<br>shapefiles = arcpy.ListFeatureClasses(<span class="hljs-string">&quot;&quot;</span>, <span class="hljs-string">&quot;all&quot;</span>)<br><br><span class="hljs-comment"># 遍历所有Shapefile</span><br><span class="hljs-keyword">for</span> shp <span class="hljs-keyword">in</span> shapefiles:<br>    <span class="hljs-comment"># 创建SearchCursor以访问指定字段的值</span><br>    <span class="hljs-keyword">with</span> arcpy.da.SearchCursor(shp, [field_name]) <span class="hljs-keyword">as</span> cursor:<br>        <span class="hljs-comment"># 假设字段值在所有记录中都是唯一的，或者只取第一个记录的值</span><br>        <span class="hljs-keyword">for</span> row <span class="hljs-keyword">in</span> cursor:<br>            new_name = row[<span class="hljs-number">0</span>]<br>            <span class="hljs-comment"># 清理文件名中的非法字符</span><br>            arcpy.AddMessage(<span class="hljs-string">&quot;ReName &quot;</span>+new_name)<br>            new_name = arcpy.ValidateTableName(new_name, workspace_folder)<br>            <br>            <span class="hljs-comment"># 构建新的完整路径</span><br>            new_full_name = os.path.join(workspace_folder, new_name + <span class="hljs-string">&quot;.shp&quot;</span>)<br>            <br>            <span class="hljs-comment"># 检查新名称是否已存在，如果存在则添加后缀避免冲突</span><br>            <span class="hljs-keyword">if</span> arcpy.Exists(new_full_name):<br>                i = <span class="hljs-number">1</span><br>                <span class="hljs-keyword">while</span> arcpy.Exists(new_full_name):<br>                    new_name_with_suffix = <span class="hljs-string">&quot;&#123;new_name&#125;_&#123;i&#125;&quot;</span><br>                    new_full_name = os.path.join(workspace_folder, new_name_with_suffix + <span class="hljs-string">&quot;.shp&quot;</span>)<br>                    i += <span class="hljs-number">1</span><br>                new_name = new_name_with_suffix<br>            <br>            <span class="hljs-comment"># 重命名Shapefile</span><br>            arcpy.Rename_management(shp, new_name)<br><br>arcpy.AddMessage(<span class="hljs-string">&quot;重命名完成。&quot;</span>)<br></code></pre></td></tr></table></figure>
+
+<h1 id="批量删除工具"><a href="#批量删除工具" class="headerlink" title="批量删除工具"></a>批量删除工具</h1><p>在制作究极样本工具的时候，需要一个自动删除空值数据的机制，但使用模型构建器做批量删除的时候，有时成功有时失败的，非常奇怪。最好还是通过arcpy来实现。<br>这个功能算比较简单的，后来真的用arcpy实现了。这里的逻辑还挺奇妙的，arcpy不能直接改要素的属性表，而是通过创建一个临时要素图层的形式，先读取要素，再进行查询和修改，最后再删除临时图层。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> arcpy<br><span class="hljs-keyword">import</span> sys<br>input_feature_class = arcpy.GetParameterAsText(<span class="hljs-number">0</span>) <span class="hljs-comment"># 输入要素类</span><br>field_name = arcpy.GetParameterAsText(<span class="hljs-number">1</span>) <span class="hljs-comment"># 字段名称</span><br>workspace = arcpy.GetParameterAsText(<span class="hljs-number">2</span>) <span class="hljs-comment"># 设置工作空间</span><br>arcpy.env.workspace = workspace<br><span class="hljs-comment"># 创建临时要素图层</span><br>arcpy.MakeFeatureLayer_management(input_feature_class, <span class="hljs-string">&quot;temp_layer&quot;</span>)<br><br><span class="hljs-comment"># 按属性选择指定字段为空的要素</span><br>where_clause = field_name +<span class="hljs-string">&quot; IS NULL&quot;</span><br>arcpy.SelectLayerByAttribute_management(<span class="hljs-string">&quot;temp_layer&quot;</span>, <span class="hljs-string">&quot;NEW_SELECTION&quot;</span>, where_clause)<br><span class="hljs-comment"># 删除所选要素</span><br>arcpy.DeleteFeatures_management(<span class="hljs-string">&quot;temp_layer&quot;</span>)<br><br><span class="hljs-comment"># 清理临时图层</span><br>arcpy.Delete_management(<span class="hljs-string">&quot;temp_layer&quot;</span>)<br></code></pre></td></tr></table></figure>
+
+<p>这个工具实现的功能非常简单，就是按照指定的查询语句选择要素，然后删除。这里的查询语句由字段名称和<code> IS NULL</code>拼接而成。</p>
+<h1 id="制作究极工具"><a href="#制作究极工具" class="headerlink" title="制作究极工具"></a>制作究极工具</h1><p>成功准备好所有的工具之后，可以开启下一个大工程了，把它们全都串一起，构成可以一键制作样本的究极工具。<br>【做这两个工具需要10.8版本，只能后面用其他电脑复刻，现在只能暂时放两张照片，后面再上传工具箱】</p>
+<h2 id="样本生成工具"><a href="#样本生成工具" class="headerlink" title="样本生成工具"></a>样本生成工具</h2><p><img src="/2024/11/23/Arcgis%E8%84%9A%E6%9C%AC%E5%B7%A5%E5%85%B7%E5%88%B6%E4%BD%9C/c1ce4cade9824b9c3441a1c4b9b281cc.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="样本框生成工具"><a href="#样本框生成工具" class="headerlink" title="样本框生成工具"></a>样本框生成工具</h2><p><img src="/2024/11/23/Arcgis%E8%84%9A%E6%9C%AC%E5%B7%A5%E5%85%B7%E5%88%B6%E4%BD%9C/2b49be1d98fb96d0a4fabba1a953c5c6.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="关于参数保存的技巧"><a href="#关于参数保存的技巧" class="headerlink" title="关于参数保存的技巧"></a>关于参数保存的技巧</h2><p>一般来说，直接在工具中或者是参数中填写相应的数值，就可以将这些字符串直接保存在模型中了。但有时候，也有一些特殊的技巧去保存比较复杂的列表参数。<br>比较特殊的地方在于空间连接工具中，连接要素字段映射表。当右键空间连接工具获取变量时，字段映射表参数是可以自动从要素中获取的，但是将工具发给别人后，找不到原来的输入要素，可能会出现字段映射无法读取的情况。这里想到了一个歪招，就是先获取变量之后，再将连接要素的字段映射参数对象直接进行复制（其中有值的情况下），这种时候即使原数据的连接断开，也能直接在工具中保存这些参数。</p>
+<p><img src="/2024/11/23/Arcgis%E8%84%9A%E6%9C%AC%E5%B7%A5%E5%85%B7%E5%88%B6%E4%BD%9C/cca0a6c082fa7dd7e9fe1ff4cc91c3e4.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="关于模型构建器的版本差异问题"><a href="#关于模型构建器的版本差异问题" class="headerlink" title="关于模型构建器的版本差异问题"></a>关于模型构建器的版本差异问题</h2><p>制作工具的时候还碰到了一个问题，10.8版本的模型构建器用起来还跟10.4不一样，一些数据类型并不兼容，并不能直接作为其他工具的要素输入。例如删除字段的结果是输出表，并不能作为要素输入到空间连接工具中，但在10.8里面就是可行的。实际上删除字段这种工具的输入即是输出，会直接改变原始数据的，所以理论上直接把下一步接在同一个数据上，也能实现想要的结果，前提是这个程序真的按设想的先后顺序那样运行。<br>我还是比较喜欢10.8的首尾连接的方式，这样更符合思考的逻辑。</p>
+<p>10.4版本的工具拼接方式（输出表不能作为下一步的要素输入）：<br><img src="/2024/11/23/Arcgis%E8%84%9A%E6%9C%AC%E5%B7%A5%E5%85%B7%E5%88%B6%E4%BD%9C/f65f122af1a841ae24067351dcd1f3e0.png" srcset="/img/loading.gif" lazyload></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0/" class="category-chain-item">学习</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/python/">#python</a>
+      
+        <a href="/tags/%E8%84%9A%E6%9C%AC%E5%B7%A5%E5%85%B7/">#脚本工具</a>
+      
+        <a href="/tags/arcgis/">#arcgis</a>
+      
+        <a href="/tags/arcpy/">#arcpy</a>
+      
+        <a href="/tags/%E5%B7%A5%E5%85%B7%E7%AE%B1/">#工具箱</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Arcgis脚本工具制作</div>
+      <div>http://kw1649190133.github.io/2024/11/23/Arcgis脚本工具制作/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Aŭtoro</div>
+          <div>Kwindy</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Postigita</div>
+          <div>November 23, 2024</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Lizenta</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/11/23/%E5%BD%B1%E5%83%8F%E6%B3%A2%E6%AE%B5%E4%B8%8E%E4%BD%8D%E6%B7%B1%E6%89%B9%E9%87%8F%E8%BD%AC%E6%8D%A2/" title="影像波段与位深批量转换">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">影像波段与位深批量转换</span>
+                        <span class="visible-mobile">Antaŭa afiŝo</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/11/23/%E6%96%87%E4%BB%B6%E9%87%8D%E5%91%BD%E5%90%8D%E4%B8%8E%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/" title="文件重命名与正则表达式">
+                        <span class="hidden-mobile">文件重命名与正则表达式</span>
+                        <span class="visible-mobile">Sekva afiŝo</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Enhavtabelo</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Serĉi</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">ŝlosivorto</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blogo funkcias plej bone kun JavaScript ebligita</div>
+  </noscript>
+</body>
+</html>
