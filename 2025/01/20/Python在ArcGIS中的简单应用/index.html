@@ -1,0 +1,680 @@
+
+
+<!DOCTYPE html>
+<html lang="CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Kwindy">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Python在ArcGIS中的简单应用众所周知ArcGIS其实是基于Arcpy运作的，之前也做过了很多比较复杂的功能实现。但也有一些操作是听起来好像不复杂，但实际做起来如果没有相应的程序是很难实现的。本篇就简单记录一下处理业务时各种遇到的情况以及使用的Python代码。最早我接触的python程序就是在字段计算器中，给指定的字段赋值一个序列数字。在之前的文章中已经有过相关记录，就不在重复了。另外，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python在ArcGIS中的简单应用">
+<meta property="og:url" content="http://kw1649190133.github.io/2025/01/20/Python%E5%9C%A8ArcGIS%E4%B8%AD%E7%9A%84%E7%AE%80%E5%8D%95%E5%BA%94%E7%94%A8/index.html">
+<meta property="og:site_name" content="kw&#39;s blog">
+<meta property="og:description" content="Python在ArcGIS中的简单应用众所周知ArcGIS其实是基于Arcpy运作的，之前也做过了很多比较复杂的功能实现。但也有一些操作是听起来好像不复杂，但实际做起来如果没有相应的程序是很难实现的。本篇就简单记录一下处理业务时各种遇到的情况以及使用的Python代码。最早我接触的python程序就是在字段计算器中，给指定的字段赋值一个序列数字。在之前的文章中已经有过相关记录，就不在重复了。另外，">
+<meta property="og:locale">
+<meta property="article:published_time" content="2025-01-20T09:31:17.000Z">
+<meta property="article:modified_time" content="2025-01-20T09:33:50.012Z">
+<meta property="article:author" content="Kwindy">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="Arcgis">
+<meta property="article:tag" content="字符串">
+<meta property="article:tag" content="代码">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>Python在ArcGIS中的简单应用 - kw&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"kw1649190133.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Python在ArcGIS中的简单应用"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-01-20 17:31" pubdate>
+          January 20, 2025 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.1k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          18 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Python在ArcGIS中的简单应用</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="Python在ArcGIS中的简单应用"><a href="#Python在ArcGIS中的简单应用" class="headerlink" title="Python在ArcGIS中的简单应用"></a>Python在ArcGIS中的简单应用</h1><p>众所周知ArcGIS其实是基于Arcpy运作的，之前也做过了很多比较复杂的功能实现。但也有一些操作是听起来好像不复杂，但实际做起来如果没有相应的程序是很难实现的。本篇就简单记录一下处理业务时各种遇到的情况以及使用的Python代码。<br>最早我接触的python程序就是在字段计算器中，给指定的字段赋值一个序列数字。在之前的文章中已经有过相关记录，就不在重复了。另外，这些代码也可以通过模型构建直接保存在工具箱中，以便使用。用的就是一个计算字段的工具而已，很简单就不截图了。</p>
+<h1 id="字段编辑"><a href="#字段编辑" class="headerlink" title="字段编辑"></a>字段编辑</h1><h2 id="从指定位置开始截取字段"><a href="#从指定位置开始截取字段" class="headerlink" title="从指定位置开始截取字段"></a>从指定位置开始截取字段</h2><p>本来是想从文件名中截取时间和其他信息，一般而言用基础的函数left,mid,right就能实现从左、中、右的字段截取了。但是当字段长度不对齐的时候，就需要通过判断语句来实现截取了。</p>
+<p>代码块：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs Python"><span class="hljs-comment"># 截取字符串中指定内容开始的部分</span><br><span class="hljs-comment"># 例如输入:cut_by_str(&quot;abc&quot;,&quot;b&quot;),输出:bc</span><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">cut_by_str</span>(<span class="hljs-params"><span class="hljs-built_in">input</span>,cutstr</span>)<br>    <span class="hljs-keyword">if</span> cutstr <span class="hljs-keyword">in</span> <span class="hljs-built_in">input</span>:<br>        <span class="hljs-keyword">return</span> <span class="hljs-built_in">input</span>[<span class="hljs-built_in">input</span>.index(cutstr):]<br>    <span class="hljs-keyword">else</span>:<br>        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;&quot;</span><br></code></pre></td></tr></table></figure>
+
+<p>使用示例<br><code>cut_by_str(!NAME!,&quot;GF2&quot;)</code></p>
+<h2 id="删除指定字符串内容"><a href="#删除指定字符串内容" class="headerlink" title="删除指定字符串内容"></a>删除指定字符串内容</h2><p>用来删除字段中指定内容的函数。这在word和txt中，都是现成的功能，但是在属性表中，只能自己用函数实现一下。</p>
+<p>代码块：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment">#输入字符串input和delstr，通过递归删除input中所有的delstr</span><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">remove_substring</span>(<span class="hljs-params"><span class="hljs-built_in">input</span>, delstr</span>):<br>    <span class="hljs-keyword">while</span> delstr <span class="hljs-keyword">in</span> <span class="hljs-built_in">input</span>:<br>        index = <span class="hljs-built_in">input</span>.find(delstr)<br>        <span class="hljs-built_in">input</span> = <span class="hljs-built_in">input</span>[:index] + <span class="hljs-built_in">input</span>[index + <span class="hljs-built_in">len</span>(delstr):]<br>    <span class="hljs-keyword">return</span> <span class="hljs-built_in">input</span><br></code></pre></td></tr></table></figure>
+
+<p>使用示例：<br><code>remove_substring(!NAME!,&quot;*tif&quot;)</code></p>
+<h2 id="字符串替换"><a href="#字符串替换" class="headerlink" title="字符串替换"></a>字符串替换</h2><p>同样是在word和Excel中很常见的功能，但在GIS里得通过编程来实现。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># 将字符串a中的b替换为c。</span><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">replace_string_in_a</span>(<span class="hljs-params">a, b, c</span>):<br>    <span class="hljs-keyword">return</span> a.replace(b, c)<br> <br><span class="hljs-comment"># 示例使用</span><br>a = <span class="hljs-string">&quot;Hello World&quot;</span><br>b = <span class="hljs-string">&quot;World&quot;</span><br>c = <span class="hljs-string">&quot;Python&quot;</span><br>new_a = replace_string_in_a(a, b, c)<br><span class="hljs-built_in">print</span>(new_a)  <span class="hljs-comment"># 输出: Hello Python</span><br></code></pre></td></tr></table></figure>
+
+<h1 id="随机数生成"><a href="#随机数生成" class="headerlink" title="随机数生成"></a>随机数生成</h1><p>做检查数据的时候，难免要伪造一些检查记录之类的，需要用到随机数生成工具。</p>
+<h2 id="第一版-按照指定范围生成误差"><a href="#第一版-按照指定范围生成误差" class="headerlink" title="第一版_按照指定范围生成误差"></a>第一版_按照指定范围生成误差</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> random<br><span class="hljs-comment"># 输入真实值与误差范围d，返回添加误差的测量值</span><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">generate_random_number</span>(<span class="hljs-params"><span class="hljs-built_in">input</span>,d</span>):<br>	<span class="hljs-comment"># 赋值随机数误差范围±d</span><br>	ran=random.uniform(-d.d)<br>	<span class="hljs-comment"># 返回添加了误差的测量值</span><br>	<span class="hljs-keyword">return</span> <span class="hljs-built_in">float</span>(<span class="hljs-built_in">input</span>)+ran<br>	<br><span class="hljs-comment"># 函数使用示例</span><br>generate_random_number(!x!,<span class="hljs-number">0.1</span>)<br></code></pre></td></tr></table></figure>
+
+<h2 id="第二版-调整误差范围"><a href="#第二版-调整误差范围" class="headerlink" title="第二版_调整误差范围"></a>第二版_调整误差范围</h2><p>因为误差范围是±d之间随机生成的，这样就会出现恰巧有那么几个值刚好特别小，结果离真实值特别近的情况，虽然我觉得很正常，但同事要求误差也不能太小，既然如此就增加一个判断条件，误差太小就重新生成。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> random<br><span class="hljs-comment"># 输入真实值与误差范围，返回添加误差的测量值</span><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">generate_random_number</span>(<span class="hljs-params"><span class="hljs-built_in">input</span>,d</span>):<br>	ran=<span class="hljs-number">0</span><br>	<span class="hljs-comment"># 添加一个循环，当误差的绝对值小于设定范围的1/2时，重新生成随机数</span><br>	<span class="hljs-keyword">while</span>(<span class="hljs-built_in">abs</span>(ran&lt;d/<span class="hljs-number">2</span>)):<br>	<span class="hljs-comment"># 赋值随机数误差范围±d</span><br>		ran=random.uniform(-d.d)<br>	<span class="hljs-comment"># 返回添加了误差的测量值</span><br>	<span class="hljs-keyword">return</span> <span class="hljs-built_in">float</span>(<span class="hljs-built_in">input</span>)+ran<br></code></pre></td></tr></table></figure>
+
+<h1 id="python异常处理"><a href="#python异常处理" class="headerlink" title="python异常处理"></a>python异常处理</h1><p>之前做的影像裁剪工具，在运行的时候有几率会报错然后突然中断，输入的数据量越大就越不稳定。尝试找出原因的时候，加入了一下异常处理机制，然后就再也没报错过了……<br>从代码的健壮性和稳定性来说，当然是所有语句都挂上异常处理最好，但现实中一些非常简单的功能，往往就没必要整这么多代码。按照实际需求来使用。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">try</span>:<br><span class="hljs-comment"># 尝试运行的代码</span><br><span class="hljs-keyword">except</span>:<br><span class="hljs-comment"># 尝试失败后的代码</span><br></code></pre></td></tr></table></figure>
+
+<h1 id="关于缩进格式"><a href="#关于缩进格式" class="headerlink" title="关于缩进格式"></a>关于缩进格式</h1><p>Python是靠缩进来识别函数的，如果看到<code>Inconsistent use of tabs and spaces in indentationPylance</code>那就是缩进出问题了，python可以识别空格的缩进和TAB制表符的缩进，但不能混着用。虽然看起来可能是一样的，但实际上编码不同。可以在VScode中比较明显的看到。</p>
+<h1 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h1><p>其实这篇早就写好了，但是隔了几个月才传，没办法，测绘人实在是太牛马了，天天画图画不停，996实在是太耽误事了。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0/" class="category-chain-item">学习</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/python/">#python</a>
+      
+        <a href="/tags/Arcgis/">#Arcgis</a>
+      
+        <a href="/tags/%E5%AD%97%E7%AC%A6%E4%B8%B2/">#字符串</a>
+      
+        <a href="/tags/%E4%BB%A3%E7%A0%81/">#代码</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Python在ArcGIS中的简单应用</div>
+      <div>http://kw1649190133.github.io/2025/01/20/Python在ArcGIS中的简单应用/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Kwindy</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>January 20, 2025</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/01/20/%E5%90%88%E5%B9%B6%E6%96%87%E4%BB%B6%E5%A4%B9%E5%86%85%E7%9A%84%E6%89%80%E6%9C%89shp%E6%96%87%E4%BB%B6/" title="合并文件夹内的所有shp文件">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">合并文件夹内的所有shp文件</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/11/23/%E5%BD%B1%E5%83%8F%E6%B3%A2%E6%AE%B5%E4%B8%8E%E4%BD%8D%E6%B7%B1%E6%89%B9%E9%87%8F%E8%BD%AC%E6%8D%A2/" title="影像波段与位深批量转换">
+                        <span class="hidden-mobile">影像波段与位深批量转换</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>
