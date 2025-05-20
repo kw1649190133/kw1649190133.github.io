@@ -4,6 +4,74 @@
   
   
   <entry>
+    <title>ArcGIS中shp格式的局限性</title>
+    <link href="/2025/05/20/ArcGIS%E4%B8%ADshp%E6%A0%BC%E5%BC%8F%E7%9A%84%E5%B1%80%E9%99%90%E6%80%A7/"/>
+    <url>/2025/05/20/ArcGIS%E4%B8%ADshp%E6%A0%BC%E5%BC%8F%E7%9A%84%E5%B1%80%E9%99%90%E6%80%A7/</url>
+    
+    <content type="html"><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>一般而言无论是项目交付还是平时数据管理，都是用gdb比较多，gdb优秀的性能和极高的上限，基本上用起来就非常顺手，不会遇到什么难以决绝的问题。最近在做样本导出的时候，跟shp打交道比较多，也发现了shp一些比较坑爹的地方，特此记录一下。<br>首先shp的全称是Shapefile，它实际上是一种图层文件格式，在地理信息的历史上算比较早期的数据格式了，因此有一些设计上的缺陷。</p><h1 id="局限性记录"><a href="#局限性记录" class="headerlink" title="局限性记录"></a>局限性记录</h1><h2 id="1-字段长度限制。"><a href="#1-字段长度限制。" class="headerlink" title="1. 字段长度限制。"></a>1. 字段长度限制。</h2><p>shp图层中字段存储的字数有限，因为字段长度的上限只有254，并且因为文字编码的问题，字段长度为254，也并不能存254个字，而是比这短得多。</p><h2 id="2-数据行数的限制"><a href="#2-数据行数的限制" class="headerlink" title="2. 数据行数的限制"></a>2. 数据行数的限制</h2><p>shp数据中存储的数据行数是有限的，不像GDB中几乎没有限制，几十万条都可以。</p><h2 id="3-字段必填限制"><a href="#3-字段必填限制" class="headerlink" title="3. 字段必填限制"></a>3. 字段必填限制</h2><p>在gdb中，字段是否必填是可以在清空数据的情况下进行修改的，是属于字段的一个属性。<br>而在shp中，没有空值这个选项，所有的字段都会变成必填。</p><h2 id="4-默认长整型"><a href="#4-默认长整型" class="headerlink" title="4. 默认长整型"></a>4. 默认长整型</h2><p>这是最奇葩的一个问题了，甚至可以叫莫名其妙的特性，那就是gdb中的要素类在导出成shp图层后，短整型会变成长整型。甚至哪怕直接新建一个shp图层，然后直接添加短整型字段，它也会变成长整型！而只有新建短整型字段时，再输入有效长度为4，它才会变成短整型。【仅限ArcGIS10.8，如果是10.4.1会强制有效长度为5，手动输入也没用】<br>简直莫名其妙，如果我就要一个短整型字段，那就只能在gdb导出后，再增加一个流程专门对shp进行处理，或者在程序处理时就以shp为参数参与计算。想想就头大了。</p><h1 id="关于整数的问题"><a href="#关于整数的问题" class="headerlink" title="关于整数的问题"></a>关于整数的问题</h1><p>关于短整型变成长整型的问题，后来我细想感觉不对，又重新探究了一下其中的原因，又有了不一样的思考。首先明确一下什么是短整型和长整型，它们源于二进制位数，使用16位的二进制编码能够表示的数字为0<del>65535，而如果是有符号的话，就是-32768</del>32767。</p><p>具体到编程语言中，还有一些差异。</p><h2 id="C语言"><a href="#C语言" class="headerlink" title="C语言"></a>C语言</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">short</span> a = <span class="hljs-number">30000</span>;     <span class="hljs-comment">// 合法（16位）</span><br><span class="hljs-type">long</span> b = <span class="hljs-number">2147483647</span>; <span class="hljs-comment">// 合法（32位）</span><br><span class="hljs-type">long</span> <span class="hljs-type">long</span> c = <span class="hljs-number">9223372036854775807</span>; <span class="hljs-comment">// 合法（64位）</span><br></code></pre></td></tr></table></figure><h2 id="Java"><a href="#Java" class="headerlink" title="Java"></a>Java</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">short</span> <span class="hljs-variable">s</span> <span class="hljs-operator">=</span> <span class="hljs-number">10000</span>;       <span class="hljs-comment">// 合法（16位）</span><br><span class="hljs-type">long</span> <span class="hljs-variable">l</span> <span class="hljs-operator">=</span> <span class="hljs-number">2147483648L</span>;  <span class="hljs-comment">// 需加&quot;L&quot;后缀（64位）</span><br></code></pre></td></tr></table></figure><h2 id="Python"><a href="#Python" class="headerlink" title="Python"></a>Python</h2><p>而Python没有显式的short类型，只有整数int，会自动扩展成长整型，并且理论上无精度上限，而部分时候可以进行固定长度的定义，np.int16、np.int32</p><h2 id="数据库"><a href="#数据库" class="headerlink" title="数据库"></a>数据库</h2><p>在数据库中，字段类型的定义是与编程语言类似的。<br>GDB数据库<br>    短整型（Short Integer）：2字节（16位），有符号（范围：-32,768 ~ 32,767）。<br>    长整型（Long Integer）：4字节（32位），有符号（范围：-2,147,483,648 ~ 2,147,483,647）。<br>    (规范来源：基于dBase III/IV的.dbf文件格式。)</p><h1 id="在ArcGIS中测试整型问题"><a href="#在ArcGIS中测试整型问题" class="headerlink" title="在ArcGIS中测试整型问题"></a>在ArcGIS中测试整型问题</h1><h2 id="gdb数据库"><a href="#gdb数据库" class="headerlink" title="gdb数据库"></a>gdb数据库</h2><p>数据库中的要素类在创建整型字段时，是有长短整型区分的，并且长度固定没得选。这里面和32位的编程语言是一致的，毕竟ArcGIS也就是一个32位的软件。<br><img src="/2025/05/20/ArcGIS%E4%B8%ADshp%E6%A0%BC%E5%BC%8F%E7%9A%84%E5%B1%80%E9%99%90%E6%80%A7/ab13858ec4c1c14d018d1c655f9241cd.png"></p><h2 id="shp文件"><a href="#shp文件" class="headerlink" title="shp文件"></a>shp文件</h2><p>而在shp文件中创建整数字段，它的定义就不一样了，它只有一个精度参数，创建短整型时默认值为5，实际上它并不是16位二进制，而是十进制的五位数。并且在字段属性显式中它也并非短整型，而是会显示成“长整型”。只有10.8的ArcGIS在创建短整型字段时可以将参数输入4，但实际上会让上限变成9999，也就是字段属性里显示是短整型了，但实际上存储值并不是。<br>也就是说这玩意它就不可能对齐，因为规则不同，一个是二进制一个是十进制。</p><p><img src="/2025/05/20/ArcGIS%E4%B8%ADshp%E6%A0%BC%E5%BC%8F%E7%9A%84%E5%B1%80%E9%99%90%E6%80%A7/43b88be133c0b1b07b10395e3c17de82.png"></p><h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>一开始还以为是我设计的程序有问题，后来仔细探究才发现是特性，那没事了。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>学习</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>ArcGIS</tag>
+      
+      <tag>shp</tag>
+      
+      <tag>局限性</tag>
+      
+      <tag>整型</tag>
+      
+      <tag>字符长度</tag>
+      
+      <tag>数据类型</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>ArcGIS影像属性修改</title>
+    <link href="/2025/05/20/ArcGIS%E5%BD%B1%E5%83%8F%E5%B1%9E%E6%80%A7%E4%BF%AE%E6%94%B9/"/>
+    <url>/2025/05/20/ArcGIS%E5%BD%B1%E5%83%8F%E5%B1%9E%E6%80%A7%E4%BF%AE%E6%94%B9/</url>
+    
+    <content type="html"><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>跑完了批量影像裁剪之后，发现栅格的属性不太对，Nodata值居然是空的，而我看原影像是有属性的。没办法，只能想办法做一个批量修改的程序看能不能把属性刷上去。</p><h1 id="程序设计"><a href="#程序设计" class="headerlink" title="程序设计"></a>程序设计</h1><p>在系统工具箱中找到设置栅格属性工具，就可以直接修改Nodata值了，而这只是其中的一个功能，它还能做挺多事情的。不过现在暂时不需要，先不研究了。<br>System Toolboxes→Data Management Tools.tbx→Raster→Raster Properties→Set Raster Properties<br>系统工具箱，数据管理工具，栅格，栅格属性，设置栅格属性。<br><img src="/2025/05/20/ArcGIS%E5%BD%B1%E5%83%8F%E5%B1%9E%E6%80%A7%E4%BF%AE%E6%94%B9/2c96927cbc79617623ea645141ad298b.png"></p><p>通过模型构建器，给工具套一个循环，批量刷属性就搞定了。<br><img src="/2025/05/20/ArcGIS%E5%BD%B1%E5%83%8F%E5%B1%9E%E6%80%A7%E4%BF%AE%E6%94%B9/80a49d7163d0c9be801717447e1fd74b.png"></p>]]></content>
+    
+    
+    <categories>
+      
+      <category>学习</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>ArcGIS</tag>
+      
+      <tag>影像</tag>
+      
+      <tag>属性</tag>
+      
+      <tag>栅格</tag>
+      
+      <tag>nodata</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>Arcgis无效驱动器错误</title>
     <link href="/2025/04/29/Arcgis%E6%97%A0%E6%95%88%E9%A9%B1%E5%8A%A8%E5%99%A8%E9%94%99%E8%AF%AF/"/>
     <url>/2025/04/29/Arcgis%E6%97%A0%E6%95%88%E9%A9%B1%E5%8A%A8%E5%99%A8%E9%94%99%E8%AF%AF/</url>

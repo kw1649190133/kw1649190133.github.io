@@ -104,7 +104,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/">
                 <i class="iconfont icon-home-fill"></i>
-                <span>Home</span>
+                <span>Startseite</span>
               </a>
             </li>
           
@@ -116,7 +116,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/archives/">
                 <i class="iconfont icon-archive-fill"></i>
-                <span>Archives</span>
+                <span>Archiv</span>
               </a>
             </li>
           
@@ -128,7 +128,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/categories/">
                 <i class="iconfont icon-category-fill"></i>
-                <span>Categories</span>
+                <span>Kategorien</span>
               </a>
             </li>
           
@@ -140,7 +140,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/tags/">
                 <i class="iconfont icon-tags-fill"></i>
-                <span>Tags</span>
+                <span>Schlagwörter</span>
               </a>
             </li>
           
@@ -152,7 +152,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/about/">
                 <i class="iconfont icon-user-fill"></i>
-                <span>About</span>
+                <span>Über</span>
               </a>
             </li>
           
@@ -217,6 +217,146 @@
               <div class="col-12 col-md-10 m-auto">
                 
 
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2025/05/20/ArcGIS%E4%B8%ADshp%E6%A0%BC%E5%BC%8F%E7%9A%84%E5%B1%80%E9%99%90%E6%80%A7/" target="_self">
+          ArcGIS中shp格式的局限性
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2025/05/20/ArcGIS%E4%B8%ADshp%E6%A0%BC%E5%BC%8F%E7%9A%84%E5%B1%80%E9%99%90%E6%80%A7/" target="_self">
+        <div>
+          前言一般而言无论是项目交付还是平时数据管理，都是用gdb比较多，gdb优秀的性能和极高的上限，基本上用起来就非常顺手，不会遇到什么难以决绝的问题。最近在做样本导出的时候，跟shp打交道比较多，也发现了shp一些比较坑爹的地方，特此记录一下。首先shp的全称是Shapefile，它实际上是一种图层文件格式，在地理信息的历史上算比较早期的数据格式了，因此有一些设计上的缺陷。 局限性记录1. 字段长度限
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2025-05-20 21:07" pubdate>
+              2025-05-20
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0/" class="category-chain-item">学习</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/ArcGIS/">#ArcGIS</a>
+            
+              <a href="/tags/shp/">#shp</a>
+            
+              <a href="/tags/%E5%B1%80%E9%99%90%E6%80%A7/">#局限性</a>
+            
+              <a href="/tags/%E6%95%B4%E5%9E%8B/">#整型</a>
+            
+              <a href="/tags/%E5%AD%97%E7%AC%A6%E9%95%BF%E5%BA%A6/">#字符长度</a>
+            
+              <a href="/tags/%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/">#数据类型</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2025/05/20/ArcGIS%E5%BD%B1%E5%83%8F%E5%B1%9E%E6%80%A7%E4%BF%AE%E6%94%B9/" target="_self">
+          ArcGIS影像属性修改
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2025/05/20/ArcGIS%E5%BD%B1%E5%83%8F%E5%B1%9E%E6%80%A7%E4%BF%AE%E6%94%B9/" target="_self">
+        <div>
+          前言跑完了批量影像裁剪之后，发现栅格的属性不太对，Nodata值居然是空的，而我看原影像是有属性的。没办法，只能想办法做一个批量修改的程序看能不能把属性刷上去。 程序设计在系统工具箱中找到设置栅格属性工具，就可以直接修改Nodata值了，而这只是其中的一个功能，它还能做挺多事情的。不过现在暂时不需要，先不研究了。System Toolboxes→Data Management Tools.tbx→
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2025-05-20 21:07" pubdate>
+              2025-05-20
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0/" class="category-chain-item">学习</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/ArcGIS/">#ArcGIS</a>
+            
+              <a href="/tags/%E5%BD%B1%E5%83%8F/">#影像</a>
+            
+              <a href="/tags/%E5%B1%9E%E6%80%A7/">#属性</a>
+            
+              <a href="/tags/%E6%A0%85%E6%A0%BC/">#栅格</a>
+            
+              <a href="/tags/nodata/">#nodata</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
 
   <div class="row mx-auto index-card">
     
@@ -772,140 +912,6 @@
     </article>
   </div>
 
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2024/09/24/%E3%80%90%E8%AD%A6%E9%92%9F%E9%95%BF%E9%B8%A3%E3%80%91%E5%93%80%E6%82%BC%E9%80%9D%E5%8E%BB%E7%9A%84OrangePi5plus/" target="_self">
-          【警钟长鸣】哀悼逝去的OrangePi5plus
-        </a>
-      </h1>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/09/24/%E3%80%90%E8%AD%A6%E9%92%9F%E9%95%BF%E9%B8%A3%E3%80%91%E5%93%80%E6%82%BC%E9%80%9D%E5%8E%BB%E7%9A%84OrangePi5plus/" target="_self">
-        <div>
-          【警钟长鸣】2024年9月24日晚上20点30分，因本人的不慎操作，将UDP电源错误的线路接在了OrangePi5plus 16G开发板上，导致一千多买的开发板英年早逝，以此文向逝去的开发板和消失的钱钱表示由衷地哀悼。悲痛之余，为了有板子用，九百块下单了新款OrangePi5max，并以此帖警示自己不要再发生这种意外事故，保护好自己的财产安全，用电不规范，一个月白干。
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-09-24 20:54" pubdate>
-              2024-09-24
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E5%AD%A6%E4%B9%A0/" class="category-chain-item">学习</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E7%82%B8%E6%9D%BF/">#炸板</a>
-            
-              <a href="/tags/%E7%94%B5%E6%BA%90/">#电源</a>
-            
-              <a href="/tags/%E8%AD%A6%E9%92%9F%E9%95%BF%E9%B8%A3/">#警钟长鸣</a>
-            
-              <a href="/tags/OrangePi5plus/">#OrangePi5plus</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2024/09/23/%E5%B0%8F%E9%B2%81%E7%8F%AD3D%E6%89%93%E5%8D%B0%E6%9C%BA%E7%BB%84%E8%A3%85%E5%92%8C%E4%BD%BF%E7%94%A8/" target="_self">
-          小鲁班3D打印机组装和使用
-        </a>
-      </h1>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/09/23/%E5%B0%8F%E9%B2%81%E7%8F%AD3D%E6%89%93%E5%8D%B0%E6%9C%BA%E7%BB%84%E8%A3%85%E5%92%8C%E4%BD%BF%E7%94%A8/" target="_self">
-        <div>
-          前言三百块买了一台二手3D打印机，据说还是满配小鲁班，号称鲁班王，具体怎么样只能装起来看看。 打印机组装拆开箱子之后看到里面密密麻麻散落的零件，我的心都有点凉了，把这些东西逐渐清理出来后，排在桌子上，一看还真是不少。但看了卖家的视频之后发现，除了几个扳手之外，都是用不上的东西。真正拆的几个螺丝，卖家已经贴心的帮我放在塑料袋里了，只要装好那六个螺丝就可以了。机器的主体已经被拆开，但线还连着，X轴和Y
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-09-23 15:35" pubdate>
-              2024-09-23
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E5%AD%A6%E4%B9%A0/" class="category-chain-item">学习</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E5%BB%BA%E6%A8%A1/">#建模</a>
-            
-              <a href="/tags/3D%E6%89%93%E5%8D%B0%E6%9C%BA/">#3D打印机</a>
-            
-              <a href="/tags/%E5%88%B6%E9%80%A0/">#制造</a>
-            
-              <a href="/tags/PETG/">#PETG</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
 
 
   <nav aria-label="navigation">
@@ -935,7 +941,7 @@
   <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <h4 class="modal-title w-100 font-weight-bold">Suchen</h4>
         <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -943,7 +949,7 @@
       <div class="modal-body mx-3">
         <div class="md-form mb-5">
           <input type="text" id="local-search-input" class="form-control validate">
-          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+          <label data-error="x" data-success="v" for="local-search-input">Stichwort</label>
         </div>
         <div class="list-group" id="local-search-result"></div>
       </div>
@@ -1029,7 +1035,7 @@
   
 
   <noscript>
-    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+    <div class="noscript-warning">Blog funktioniert am besten mit aktiviertem JavaScript</div>
   </noscript>
 </body>
 </html>
