@@ -104,7 +104,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/">
                 <i class="iconfont icon-home-fill"></i>
-                <span>Startseite</span>
+                <span>Home</span>
               </a>
             </li>
           
@@ -116,7 +116,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/archives/">
                 <i class="iconfont icon-archive-fill"></i>
-                <span>Archiv</span>
+                <span>Archives</span>
               </a>
             </li>
           
@@ -128,7 +128,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/categories/">
                 <i class="iconfont icon-category-fill"></i>
-                <span>Kategorien</span>
+                <span>Categories</span>
               </a>
             </li>
           
@@ -140,7 +140,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/tags/">
                 <i class="iconfont icon-tags-fill"></i>
-                <span>Schlagwörter</span>
+                <span>Tags</span>
               </a>
             </li>
           
@@ -152,7 +152,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/about/">
                 <i class="iconfont icon-user-fill"></i>
-                <span>Über</span>
+                <span>About</span>
               </a>
             </li>
           
@@ -217,6 +217,77 @@
               <div class="col-12 col-md-10 m-auto">
                 
 
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2023/12/29/%E4%BA%91%E7%AB%AF%E9%83%A8%E7%BD%B2%E8%A7%86%E9%A2%91%E4%BC%A0%E8%BE%93%E4%B8%9A%E5%8A%A1CMSS/" target="_self">
+          云端部署视频传输业务CMSS
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2023/12/29/%E4%BA%91%E7%AB%AF%E9%83%A8%E7%BD%B2%E8%A7%86%E9%A2%91%E4%BC%A0%E8%BE%93%E4%B8%9A%E5%8A%A1CMSS/" target="_self">
+        <div>
+          前提条件：有一台运行Windows实例的服务器 安装服务器端的程序包CMSServer.exe程序内包含的其实是多项服务器进程，比如什么登录啊、用户管理啊、数据存储啊之类的，它应该是支持分布式安装的，可以将各种进程跑在不同的服务器上。当然本次一站式部署不涉及这种情况。 在选择安装路径和缓存路径时需要注意，其他IP地址、端口等一般默认就可以。 装好之后会自动跳出服务器管理界面，此时还不需要做改动。
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-12-29 10:41" pubdate>
+              2023-12-29
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0/" class="category-chain-item">学习</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E5%9B%BE%E4%BC%A0/">#图传</a>
+            
+              <a href="/tags/%E6%9C%8D%E5%8A%A1%E5%99%A8/">#服务器</a>
+            
+              <a href="/tags/%E8%85%BE%E8%AE%AF%E4%BA%91/">#腾讯云</a>
+            
+              <a href="/tags/windows/">#windows</a>
+            
+              <a href="/tags/%E8%A7%86%E9%A2%91/">#视频</a>
+            
+              <a href="/tags/%E4%BA%91%E7%AB%AF/">#云端</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
 
   <div class="row mx-auto index-card">
     
@@ -843,73 +914,6 @@
     </article>
   </div>
 
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2023/11/15/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%B4%A8%E6%A3%80%E9%80%BB%E8%BE%91%E8%AE%BE%E8%AE%A1/" target="_self">
-          数据库质检逻辑设计
-        </a>
-      </h1>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2023/11/15/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%B4%A8%E6%A3%80%E9%80%BB%E8%BE%91%E8%AE%BE%E8%AE%A1/" target="_self">
-        <div>
-          前言本篇主要介绍基于Data Reviewer的数据库质检方法，分析数据库质检的规则设计逻辑，总结一下哪些预设的质检项目是可以直接使用的。 质检设计一般来说，需要针对不同的业务需求来做质检设计，但所有的质检也会有基本的共通之处。地理信息数据包含时间空间信息和字段属性，所以具体的检查也需要对应空间和属性两大方面。 针对线型矢量的基本检查项目 基本的属性、无效几何、多部件、锐角、非线性 悬挂点 连通性
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2023-11-15 18:00" pubdate>
-              2023-11-15
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E5%AD%A6%E4%B9%A0/" class="category-chain-item">学习</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/ArcGIS/">#ArcGIS</a>
-            
-              <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/">#数据库</a>
-            
-              <a href="/tags/Data-Reviewer/">#Data Reviewer</a>
-            
-              <a href="/tags/%E8%B4%A8%E6%A3%80/">#质检</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
 
 
   <nav aria-label="navigation">
@@ -939,7 +943,7 @@
   <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold">Suchen</h4>
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
         <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -947,7 +951,7 @@
       <div class="modal-body mx-3">
         <div class="md-form mb-5">
           <input type="text" id="local-search-input" class="form-control validate">
-          <label data-error="x" data-success="v" for="local-search-input">Stichwort</label>
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
         </div>
         <div class="list-group" id="local-search-result"></div>
       </div>
@@ -1033,7 +1037,7 @@
   
 
   <noscript>
-    <div class="noscript-warning">Blog funktioniert am besten mit aktiviertem JavaScript</div>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
   </noscript>
 </body>
 </html>
