@@ -8,9 +8,31 @@
     <link href="/2025/08/01/PPK%E5%90%8E%E5%B7%AE%E5%88%86%E8%A7%A3%E7%AE%97/"/>
     <url>/2025/08/01/PPK%E5%90%8E%E5%B7%AE%E5%88%86%E8%A7%A3%E7%AE%97/</url>
     
-    <content type="html"><![CDATA[]]></content>
+    <content type="html"><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>PPK在测绘领域全称Post-Processed Kinematic，是获取高精度定位数据的方式。<br>后差分解算，就是通过一个已知固定坐标的基站，同步记录GPS信号，通过计算基站已知坐标和GPS实时坐标的位置误差，生成差分改正数，通过时间戳与移动站坐标进行同步改正，将移动站的误差从米级降低到厘米级。<br>PPK主要用在没有4G移动信号的无人区，只要有GPS信号整套系统就可以运行，而基站的已知坐标和其他的像控点等，是需要通过星基RTK来获取的。星基RTK就是直接通过卫星GPS信号来获取精确坐标，但需要一段时间等待固定解。在有4G信号的地方如果移动站可以连上4G，并且可以支持实时差分，那也可以不用架设基站，通过实时的移动信号纠正GPS误差，实时获取精确坐标。</p><h2 id="关于Rinex格式"><a href="#关于Rinex格式" class="headerlink" title="关于Rinex格式"></a>关于Rinex格式</h2><p>各种品牌的RTK记录卫星观测数据的格式五花八门，有些为了性能甚至直接用二进制记录的，但是考虑到便于使用，一般会统一支持转换成Rinex格式，这种明码格式便于各种软件直接读取。关于版本的区别，2.0Rinex不支持北斗，3.0支持，大概可以这样简单理解。</p><h1 id="解算软件"><a href="#解算软件" class="headerlink" title="解算软件"></a>解算软件</h1><p>目前只尝试过三个解算软件，deepseek说还有什么<br>RTKLIB<br>GrafNav<br>Waypoint<br>Trimble Business Center<br>之类的，没用过不了解，只能以后有机会再试试。</p><h2 id="UAV-PPK"><a href="#UAV-PPK" class="headerlink" title="UAV-PPK"></a>UAV-PPK</h2><p>公司的同事之前用的一直都是中海达的UAV-PPK，软件本身看起来还不错，但是公司只有一台电脑装的是正版，还是过时的正版，而做这个软件的中海达子公司早就关门了，根本没有后续维护了。而咸鱼上卖的盗版又BUG巨多，动不动就闪退，可以用但是需要熟悉这个破软件的尿性。如果它不闪退和没BUG的话，还算是个好软件。<br><img src="/2025/08/01/PPK%E5%90%8E%E5%B7%AE%E5%88%86%E8%A7%A3%E7%AE%97/8d26d714e55cc1778833ce2ff0548019.png" alt="8d26d714e55cc1778833ce2ff0548019.png"><br>同事离职前给了使用说明书，还算比较详尽。<br><a href="%E6%AD%A3%E5%B0%84%E8%88%AA%E6%B5%8B%E5%90%8E%E5%B7%AE%E5%88%86%E8%A7%A3%E7%AE%97%E6%B5%81%E7%A8%8B.7z">正射航测后差分解算流程.7z</a></p><h2 id="大疆智图"><a href="#大疆智图" class="headerlink" title="大疆智图"></a>大疆智图</h2><p>大疆智图的5.x版本支持后差分解算，而咸鱼能买到的3.7破解版没有这个功能，但其他的导入pos、空三、建图都有。<br>大疆智图虽然还算好用，并且针对大疆的飞机解算其实非常方便，但是，它贵，死贵，目前也只是搞了两个月的试用码暂时体验一下。大疆智图必须按照它预设的使用方式来使用，比如照片和移动站的各种数据只能通过照片文件夹的形式同时导入，不支持分开导入。<br><img src="/2025/08/01/PPK%E5%90%8E%E5%B7%AE%E5%88%86%E8%A7%A3%E7%AE%97/04ba92fcdf1feaf2a9015bb96a8b271d.png" alt="04ba92fcdf1feaf2a9015bb96a8b271d.png"><br>使用方式也很简单，导入照片文件夹后，选择本地PPK。添加基站文件，一般使用其他品牌的RTK选择RINEX格式，选择坐标系，输入基站坐标，然后点解算。<br><img src="/2025/08/01/PPK%E5%90%8E%E5%B7%AE%E5%88%86%E8%A7%A3%E7%AE%97/eec9979fd1ebd6548bef9d03269cdf0e.png" alt="eec9979fd1ebd6548bef9d03269cdf0e.png"><br>大疆的优势其实是它集合了空三、建模等各种后处理，还从大疆智图升级成了大疆智模，装在工作站上可以直接跑成果，只用来做后差分有点浪费了。</p><h2 id="Emlid-Studio"><a href="#Emlid-Studio" class="headerlink" title="Emlid Studio"></a>Emlid Studio</h2><p>在大疆智图还不支持后差分的时候，网上看到有人用这个解算M3E的拍摄成果，于是我也下了一个，好像还是个免费软件，目前升级到了1.9版本，体验了一下，还算不错。这个软件还支持一些其它功能的，值得摸索一下。<br>软件只有英文，第一次用可能需要熟悉一下。</p><ol><li>左上角选择Drone data processing，这是后差分解算功能。</li><li>第一步Processing里面，需要输入4个文件：Drone 移动站obs；Bass 基站文件obs（需要输入基站的真实坐标）；移动站观测文件Nav（有时候需要转换得到）；移动站时间帧文件MRK（需要把Upload选项勾上才能选择文件）。在执行解算前，按钮左边还有个小齿轮可以设置文件名、截至角、时间区间、卫星类型等参数，一般默认不改也行。好像说如果信号不好可以把北斗band掉。</li><li>点击解算，解算完成后可以在移动站的文件夹找到两个pos文件，一个pos是飞行过程中记录的所有gps点位，另一个event.pos才是差分后拍照点的坐标。到这里后差分解算就已经完成了。</li><li>在第二步Geotagging里还支持导入照片文件夹和覆写照片pos信息，如果是用老版本的大疆3.7建图就需要覆写，一般而言不需要。<br><img src="/2025/08/01/PPK%E5%90%8E%E5%B7%AE%E5%88%86%E8%A7%A3%E7%AE%97/e716ad7efa439d57080a5b7ea1376a7e.png" alt="e716ad7efa439d57080a5b7ea1376a7e.png"></li></ol><h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>等大疆智图过期了，就只能用Emlid了。航飞的时候还遇到了大疆的飞机缺移动站文件，这种只能整个架次重新飞了。还有错过拍照点，一整条线都没有拍照，但后面又恢复正常的情况，总之即使是大疆，也得飞完检查成果才能收工，不然发现问题又得返工。</p>]]></content>
     
     
+    <categories>
+      
+      <category>工作</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>软件</tag>
+      
+      <tag>PPK</tag>
+      
+      <tag>后差分</tag>
+      
+      <tag>航飞</tag>
+      
+      <tag>精确定位</tag>
+      
+      <tag>基站</tag>
+      
+    </tags>
     
   </entry>
   
