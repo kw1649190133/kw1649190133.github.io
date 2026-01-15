@@ -104,7 +104,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/">
                 <i class="iconfont icon-home-fill"></i>
-                <span>Home</span>
+                <span>Startseite</span>
               </a>
             </li>
           
@@ -116,7 +116,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/archives/">
                 <i class="iconfont icon-archive-fill"></i>
-                <span>Archives</span>
+                <span>Archiv</span>
               </a>
             </li>
           
@@ -128,7 +128,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/categories/">
                 <i class="iconfont icon-category-fill"></i>
-                <span>Categories</span>
+                <span>Kategorien</span>
               </a>
             </li>
           
@@ -140,7 +140,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/tags/">
                 <i class="iconfont icon-tags-fill"></i>
-                <span>Tags</span>
+                <span>Schlagwörter</span>
               </a>
             </li>
           
@@ -152,7 +152,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/about/">
                 <i class="iconfont icon-user-fill"></i>
-                <span>About</span>
+                <span>Über</span>
               </a>
             </li>
           
@@ -217,6 +217,85 @@
               <div class="col-12 col-md-10 m-auto">
                 
 
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2026/01/15/%E9%80%9A%E8%BF%87WSL%E8%BF%90%E8%A1%8CPX4%E7%9A%84AirSim%E4%BB%BF%E7%9C%9F/" target="_self">
+          通过WSL运行PX4的AirSim仿真
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2026/01/15/%E9%80%9A%E8%BF%87WSL%E8%BF%90%E8%A1%8CPX4%E7%9A%84AirSim%E4%BB%BF%E7%9C%9F/" target="_self">
+        <div>
+          前言最近需要做无人机自主飞行的仿真模拟，找了一下别人都用什么环境，发现Gazebo、AirSim、XTDoran几个选择。AirSim作为虚幻引擎的插件，可以利用游戏引擎快速实现比较好看的渲染效果，但是比较依赖Windows环境，近几年据说维护不好；而Gazebo和XTDoran在科研和比赛中使用较多，资料也比较多，在Linux环境下使用很方便。参考资料https://www.bilibili.c
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2026-01-15 16:04" pubdate>
+              2026-01-15
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0/" class="category-chain-item">学习</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E8%99%9A%E5%B9%BB%E5%BC%95%E6%93%8E/">#虚幻引擎</a>
+            
+              <a href="/tags/Linux/">#Linux</a>
+            
+              <a href="/tags/%E6%97%A0%E4%BA%BA%E6%9C%BA/">#无人机</a>
+            
+              <a href="/tags/AirSim/">#AirSim</a>
+            
+              <a href="/tags/%E4%BB%BF%E7%9C%9F/">#仿真</a>
+            
+              <a href="/tags/PX4/">#PX4</a>
+            
+              <a href="/tags/WSL/">#WSL</a>
+            
+              <a href="/tags/VisualStudio/">#VisualStudio</a>
+            
+              <a href="/tags/C/">#C++</a>
+            
+              <a href="/tags/Unreal/">#Unreal</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
 
   <div class="row mx-auto index-card">
     
@@ -847,73 +926,6 @@
     </article>
   </div>
 
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2025/01/20/Python%E5%9C%A8ArcGIS%E4%B8%AD%E7%9A%84%E7%AE%80%E5%8D%95%E5%BA%94%E7%94%A8/" target="_self">
-          Python在ArcGIS中的简单应用
-        </a>
-      </h1>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2025/01/20/Python%E5%9C%A8ArcGIS%E4%B8%AD%E7%9A%84%E7%AE%80%E5%8D%95%E5%BA%94%E7%94%A8/" target="_self">
-        <div>
-          Python在ArcGIS中的简单应用众所周知ArcGIS其实是基于Arcpy运作的，之前也做过了很多比较复杂的功能实现。但也有一些操作是听起来好像不复杂，但实际做起来如果没有相应的程序是很难实现的。本篇就简单记录一下处理业务时各种遇到的情况以及使用的Python代码。最早我接触的python程序就是在字段计算器中，给指定的字段赋值一个序列数字。在之前的文章中已经有过相关记录，就不在重复了。另外，
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2025-01-20 17:31" pubdate>
-              2025-01-20
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E5%AD%A6%E4%B9%A0/" class="category-chain-item">学习</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/python/">#python</a>
-            
-              <a href="/tags/Arcgis/">#Arcgis</a>
-            
-              <a href="/tags/%E5%AD%97%E7%AC%A6%E4%B8%B2/">#字符串</a>
-            
-              <a href="/tags/%E4%BB%A3%E7%A0%81/">#代码</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
 
 
   <nav aria-label="navigation">
@@ -943,7 +955,7 @@
   <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <h4 class="modal-title w-100 font-weight-bold">Suchen</h4>
         <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -951,7 +963,7 @@
       <div class="modal-body mx-3">
         <div class="md-form mb-5">
           <input type="text" id="local-search-input" class="form-control validate">
-          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+          <label data-error="x" data-success="v" for="local-search-input">Stichwort</label>
         </div>
         <div class="list-group" id="local-search-result"></div>
       </div>
@@ -1037,7 +1049,7 @@
   
 
   <noscript>
-    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+    <div class="noscript-warning">Blog funktioniert am besten mit aktiviertem JavaScript</div>
   </noscript>
 </body>
 </html>
