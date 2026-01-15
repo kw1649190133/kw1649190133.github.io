@@ -1,7 +1,7 @@
 
 
 <!DOCTYPE html>
-<html lang="CN" data-default-color-scheme=auto>
+<html lang="CN" data-default-color-scheme=dark>
 
 
 
@@ -23,31 +23,31 @@
 <meta property="og:site_name" content="kw&#39;s blog">
 <meta property="og:description" content="前言最近需要做无人机自主飞行的仿真模拟，找了一下别人都用什么环境，发现Gazebo、AirSim、XTDoran几个选择。AirSim作为虚幻引擎的插件，可以利用游戏引擎快速实现比较好看的渲染效果，但是比较依赖Windows环境，近几年据说维护不好；而Gazebo和XTDoran在科研和比赛中使用较多，资料也比较多，在Linux环境下使用很方便。参考资料https:&#x2F;&#x2F;www.bilibili.c">
 <meta property="og:locale">
-<meta property="og:image" content="http://kw1649190133.github.io/a045f54c9d094c7639f7a6b9b7a5923f.png">
-<meta property="og:image" content="http://kw1649190133.github.io/16c371eec46a40e0ae99aad18e95e7a7.png">
-<meta property="og:image" content="http://kw1649190133.github.io/d4a5eeea2931d7a3a79cbfa8f94494dc.png">
-<meta property="og:image" content="http://kw1649190133.github.io/5a7520ec0872b15156704390a4290190.png">
-<meta property="og:image" content="http://kw1649190133.github.io/f40e5c24e550a11c671794686a162a37.png">
-<meta property="og:image" content="http://kw1649190133.github.io/bc87c211c9e6e893916161ebce78aa19.png">
-<meta property="og:image" content="http://kw1649190133.github.io/d51ad12d879175a961fdcff7cbaa14c0.png">
-<meta property="og:image" content="http://kw1649190133.github.io/68041d68106f8f0850407551624a8021.png">
-<meta property="og:image" content="http://kw1649190133.github.io/cdfadc4b725fa29ded30275735de2e4e.png">
-<meta property="og:image" content="http://kw1649190133.github.io/79efcbfbc046d7598d6eedd8adfa9a8d.png">
-<meta property="og:image" content="http://kw1649190133.github.io/90cceaca44d93e55b0cee5e476252a01.png">
-<meta property="og:image" content="http://kw1649190133.github.io/e12569726acac0abaff41fff9753f135.png">
-<meta property="og:image" content="http://kw1649190133.github.io/bed3413cf313ddb72e98d9bf9ddfcc5a.png">
-<meta property="og:image" content="http://kw1649190133.github.io/788de3e6e217d3e6e1bea43d1f26a375.png">
-<meta property="og:image" content="http://kw1649190133.github.io/c460e7a986cdbc8eeed93ab38d5e36be.png">
-<meta property="og:image" content="http://kw1649190133.github.io/86248fd31170244d30dfd9f6bd33858f.png">
-<meta property="og:image" content="http://kw1649190133.github.io/1a32601f8e63697c34fc5869eb587217.png">
-<meta property="og:image" content="http://kw1649190133.github.io/90bce19976b44644207415e171089e4f.png">
-<meta property="og:image" content="http://kw1649190133.github.io/5b418d5444be5465e98f0bb7d73504ea.png">
-<meta property="og:image" content="http://kw1649190133.github.io/413c3f8042bfb2dc59f9b83f85f2e514.png">
-<meta property="og:image" content="http://kw1649190133.github.io/e6cd9458d3cdc0c34df9e8eb08090241.png">
-<meta property="og:image" content="http://kw1649190133.github.io/f9106d2918794eb90d90af7e222e9a32.png">
-<meta property="og:image" content="http://kw1649190133.github.io/740c18d8156f2884258ab0a510249439.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/01/15/%E9%80%9A%E8%BF%87WSL%E8%BF%90%E8%A1%8CPX4%E7%9A%84AirSim%E4%BB%BF%E7%9C%9F/a045f54c9d094c7639f7a6b9b7a5923f.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/01/15/%E9%80%9A%E8%BF%87WSL%E8%BF%90%E8%A1%8CPX4%E7%9A%84AirSim%E4%BB%BF%E7%9C%9F/16c371eec46a40e0ae99aad18e95e7a7.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/01/15/%E9%80%9A%E8%BF%87WSL%E8%BF%90%E8%A1%8CPX4%E7%9A%84AirSim%E4%BB%BF%E7%9C%9F/d4a5eeea2931d7a3a79cbfa8f94494dc.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/01/15/%E9%80%9A%E8%BF%87WSL%E8%BF%90%E8%A1%8CPX4%E7%9A%84AirSim%E4%BB%BF%E7%9C%9F/5a7520ec0872b15156704390a4290190.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/01/15/%E9%80%9A%E8%BF%87WSL%E8%BF%90%E8%A1%8CPX4%E7%9A%84AirSim%E4%BB%BF%E7%9C%9F/f40e5c24e550a11c671794686a162a37.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/01/15/%E9%80%9A%E8%BF%87WSL%E8%BF%90%E8%A1%8CPX4%E7%9A%84AirSim%E4%BB%BF%E7%9C%9F/bc87c211c9e6e893916161ebce78aa19.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/01/15/%E9%80%9A%E8%BF%87WSL%E8%BF%90%E8%A1%8CPX4%E7%9A%84AirSim%E4%BB%BF%E7%9C%9F/d51ad12d879175a961fdcff7cbaa14c0.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/01/15/%E9%80%9A%E8%BF%87WSL%E8%BF%90%E8%A1%8CPX4%E7%9A%84AirSim%E4%BB%BF%E7%9C%9F/68041d68106f8f0850407551624a8021.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/01/15/%E9%80%9A%E8%BF%87WSL%E8%BF%90%E8%A1%8CPX4%E7%9A%84AirSim%E4%BB%BF%E7%9C%9F/cdfadc4b725fa29ded30275735de2e4e.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/01/15/%E9%80%9A%E8%BF%87WSL%E8%BF%90%E8%A1%8CPX4%E7%9A%84AirSim%E4%BB%BF%E7%9C%9F/79efcbfbc046d7598d6eedd8adfa9a8d.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/01/15/%E9%80%9A%E8%BF%87WSL%E8%BF%90%E8%A1%8CPX4%E7%9A%84AirSim%E4%BB%BF%E7%9C%9F/90cceaca44d93e55b0cee5e476252a01.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/01/15/%E9%80%9A%E8%BF%87WSL%E8%BF%90%E8%A1%8CPX4%E7%9A%84AirSim%E4%BB%BF%E7%9C%9F/e12569726acac0abaff41fff9753f135.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/01/15/%E9%80%9A%E8%BF%87WSL%E8%BF%90%E8%A1%8CPX4%E7%9A%84AirSim%E4%BB%BF%E7%9C%9F/bed3413cf313ddb72e98d9bf9ddfcc5a.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/01/15/%E9%80%9A%E8%BF%87WSL%E8%BF%90%E8%A1%8CPX4%E7%9A%84AirSim%E4%BB%BF%E7%9C%9F/788de3e6e217d3e6e1bea43d1f26a375.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/01/15/%E9%80%9A%E8%BF%87WSL%E8%BF%90%E8%A1%8CPX4%E7%9A%84AirSim%E4%BB%BF%E7%9C%9F/c460e7a986cdbc8eeed93ab38d5e36be.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/01/15/%E9%80%9A%E8%BF%87WSL%E8%BF%90%E8%A1%8CPX4%E7%9A%84AirSim%E4%BB%BF%E7%9C%9F/86248fd31170244d30dfd9f6bd33858f.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/01/15/%E9%80%9A%E8%BF%87WSL%E8%BF%90%E8%A1%8CPX4%E7%9A%84AirSim%E4%BB%BF%E7%9C%9F/1a32601f8e63697c34fc5869eb587217.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/01/15/%E9%80%9A%E8%BF%87WSL%E8%BF%90%E8%A1%8CPX4%E7%9A%84AirSim%E4%BB%BF%E7%9C%9F/90bce19976b44644207415e171089e4f.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/01/15/%E9%80%9A%E8%BF%87WSL%E8%BF%90%E8%A1%8CPX4%E7%9A%84AirSim%E4%BB%BF%E7%9C%9F/5b418d5444be5465e98f0bb7d73504ea.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/01/15/%E9%80%9A%E8%BF%87WSL%E8%BF%90%E8%A1%8CPX4%E7%9A%84AirSim%E4%BB%BF%E7%9C%9F/413c3f8042bfb2dc59f9b83f85f2e514.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/01/15/%E9%80%9A%E8%BF%87WSL%E8%BF%90%E8%A1%8CPX4%E7%9A%84AirSim%E4%BB%BF%E7%9C%9F/e6cd9458d3cdc0c34df9e8eb08090241.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/01/15/%E9%80%9A%E8%BF%87WSL%E8%BF%90%E8%A1%8CPX4%E7%9A%84AirSim%E4%BB%BF%E7%9C%9F/f9106d2918794eb90d90af7e222e9a32.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/01/15/%E9%80%9A%E8%BF%87WSL%E8%BF%90%E8%A1%8CPX4%E7%9A%84AirSim%E4%BB%BF%E7%9C%9F/740c18d8156f2884258ab0a510249439.png">
 <meta property="article:published_time" content="2026-01-15T08:04:31.000Z">
-<meta property="article:modified_time" content="2026-01-15T08:07:20.851Z">
+<meta property="article:modified_time" content="2026-01-15T08:33:32.351Z">
 <meta property="article:author" content="Kwindy">
 <meta property="article:tag" content="虚幻引擎">
 <meta property="article:tag" content="Linux">
@@ -60,7 +60,7 @@
 <meta property="article:tag" content="C++">
 <meta property="article:tag" content="Unreal">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://kw1649190133.github.io/a045f54c9d094c7639f7a6b9b7a5923f.png">
+<meta name="twitter:image" content="http://kw1649190133.github.io/2026/01/15/%E9%80%9A%E8%BF%87WSL%E8%BF%90%E8%A1%8CPX4%E7%9A%84AirSim%E4%BB%BF%E7%9C%9F/a045f54c9d094c7639f7a6b9b7a5923f.png">
   
   
   
@@ -128,7 +128,7 @@
   <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand" href="/">
-      <strong>Fluid</strong>
+      <strong>天际边缘 Edge of the sky </strong>
     </a>
 
     <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
@@ -319,20 +319,20 @@
 <ol>
 <li><p>重启计算机，F2进入BIOS系统（不同品牌有区别），一般会在CPU设置里，找到并启动CPU虚拟化。<br><code>Virtualization Technology -&gt; Enabled</code></p>
 </li>
-<li><p>在控制面板-程序-启用或关闭windows功能中，找到适用于Linux的windows子系统并打开。如果要使用虚拟机还需要打开虚拟机平台和Hyper-V，但WSL好像不需要这些选项。（PS后面在台式机尝试了一次，好像又不开不行）<br><img src="/a045f54c9d094c7639f7a6b9b7a5923f.png" srcset="/img/loading.gif" lazyload alt="a045f54c9d094c7639f7a6b9b7a5923f.png"></p>
+<li><p>在控制面板-程序-启用或关闭windows功能中，找到适用于Linux的windows子系统并打开。如果要使用虚拟机还需要打开虚拟机平台和Hyper-V，但WSL好像不需要这些选项。（PS后面在台式机尝试了一次，好像又不开不行）<br><img src="/2026/01/15/%E9%80%9A%E8%BF%87WSL%E8%BF%90%E8%A1%8CPX4%E7%9A%84AirSim%E4%BB%BF%E7%9C%9F/a045f54c9d094c7639f7a6b9b7a5923f.png" srcset="/img/loading.gif" lazyload alt="a045f54c9d094c7639f7a6b9b7a5923f.png"></p>
 </li>
 <li><p>在Microsoft Store中搜索Ubuntu，选择需要的版本安装。一般常用比较稳定的20.04或者22.04，安装完成后会自动启动。</p>
 </li>
 </ol>
 <h2 id="位置迁移"><a href="#位置迁移" class="headerlink" title="位置迁移"></a>位置迁移</h2><p>WSL的默认安装位置是C盘，为了避免系统盘的内存占用，最好是进行一个迁移。<br><code>wsl -l -v</code> 查看当前wsl系统的列表和版本<br><code>wsl --export Ubuntu-22.04 D:\WSL\Ubuntu\ubuntu_backup.tar</code> 打包迁移指定的wsl系统<br><code>wsl --unregister Ubuntu-22.04</code> 注销原系统<br><code>wsl --import Ubuntu2204 D:\WSL\Ubuntu D:\WSL\Ubuntu\ubuntu_backup.tar --version 2</code> 在新的位置释放压缩包<br><code>ubuntu2204 config --default-user kwindy</code> 重置默认用户（重要）<br>重置默认用户后会自动进入WSL</p>
-<p><img src="/16c371eec46a40e0ae99aad18e95e7a7.png" srcset="/img/loading.gif" lazyload alt="16c371eec46a40e0ae99aad18e95e7a7.png"></p>
+<p><img src="/2026/01/15/%E9%80%9A%E8%BF%87WSL%E8%BF%90%E8%A1%8CPX4%E7%9A%84AirSim%E4%BB%BF%E7%9C%9F/16c371eec46a40e0ae99aad18e95e7a7.png" srcset="/img/loading.gif" lazyload alt="16c371eec46a40e0ae99aad18e95e7a7.png"></p>
 <p>使用指定用户启动<br><code>wsl -d Ubuntu-22.04 -u kwindy</code><br>到这里安装就结束了，但因为后续我还要使用PX4和QGC，所以后面还需要配置一下图形和端口方面的问题。</p>
 <h2 id="WSL下的常用操作"><a href="#WSL下的常用操作" class="headerlink" title="WSL下的常用操作"></a>WSL下的常用操作</h2><p>Linux命令行的基本操作和在虚拟机中是类似的。但由于WSL和windows实际上共享一个存储空间，在命令行中可以直接访问window硬盘。</p>
 <p>使用<code>cd /mnt/d</code> 来访问，用<code>cp /mnt/d/px4.zip ./</code> 可以将windows的文件复制到根目录下。</p>
 <p><code>unzip px4.zip</code> 解压缩包<br>解压文件的程序还得自己安<code>sudo apt install unzip</code><br>重命名方法 <code>mv 要重命名的文件夹路径 新的文件夹路径</code></p>
 <h2 id="配置图形环境"><a href="#配置图形环境" class="headerlink" title="配置图形环境"></a>配置图形环境</h2><p>⚠️如果不用图像<br>WSL虽然基本上是支持Linux功能的，但AirSim涉及到一些图形画面，以及需要打开QGC来进行控制。WSL2 默认 不包含完整的图形驱动栈，虽然可以配合 X Server 显示窗口，但缺少必要的 OpenGL 库。</p>
 <h3 id="window端配置"><a href="#window端配置" class="headerlink" title="window端配置"></a>window端配置</h3><p>安装VcXsrv<br>可以从官网或其他网站获取。<a target="_blank" rel="noopener" href="https://sourceforge.net/projects/vcxsrv/">https://sourceforge.net/projects/vcxsrv/</a><br>安装完成后从桌面启动XLaunch，选择配置：<br>Step 1: Select display settings<br>✅ Multiple windows<br>Step 2: Client startup<br>✅ Start no client<br>Step 3: Extra settings<br>✅ Clipboard（启用剪贴板共享）<br>✅ Primary Selection（可选）<br>✅ Native OpenGL（⚠️ 重要！用于 Gazebo/JMavSim 渲染）<br>✅ Disable access control<br>Step 4: Finish<br>✅ Save configuration（保存到桌面方便下次启动）</p>
-<p>一般都是默认配置下一步，只有最后阶段Disable access control默认是不选择的，需要选上。<br><img src="/d4a5eeea2931d7a3a79cbfa8f94494dc.png" srcset="/img/loading.gif" lazyload alt="d4a5eeea2931d7a3a79cbfa8f94494dc.png"></p>
+<p>一般都是默认配置下一步，只有最后阶段Disable access control默认是不选择的，需要选上。<br><img src="/2026/01/15/%E9%80%9A%E8%BF%87WSL%E8%BF%90%E8%A1%8CPX4%E7%9A%84AirSim%E4%BB%BF%E7%9C%9F/d4a5eeea2931d7a3a79cbfa8f94494dc.png" srcset="/img/loading.gif" lazyload alt="d4a5eeea2931d7a3a79cbfa8f94494dc.png"></p>
 <h3 id="WSL端配置"><a href="#WSL端配置" class="headerlink" title="WSL端配置"></a>WSL端配置</h3><ol>
 <li><p>安装opengl</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">sudo apt install -y libgl1-mesa-glx libgl1-mesa-dri libopengl0 libegl1-mesa<br><span class="hljs-comment"># 验证</span><br>glxinfo | grep <span class="hljs-string">&quot;OpenGL version&quot;</span>  <span class="hljs-comment"># 若未安装 glxinfo，先 sudo apt install mesa-util</span><br></code></pre></td></tr></table></figure></li>
@@ -351,20 +351,20 @@
 <p>解决办法</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 临时</span><br><span class="hljs-built_in">export</span> DISPLAY=172.31.208.1:0.0<br><br><span class="hljs-comment"># 长期自动方案</span><br><span class="hljs-comment"># 1、打开bashrc文件</span><br>nano ~/.bashrc<br><br><span class="hljs-comment"># 2、将下面代码粘贴到末尾</span><br><span class="hljs-comment"># 通过路由表获取默认网关（即 Windows 主机）</span><br><span class="hljs-built_in">export</span> WIN_HOST=$(ip route show default | awk <span class="hljs-string">&#x27;&#123;print $3&#125;&#x27;</span>)<br><span class="hljs-built_in">export</span> DISPLAY=<span class="hljs-variable">$WIN_HOST</span>:0.0<br><span class="hljs-comment"># 如果失败，回退到 resolv.conf</span><br><span class="hljs-keyword">if</span> [ -z <span class="hljs-string">&quot;<span class="hljs-variable">$WIN_HOST</span>&quot;</span> ] || ! nc -z <span class="hljs-variable">$WIN_HOST</span> 6000; <span class="hljs-keyword">then</span><br>    <span class="hljs-built_in">export</span> DISPLAY=$(<span class="hljs-built_in">cat</span> /etc/resolv.conf | grep nameserver | awk <span class="hljs-string">&#x27;&#123;print $2&#125;&#x27;</span>):0.0<br><span class="hljs-keyword">fi</span><br><br><span class="hljs-comment"># 3、更新文件</span><br><span class="hljs-built_in">source</span> ～/.bashrc<br></code></pre></td></tr></table></figure>
 
-<p><img src="/5a7520ec0872b15156704390a4290190.png" srcset="/img/loading.gif" lazyload alt="5a7520ec0872b15156704390a4290190.png"></p>
+<p><img src="/2026/01/15/%E9%80%9A%E8%BF%87WSL%E8%BF%90%E8%A1%8CPX4%E7%9A%84AirSim%E4%BB%BF%E7%9C%9F/5a7520ec0872b15156704390a4290190.png" srcset="/img/loading.gif" lazyload alt="5a7520ec0872b15156704390a4290190.png"></p>
 <h1 id="AirSim安装过程"><a href="#AirSim安装过程" class="headerlink" title="AirSim安装过程"></a>AirSim安装过程</h1><h2 id="简单介绍"><a href="#简单介绍" class="headerlink" title="简单介绍"></a>简单介绍</h2><p>AirSim 是一个开源的仿真平台，主要用于无人机和自动驾驶汽车的仿真测试，基于Unreal Engine开发，提供高保真的视觉渲染和物理模拟。‌它支持多种传感器模型（如摄像头、IMU、GPS）和编程语言接口（如Python、C++），适用于研究与开发场景。‌</p>
 <p>AirSim 已停止维护，仅支持到UE4<br>文档：<a target="_blank" rel="noopener" href="https://microsoft.github.io/AirSim/">https://microsoft.github.io/AirSim/</a><br>Colosseum 支持UE5<br>仓库：<a target="_blank" rel="noopener" href="https://github.com/CodexLabsLLC/Colosseum">https://github.com/CodexLabsLLC/Colosseum</a><br>文档：<a target="_blank" rel="noopener" href="https://codexlabsllc.github.io/Colosseum/">https://codexlabsllc.github.io/Colosseum/</a><br>另外，AirSim也有一定的局限性，好像目前已经不再继续更新了，据说导航和控制用gazebo，做强化学习用isaaclab。</p>
 <h2 id="前期准备"><a href="#前期准备" class="headerlink" title="前期准备"></a>前期准备</h2><ol>
 <li>安装Epic game游戏平台。这个平台已经将游戏和虚幻引擎开发绑定在一起了。</li>
-<li>在epic中下载虚幻引擎的4代版本<br><img src="/f40e5c24e550a11c671794686a162a37.png" srcset="/img/loading.gif" lazyload alt="f40e5c24e550a11c671794686a162a37.png"></li>
+<li>在epic中下载虚幻引擎的4代版本<br><img src="/2026/01/15/%E9%80%9A%E8%BF%87WSL%E8%BF%90%E8%A1%8CPX4%E7%9A%84AirSim%E4%BB%BF%E7%9C%9F/f40e5c24e550a11c671794686a162a37.png" srcset="/img/loading.gif" lazyload alt="f40e5c24e550a11c671794686a162a37.png"></li>
 <li>安装VisualStudio 2022。注意是2022版，安装2026等其他版本可能会导致AirSim编译失败。安装时只需要勾选C++桌面开发组件，NET framework版本需要注意兼容，以及window 10/11 SDK（一般会默认选择）。</li>
 </ol>
 <h2 id="编译AirSim"><a href="#编译AirSim" class="headerlink" title="编译AirSim"></a>编译AirSim</h2><ol>
 <li>去网站下载AirSim的项目文件<br><a target="_blank" rel="noopener" href="https://microsoft.github.io/AirSim/">https://microsoft.github.io/AirSim/</a></li>
-<li>搜索Developer Command Prompt for VS 2022，打开安装好的VisualStudio2022环境命令行，cd指令进入AirSim文件夹，执行<code>build.cmd</code>指令，开始编译，正常编译时间三到五分钟。<br>编译过程：<br><img src="/bc87c211c9e6e893916161ebce78aa19.png" srcset="/img/loading.gif" lazyload alt="bc87c211c9e6e893916161ebce78aa19.png"></li>
+<li>搜索Developer Command Prompt for VS 2022，打开安装好的VisualStudio2022环境命令行，cd指令进入AirSim文件夹，执行<code>build.cmd</code>指令，开始编译，正常编译时间三到五分钟。<br>编译过程：<br><img src="/2026/01/15/%E9%80%9A%E8%BF%87WSL%E8%BF%90%E8%A1%8CPX4%E7%9A%84AirSim%E4%BB%BF%E7%9C%9F/bc87c211c9e6e893916161ebce78aa19.png" srcset="/img/loading.gif" lazyload alt="bc87c211c9e6e893916161ebce78aa19.png"></li>
 </ol>
 <h2 id="常见错误"><a href="#常见错误" class="headerlink" title="常见错误"></a>常见错误</h2><h3 id="编译AirSim时报错"><a href="#编译AirSim时报错" class="headerlink" title="编译AirSim时报错"></a>编译AirSim时报错</h3><p>错误：MSBUILD：error MSB1009：项目文件不存在<br>解决：visual studio版本太高，组件不匹配，重装2022版，或者安装官方说明支持的2019。</p>
-<h3 id="编译最后的示例项目失败"><a href="#编译最后的示例项目失败" class="headerlink" title="编译最后的示例项目失败"></a>编译最后的示例项目失败</h3><p>错误：找不到项目文件。<br><img src="/d51ad12d879175a961fdcff7cbaa14c0.png" srcset="/img/loading.gif" lazyload alt="d51ad12d879175a961fdcff7cbaa14c0.png"></p>
+<h3 id="编译最后的示例项目失败"><a href="#编译最后的示例项目失败" class="headerlink" title="编译最后的示例项目失败"></a>编译最后的示例项目失败</h3><p>错误：找不到项目文件。<br><img src="/2026/01/15/%E9%80%9A%E8%BF%87WSL%E8%BF%90%E8%A1%8CPX4%E7%9A%84AirSim%E4%BB%BF%E7%9C%9F/d51ad12d879175a961fdcff7cbaa14c0.png" srcset="/img/loading.gif" lazyload alt="d51ad12d879175a961fdcff7cbaa14c0.png"></p>
 <p>问题原因：虚幻引擎没有关联，重启Epic game就可以，启动后会自动提示是否关联。<br>前面的AirSim组件已经build完成，只是项目示例的问题。</p>
 <p>参考：<a target="_blank" rel="noopener" href="https://github.com/microsoft/AirSim/issues/5056">https://github.com/microsoft/AirSim/issues/5056</a></p>
 <ol>
@@ -376,10 +376,10 @@
 <p>完成后重新执行<code>build.cmd</code>，和<code>AirSim\Unreal\Environments\Blocks\update_from_git.bat</code></p>
 <h2 id="启动进入界面"><a href="#启动进入界面" class="headerlink" title="启动进入界面"></a>启动进入界面</h2><p>成功编译之后，双击启动<code>AirSim\Unreal\Environments\Blocks\Blocks.sln</code>，第一次可能需要关联visual studio</p>
 <ol>
-<li>切换配置Debuggame Editor （调试）<br> <img src="/68041d68106f8f0850407551624a8021.png" srcset="/img/loading.gif" lazyload alt="68041d68106f8f0850407551624a8021.png"></li>
-<li>右键Blocks设为启动项目<br> <img src="/cdfadc4b725fa29ded30275735de2e4e.png" srcset="/img/loading.gif" lazyload alt="cdfadc4b725fa29ded30275735de2e4e.png"></li>
+<li>切换配置Debuggame Editor （调试）<br> <img src="/2026/01/15/%E9%80%9A%E8%BF%87WSL%E8%BF%90%E8%A1%8CPX4%E7%9A%84AirSim%E4%BB%BF%E7%9C%9F/68041d68106f8f0850407551624a8021.png" srcset="/img/loading.gif" lazyload alt="68041d68106f8f0850407551624a8021.png"></li>
+<li>右键Blocks设为启动项目<br> <img src="/2026/01/15/%E9%80%9A%E8%BF%87WSL%E8%BF%90%E8%A1%8CPX4%E7%9A%84AirSim%E4%BB%BF%E7%9C%9F/cdfadc4b725fa29ded30275735de2e4e.png" srcset="/img/loading.gif" lazyload alt="cdfadc4b725fa29ded30275735de2e4e.png"></li>
 <li>运行本地windows调试</li>
-<li>成功进入虚幻引擎，再点击虚幻引擎的运行。<br> <img src="/79efcbfbc046d7598d6eedd8adfa9a8d.png" srcset="/img/loading.gif" lazyload alt="79efcbfbc046d7598d6eedd8adfa9a8d.png"></li>
+<li>成功进入虚幻引擎，再点击虚幻引擎的运行。<br> <img src="/2026/01/15/%E9%80%9A%E8%BF%87WSL%E8%BF%90%E8%A1%8CPX4%E7%9A%84AirSim%E4%BB%BF%E7%9C%9F/79efcbfbc046d7598d6eedd8adfa9a8d.png" srcset="/img/loading.gif" lazyload alt="79efcbfbc046d7598d6eedd8adfa9a8d.png"></li>
 </ol>
 <p>安装完成，AirSim内置了简易操控程序，此时可以直接插上游戏手柄，用手柄摇杆直接控制无人机，但这么做只是玩游戏，真正的无人机控制应该由PX4完成，接下来要解决的是AirSim与PX4环境的联动问题了。</p>
 <h1 id="使用PX4控制AimSim仿真"><a href="#使用PX4控制AimSim仿真" class="headerlink" title="使用PX4控制AimSim仿真"></a>使用PX4控制AimSim仿真</h1><h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>核心原理：分布式 SITL 仿真架构<br>PX4 的 Software-In-The-Loop (SITL) 设计允许飞控逻辑运行在一台机器上，而物理/视觉仿真器（如 AirSim）运行在另一台机器上，两者通过 TCP/UDP 协议通信。<br>| 组件 | 角色 | 通信方式 | 端口 | 方向 |<br>|——|——|——–|——|——|<br>| PX4 SITL | 飞控仿真核心<br>（姿态控制、导航、状态估计） | TCP Server | <code>4560</code> | 被动监听，等待 AirSim 连接 |<br>| AirSim | 物理/传感器仿真器<br>（提供 IMU、GPS、气压计、视觉等数据） | TCP Client | 连接 <code>4560</code> | 主动发起连接 到 PX4 |</p>
@@ -391,7 +391,7 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cd</span> PX4-Autopilot/<br><span class="hljs-comment"># 建议先删除之前编译的目录，避免路径问题 </span><br><span class="hljs-built_in">rm</span> -rf ./build<br><span class="hljs-comment"># 数据更新</span><br>git submodule update --init --recursive<br><span class="hljs-comment"># 自动安装环境。（区分大小写）</span><br>./Tools/setup/ubuntu.sh<br></code></pre></td></tr></table></figure>
 
 <h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><p>重启并重新进入px4目录，编译一个简单的演示程序<br><code>make px4_sitl_default jmavsim</code><br>如果是在WSL端运行，需要先测试画面可用，需要X11环境支持。</p>
-<p>jmavsim启动成功<br><img src="/90cceaca44d93e55b0cee5e476252a01.png" srcset="/img/loading.gif" lazyload alt="90cceaca44d93e55b0cee5e476252a01.png"></p>
+<p>jmavsim启动成功<br><img src="/2026/01/15/%E9%80%9A%E8%BF%87WSL%E8%BF%90%E8%A1%8CPX4%E7%9A%84AirSim%E4%BB%BF%E7%9C%9F/90cceaca44d93e55b0cee5e476252a01.png" srcset="/img/loading.gif" lazyload alt="90cceaca44d93e55b0cee5e476252a01.png"></p>
 <p>如果jmavsim无法运行，可以先测试纯逻辑模式是否可以运行，再慢慢去排除图形渲染和端口问题。<br><code>make px4_sitl_default none</code></p>
 <p>几种启动的区别</p>
 <ul>
@@ -419,10 +419,10 @@
 
 <h3 id="启动PX4和AirSim连接"><a href="#启动PX4和AirSim连接" class="headerlink" title="启动PX4和AirSim连接"></a>启动PX4和AirSim连接</h3><p>通过visual studo启动虚幻引擎编辑环境，运行环境，看到等待TCP连接的提示。<br>确认地址配置无误，启动PX4外部连接模式。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">make px4_sitl_default none_iris<br></code></pre></td></tr></table></figure>
-<p>提示realy for takeoff则连接成功。在WSL新开一个窗口，可以使用QGC控制AirSim的无人机了。<br><img src="/e12569726acac0abaff41fff9753f135.png" srcset="/img/loading.gif" lazyload alt="e12569726acac0abaff41fff9753f135.png"></p>
+<p>提示realy for takeoff则连接成功。在WSL新开一个窗口，可以使用QGC控制AirSim的无人机了。<br><img src="/2026/01/15/%E9%80%9A%E8%BF%87WSL%E8%BF%90%E8%A1%8CPX4%E7%9A%84AirSim%E4%BB%BF%E7%9C%9F/e12569726acac0abaff41fff9753f135.png" srcset="/img/loading.gif" lazyload alt="e12569726acac0abaff41fff9753f135.png"></p>
 <p>关于启动顺序有一些说法，需要先启动UE再启动PX4，并且断开之后默认是没有重连机制的。</p>
 <h2 id="关于流畅度"><a href="#关于流畅度" class="headerlink" title="关于流畅度"></a>关于流畅度</h2><p>因为测试中我们的控制是通过QGC进行的，当虚幻引擎被置为后台时会默认进行降帧，减少GPU占用，让画面变卡，如有需要可以在编辑——编辑器偏好设置——通用——性能中，取消置于背景时自动减少GPU占用。</p>
-<h2 id="无法启动的问题"><a href="#无法启动的问题" class="headerlink" title="无法启动的问题"></a>无法启动的问题</h2><p>WSL有可能会遇到jmavsim都无法启动的问题，如果排除了X11图像环境安装，<br>尝试PING主机WSL的IP是成功的，但是每次运行都会卡在<code>INFO  [simulator] Waiting for simulator to accept connection on TCP port 4560</code>，尝试<code>telnet localhost 4560</code>无法访问4560端口。<br><img src="/bed3413cf313ddb72e98d9bf9ddfcc5a.png" srcset="/img/loading.gif" lazyload alt="bed3413cf313ddb72e98d9bf9ddfcc5a.png"></p>
+<h2 id="无法启动的问题"><a href="#无法启动的问题" class="headerlink" title="无法启动的问题"></a>无法启动的问题</h2><p>WSL有可能会遇到jmavsim都无法启动的问题，如果排除了X11图像环境安装，<br>尝试PING主机WSL的IP是成功的，但是每次运行都会卡在<code>INFO  [simulator] Waiting for simulator to accept connection on TCP port 4560</code>，尝试<code>telnet localhost 4560</code>无法访问4560端口。<br><img src="/2026/01/15/%E9%80%9A%E8%BF%87WSL%E8%BF%90%E8%A1%8CPX4%E7%9A%84AirSim%E4%BB%BF%E7%9C%9F/bed3413cf313ddb72e98d9bf9ddfcc5a.png" srcset="/img/loading.gif" lazyload alt="bed3413cf313ddb72e98d9bf9ddfcc5a.png"></p>
 <p>排除方法：</p>
 <ul>
 <li>可以尝试关闭防火墙，但一般不是防火墙原因。</li>
@@ -434,18 +434,18 @@
 <h1 id="AirSim场景设置"><a href="#AirSim场景设置" class="headerlink" title="AirSim场景设置"></a>AirSim场景设置</h1><p>AirSim中自带了一个Block场景，但在虚幻引擎商店中可以找到一些付费或免费的资源，区分工程类 Engine 和资源类 Project，工程类可以直接加载打开，资源类需要下载后自己添加到项目中。并且需要注意资源包的兼容性问题，资源包有些能兼容UE4，有些仅支持UE5。</p>
 <h2 id="Unreal-Engine入门"><a href="#Unreal-Engine入门" class="headerlink" title="Unreal Engine入门"></a>Unreal Engine入门</h2><p>点击右上角可以启动虚幻引擎编辑器，可以选择进入历史项目或新项目</p>
 <p>新项目类型选择游戏，空白模板，选择蓝图模式（默认设置），修改项目存储位置。蓝图模式对不熟悉C++环境的人来说比较友好。</p>
-<p><img src="/788de3e6e217d3e6e1bea43d1f26a375.png" srcset="/img/loading.gif" lazyload alt="788de3e6e217d3e6e1bea43d1f26a375.png"></p>
-<p>场景加载成功后，可以看到编辑器界面。下面是资源管理器，左边可以添加物体，右边可以查看列表和设置属性。首先大致理解场景包是如何构成的，它包含场景中各种物体的模型、表面材质包、环境背景音、天空盒等等。其中汇总描述整个场景的文件，一般是关卡（level）或者地图（map），通过过滤器找到之后双击就可以在编辑画面加载。（内存开始大量占用）<br><img src="/c460e7a986cdbc8eeed93ab38d5e36be.png" srcset="/img/loading.gif" lazyload alt="c460e7a986cdbc8eeed93ab38d5e36be.png"></p>
-<h2 id="创建C-类"><a href="#创建C-类" class="headerlink" title="创建C++类"></a>创建C++类</h2><p>主菜单——文件——生成C++类<br>新建C++类，选择无类型。<br><img src="/86248fd31170244d30dfd9f6bd33858f.png" srcset="/img/loading.gif" lazyload alt="86248fd31170244d30dfd9f6bd33858f.png"><br>创建成功后，会自动弹出visual studio，打开新创建的cpp文件。目前还不需要进行编辑，创建C++类主要是为了生成VS的工程文件sln，便于从VS进入虚幻引擎环境。<br><img src="/1a32601f8e63697c34fc5869eb587217.png" srcset="/img/loading.gif" lazyload alt="1a32601f8e63697c34fc5869eb587217.png"></p>
-<h2 id="添加素材"><a href="#添加素材" class="headerlink" title="添加素材"></a>添加素材</h2><p>在Epic Games中选择Fab，可以搜索Rura Australia，或者其他的免费素材。以前是集合在虚幻引擎页面的直接就可以插入工程，现在改了版本，单独开了一个素材商店，免费素材也需要先添加到购物车，添加到库，再添加到工程。<br><img src="/90bce19976b44644207415e171089e4f.png" srcset="/img/loading.gif" lazyload alt="90bce19976b44644207415e171089e4f.png"><br>添加资源之后，可以在内容浏览器看到Rura Australia文件夹，里面包含了从场景到物体到材质的各种资源。<br>添加过滤器——关卡（level），双击或者按右键就会直接加载。<br><img src="/5b418d5444be5465e98f0bb7d73504ea.png" srcset="/img/loading.gif" lazyload alt="5b418d5444be5465e98f0bb7d73504ea.png"></p>
-<p>挑个好位置，把出生点拖出来放上去。保存。<br><img src="/413c3f8042bfb2dc59f9b83f85f2e514.png" srcset="/img/loading.gif" lazyload alt="413c3f8042bfb2dc59f9b83f85f2e514.png"></p>
-<p>如果需要将当前关卡置为项目启动默认关卡，在主菜单——编辑——项目设置中进行修改。在地图与模式中可以设置编辑器和游戏启动时的默认地图。<br><img src="/e6cd9458d3cdc0c34df9e8eb08090241.png" srcset="/img/loading.gif" lazyload alt="e6cd9458d3cdc0c34df9e8eb08090241.png"></p>
+<p><img src="/2026/01/15/%E9%80%9A%E8%BF%87WSL%E8%BF%90%E8%A1%8CPX4%E7%9A%84AirSim%E4%BB%BF%E7%9C%9F/788de3e6e217d3e6e1bea43d1f26a375.png" srcset="/img/loading.gif" lazyload alt="788de3e6e217d3e6e1bea43d1f26a375.png"></p>
+<p>场景加载成功后，可以看到编辑器界面。下面是资源管理器，左边可以添加物体，右边可以查看列表和设置属性。首先大致理解场景包是如何构成的，它包含场景中各种物体的模型、表面材质包、环境背景音、天空盒等等。其中汇总描述整个场景的文件，一般是关卡（level）或者地图（map），通过过滤器找到之后双击就可以在编辑画面加载。（内存开始大量占用）<br><img src="/2026/01/15/%E9%80%9A%E8%BF%87WSL%E8%BF%90%E8%A1%8CPX4%E7%9A%84AirSim%E4%BB%BF%E7%9C%9F/c460e7a986cdbc8eeed93ab38d5e36be.png" srcset="/img/loading.gif" lazyload alt="c460e7a986cdbc8eeed93ab38d5e36be.png"></p>
+<h2 id="创建C-类"><a href="#创建C-类" class="headerlink" title="创建C++类"></a>创建C++类</h2><p>主菜单——文件——生成C++类<br>新建C++类，选择无类型。<br><img src="/2026/01/15/%E9%80%9A%E8%BF%87WSL%E8%BF%90%E8%A1%8CPX4%E7%9A%84AirSim%E4%BB%BF%E7%9C%9F/86248fd31170244d30dfd9f6bd33858f.png" srcset="/img/loading.gif" lazyload alt="86248fd31170244d30dfd9f6bd33858f.png"><br>创建成功后，会自动弹出visual studio，打开新创建的cpp文件。目前还不需要进行编辑，创建C++类主要是为了生成VS的工程文件sln，便于从VS进入虚幻引擎环境。<br><img src="/2026/01/15/%E9%80%9A%E8%BF%87WSL%E8%BF%90%E8%A1%8CPX4%E7%9A%84AirSim%E4%BB%BF%E7%9C%9F/1a32601f8e63697c34fc5869eb587217.png" srcset="/img/loading.gif" lazyload alt="1a32601f8e63697c34fc5869eb587217.png"></p>
+<h2 id="添加素材"><a href="#添加素材" class="headerlink" title="添加素材"></a>添加素材</h2><p>在Epic Games中选择Fab，可以搜索Rura Australia，或者其他的免费素材。以前是集合在虚幻引擎页面的直接就可以插入工程，现在改了版本，单独开了一个素材商店，免费素材也需要先添加到购物车，添加到库，再添加到工程。<br><img src="/2026/01/15/%E9%80%9A%E8%BF%87WSL%E8%BF%90%E8%A1%8CPX4%E7%9A%84AirSim%E4%BB%BF%E7%9C%9F/90bce19976b44644207415e171089e4f.png" srcset="/img/loading.gif" lazyload alt="90bce19976b44644207415e171089e4f.png"><br>添加资源之后，可以在内容浏览器看到Rura Australia文件夹，里面包含了从场景到物体到材质的各种资源。<br>添加过滤器——关卡（level），双击或者按右键就会直接加载。<br><img src="/2026/01/15/%E9%80%9A%E8%BF%87WSL%E8%BF%90%E8%A1%8CPX4%E7%9A%84AirSim%E4%BB%BF%E7%9C%9F/5b418d5444be5465e98f0bb7d73504ea.png" srcset="/img/loading.gif" lazyload alt="5b418d5444be5465e98f0bb7d73504ea.png"></p>
+<p>挑个好位置，把出生点拖出来放上去。保存。<br><img src="/2026/01/15/%E9%80%9A%E8%BF%87WSL%E8%BF%90%E8%A1%8CPX4%E7%9A%84AirSim%E4%BB%BF%E7%9C%9F/413c3f8042bfb2dc59f9b83f85f2e514.png" srcset="/img/loading.gif" lazyload alt="413c3f8042bfb2dc59f9b83f85f2e514.png"></p>
+<p>如果需要将当前关卡置为项目启动默认关卡，在主菜单——编辑——项目设置中进行修改。在地图与模式中可以设置编辑器和游戏启动时的默认地图。<br><img src="/2026/01/15/%E9%80%9A%E8%BF%87WSL%E8%BF%90%E8%A1%8CPX4%E7%9A%84AirSim%E4%BB%BF%E7%9C%9F/e6cd9458d3cdc0c34df9e8eb08090241.png" srcset="/img/loading.gif" lazyload alt="e6cd9458d3cdc0c34df9e8eb08090241.png"></p>
 <h2 id="AirSim的导入"><a href="#AirSim的导入" class="headerlink" title="AirSim的导入"></a>AirSim的导入</h2><ol>
 <li><p>复制文件<br>在AirSim/Unreal/Plugins，就是AirSim的插件，可以直接复制到其他的Unreal项目中</p>
 </li>
-<li><p>检查设置<br>主菜单——编辑——插件，启用AirSim（复制后一般是默认启用的）<br>主菜单——窗口——世界场景设置，游戏模式重载选择AirSimGameMode。<br><img src="/f9106d2918794eb90d90af7e222e9a32.png" srcset="/img/loading.gif" lazyload alt="f9106d2918794eb90d90af7e222e9a32.png"></p>
+<li><p>检查设置<br>主菜单——编辑——插件，启用AirSim（复制后一般是默认启用的）<br>主菜单——窗口——世界场景设置，游戏模式重载选择AirSimGameMode。<br><img src="/2026/01/15/%E9%80%9A%E8%BF%87WSL%E8%BF%90%E8%A1%8CPX4%E7%9A%84AirSim%E4%BB%BF%E7%9C%9F/f9106d2918794eb90d90af7e222e9a32.png" srcset="/img/loading.gif" lazyload alt="f9106d2918794eb90d90af7e222e9a32.png"></p>
 </li>
-<li><p>运行成功<br><img src="/740c18d8156f2884258ab0a510249439.png" srcset="/img/loading.gif" lazyload alt="740c18d8156f2884258ab0a510249439.png"></p>
+<li><p>运行成功<br><img src="/2026/01/15/%E9%80%9A%E8%BF%87WSL%E8%BF%90%E8%A1%8CPX4%E7%9A%84AirSim%E4%BB%BF%E7%9C%9F/740c18d8156f2884258ab0a510249439.png" srcset="/img/loading.gif" lazyload alt="740c18d8156f2884258ab0a510249439.png"></p>
 </li>
 </ol>
 <h2 id="已经废弃不用的方法"><a href="#已经废弃不用的方法" class="headerlink" title="已经废弃不用的方法"></a>已经废弃不用的方法</h2><p>之前有直接修改.uproject，添加Modules和Plugins内容，再重新编译的方法，因为VS编辑器的代码有一些变化，这种直接修改工程文件的方式可能会报错，不推荐使用。只需要将AirSim的插件文件夹复制到项目里，虚幻引擎会自动识别的，只需要在引擎里设置就可以了。<br>⚠️这个uproject文件有json一样的严谨结构，结构有一点错误都会导致无法运行，不建议手动修改它。</p>
