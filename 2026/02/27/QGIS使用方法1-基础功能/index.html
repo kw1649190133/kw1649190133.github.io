@@ -1,0 +1,715 @@
+
+
+<!DOCTYPE html>
+<html lang="CN" data-default-color-scheme=dark>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Kwindy">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="参考文档：官网：https:&#x2F;&#x2F;www.qgis.org&#x2F;下载：https:&#x2F;&#x2F;qgis.org&#x2F;download&#x2F;QGIS说明文档：https:&#x2F;&#x2F;docs.qgis.org&#x2F;3.44&#x2F;en&#x2F;docs&#x2F; 主界面主界面与arcmap类似，是比较传统的工业软件界面设计，由主菜单、工具栏、功能面板、数据框组成。 图层管理分组管理、修改渲染样式、打开属性表、查看图层属性、导出等功能。 矢量处理工具主菜单">
+<meta property="og:type" content="article">
+<meta property="og:title" content="QGIS使用方法1_基础功能">
+<meta property="og:url" content="http://kw1649190133.github.io/2026/02/27/QGIS%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%951-%E5%9F%BA%E7%A1%80%E5%8A%9F%E8%83%BD/index.html">
+<meta property="og:site_name" content="kw&#39;s blog">
+<meta property="og:description" content="参考文档：官网：https:&#x2F;&#x2F;www.qgis.org&#x2F;下载：https:&#x2F;&#x2F;qgis.org&#x2F;download&#x2F;QGIS说明文档：https:&#x2F;&#x2F;docs.qgis.org&#x2F;3.44&#x2F;en&#x2F;docs&#x2F; 主界面主界面与arcmap类似，是比较传统的工业软件界面设计，由主菜单、工具栏、功能面板、数据框组成。 图层管理分组管理、修改渲染样式、打开属性表、查看图层属性、导出等功能。 矢量处理工具主菜单">
+<meta property="og:locale">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/02/27/QGIS%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%951-%E5%9F%BA%E7%A1%80%E5%8A%9F%E8%83%BD/329afed7668e2365b54de3b98e14349c.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/02/27/QGIS%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%951-%E5%9F%BA%E7%A1%80%E5%8A%9F%E8%83%BD/b8346fa5d116165122eeefe18f406d72.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/02/27/QGIS%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%951-%E5%9F%BA%E7%A1%80%E5%8A%9F%E8%83%BD/148d3763cda4f6a206fb58b92d40c76a.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/02/27/QGIS%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%951-%E5%9F%BA%E7%A1%80%E5%8A%9F%E8%83%BD/c523fa88fcb5852b4a6f238c52046061.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/02/27/QGIS%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%951-%E5%9F%BA%E7%A1%80%E5%8A%9F%E8%83%BD/cdc7b108b58adf98fea7abcb9350f4d0.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/02/27/QGIS%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%951-%E5%9F%BA%E7%A1%80%E5%8A%9F%E8%83%BD/946918159ea1db7ca701e97e80fe4ca0.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/02/27/QGIS%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%951-%E5%9F%BA%E7%A1%80%E5%8A%9F%E8%83%BD/fb678802ce46831d82bf82e2084e3349.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/02/27/QGIS%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%951-%E5%9F%BA%E7%A1%80%E5%8A%9F%E8%83%BD/4e35e2f76275e44448ce19fd49f5cc0a.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/02/27/QGIS%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%951-%E5%9F%BA%E7%A1%80%E5%8A%9F%E8%83%BD/1f23a4d0810d583d50d63dc4ac55d9f2.png">
+<meta property="article:published_time" content="2026-02-27T03:16:13.000Z">
+<meta property="article:modified_time" content="2026-02-27T03:27:40.218Z">
+<meta property="article:author" content="Kwindy">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="地理信息">
+<meta property="article:tag" content="数据处理">
+<meta property="article:tag" content="开发">
+<meta property="article:tag" content="QGIS">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://kw1649190133.github.io/2026/02/27/QGIS%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%951-%E5%9F%BA%E7%A1%80%E5%8A%9F%E8%83%BD/329afed7668e2365b54de3b98e14349c.png">
+  
+  
+  
+  <title>QGIS使用方法1_基础功能 - kw&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"kw1649190133.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>天际边缘 Edge of the sky </strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="QGIS使用方法1_基础功能"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-02-27 11:16" pubdate>
+          February 27, 2026 am
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          13k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          111 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">QGIS使用方法1_基础功能</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>参考文档：<br>官网：<a target="_blank" rel="noopener" href="https://www.qgis.org/">https://www.qgis.org/</a><br>下载：<a target="_blank" rel="noopener" href="https://qgis.org/download/">https://qgis.org/download/</a><br>QGIS说明文档：<a target="_blank" rel="noopener" href="https://docs.qgis.org/3.44/en/docs/">https://docs.qgis.org/3.44/en/docs/</a></p>
+<h1 id="主界面"><a href="#主界面" class="headerlink" title="主界面"></a>主界面</h1><p>主界面与arcmap类似，是比较传统的工业软件界面设计，由主菜单、工具栏、功能面板、数据框组成。<br><img src="/2026/02/27/QGIS%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%951-%E5%9F%BA%E7%A1%80%E5%8A%9F%E8%83%BD/329afed7668e2365b54de3b98e14349c.png" srcset="/img/loading.gif" lazyload alt="329afed7668e2365b54de3b98e14349c.png"></p>
+<h2 id="图层管理"><a href="#图层管理" class="headerlink" title="图层管理"></a>图层管理</h2><p>分组管理、修改渲染样式、打开属性表、查看图层属性、导出等功能。</p>
+<h2 id="矢量处理工具"><a href="#矢量处理工具" class="headerlink" title="矢量处理工具"></a>矢量处理工具</h2><p>主菜单——数据处理——工具箱，在主菜单的矢量、栅格中也有一些常用功能。</p>
+<h2 id="主界面管理"><a href="#主界面管理" class="headerlink" title="主界面管理"></a>主界面管理</h2><p>主菜单——视图——面板/工具栏，可以自己调整各功能模块的显示。</p>
+<h1 id="数据处理"><a href="#数据处理" class="headerlink" title="数据处理"></a>数据处理</h1><p>使用工具处理的矢量数据可以直接以临时的方式显示在界面上，这样如果不需要该数据，可以直接从图层移除；如果需要保存，则右键选择永久化。<br>常见的处理工具已经集成在主菜单中，也可以在工具箱中调用系统自带工具、自定义工具。<br>常用功能例如矢量的相交、融合、交集取反、空间连接，还有栅格数据的投影、裁剪等，都能在主菜单找到。<br><img src="/2026/02/27/QGIS%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%951-%E5%9F%BA%E7%A1%80%E5%8A%9F%E8%83%BD/b8346fa5d116165122eeefe18f406d72.png" srcset="/img/loading.gif" lazyload alt="b8346fa5d116165122eeefe18f406d72.png"></p>
+<h1 id="属性表处理"><a href="#属性表处理" class="headerlink" title="属性表处理"></a>属性表处理</h1><h2 id="字段修改"><a href="#字段修改" class="headerlink" title="字段修改"></a>字段修改</h2><p>在QGIS中，添加和删除字段需要打开编辑，非常符合逻辑，不像Arcmap中干脆是反过来的。对属性表的查找、排序、筛选、修改与arcmap类似，该有的都有。</p>
+<h2 id="字段计算"><a href="#字段计算" class="headerlink" title="字段计算"></a>字段计算</h2><p>例如，比较常见的计算面积并取整。$area可以直接计算椭球面积。和arcgis类似，默认框内是等号之后的内容。<br><img src="/2026/02/27/QGIS%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%951-%E5%9F%BA%E7%A1%80%E5%8A%9F%E8%83%BD/148d3763cda4f6a206fb58b92d40c76a.png" srcset="/img/loading.gif" lazyload alt="148d3763cda4f6a206fb58b92d40c76a.png"><br>其他常用功能：</p>
+<ul>
+<li>双引号可以指代同图层内的其他字段名称，这样可以从其他字段获取值。</li>
+<li>如有需要可以进行格式转换，例如<code>to_string(Value)</code>，将浮点数转为字符。</li>
+<li>如果需要赋值字符串，加上单引号。</li>
+<li>ID获取，不需要编写复杂的编号脚本，只需要<code>@id</code>，就能直接得到编号。</li>
+<li>更复杂的功能可以通过函数编辑器来实现，没有什么是代码做不到的。</li>
+<li>有数据预览，</li>
+<li>一件打开编辑模式很方便，但是要记得关闭和保存。</li>
+<li>⚠️ 注意，属性表编辑的权限很高，甚至OBJECTID这种默认字段都是可以编辑的，一旦编号重复，可能会导致矢量无法导出。</li>
+</ul>
+<h1 id="数据格式"><a href="#数据格式" class="headerlink" title="数据格式"></a>数据格式</h1><p>保存shp格式需要选择ESRI形状文件<br>保存数据库格式需要选择ESRI File Geodatabase<br>选择数据库时文件名需要点进.gdb文件夹，找到一个名字是gdb的文件，这样路径就会锁定到.gdb文件夹了。然后再图层名中输入要素名称。<br><img src="/2026/02/27/QGIS%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%951-%E5%9F%BA%E7%A1%80%E5%8A%9F%E8%83%BD/c523fa88fcb5852b4a6f238c52046061.png" srcset="/img/loading.gif" lazyload alt="c523fa88fcb5852b4a6f238c52046061.png"></p>
+<p>比较常用的还有GEOjson，KML，AutoCAD DXF等。相比arcgis支持了更多的地理数据格式。</p>
+<h1 id="功能开发实践"><a href="#功能开发实践" class="headerlink" title="功能开发实践"></a>功能开发实践</h1><p>QGIS内置了python3.12，可以直接在软件中打开，支持控制台界面和IDEL编辑，天然支持GDAL/OGR、GEOS(Shapely图层)、PROJ等开源库。<br>和arcpy的开发类似，可以直接在控制台运行脚本，也可以集成到工具箱中通过QGIS界面打开调用。<br>路径：QGIS 3.44.1\apps\Python312<br>至少python3比python2用起来顺手多了，python2甚至在VScode还不好调试。</p>
+<p>以一个图形分割的算法为例，为了进行区域的精细管理和数据统计，我需要将一个狭长的海滩面分割成若干个小块，针对每一个小块进行数据统计。海滩的面矢量是一个不规则的狭长面，手动一条一条画显然是下下策，为了能够尽量等分，我想到的是手动绘制一条中心线，再用脚本来生成若干条垂直于中心线的法线，这样就可以用这些法线来分割图形了，在中心线曲率不大的时候，这种方法还是挺好使的。</p>
+<h2 id="绘制分割线-脚本工具"><a href="#绘制分割线-脚本工具" class="headerlink" title="绘制分割线-脚本工具"></a>绘制分割线-脚本工具</h2><p>可以直接在控制台中运行脚本，打开python控制台模块，选择显示编辑器，然后将代码粘贴进去，修改输入参数，直接运行。</p>
+<p>功能：输入中心线，绘制出指定间隔和长度的法线，可以用于对狭长面矢量的分割。</p>
+<figure class="highlight processing"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br></pre></td><td class="code"><pre><code class="hljs processing">from qgis.<span class="hljs-property">core</span> <span class="hljs-title function_">import</span> (<br>    QgsProject, QgsVectorLayer, QgsFeature, QgsGeometry,<br>    QgsPointXY, QgsLineString, QgsField, edit<br>)<br>from qgis.<span class="hljs-property">PyQt</span>.<span class="hljs-property">QtCore</span> <span class="hljs-keyword">import</span> QVariant<br><span class="hljs-keyword">import</span> math<br><br># ====== 用户配置 ======<br>centerline_layer_name = <span class="hljs-string">&quot;centerline111E&quot;</span>      # 替换为你的中心线图层名称<br>interval_meters = <span class="hljs-number">20</span>                      # 采样间隔（米）<br>normal_length = <span class="hljs-number">200</span>                        # 法线总长度（米）<br>output_layer_name = <span class="hljs-string">&quot;faline&quot;</span>   # 输出图层名<br># ======================<br><br># 获取中心线图层<br>layer = QgsProject.<span class="hljs-property">instance</span>().<span class="hljs-property">mapLayersByName</span>(centerline_layer_name)<br><span class="hljs-keyword">if</span> not layer:<br>    raise <span class="hljs-title function_">Exception</span>(f<span class="hljs-string">&quot;未找到图层: &#123;centerline_layer_name&#125;&quot;</span>)<br>layer = layer[<span class="hljs-number">0</span>]<br><br><span class="hljs-keyword">if</span> not layer.<span class="hljs-property">crs</span>().<span class="hljs-property">isGeographic</span>():<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;✅ 使用投影坐标系，距离单位为米&quot;</span>)<br><span class="hljs-keyword">else</span>:<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;⚠️ 警告：图层是地理坐标系（如WGS84），10米将不准确！建议重投影。&quot;</span>)<br><br># 创建输出法线图层（内存中）<br>crs = layer.<span class="hljs-property">crs</span>()<br>normals_layer = <span class="hljs-title function_">QgsVectorLayer</span>(<span class="hljs-string">&quot;LineString?crs=&quot;</span> + crs.<span class="hljs-property">authid</span>(), output_layer_name, <span class="hljs-string">&quot;memory&quot;</span>)<br>provider = normals_layer.<span class="hljs-property">dataProvider</span>()<br>provider.<span class="hljs-property">addAttributes</span>([<span class="hljs-title function_">QgsField</span>(<span class="hljs-string">&quot;id&quot;</span>, QVariant.<span class="hljs-property">Int</span>), <span class="hljs-title function_">QgsField</span>(<span class="hljs-string">&quot;chainage&quot;</span>, QVariant.<span class="hljs-property">Double</span>)])<br>normals_layer.<span class="hljs-property">updateFields</span>()<br><br>features = []<br>fid = <span class="hljs-number">0</span><br><br><span class="hljs-keyword">for</span> feat in layer.<span class="hljs-property">getFeatures</span>():<br>    geom = feat.<span class="hljs-property">geometry</span>()<br>    <span class="hljs-keyword">if</span> geom.<span class="hljs-property">isMultipart</span>():<br>        lines = geom.<span class="hljs-property">asMultiPolyline</span>()<br>        <span class="hljs-keyword">for</span> <span class="hljs-built_in">line</span> in lines:<br>            polyline = <span class="hljs-title function_">QgsLineString</span>(<span class="hljs-built_in">line</span>)<br>            total_len = polyline.<span class="hljs-property">length</span>()<br>            <span class="hljs-built_in">dist</span> = <span class="hljs-number">0.0</span><br>            <span class="hljs-keyword">while</span> <span class="hljs-built_in">dist</span> &lt;= total_len:<br>                # 获取该距离处的点<br>                <span class="hljs-built_in">point</span> = polyline.<span class="hljs-property">interpolatePoint</span>(<span class="hljs-built_in">dist</span>)<br>                # 获取微小偏移点计算方向<br>                delta = <span class="hljs-built_in">min</span>(<span class="hljs-number">0.1</span>, total_len * <span class="hljs-number">0.001</span>)<br>                p1 = polyline.<span class="hljs-property">interpolatePoint</span>(<span class="hljs-built_in">max</span>(<span class="hljs-number">0</span>, <span class="hljs-built_in">dist</span> - delta))<br>                p2 = polyline.<span class="hljs-property">interpolatePoint</span>(<span class="hljs-built_in">min</span>(total_len, <span class="hljs-built_in">dist</span> + delta))<br>                <br>                dx = p2.<span class="hljs-property">x</span>() - p1.<span class="hljs-property">x</span>()<br>                dy = p2.<span class="hljs-property">y</span>() - p1.<span class="hljs-property">y</span>()<br>                seg_len = math.<span class="hljs-property">hypot</span>(dx, dy)<br>                <span class="hljs-keyword">if</span> seg_len == <span class="hljs-number">0</span>:<br>                    <span class="hljs-built_in">dist</span> += interval_meters<br>                    <span class="hljs-keyword">continue</span><br>                <br>                # 单位切向量<br>                ux, uy = dx / seg_len, dy / seg_len<br>                # 左手法线<br>                nx, ny = -uy, ux<br>                <br>                half_len = normal_length / <span class="hljs-number">2.0</span><br>                start = <span class="hljs-title function_">QgsPointXY</span>(<span class="hljs-built_in">point</span>.<span class="hljs-property">x</span>() - nx * half_len, <span class="hljs-built_in">point</span>.<span class="hljs-property">y</span>() - ny * half_len)<br>                end   = <span class="hljs-title function_">QgsPointXY</span>(<span class="hljs-built_in">point</span>.<span class="hljs-property">x</span>() + nx * half_len, <span class="hljs-built_in">point</span>.<span class="hljs-property">y</span>() + ny * half_len)<br>                <br>                normal_geom = QgsGeometry.<span class="hljs-property">fromPolylineXY</span>([start, end])<br>                <span class="hljs-built_in">nf</span> = <span class="hljs-title function_">QgsFeature</span>()<br>                <span class="hljs-built_in">nf</span>.<span class="hljs-property">setGeometry</span>(normal_geom)<br>                <span class="hljs-built_in">nf</span>.<span class="hljs-property">setAttributes</span>([fid, <span class="hljs-built_in">dist</span>])<br>                features.<span class="hljs-property">append</span>(<span class="hljs-built_in">nf</span>)<br>                fid += <span class="hljs-number">1</span><br>                <span class="hljs-built_in">dist</span> += interval_meters<br>    <span class="hljs-keyword">else</span>:<br>        <span class="hljs-built_in">line</span> = geom.<span class="hljs-property">asPolyline</span>()<br>        polyline = <span class="hljs-title function_">QgsLineString</span>(<span class="hljs-built_in">line</span>)<br>        total_len = polyline.<span class="hljs-property">length</span>()<br>        <span class="hljs-built_in">dist</span> = <span class="hljs-number">0.0</span><br>        <span class="hljs-keyword">while</span> <span class="hljs-built_in">dist</span> &lt;= total_len:<br>            <span class="hljs-built_in">point</span> = polyline.<span class="hljs-property">interpolatePoint</span>(<span class="hljs-built_in">dist</span>)<br>            delta = <span class="hljs-built_in">min</span>(<span class="hljs-number">0.1</span>, total_len * <span class="hljs-number">0.001</span>)<br>            p1 = polyline.<span class="hljs-property">interpolatePoint</span>(<span class="hljs-built_in">max</span>(<span class="hljs-number">0</span>, <span class="hljs-built_in">dist</span> - delta))<br>            p2 = polyline.<span class="hljs-property">interpolatePoint</span>(<span class="hljs-built_in">min</span>(total_len, <span class="hljs-built_in">dist</span> + delta))<br>            <br>            dx = p2.<span class="hljs-property">x</span>() - p1.<span class="hljs-property">x</span>()<br>            dy = p2.<span class="hljs-property">y</span>() - p1.<span class="hljs-property">y</span>()<br>            seg_len = math.<span class="hljs-property">hypot</span>(dx, dy)<br>            <span class="hljs-keyword">if</span> seg_len == <span class="hljs-number">0</span>:<br>                <span class="hljs-built_in">dist</span> += interval_meters<br>                <span class="hljs-keyword">continue</span><br>            <br>            ux, uy = dx / seg_len, dy / seg_len<br>            nx, ny = -uy, ux<br>            <br>            half_len = normal_length / <span class="hljs-number">2.0</span><br>            start = <span class="hljs-title function_">QgsPointXY</span>(<span class="hljs-built_in">point</span>.<span class="hljs-property">x</span>() - nx * half_len, <span class="hljs-built_in">point</span>.<span class="hljs-property">y</span>() - ny * half_len)<br>            end   = <span class="hljs-title function_">QgsPointXY</span>(<span class="hljs-built_in">point</span>.<span class="hljs-property">x</span>() + nx * half_len, <span class="hljs-built_in">point</span>.<span class="hljs-property">y</span>() + ny * half_len)<br>            <br>            normal_geom = QgsGeometry.<span class="hljs-property">fromPolylineXY</span>([start, end])<br>            <span class="hljs-built_in">nf</span> = <span class="hljs-title function_">QgsFeature</span>()<br>            <span class="hljs-built_in">nf</span>.<span class="hljs-property">setGeometry</span>(normal_geom)<br>            <span class="hljs-built_in">nf</span>.<span class="hljs-property">setAttributes</span>([fid, <span class="hljs-built_in">dist</span>])<br>            features.<span class="hljs-property">append</span>(<span class="hljs-built_in">nf</span>)<br>            fid += <span class="hljs-number">1</span><br>            <span class="hljs-built_in">dist</span> += interval_meters<br><br># 添加到图层<br>provider.<span class="hljs-property">addFeatures</span>(features)<br>QgsProject.<span class="hljs-property">instance</span>().<span class="hljs-property">addMapLayer</span>(normals_layer)<br><span class="hljs-built_in">print</span>(f<span class="hljs-string">&quot;✅ 已生成 &#123;len(features)&#125; 条法线，添加到图层面板&quot;</span>)<br></code></pre></td></tr></table></figure>
+
+<p>实现效果：<br><img src="/2026/02/27/QGIS%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%951-%E5%9F%BA%E7%A1%80%E5%8A%9F%E8%83%BD/cdc7b108b58adf98fea7abcb9350f4d0.png" srcset="/img/loading.gif" lazyload alt="cdc7b108b58adf98fea7abcb9350f4d0.png"><br>有了这些法线以后，就可以实现要素面的分割了，将海滩分割成一个个小面，就能进行一些数学统计。</p>
+<h2 id="分割算法-工具箱封装"><a href="#分割算法-工具箱封装" class="headerlink" title="分割算法-工具箱封装"></a>分割算法-工具箱封装</h2><p>步骤：</p>
+<ol>
+<li>打开 QGIS → 处理 → 工具箱</li>
+<li>右键点击 “脚本” → “创建新脚本”</li>
+<li>粘贴代码</li>
+<li>保存脚本（例如命名为 generate_normals.py）</li>
+<li>现在你可以在 处理工具箱 → 脚本 下找到 “生成等距法线” 工具，双击即可使用</li>
+</ol>
+<p>⚠️ 注意事项</p>
+<ol>
+<li>务必使用投影坐标系（如 UTM），否则 10 米不是真实距离。</li>
+<li>如果中心线有自交或复杂拓扑，建议先 简化或平滑。</li>
+<li>法线方向为 左手法线（面向线前进方向，左侧垂直）。如需右侧，改 nx, ny = uy, -ux。</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> qgis.PyQt.QtCore <span class="hljs-keyword">import</span> QCoreApplication<br><span class="hljs-keyword">from</span> qgis.core <span class="hljs-keyword">import</span> (<br>    QgsProcessing,<br>    QgsProcessingAlgorithm,<br>    QgsProcessingParameterFeatureSource,<br>    QgsProcessingParameterNumber,<br>    QgsProcessingParameterFeatureSink,<br>    QgsFeatureSink,<br>    QgsFeature,<br>    QgsGeometry,<br>    QgsPointXY,<br>    QgsLineString,<br>    QgsFields,<br>    QgsField<br>)<br><span class="hljs-keyword">from</span> qgis.PyQt.QtCore <span class="hljs-keyword">import</span> QVariant<br><span class="hljs-keyword">import</span> math<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">CreateNormalsAlgorithm</span>(<span class="hljs-title class_ inherited__">QgsProcessingAlgorithm</span>):<br>    INPUT_LINE = <span class="hljs-string">&#x27;INPUT_LINE&#x27;</span><br>    INTERVAL = <span class="hljs-string">&#x27;INTERVAL&#x27;</span><br>    LENGTH = <span class="hljs-string">&#x27;LENGTH&#x27;</span><br>    OUTPUT = <span class="hljs-string">&#x27;OUTPUT&#x27;</span><br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">tr</span>(<span class="hljs-params">self, string</span>):<br>        <span class="hljs-keyword">return</span> QCoreApplication.translate(<span class="hljs-string">&#x27;Processing&#x27;</span>, string)<br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">createInstance</span>(<span class="hljs-params">self</span>):<br>        <span class="hljs-keyword">return</span> CreateNormalsAlgorithm()<br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">name</span>(<span class="hljs-params">self</span>):<br>        <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;createnormals&#x27;</span><br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">displayName</span>(<span class="hljs-params">self</span>):<br>        <span class="hljs-keyword">return</span> self.tr(<span class="hljs-string">&#x27;生成等距法线&#x27;</span>)<br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">group</span>(<span class="hljs-params">self</span>):<br>        <span class="hljs-keyword">return</span> self.tr(<span class="hljs-string">&#x27;海洋管理工具&#x27;</span>)<br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">groupId</span>(<span class="hljs-params">self</span>):<br>        <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;coastal_tools&#x27;</span><br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">shortHelpString</span>(<span class="hljs-params">self</span>):<br>        <span class="hljs-keyword">return</span> self.tr(<span class="hljs-string">&quot;&quot;&quot;</span><br><span class="hljs-string">        沿中心线按指定间隔生成垂直法线。</span><br><span class="hljs-string">        要求输入线为投影坐标系（单位：米）。</span><br><span class="hljs-string">        &quot;&quot;&quot;</span>)<br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">initAlgorithm</span>(<span class="hljs-params">self, config=<span class="hljs-literal">None</span></span>):<br>        self.addParameter(<br>            QgsProcessingParameterFeatureSource(<br>                self.INPUT_LINE,<br>                self.tr(<span class="hljs-string">&#x27;中心线&#x27;</span>),<br>                [QgsProcessing.TypeVectorLine]<br>            )<br>        )<br>        self.addParameter(<br>            QgsProcessingParameterNumber(<br>                self.INTERVAL,<br>                self.tr(<span class="hljs-string">&#x27;采样间隔（米）&#x27;</span>),<br>                QgsProcessingParameterNumber.Double,<br>                defaultValue=<span class="hljs-number">10.0</span>,<br>                minValue=<span class="hljs-number">0.1</span><br>            )<br>        )<br>        self.addParameter(<br>            QgsProcessingParameterNumber(<br>                self.LENGTH,<br>                self.tr(<span class="hljs-string">&#x27;法线长度（米）&#x27;</span>),<br>                QgsProcessingParameterNumber.Double,<br>                defaultValue=<span class="hljs-number">50.0</span>,<br>                minValue=<span class="hljs-number">1.0</span><br>            )<br>        )<br>        self.addParameter(<br>            QgsProcessingParameterFeatureSink(<br>                self.OUTPUT,<br>                self.tr(<span class="hljs-string">&#x27;输出法线&#x27;</span>)<br>            )<br>        )<br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">processAlgorithm</span>(<span class="hljs-params">self, parameters, context, feedback</span>):<br>        source = self.parameterAsSource(parameters, self.INPUT_LINE, context)<br>        interval = self.parameterAsDouble(parameters, self.INTERVAL, context)<br>        length = self.parameterAsDouble(parameters, self.LENGTH, context)<br><br>        <span class="hljs-keyword">if</span> source.sourceCrs().isGeographic():<br>            feedback.pushWarning(<span class="hljs-string">&quot;警告：输入为地理坐标系，距离可能不准确！&quot;</span>)<br><br>        fields = QgsFields()<br>        fields.append(QgsField(<span class="hljs-string">&quot;id&quot;</span>, QVariant.Int))<br>        fields.append(QgsField(<span class="hljs-string">&quot;chainage&quot;</span>, QVariant.Double))<br><br>        (sink, dest_id) = self.parameterAsSink(<br>            parameters,<br>            self.OUTPUT,<br>            context,<br>            fields,<br>            QgsWkbTypes.LineString,<br>            source.sourceCrs()<br>        )<br><br>        total_features = source.featureCount()<br>        features_processed = <span class="hljs-number">0</span><br><br>        out_id = <span class="hljs-number">0</span><br>        <span class="hljs-keyword">for</span> feat <span class="hljs-keyword">in</span> source.getFeatures():<br>            <span class="hljs-keyword">if</span> feedback.isCanceled():<br>                <span class="hljs-keyword">break</span><br><br>            geom = feat.geometry()<br>            <span class="hljs-keyword">if</span> geom.isMultipart():<br>                lines = geom.asMultiPolyline()<br>                <span class="hljs-keyword">for</span> line_coords <span class="hljs-keyword">in</span> lines:<br>                    self._process_line(line_coords, interval, length, sink, out_id, feedback)<br>                    out_id += <span class="hljs-built_in">len</span>([d <span class="hljs-keyword">for</span> d <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">0</span>, QgsLineString(line_coords).length(), interval)])<br>            <span class="hljs-keyword">else</span>:<br>                line_coords = geom.asPolyline()<br>                self._process_line(line_coords, interval, length, sink, out_id, feedback)<br>                out_id += <span class="hljs-built_in">len</span>([d <span class="hljs-keyword">for</span> d <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">0</span>, <span class="hljs-built_in">int</span>(QgsLineString(line_coords).length()), <span class="hljs-built_in">int</span>(interval))])<br><br>            features_processed += <span class="hljs-number">1</span><br>            feedback.setProgress(<span class="hljs-built_in">int</span>(<span class="hljs-number">100</span> * features_processed / total_features))<br><br>        <span class="hljs-keyword">return</span> &#123;self.OUTPUT: dest_id&#125;<br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">_process_line</span>(<span class="hljs-params">self, coords, interval, length, sink, start_id, feedback</span>):<br>        polyline = QgsLineString(coords)<br>        total_len = polyline.length()<br>        dist = <span class="hljs-number">0.0</span><br>        fid = start_id<br><br>        <span class="hljs-keyword">while</span> dist &lt;= total_len:<br>            <span class="hljs-keyword">if</span> feedback.isCanceled():<br>                <span class="hljs-keyword">break</span><br><br>            point = polyline.interpolatePoint(dist)<br>            delta = <span class="hljs-built_in">min</span>(<span class="hljs-number">0.1</span>, total_len * <span class="hljs-number">0.001</span>)<br>            p1 = polyline.interpolatePoint(<span class="hljs-built_in">max</span>(<span class="hljs-number">0</span>, dist - delta))<br>            p2 = polyline.interpolatePoint(<span class="hljs-built_in">min</span>(total_len, dist + delta))<br><br>            dx = p2.x() - p1.x()<br>            dy = p2.y() - p1.y()<br>            seg_len = math.hypot(dx, dy)<br>            <span class="hljs-keyword">if</span> seg_len == <span class="hljs-number">0</span>:<br>                dist += interval<br>                <span class="hljs-keyword">continue</span><br><br>            ux, uy = dx / seg_len, dy / seg_len<br>            nx, ny = -uy, ux  <span class="hljs-comment"># left normal</span><br><br>            half_len = length / <span class="hljs-number">2.0</span><br>            start_pt = QgsPointXY(point.x() - nx * half_len, point.y() - ny * half_len)<br>            end_pt = QgsPointXY(point.x() + nx * half_len, point.y() + ny * half_len)<br><br>            f = QgsFeature()<br>            f.setGeometry(QgsGeometry.fromPolylineXY([start_pt, end_pt]))<br>            f.setAttributes([fid, dist])<br>            sink.addFeature(f, QgsFeatureSink.FastInsert)<br><br>            fid += <span class="hljs-number">1</span><br>            dist += interval<br></code></pre></td></tr></table></figure>
+
+<h2 id="重叠面积计算工具"><a href="#重叠面积计算工具" class="headerlink" title="重叠面积计算工具"></a>重叠面积计算工具</h2><p>功能：统计指定范围内要素的面积和面积占比，填入新创建的字段中。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> qgis.PyQt.QtCore <span class="hljs-keyword">import</span> QCoreApplication<br><span class="hljs-keyword">from</span> qgis.core <span class="hljs-keyword">import</span> (<br>    QgsProcessing,<br>    QgsProcessingAlgorithm,<br>    QgsProcessingParameterFeatureSource,<br>    QgsProcessingParameterFeatureSink,<br>    QgsProcessingException,<br>    QgsField,<br>    QgsFeature,<br>    QgsGeometry,<br>    QgsProject,<br>    QgsWkbTypes,<br>    QgsFields<br>)<br><span class="hljs-keyword">from</span> qgis.PyQt.QtCore <span class="hljs-keyword">import</span> QVariant<br><span class="hljs-keyword">import</span> math<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">IntersectionAreaStatsAlgorithm</span>(<span class="hljs-title class_ inherited__">QgsProcessingAlgorithm</span>):<br>    MANAGEMENT_LAYER = <span class="hljs-string">&#x27;MANAGEMENT_LAYER&#x27;</span><br>    TARGET_LAYER = <span class="hljs-string">&#x27;TARGET_LAYER&#x27;</span><br>    OUTPUT = <span class="hljs-string">&#x27;OUTPUT&#x27;</span><br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">tr</span>(<span class="hljs-params">self, string</span>):<br>        <span class="hljs-keyword">return</span> QCoreApplication.translate(<span class="hljs-string">&#x27;Processing&#x27;</span>, string)<br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">createInstance</span>(<span class="hljs-params">self</span>):<br>        <span class="hljs-keyword">return</span> IntersectionAreaStatsAlgorithm()<br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">name</span>(<span class="hljs-params">self</span>):<br>        <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;management_target_intersection&#x27;</span><br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">displayName</span>(<span class="hljs-params">self</span>):<br>        <span class="hljs-keyword">return</span> self.tr(<span class="hljs-string">&#x27;计算管理范围内目标识别面积及占比&#x27;</span>)<br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">group</span>(<span class="hljs-params">self</span>):<br>        <span class="hljs-keyword">return</span> self.tr(<span class="hljs-string">&#x27;海洋管理工具&#x27;</span>)<br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">groupId</span>(<span class="hljs-params">self</span>):<br>        <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;coastal_management&#x27;</span><br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">shortHelpString</span>(<span class="hljs-params">self</span>):<br>        <span class="hljs-keyword">return</span> self.tr(<span class="hljs-string">&quot;&quot;&quot;</span><br><span class="hljs-string">        输入管理范围（面）和目标识别结果（面），</span><br><span class="hljs-string">        为每个管理范围计算：</span><br><span class="hljs-string">        - 与目标识别结果相交的总面积（intersect_area）</span><br><span class="hljs-string">        - 占管理范围总面积的比例（intersect_ratio）</span><br><span class="hljs-string">        </span><br><span class="hljs-string">        要求：两图层使用相同投影坐标系（单位：米）。</span><br><span class="hljs-string">        &quot;&quot;&quot;</span>)<br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">initAlgorithm</span>(<span class="hljs-params">self, config=<span class="hljs-literal">None</span></span>):<br>        self.addParameter(<br>            QgsProcessingParameterFeatureSource(<br>                self.MANAGEMENT_LAYER,<br>                self.tr(<span class="hljs-string">&#x27;管理范围（面）&#x27;</span>),<br>                [QgsProcessing.TypeVectorPolygon]<br>            )<br>        )<br>        self.addParameter(<br>            QgsProcessingParameterFeatureSource(<br>                self.TARGET_LAYER,<br>                self.tr(<span class="hljs-string">&#x27;目标识别结果（面）&#x27;</span>),<br>                [QgsProcessing.TypeVectorPolygon]<br>            )<br>        )<br>        self.addParameter(<br>            QgsProcessingParameterFeatureSink(<br>                self.OUTPUT,<br>                self.tr(<span class="hljs-string">&#x27;输出管理范围（含统计字段）&#x27;</span>)<br>            )<br>        )<br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">processAlgorithm</span>(<span class="hljs-params">self, parameters, context, feedback</span>):<br>        management_source = self.parameterAsSource(parameters, self.MANAGEMENT_LAYER, context)<br>        target_source = self.parameterAsSource(parameters, self.TARGET_LAYER, context)<br><br>        <span class="hljs-keyword">if</span> management_source.sourceCrs() != target_source.sourceCrs():<br>            <span class="hljs-keyword">raise</span> QgsProcessingException(<span class="hljs-string">&quot;两图层坐标系必须一致！&quot;</span>)<br><br>        <span class="hljs-keyword">if</span> management_source.sourceCrs().isGeographic():<br>            feedback.pushWarning(<span class="hljs-string">&quot;警告：使用地理坐标系（如WGS84），面积计算可能不准确！建议使用投影坐标系。&quot;</span>)<br><br>        <span class="hljs-comment"># 构建输出字段</span><br>        output_fields = management_source.fields()<br>        output_fields.append(QgsField(<span class="hljs-string">&quot;intersect_area&quot;</span>, QVariant.Double, <span class="hljs-built_in">len</span>=<span class="hljs-number">20</span>, prec=<span class="hljs-number">3</span>))<br>        output_fields.append(QgsField(<span class="hljs-string">&quot;intersect_ratio&quot;</span>, QVariant.Double, <span class="hljs-built_in">len</span>=<span class="hljs-number">10</span>, prec=<span class="hljs-number">6</span>))<br><br>        (sink, dest_id) = self.parameterAsSink(<br>            parameters,<br>            self.OUTPUT,<br>            context,<br>            output_fields,<br>            QgsWkbTypes.Polygon,<br>            management_source.sourceCrs()<br>        )<br><br>        <span class="hljs-keyword">if</span> sink <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:<br>            <span class="hljs-keyword">raise</span> QgsProcessingException(<span class="hljs-string">&quot;无法创建输出图层&quot;</span>)<br><br>        <span class="hljs-comment"># 将目标图层全部加载到内存（用于快速空间查询）</span><br>        feedback.pushInfo(<span class="hljs-string">&quot;正在加载目标识别图层...&quot;</span>)<br>        target_geoms = []<br>        <span class="hljs-keyword">for</span> feat <span class="hljs-keyword">in</span> target_source.getFeatures():<br>            <span class="hljs-keyword">if</span> feat.hasGeometry():<br>                target_geoms.append(feat.geometry())<br><br>        total = management_source.featureCount()<br>        <span class="hljs-keyword">if</span> total == <span class="hljs-number">0</span>:<br>            <span class="hljs-keyword">return</span> &#123;self.OUTPUT: dest_id&#125;<br><br>        feedback.setProgress(<span class="hljs-number">0</span>)<br><br>        <span class="hljs-keyword">for</span> current, mgmt_feat <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(management_source.getFeatures()):<br>            <span class="hljs-keyword">if</span> feedback.isCanceled():<br>                <span class="hljs-keyword">break</span><br><br>            mgmt_geom = mgmt_feat.geometry()<br>            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> mgmt_geom <span class="hljs-keyword">or</span> mgmt_geom.isEmpty():<br>                <span class="hljs-comment"># 保留原始要素，面积设为0</span><br>                new_feat = QgsFeature(output_fields)<br>                new_feat.setGeometry(mgmt_geom)<br>                attrs = mgmt_feat.attributes()<br>                attrs.extend([<span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>])<br>                new_feat.setAttributes(attrs)<br>                sink.addFeature(new_feat)<br>                <span class="hljs-keyword">continue</span><br><br>            total_area = mgmt_geom.area()<br>            intersect_area_sum = <span class="hljs-number">0.0</span><br><br>            <span class="hljs-comment"># 与每个目标面求交</span><br>            <span class="hljs-keyword">for</span> tgt_geom <span class="hljs-keyword">in</span> target_geoms:<br>                <span class="hljs-keyword">if</span> mgmt_geom.intersects(tgt_geom):<br>                    intersect_geom = mgmt_geom.intersection(tgt_geom)<br>                    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> intersect_geom.isEmpty() <span class="hljs-keyword">and</span> intersect_geom.isGeosValid():<br>                        intersect_area_sum += intersect_geom.area()<br><br>            ratio = intersect_area_sum / total_area <span class="hljs-keyword">if</span> total_area &gt; <span class="hljs-number">0</span> <span class="hljs-keyword">else</span> <span class="hljs-number">0.0</span><br><br>            <span class="hljs-comment"># 创建新要素</span><br>            new_feat = QgsFeature(output_fields)<br>            new_feat.setGeometry(mgmt_geom)<br>            attrs = mgmt_feat.attributes()<br>            attrs.extend([intersect_area_sum, ratio])<br>            new_feat.setAttributes(attrs)<br><br>            sink.addFeature(new_feat)<br><br>            feedback.setProgress(<span class="hljs-built_in">int</span>(<span class="hljs-number">100</span> * current / total))<br><br>        <span class="hljs-keyword">return</span> &#123;self.OUTPUT: dest_id&#125;<br></code></pre></td></tr></table></figure>
+
+<p>将代码保存为py之后，在工具箱——脚本——将脚本添加到工具箱，就能在工具箱中看到添加的脚本，点击打开后就能看到工具界面。<br><img src="/2026/02/27/QGIS%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%951-%E5%9F%BA%E7%A1%80%E5%8A%9F%E8%83%BD/946918159ea1db7ca701e97e80fe4ca0.png" srcset="/img/loading.gif" lazyload alt="946918159ea1db7ca701e97e80fe4ca0.png"></p>
+<h2 id="工具分组管理"><a href="#工具分组管理" class="headerlink" title="工具分组管理"></a>工具分组管理</h2><p>因为程序是AI写的，没有具体的代码规范，虽然脚本中显示的都是海洋管理工具，但是实际却在不同的分组。<br>所以这个分组名称只是个别名，而真正的名称是groupID，可以看到代码里面它们的ID是不同的。把分组ID改成一样的并保存，工具就会显示在一个分组里了。<br><img src="/2026/02/27/QGIS%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%951-%E5%9F%BA%E7%A1%80%E5%8A%9F%E8%83%BD/fb678802ce46831d82bf82e2084e3349.png" srcset="/img/loading.gif" lazyload alt="fb678802ce46831d82bf82e2084e3349.png"></p>
+<p>脚本相关的工具描述、参数传递等，这些在arcmap里都是要导入py脚本后，在设置里单独配置的，而QGIS只需要将这些写在py代码里，就能实现一键导入和使用，这一点不得不好评。</p>
+<h2 id="异常处理"><a href="#异常处理" class="headerlink" title="异常处理"></a>异常处理</h2><p>在处理过程中还遇到了关于异常处理的问题。运行时提示部分矢量是无效几何，虽然我已经做过几何修复，所有要素都能正常打开，但显然在工具处理时对输入的要求会更严格一些。</p>
+<p>解决方式：点击工具页面左下角的高级，选择全局设置（AIgorithm Sittings），然后将错误处理机制设置为skip跳过。<br><img src="/2026/02/27/QGIS%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%951-%E5%9F%BA%E7%A1%80%E5%8A%9F%E8%83%BD/4e35e2f76275e44448ce19fd49f5cc0a.png" srcset="/img/loading.gif" lazyload alt="4e35e2f76275e44448ce19fd49f5cc0a.png"></p>
+<h2 id="模型构建器"><a href="#模型构建器" class="headerlink" title="模型构建器"></a>模型构建器</h2><p>在不熟悉Python的情况下，也可以通过模型构建器来搭建程序。<br>选择工具箱的第一个按钮，就可以打开可视化的模型构建界面。<br>以前的arcgis模型构建器虽然也简单易用，但是有个重要问题是无法嵌套多层循环，遇到不得不嵌套的情况，需要将每一层循环拆成一个子工具。<br><img src="/2026/02/27/QGIS%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%951-%E5%9F%BA%E7%A1%80%E5%8A%9F%E8%83%BD/1f23a4d0810d583d50d63dc4ac55d9f2.png" srcset="/img/loading.gif" lazyload alt="1f23a4d0810d583d50d63dc4ac55d9f2.png"></p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>习惯了之后，发现QGIS是真好用，Arcmap毕竟是老古董了，虽然功能性方面也还不错，但是二次开发太困难了，想做点自己的工具都比较困难，2.7的python实在是太过时了。曾经也尝试过arcgis pro，实际上体验并没有比arcmap10.8强，甚至有些界面还不如老版本好用。<br>QGIS处理数据是肯定比arcmap方便的，但Arcmap在制图方面更符合习惯，包括调整制图画面、添加图例等附件，以及批量制图的数据驱动管理，或许QGIS也有这方面的插件，但我目前还没有用到。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0/" class="category-chain-item">学习</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/python/">#python</a>
+      
+        <a href="/tags/%E5%9C%B0%E7%90%86%E4%BF%A1%E6%81%AF/">#地理信息</a>
+      
+        <a href="/tags/%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/">#数据处理</a>
+      
+        <a href="/tags/%E5%BC%80%E5%8F%91/">#开发</a>
+      
+        <a href="/tags/QGIS/">#QGIS</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>QGIS使用方法1_基础功能</div>
+      <div>http://kw1649190133.github.io/2026/02/27/QGIS使用方法1-基础功能/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Kwindy</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>February 27, 2026</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/02/27/%E4%BF%84%E7%BD%97%E6%96%AF%E5%92%8C%E4%B9%8C%E5%85%8B%E5%85%B0%E6%88%98%E4%BA%89%E4%B8%AD%E7%9A%84%E6%8A%80%E6%9C%AF%E5%BA%94%E7%94%A8%E5%88%86%E6%9E%90/" title="俄罗斯和乌克兰战争中的技术应用分析">
+                        <span class="hidden-mobile">俄罗斯和乌克兰战争中的技术应用分析</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>
