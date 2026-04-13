@@ -1,0 +1,702 @@
+
+
+<!DOCTYPE html>
+<html lang="CN" data-default-color-scheme=dark>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Kwindy">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="前言DATA : 20260324又有制图任务了，这次要批量出宗地图，但是有一点不同的是，需要显示宗地在项目范围的情况，宗地和项目范围两个要素都要显示全，也就是多对多的数据匹配。而数据驱动只有一项。一开始我也没有思路，想到的是用宗地做数据驱动，结合缩放至要素的功能。但是后面发现了别人更巧妙的思路。最终也是成功解决了问题，有许多细节值得记录下来。 数据处理数据整理原始数据是一堆dwg文件，需要手动将">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Arcgis数据驱动制图">
+<meta property="og:url" content="http://kw1649190133.github.io/2026/03/27/Arcgis%E6%95%B0%E6%8D%AE%E9%A9%B1%E5%8A%A8%E5%88%B6%E5%9B%BE/index.html">
+<meta property="og:site_name" content="kw&#39;s blog">
+<meta property="og:description" content="前言DATA : 20260324又有制图任务了，这次要批量出宗地图，但是有一点不同的是，需要显示宗地在项目范围的情况，宗地和项目范围两个要素都要显示全，也就是多对多的数据匹配。而数据驱动只有一项。一开始我也没有思路，想到的是用宗地做数据驱动，结合缩放至要素的功能。但是后面发现了别人更巧妙的思路。最终也是成功解决了问题，有许多细节值得记录下来。 数据处理数据整理原始数据是一堆dwg文件，需要手动将">
+<meta property="og:locale">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/03/27/Arcgis%E6%95%B0%E6%8D%AE%E9%A9%B1%E5%8A%A8%E5%88%B6%E5%9B%BE/54f5bad9cb62500d322584a904758295.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/03/27/Arcgis%E6%95%B0%E6%8D%AE%E9%A9%B1%E5%8A%A8%E5%88%B6%E5%9B%BE/48df9d7ed66adb990aec08ae82e06ab5.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/03/27/Arcgis%E6%95%B0%E6%8D%AE%E9%A9%B1%E5%8A%A8%E5%88%B6%E5%9B%BE/26582109ee2a77177daed272a7846a5a.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/03/27/Arcgis%E6%95%B0%E6%8D%AE%E9%A9%B1%E5%8A%A8%E5%88%B6%E5%9B%BE/1291ba3343be4f7638fa081770f3d7c3.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/03/27/Arcgis%E6%95%B0%E6%8D%AE%E9%A9%B1%E5%8A%A8%E5%88%B6%E5%9B%BE/7a22033eddabe0ed1bf3a127c9731476.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/03/27/Arcgis%E6%95%B0%E6%8D%AE%E9%A9%B1%E5%8A%A8%E5%88%B6%E5%9B%BE/01b6bfe4d0780536f8df328f3fd4fc51.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/03/27/Arcgis%E6%95%B0%E6%8D%AE%E9%A9%B1%E5%8A%A8%E5%88%B6%E5%9B%BE/ff44cf0476ccb7fd88bfc25507b06ea6.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/03/27/Arcgis%E6%95%B0%E6%8D%AE%E9%A9%B1%E5%8A%A8%E5%88%B6%E5%9B%BE/%E6%95%B0%E6%8D%AE%E9%A9%B1%E5%8A%A8%E5%B7%A5%E5%85%B7%E7%94%9F%E6%88%90.png">
+<meta property="article:published_time" content="2026-03-27T07:08:25.000Z">
+<meta property="article:modified_time" content="2026-04-13T07:40:30.151Z">
+<meta property="article:author" content="Kwindy">
+<meta property="article:tag" content="ArcGIS">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="属性">
+<meta property="article:tag" content="QGIS">
+<meta property="article:tag" content="数据驱动">
+<meta property="article:tag" content="制图">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://kw1649190133.github.io/2026/03/27/Arcgis%E6%95%B0%E6%8D%AE%E9%A9%B1%E5%8A%A8%E5%88%B6%E5%9B%BE/54f5bad9cb62500d322584a904758295.png">
+  
+  
+  
+  <title>Arcgis数据驱动制图 - kw&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"kw1649190133.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>天际边缘 Edge of the sky </strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Hejmpaĝo</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Arkivoj</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Kategorio</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Etikedoj</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>Pri</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Arcgis数据驱动制图"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-03-27 15:08" pubdate>
+          March 27, 2026 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          21k vortoj
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          172 minutoj
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Arcgis数据驱动制图</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>DATA : 20260324<br>又有制图任务了，这次要批量出宗地图，但是有一点不同的是，需要显示宗地在项目范围的情况，宗地和项目范围两个要素都要显示全，也就是多对多的数据匹配。而数据驱动只有一项。<br>一开始我也没有思路，想到的是用宗地做数据驱动，结合缩放至要素的功能。但是后面发现了别人更巧妙的思路。最终也是成功解决了问题，有许多细节值得记录下来。</p>
+<h1 id="数据处理"><a href="#数据处理" class="headerlink" title="数据处理"></a>数据处理</h1><h2 id="数据整理"><a href="#数据整理" class="headerlink" title="数据整理"></a>数据整理</h2><p>原始数据是一堆dwg文件，需要手动将其转换成shp，并且提取其中的项目范围、项目名称。因为有些项目范围是用不上的，所以先统计一下哪些是用上的，哪些不涉及，还有哪些是重复的。<br>导入文件夹路径后，查询指定后缀文件，生成一个xlsx表格描述树状结构。</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br></pre></td><td class="code"><pre><code class="hljs routeros">import os<br>import tkinter as tk<br><span class="hljs-keyword">from</span> tkinter import filedialog, messagebox<br><span class="hljs-keyword">from</span> pathlib import Path<br><span class="hljs-keyword">from</span> openpyxl import Workbook<br><span class="hljs-keyword">from</span> openpyxl.utils import get_column_letter<br><br>class FileOrganizerApp:<br>    def __init__(self, root):<br>        self.root = root<br>        self.root.title(<span class="hljs-string">&quot;文件路径整理工具（树形结构）&quot;</span>)<br>        self.root.geometry(<span class="hljs-string">&quot;600x320&quot;</span>)<br>        self.root.resizable(<span class="hljs-literal">False</span>, <span class="hljs-literal">False</span>)<br><br>        # 变量<br>        self.input_folder = tk.StringVar()<br>        self.output_file = tk.StringVar(<span class="hljs-attribute">value</span>=<span class="hljs-string">&quot;file_structure.xlsx&quot;</span>)<br>        self.suffixes = tk.StringVar(<span class="hljs-attribute">value</span>=<span class="hljs-string">&quot;txt pdf docx jpg png&quot;</span>)<br>        self.status_text = tk.StringVar(<span class="hljs-attribute">value</span>=<span class="hljs-string">&quot;就绪&quot;</span>)<br><br>        self.setup_ui()<br><br>    def setup_ui(self):<br>        # 输入文件夹<br>        tk.Label(self.root, <span class="hljs-attribute">text</span>=<span class="hljs-string">&quot;📁 输入文件夹:&quot;</span>).grid(row=0, <span class="hljs-attribute">column</span>=0, <span class="hljs-attribute">sticky</span>=<span class="hljs-string">&#x27;w&#x27;</span>, <span class="hljs-attribute">padx</span>=10, <span class="hljs-attribute">pady</span>=8)<br>        tk.Entry(self.root, <span class="hljs-attribute">textvariable</span>=self.input_folder, <span class="hljs-attribute">width</span>=50).grid(row=0, <span class="hljs-attribute">column</span>=1, <span class="hljs-attribute">padx</span>=5, <span class="hljs-attribute">pady</span>=8)<br>        tk.Button(self.root, <span class="hljs-attribute">text</span>=<span class="hljs-string">&quot;浏览...&quot;</span>, <span class="hljs-attribute">command</span>=self.browse_input).grid(row=0, <span class="hljs-attribute">column</span>=2, <span class="hljs-attribute">padx</span>=5)<br><br>        # 后缀输入<br>        tk.Label(self.root, <span class="hljs-attribute">text</span>=<span class="hljs-string">&quot;🔍 文件后缀（空格分隔）:&quot;</span>).grid(row=1, <span class="hljs-attribute">column</span>=0, <span class="hljs-attribute">sticky</span>=<span class="hljs-string">&#x27;w&#x27;</span>, <span class="hljs-attribute">padx</span>=10, <span class="hljs-attribute">pady</span>=8)<br>        tk.Entry(self.root, <span class="hljs-attribute">textvariable</span>=self.suffixes, <span class="hljs-attribute">width</span>=50).grid(row=1, <span class="hljs-attribute">column</span>=1, <span class="hljs-attribute">padx</span>=5, <span class="hljs-attribute">pady</span>=8)<br><br>        # 输出文件<br>        tk.Label(self.root, <span class="hljs-attribute">text</span>=<span class="hljs-string">&quot;💾 输出 Excel 文件:&quot;</span>).grid(row=2, <span class="hljs-attribute">column</span>=0, <span class="hljs-attribute">sticky</span>=<span class="hljs-string">&#x27;w&#x27;</span>, <span class="hljs-attribute">padx</span>=10, <span class="hljs-attribute">pady</span>=8)<br>        tk.Entry(self.root, <span class="hljs-attribute">textvariable</span>=self.output_file, <span class="hljs-attribute">width</span>=50).grid(row=2, <span class="hljs-attribute">column</span>=1, <span class="hljs-attribute">padx</span>=5, <span class="hljs-attribute">pady</span>=8)<br>        tk.Button(self.root, <span class="hljs-attribute">text</span>=<span class="hljs-string">&quot;保存为...&quot;</span>, <span class="hljs-attribute">command</span>=self.browse_output).grid(row=2, <span class="hljs-attribute">column</span>=2, <span class="hljs-attribute">padx</span>=5)<br><br>        # 按钮<br>        self.run_button = tk.Button(<br>            self.root, <span class="hljs-attribute">text</span>=<span class="hljs-string">&quot;开始整理&quot;</span>, <span class="hljs-attribute">command</span>=self.start_process,<br>            <span class="hljs-attribute">bg</span>=<span class="hljs-string">&quot;#4CAF50&quot;</span>, <span class="hljs-attribute">fg</span>=<span class="hljs-string">&quot;white&quot;</span>, font=(<span class="hljs-string">&quot;Arial&quot;</span>, 10, <span class="hljs-string">&quot;bold&quot;</span>), <span class="hljs-attribute">width</span>=15<br>        )<br>        self.run_button.grid(<span class="hljs-attribute">row</span>=3, <span class="hljs-attribute">column</span>=1, <span class="hljs-attribute">pady</span>=15)<br><br>        # 状态提示<br>        tk.Label(self.root, <span class="hljs-attribute">text</span>=<span class="hljs-string">&quot;状态:&quot;</span>).grid(row=4, <span class="hljs-attribute">column</span>=0, <span class="hljs-attribute">sticky</span>=<span class="hljs-string">&#x27;w&#x27;</span>, <span class="hljs-attribute">padx</span>=10)<br>        tk.Label(self.root, <span class="hljs-attribute">textvariable</span>=self.status_text, <span class="hljs-attribute">fg</span>=<span class="hljs-string">&quot;blue&quot;</span>).grid(row=4, <span class="hljs-attribute">column</span>=1, <span class="hljs-attribute">sticky</span>=<span class="hljs-string">&#x27;w&#x27;</span>)<br><br>    def browse_input(self):<br>        folder = filedialog.askdirectory()<br>        <span class="hljs-keyword">if</span> folder:<br>            self.input_folder.<span class="hljs-built_in">set</span>(folder)<br><br>    def browse_output(self):<br>        file_path = filedialog.asksaveasfilename(<br>            <span class="hljs-attribute">defaultextension</span>=<span class="hljs-string">&quot;.xlsx&quot;</span>,<br>            filetypes=[(<span class="hljs-string">&quot;Excel 文件&quot;</span>, <span class="hljs-string">&quot;*.xlsx&quot;</span>)],<br>            <span class="hljs-attribute">title</span>=<span class="hljs-string">&quot;保存为 Excel 文件&quot;</span><br>        )<br>        <span class="hljs-keyword">if</span> file_path:<br>            self.output_file.<span class="hljs-built_in">set</span>(file_path)<br><br>    def start_process(self):<br>        input_dir = self.input_folder.<span class="hljs-built_in">get</span>().strip()<br>        output_file = self.output_file.<span class="hljs-built_in">get</span>().strip()<br>        suffix_str = self.suffixes.<span class="hljs-built_in">get</span>().strip()<br><br>        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> input_dir <span class="hljs-keyword">or</span> <span class="hljs-keyword">not</span> os.path.isdir(input_dir):<br>            messagebox.showerror(<span class="hljs-string">&quot;错误&quot;</span>, <span class="hljs-string">&quot;请输入有效的输入文件夹路径！&quot;</span>)<br>            return<br>        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> suffix_str:<br>            messagebox.showerror(<span class="hljs-string">&quot;错误&quot;</span>, <span class="hljs-string">&quot;请输入至少一个文件后缀！&quot;</span>)<br>            return<br>        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> output_file:<br>            messagebox.showerror(<span class="hljs-string">&quot;错误&quot;</span>, <span class="hljs-string">&quot;请选择输出文件路径！&quot;</span>)<br>            return<br><br>        self.run_button.config(<span class="hljs-attribute">state</span>=<span class="hljs-string">&#x27;disabled&#x27;</span>)<br>        self.status_text.<span class="hljs-built_in">set</span>(<span class="hljs-string">&quot;处理中，请稍候...&quot;</span>)<br>        self.root.update()  # 立即刷新状态<br><br>        try:<br>            self.process_files(input_dir, suffix_str, output_file)<br>            messagebox.showinfo(<span class="hljs-string">&quot;成功&quot;</span>, f<span class="hljs-string">&quot;✅ 已成功导出文件结构到：\n&#123;output_file&#125;&quot;</span>)<br>        except Exception as e:<br>            messagebox.showerror(<span class="hljs-string">&quot;错误&quot;</span>, f<span class="hljs-string">&quot;处理失败：\n&#123;str(e)&#125;&quot;</span>)<br>        finally:<br>            self.status_text.<span class="hljs-built_in">set</span>(<span class="hljs-string">&quot;就绪&quot;</span>)<br>            self.run_button.config(<span class="hljs-attribute">state</span>=<span class="hljs-string">&#x27;normal&#x27;</span>)<br><br>    def process_files(self, input_dir, suffix_str, output_file):<br>        suffixes = suffix_str.split()<br>        root = Path(input_dir).resolve()<br>        normalized_suffixes = [s <span class="hljs-keyword">if</span> s.startswith(<span class="hljs-string">&#x27;.&#x27;</span>) <span class="hljs-keyword">else</span> <span class="hljs-string">&#x27;.&#x27;</span> + s <span class="hljs-keyword">for</span> s <span class="hljs-keyword">in</span> suffixes]<br>        normalized_suffixes = [s.lower() <span class="hljs-keyword">for</span> s <span class="hljs-keyword">in</span> normalized_suffixes]<br><br>        # 收集所有匹配的文件路径（相对路径）<br>        matched_paths = []<br>        <span class="hljs-keyword">for</span> file_path <span class="hljs-keyword">in</span> root.rglob(<span class="hljs-string">&#x27;*&#x27;</span>):<br>            <span class="hljs-keyword">if</span> file_path.is_file() <span class="hljs-keyword">and</span> file_path.suffix.lower() <span class="hljs-keyword">in</span> normalized_suffixes:<br>                try:<br>                    rel_parts = file_path.relative_to(root).parts<br>                    matched_paths.append(list(rel_parts))<br>                except ValueError:<br>                    continue<br><br>        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> matched_paths:<br>            raise ValueError(<span class="hljs-string">&quot;未找到匹配指定后缀的文件。&quot;</span>)<br><br>        # 按路径字典序排序（确保父子连续）<br>        matched_paths.sort()<br><br>        # 计算最大深度<br>        max_depth = max(len(p) <span class="hljs-keyword">for</span> p <span class="hljs-keyword">in</span> matched_paths)<br><br>        # 构建“树形”显示行<br>        previous_row = [<span class="hljs-string">&#x27;&#x27;</span>] * max_depth<br>        output_rows = []<br><br>        <span class="hljs-keyword">for</span> path_parts <span class="hljs-keyword">in</span> matched_paths:<br>            current_row = [<span class="hljs-string">&#x27;&#x27;</span>] * max_depth<br>            # 补齐当前路径到 max_depth（其实不需要，因为最后一项是文件）<br>            padded = (path_parts + [<span class="hljs-string">&#x27;&#x27;</span>] * max_depth)[:max_depth]<br><br>            <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(len(path_parts)):<br>                <span class="hljs-keyword">if</span> i == 0 <span class="hljs-keyword">or</span> padded[i] != previous_row[i]:<br>                    current_row[i] = padded[i]<br>                # 如果前面层级变了，后面即使相同也要显示？→ 不，按标准树形：只要前缀相同就隐藏<br>                # 但更安全的做法：仅当与上一行完全相同才隐藏 → 我们采用“逐层比较”<br>                # 实际上，只要某一层不同，后面的都应显示（但通常不会重复）<br>                # 所以简单策略：只在与上一行同位置相同时才留空<br>            # 更严谨：从左到右，一旦不同，后面全部显示（但 Excel 树形一般只隐藏完全重复前缀）<br>            # 我们采用：仅当与上一行在该列值相同时才留空<br>            <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(max_depth):<br>                <span class="hljs-keyword">if</span> i &lt; len(path_parts) <span class="hljs-keyword">and</span> (i == 0 <span class="hljs-keyword">or</span> path_parts[:i] == previous_row[:i]):<br>                    <span class="hljs-keyword">if</span> path_parts[i] == previous_row[i]:<br>                        current_row[i] = <span class="hljs-string">&#x27;&#x27;</span><br>                    <span class="hljs-keyword">else</span>:<br>                        current_row[i] = path_parts[i]<br>                # <span class="hljs-keyword">else</span>: 保持为空（已初始化）<br><br>            output_rows.append(current_row)<br>            previous_row = path_parts[:] + [<span class="hljs-string">&#x27;&#x27;</span>] * (max_depth - len(path_parts))<br><br>        # 写入 Excel<br>        wb = Workbook()<br>        ws = wb.active<br>        ws.title = <span class="hljs-string">&quot;File Tree&quot;</span><br><br>        <span class="hljs-keyword">for</span> row <span class="hljs-keyword">in</span> output_rows:<br>            ws.append(row)<br><br>        # 自动列宽<br>        <span class="hljs-keyword">for</span> col_idx <span class="hljs-keyword">in</span> range(1, max_depth + 1):<br>            ws.column_dimensions[get_column_letter(col_idx)].width = 28<br><br>        wb.save(output_file)<br><br><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&quot;__main__&quot;</span>:<br>    root = tk.Tk()<br>    app = FileOrganizerApp(root)<br>    root.mainloop()<br></code></pre></td></tr></table></figure>
+<h2 id="批量文件名写入字段"><a href="#批量文件名写入字段" class="headerlink" title="批量文件名写入字段"></a>批量文件名写入字段</h2><p>比较关键的步骤，将提取的shp矢量文件名，也就是项目名称，写入到转换后的矢量中。这一步本来尝试用QGIS做，但是失败了，原因不明，试了几次都不行，只能用传统办法在模型构建器里搓连接图。名称调用使用单引号+百分号，例如：<code>&#39;%名称%&#39;</code><br><img src="/2026/03/27/Arcgis%E6%95%B0%E6%8D%AE%E9%A9%B1%E5%8A%A8%E5%88%B6%E5%9B%BE/54f5bad9cb62500d322584a904758295.png" srcset="/img/loading.gif" lazyload alt="54f5bad9cb62500d322584a904758295.png"></p>
+<h2 id="其他前期处理"><a href="#其他前期处理" class="headerlink" title="其他前期处理"></a>其他前期处理</h2><p>要素类迭代+对应处理模块，比较简单这里不放图。</p>
+<ol>
+<li>批量定义投影</li>
+<li>数据库批量转shp文件夹（一开始直接将dwg转换在数据库里，准备在数据库里做合并，但发现会遇到数据范围超限的报错，当一些投影错误的数据混入其中时会发生这种问题，需要转成shp进行合并。）</li>
+</ol>
+<h2 id="数据情况说明"><a href="#数据情况说明" class="headerlink" title="数据情况说明"></a>数据情况说明</h2><p>宗地图层关键字段：编号<br>项目范围图层关键字段：项目名称</p>
+<h2 id="数据检查"><a href="#数据检查" class="headerlink" title="数据检查"></a>数据检查</h2><p>先检查宗地图层和项目用地范围的图层检查，看一下有没有编号重复、要素重叠的情况。<strong>同时，要做好数据备份。</strong></p>
+<h2 id="进行一次空间连接"><a href="#进行一次空间连接" class="headerlink" title="进行一次空间连接"></a>进行一次空间连接</h2><p>先进行一次空间连接，将项目名称挂进宗地里。其中要注意选项是one to many，这样针对一个宗地同时占到两个项目的情况，就会生成两个同名宗地，同时勾选了去除不匹配要素，将无关要素去除。<br><img src="/2026/03/27/Arcgis%E6%95%B0%E6%8D%AE%E9%A9%B1%E5%8A%A8%E5%88%B6%E5%9B%BE/48df9d7ed66adb990aec08ae82e06ab5.png" srcset="/img/loading.gif" lazyload alt="48df9d7ed66adb990aec08ae82e06ab5.png"><br>运行之后得到的就是所有需要制图的宗地总数。</p>
+<h2 id="唯一ID生成"><a href="#唯一ID生成" class="headerlink" title="唯一ID生成"></a>唯一ID生成</h2><p>原宗地图斑不重复，但进行了one to many的空间连接后，一定会重复，所以这里需要先对数据进行一次重新编号，编号方式采用原编号+字母的形式。这样同一宗地占到不同项目范围的情况，就有了项目名称和新ID的区别。<br>为了避免在arcgis的python2.7里调文件格式，这里使用QGIS进行处理。<br><strong>执行之前务必关闭Arcgis，否则程序冲突会导致数据全部丢失</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> qgis.core <span class="hljs-keyword">import</span> QgsProject, QgsVectorLayer, edit<br><span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> defaultdict<br><br><span class="hljs-comment"># ====== 用户配置区 ======</span><br>layer_name = <span class="hljs-string">&quot;宗地空间连接&quot;</span>          <span class="hljs-comment"># ← 图层名称（在图层面板中的名字）</span><br>id_field = <span class="hljs-string">&quot;bh&quot;</span>                  <span class="hljs-comment"># ← 输入的编号字段名（如 &quot;ID&quot;, &quot;Code&quot;）</span><br>output_field = <span class="hljs-string">&quot;NewID&quot;</span>             <span class="hljs-comment"># ← 输出字段名（会自动创建）</span><br>use_letter_suffix = <span class="hljs-literal">True</span>           <span class="hljs-comment"># ← True: 用 _a,_b...  False: 用 _1,_2...</span><br><span class="hljs-comment"># =======================</span><br><br><span class="hljs-comment"># 获取图层</span><br>layer = QgsProject.instance().mapLayersByName(layer_name)<br><span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> layer:<br>    <span class="hljs-keyword">raise</span> Exception(<span class="hljs-string">f&quot;❌ 未找到图层: <span class="hljs-subst">&#123;layer_name&#125;</span>&quot;</span>)<br>layer = layer[<span class="hljs-number">0</span>]<br><br><span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> layer.isValid():<br>    <span class="hljs-keyword">raise</span> Exception(<span class="hljs-string">&quot;❌ 图层无效&quot;</span>)<br><br><span class="hljs-comment"># 检查字段是否存在</span><br>field_names = [f.name() <span class="hljs-keyword">for</span> f <span class="hljs-keyword">in</span> layer.fields()]<br><span class="hljs-keyword">if</span> id_field <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> field_names:<br>    <span class="hljs-keyword">raise</span> Exception(<span class="hljs-string">f&quot;❌ 缺少输入字段: <span class="hljs-subst">&#123;id_field&#125;</span>&quot;</span>)<br><br><span class="hljs-comment"># 添加输出字段（如果不存在）</span><br><span class="hljs-keyword">if</span> output_field <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> field_names:<br>    <span class="hljs-keyword">from</span> PyQt5.QtCore <span class="hljs-keyword">import</span> QVariant<br>    <span class="hljs-keyword">with</span> edit(layer):<br>        layer.dataProvider().addAttributes([QgsField(output_field, QVariant.String, <span class="hljs-built_in">len</span>=<span class="hljs-number">255</span>)])<br>        layer.updateFields()<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;✅ 已创建字段: <span class="hljs-subst">&#123;output_field&#125;</span>&quot;</span>)<br><br><span class="hljs-comment"># 第一步：统计每个编号的出现次数</span><br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;📊 正在统计编号重复情况...&quot;</span>)<br>id_counts = defaultdict(<span class="hljs-built_in">int</span>)<br><span class="hljs-keyword">for</span> feat <span class="hljs-keyword">in</span> layer.getFeatures():<br>    val = feat[id_field]<br>    <span class="hljs-keyword">if</span> val <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span>:<br>        id_counts[<span class="hljs-built_in">str</span>(val)] += <span class="hljs-number">1</span><br><br><span class="hljs-comment"># 第二步：为重复值生成后缀</span><br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;🔄 正在生成唯一编号...&quot;</span>)<br>id_counter = defaultdict(<span class="hljs-built_in">int</span>)<br><br><span class="hljs-keyword">with</span> edit(layer):<br>    <span class="hljs-keyword">for</span> feat <span class="hljs-keyword">in</span> layer.getFeatures():<br>        orig_id = feat[id_field]<br>        <span class="hljs-keyword">if</span> orig_id <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:<br>            new_id = <span class="hljs-literal">None</span><br>        <span class="hljs-keyword">else</span>:<br>            orig_str = <span class="hljs-built_in">str</span>(orig_id)<br>            <span class="hljs-keyword">if</span> id_counts[orig_str] == <span class="hljs-number">1</span>:<br>                new_id = orig_str<br>            <span class="hljs-keyword">else</span>:<br>                id_counter[orig_str] += <span class="hljs-number">1</span><br>                <span class="hljs-keyword">if</span> use_letter_suffix:<br>                    <span class="hljs-comment"># 使用 a, b, c...（最多26个）</span><br>                    <span class="hljs-keyword">if</span> id_counter[orig_str] &lt;= <span class="hljs-number">26</span>:<br>                        suffix = <span class="hljs-built_in">chr</span>(<span class="hljs-number">96</span> + id_counter[orig_str])  <span class="hljs-comment"># 97=&#x27;a&#x27;</span><br>                        new_id = <span class="hljs-string">f&quot;<span class="hljs-subst">&#123;orig_str&#125;</span>_<span class="hljs-subst">&#123;suffix&#125;</span>&quot;</span><br>                    <span class="hljs-keyword">else</span>:<br>                        <span class="hljs-comment"># 超过26个，改用数字（避免错误）</span><br>                        new_id = <span class="hljs-string">f&quot;<span class="hljs-subst">&#123;orig_str&#125;</span>_<span class="hljs-subst">&#123;id_counter[orig_str]&#125;</span>&quot;</span><br>                <span class="hljs-keyword">else</span>:<br>                    <span class="hljs-comment"># 使用数字后缀（推荐）</span><br>                    new_id = <span class="hljs-string">f&quot;<span class="hljs-subst">&#123;orig_str&#125;</span>_<span class="hljs-subst">&#123;id_counter[orig_str]&#125;</span>&quot;</span><br>        <br>        layer.changeAttributeValue(feat.<span class="hljs-built_in">id</span>(), layer.fields().lookupField(output_field), new_id)<br><br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;🎉 处理完成！结果已写入字段:&quot;</span>, output_field)<br></code></pre></td></tr></table></figure>
+
+<h2 id="使用数据驱动生成"><a href="#使用数据驱动生成" class="headerlink" title="使用数据驱动生成"></a>使用数据驱动生成</h2><p>使用别人的工具前要做好数据备份。<br><img src="/2026/03/27/Arcgis%E6%95%B0%E6%8D%AE%E9%A9%B1%E5%8A%A8%E5%88%B6%E5%9B%BE/26582109ee2a77177daed272a7846a5a.png" srcset="/img/loading.gif" lazyload alt="26582109ee2a77177daed272a7846a5a.png"></p>
+<p>拿到没有加密的工具后，进行编辑，发现里面其实也并不复杂，最核心的步骤是空间连接和计算整数比例尺。<br><img src="/2026/03/27/Arcgis%E6%95%B0%E6%8D%AE%E9%A9%B1%E5%8A%A8%E5%88%B6%E5%9B%BE/1291ba3343be4f7638fa081770f3d7c3.png" srcset="/img/loading.gif" lazyload alt="1291ba3343be4f7638fa081770f3d7c3.png"></p>
+<h3 id="反向空间连接"><a href="#反向空间连接" class="headerlink" title="反向空间连接"></a>反向空间连接</h3><p>之前感觉这个图难做的原因是数据驱动只能放一项，而如何在以宗地驱动的时候适配项目矢量的范围。但这里使用的思路是把宗地的编号空间连接挂进项目范围里，同样是one to many，然后用项目范围做数据驱动。到这里只解决了一半的问题，还有细节藏在制图的过程里。</p>
+<h3 id="自动生成合适的取整比例尺"><a href="#自动生成合适的取整比例尺" class="headerlink" title="自动生成合适的取整比例尺"></a>自动生成合适的取整比例尺</h3><p>这次制图毕竟要尽量正式一点，各个项目范围的大小不一，直接自动适应比较粗糙，于是需要做一下比例尺取整。<br>通过创建了比例尺字段scale后，使用对python工具对字段进行赋值<br>调用函数：<code>calc_standard_scale( !Shape!, 16 )</code></p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-comment"># 定义标准比例尺序列，请根据需要修改此列表</span><br><span class="hljs-string">standard_scales</span> <span class="hljs-string">=</span> [<span class="hljs-number">250</span>, <span class="hljs-number">500</span>, <span class="hljs-number">1000</span>, <span class="hljs-number">2000</span>,<span class="hljs-number">3000</span>,<span class="hljs-number">4000</span>, <span class="hljs-number">5000</span>,<span class="hljs-number">6000</span>,<span class="hljs-number">7000</span>,<span class="hljs-number">8000</span>,<span class="hljs-number">9000</span>,<span class="hljs-number">10000</span>,<span class="hljs-number">15000</span>,<span class="hljs-number">20000</span>, <span class="hljs-number">25000</span>]<br><br><span class="hljs-comment"># 定义核心计算函数</span><br><span class="hljs-string">def</span> <span class="hljs-string">calc_standard_scale(shape,</span> <span class="hljs-string">data_frame_usable_cm):</span><br>    <span class="hljs-comment"># 1. 获取外包矩形的宽度和高度（单位：米）</span><br>    <span class="hljs-string">rect_width</span> <span class="hljs-string">=</span> <span class="hljs-string">shape.extent.width</span><br>    <span class="hljs-string">rect_height</span> <span class="hljs-string">=</span> <span class="hljs-string">shape.extent.height</span><br>    <br>    <span class="hljs-comment"># 2. 获取长边长度，并转换为厘米</span><br>    <span class="hljs-string">long_side_m</span> <span class="hljs-string">=</span> <span class="hljs-string">max(rect_width,</span> <span class="hljs-string">rect_height)</span><br>    <span class="hljs-string">long_side_cm</span> <span class="hljs-string">=</span> <span class="hljs-string">long_side_m</span> <span class="hljs-string">*</span> <span class="hljs-number">100</span>  <span class="hljs-comment"># 米转厘米</span><br>    <br>    <span class="hljs-comment"># 3. 计算所需的最小比例尺分母</span><br>    <span class="hljs-string">if</span> <span class="hljs-string">data_frame_usable_cm</span> <span class="hljs-string">&lt;=</span> <span class="hljs-attr">0:</span><br>        <span class="hljs-string">return</span> <span class="hljs-string">standard_scales[-1]</span>  <span class="hljs-comment"># 防止除零或负值错误</span><br>    <span class="hljs-string">min_scale</span> <span class="hljs-string">=</span> <span class="hljs-string">long_side_cm</span> <span class="hljs-string">/</span> <span class="hljs-string">data_frame_usable_cm</span><br>    <br>    <span class="hljs-comment"># 4. 向上匹配到标准比例尺</span><br>    <span class="hljs-attr">for scale in standard_scales:</span><br>        <span class="hljs-string">if</span> <span class="hljs-string">min_scale</span> <span class="hljs-string">&lt;=</span> <span class="hljs-attr">scale:</span><br>            <span class="hljs-string">return</span> <span class="hljs-string">scale</span><br>    <span class="hljs-comment"># 如果比所有标准都大，返回最大的标准比例尺</span><br>    <span class="hljs-string">return</span> <span class="hljs-string">standard_scales[-1]</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="无效数据去除"><a href="#无效数据去除" class="headerlink" title="无效数据去除"></a>无效数据去除</h2><p>生成数据驱动之后，进行一些处理。最后得到的结果应该是：数据驱动页的要素数量和第一次空间连接的结果一致。</p>
+<ol>
+<li>删除空值</li>
+<li>去除不匹配的要素<br>使用查询<code>XMMC NOT LIKE NAME</code>之类的就可以找出不匹配的要素直接删掉。<br>到最后还发现有一点重复数据，而且是NewID名称相同的，应该是第一步数据整理有疏漏，尝试过Arcgis中的查询重复项发现不太好用，还是汇总统计+表格连接比较直观。<br><img src="/2026/03/27/Arcgis%E6%95%B0%E6%8D%AE%E9%A9%B1%E5%8A%A8%E5%88%B6%E5%9B%BE/7a22033eddabe0ed1bf3a127c9731476.png" srcset="/img/loading.gif" lazyload alt="7a22033eddabe0ed1bf3a127c9731476.png"><br>成功找到重复要素删掉，最后驱动页与一开始的空间连接结果一致。</li>
+</ol>
+<h1 id="制图"><a href="#制图" class="headerlink" title="制图"></a>制图</h1><p>数据准备好之后，进入制图流程。</p>
+<h2 id="数据驱动"><a href="#数据驱动" class="headerlink" title="数据驱动"></a>数据驱动</h2><ol>
+<li>使用生成的数据驱动矢量做驱动，名称使用NewID，范围使用scale作为数据驱动比例。</li>
+<li>【核心】最重要第一步，就是对矢量设置页面查询。在属性——定义查询——页面定义查询，设置查询与数据驱动绑定。这样就能只显示字段匹配当前数据驱动名称的矢量。<br><img src="/2026/03/27/Arcgis%E6%95%B0%E6%8D%AE%E9%A9%B1%E5%8A%A8%E5%88%B6%E5%9B%BE/01b6bfe4d0780536f8df328f3fd4fc51.png" srcset="/img/loading.gif" lazyload alt="01b6bfe4d0780536f8df328f3fd4fc51.png"></li>
+<li>最后设置图幅相关的内容，动态标题、标注等，还有插入影像。</li>
+</ol>
+<h2 id="成图效果"><a href="#成图效果" class="headerlink" title="成图效果"></a>成图效果</h2><p><img src="/2026/03/27/Arcgis%E6%95%B0%E6%8D%AE%E9%A9%B1%E5%8A%A8%E5%88%B6%E5%9B%BE/ff44cf0476ccb7fd88bfc25507b06ea6.png" srcset="/img/loading.gif" lazyload alt="ff44cf0476ccb7fd88bfc25507b06ea6.png"></p>
+<h1 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h1><p>20260413PS：后来又发现如果矢量之间存在空间关系，主要是依靠空间连接自带的one to more选项，生成所需要的数据驱动矢量。但如果矢量之间没有空间关系，那这种方式就不行了。<br>于是不得不重新构建一个，纯依赖字段匹配的逻辑驱动生成数据驱动矢量。</p>
+<h2 id="直接输入地址的简单脚本"><a href="#直接输入地址的简单脚本" class="headerlink" title="直接输入地址的简单脚本"></a>直接输入地址的简单脚本</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> qgis.core <span class="hljs-keyword">import</span> (<br>    QgsProject, QgsVectorLayer, QgsFeature, QgsGeometry,<br>    QgsField, QgsFields, QgsWkbTypes, QgsCoordinateReferenceSystem,<br>    QgsVectorFileWriter<br>)<br><span class="hljs-keyword">from</span> PyQt5.QtCore <span class="hljs-keyword">import</span> QVariant<br><span class="hljs-keyword">import</span> os<br><br><span class="hljs-comment"># ==================== 用户配置区 ====================</span><br>parcels_layer_name = <span class="hljs-string">&quot;制图宗地提取&quot;</span>          <span class="hljs-comment"># ← 宗地图层名称（图层面板中的名字）</span><br>exprop_layer_name = <span class="hljs-string">&quot;征地范围20260413&quot;</span>   <span class="hljs-comment"># ← 征收范围图层名称</span><br><br>parcels_id_field = <span class="hljs-string">&quot;NewID&quot;</span>             <span class="hljs-comment"># ← 宗地中要继承的字段（如 &quot;bh&quot;, &quot;ParcelID&quot;）</span><br>parcels_join_field = <span class="hljs-string">&quot;XMMC&quot;</span>         <span class="hljs-comment"># ← 宗地用于关联的字段</span><br>exprop_join_field = <span class="hljs-string">&quot;NAME&quot;</span>          <span class="hljs-comment"># ← 征收范围用于关联的字段</span><br><br>output_shapefile = <span class="hljs-string">r&quot;D:\work\耕地占用整治\制图\周庆德补充制图50宗\数据驱动\数据驱动矢量.shp&quot;</span>  <span class="hljs-comment"># ← 输出路径（必须是 .shp 或 .gpkg）</span><br><span class="hljs-comment"># ===================================================</span><br><br><span class="hljs-comment"># --- 获取图层 ---</span><br>parcels_layer = QgsProject.instance().mapLayersByName(parcels_layer_name)<br>exprop_layer = QgsProject.instance().mapLayersByName(exprop_layer_name)<br><br><span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> parcels_layer:<br>    <span class="hljs-keyword">raise</span> Exception(<span class="hljs-string">f&quot;❌ 未找到宗地图层: <span class="hljs-subst">&#123;parcels_layer_name&#125;</span>&quot;</span>)<br><span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> exprop_layer:<br>    <span class="hljs-keyword">raise</span> Exception(<span class="hljs-string">f&quot;❌ 未找到征收范围图层: <span class="hljs-subst">&#123;exprop_layer_name&#125;</span>&quot;</span>)<br><br>parcels_layer = parcels_layer[<span class="hljs-number">0</span>]<br>exprop_layer = exprop_layer[<span class="hljs-number">0</span>]<br><br><span class="hljs-comment"># --- 检查字段是否存在 ---</span><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">check_field</span>(<span class="hljs-params">layer, field_name, layer_desc</span>):<br>    <span class="hljs-keyword">if</span> field_name <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> [f.name() <span class="hljs-keyword">for</span> f <span class="hljs-keyword">in</span> layer.fields()]:<br>        <span class="hljs-keyword">raise</span> Exception(<span class="hljs-string">f&quot;❌ <span class="hljs-subst">&#123;layer_desc&#125;</span> 缺少字段: <span class="hljs-subst">&#123;field_name&#125;</span>&quot;</span>)<br><br>check_field(parcels_layer, parcels_id_field, <span class="hljs-string">&quot;宗地&quot;</span>)<br>check_field(parcels_layer, parcels_join_field, <span class="hljs-string">&quot;宗地&quot;</span>)<br>check_field(exprop_layer, exprop_join_field, <span class="hljs-string">&quot;征收范围&quot;</span>)<br><br><span class="hljs-comment"># --- 构建征收范围的 NAME -&gt; feature 映射（支持重复 NAME？这里取第一个）---</span><br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;🔍 正在构建征收范围索引...&quot;</span>)<br>exprop_dict = &#123;&#125;<br><span class="hljs-keyword">for</span> feat <span class="hljs-keyword">in</span> exprop_layer.getFeatures():<br>    name_val = feat[exprop_join_field]<br>    <span class="hljs-keyword">if</span> name_val <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:<br>        <span class="hljs-keyword">continue</span><br>    key = <span class="hljs-built_in">str</span>(name_val).strip()<br>    <span class="hljs-comment"># 如果有重复 NAME，只保留第一个（或你可以改为列表，但通常 NAME 应唯一）</span><br>    <span class="hljs-keyword">if</span> key <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> exprop_dict:<br>        exprop_dict[key] = feat<br><br><span class="hljs-comment"># --- 准备输出图层结构 ---</span><br>output_fields = QgsFields()<br>output_fields.append(QgsField(parcels_id_field, QVariant.String))<br>output_fields.append(QgsField(parcels_join_field, QVariant.String))<br><br><span class="hljs-comment"># 使用征收范围的几何类型和 CRS</span><br>wkb_type = exprop_layer.wkbType()<br>crs = exprop_layer.crs()<br><br><span class="hljs-comment"># --- 创建输出 Shapefile ---</span><br>output_dir = os.path.dirname(output_shapefile)<br>output_name = os.path.splitext(os.path.basename(output_shapefile))[<span class="hljs-number">0</span>]<br>output_format = <span class="hljs-string">&quot;ESRI Shapefile&quot;</span> <span class="hljs-keyword">if</span> output_shapefile.endswith(<span class="hljs-string">&#x27;.shp&#x27;</span>) <span class="hljs-keyword">else</span> <span class="hljs-string">&quot;GPKG&quot;</span><br><br>error = QgsVectorFileWriter.writeAsVectorFormatV3(<br>    layer=<span class="hljs-literal">None</span>,<br>    fileName=output_shapefile,<br>    transformContext=QgsProject.instance().transformContext(),<br>    options=QgsVectorFileWriter.SaveVectorOptions()<br>)<br><br><span class="hljs-comment"># 手动创建空图层并写入</span><br>writer = QgsVectorFileWriter(<br>    output_shapefile,<br>    <span class="hljs-string">&quot;UTF-8&quot;</span>,<br>    output_fields,<br>    wkb_type,<br>    crs,<br>    output_format<br>)<br><br><span class="hljs-keyword">if</span> writer.hasError() != QgsVectorFileWriter.NoError:<br>    <span class="hljs-keyword">raise</span> Exception(<span class="hljs-string">f&quot;❌ 无法创建输出文件: <span class="hljs-subst">&#123;writer.errorMessage()&#125;</span>&quot;</span>)<br><br><span class="hljs-comment"># --- 遍历宗地，匹配征收范围，写入新要素 ---</span><br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;🔄 正在生成一对一记录...&quot;</span>)<br>feature_count = <span class="hljs-number">0</span><br>missing_count = <span class="hljs-number">0</span><br><br><span class="hljs-keyword">for</span> parcel_feat <span class="hljs-keyword">in</span> parcels_layer.getFeatures():<br>    xmmc_val = parcel_feat[parcels_join_field]<br>    bh_val = parcel_feat[parcels_id_field]<br>    <br>    <span class="hljs-keyword">if</span> xmmc_val <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:<br>        <span class="hljs-keyword">continue</span><br>        <br>    key = <span class="hljs-built_in">str</span>(xmmc_val).strip()<br>    <br>    <span class="hljs-keyword">if</span> key <span class="hljs-keyword">in</span> exprop_dict:<br>        exprop_feat = exprop_dict[key]<br>        new_feat = QgsFeature()<br>        new_feat.setGeometry(exprop_feat.geometry())  <span class="hljs-comment"># 复制征收范围几何</span><br>        new_feat.setAttributes([<br>            <span class="hljs-built_in">str</span>(bh_val) <span class="hljs-keyword">if</span> bh_val <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span> <span class="hljs-keyword">else</span> <span class="hljs-string">&quot;&quot;</span>,<br>            key<br>        ])<br>        writer.addFeature(new_feat)<br>        feature_count += <span class="hljs-number">1</span><br>    <span class="hljs-keyword">else</span>:<br>        missing_count += <span class="hljs-number">1</span><br>        <span class="hljs-comment"># 可选：打印未匹配项</span><br>        <span class="hljs-comment"># print(f&quot;⚠️ 未找到匹配征收项目: &#123;key&#125;&quot;)</span><br><br><span class="hljs-comment"># --- 清理 ---</span><br><span class="hljs-keyword">del</span> writer<br><br><span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;✅ 成功生成 <span class="hljs-subst">&#123;feature_count&#125;</span> 条记录&quot;</span>)<br><span class="hljs-keyword">if</span> missing_count &gt; <span class="hljs-number">0</span>:<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;⚠️ <span class="hljs-subst">&#123;missing_count&#125;</span> 个宗地未找到对应的征收范围（已跳过）&quot;</span>)<br><br><span class="hljs-comment"># --- 自动加载到 QGIS（可选）---</span><br>load_to_qgis = <span class="hljs-literal">True</span><br><span class="hljs-keyword">if</span> load_to_qgis <span class="hljs-keyword">and</span> os.path.exists(output_shapefile):<br>    vlayer = QgsVectorLayer(output_shapefile, output_name, <span class="hljs-string">&quot;ogr&quot;</span>)<br>    <span class="hljs-keyword">if</span> vlayer.isValid():<br>        QgsProject.instance().addMapLayer(vlayer)<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;📂 已加载到 QGIS: <span class="hljs-subst">&#123;output_name&#125;</span>&quot;</span>)<br>    <span class="hljs-keyword">else</span>:<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;❌ 加载输出图层失败&quot;</span>)<br></code></pre></td></tr></table></figure>
+
+<h2 id="整合版带界面的工具"><a href="#整合版带界面的工具" class="headerlink" title="整合版带界面的工具"></a>整合版带界面的工具</h2><p>综合了一下功能，结合了比例尺计算，还补充了说明，让AI做了完整工具。<br><img src="/2026/03/27/Arcgis%E6%95%B0%E6%8D%AE%E9%A9%B1%E5%8A%A8%E5%88%B6%E5%9B%BE/%E6%95%B0%E6%8D%AE%E9%A9%B1%E5%8A%A8%E5%B7%A5%E5%85%B7%E7%94%9F%E6%88%90.png" srcset="/img/loading.gif" lazyload alt="数据驱动工具生成"></p>
+<p><strong>代码</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> qgis.PyQt.QtCore <span class="hljs-keyword">import</span> QCoreApplication, QVariant<br><span class="hljs-keyword">from</span> qgis.core <span class="hljs-keyword">import</span> (<br>    QgsProcessing,<br>    QgsProcessingAlgorithm,<br>    QgsProcessingParameterVectorLayer,<br>    QgsProcessingParameterField,<br>    QgsProcessingParameterFeatureSink,<br>    QgsFeatureSink,<br>    QgsFeature,<br>    QgsFields,<br>    QgsField,<br>    QgsWkbTypes,<br>    QgsProject,<br>    QgsProcessingException,<br>    QgsMessageLog,<br>    Qgis<br>)<br><span class="hljs-keyword">import</span> math<br><br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">OneToManyJoinWithScaleAlgorithm</span>(<span class="hljs-title class_ inherited__">QgsProcessingAlgorithm</span>):<br>    <span class="hljs-string">&quot;&quot;&quot;</span><br><span class="hljs-string">    【功能说明】</span><br><span class="hljs-string">    本工具用于解决“一对多”属性关联问题，并生成适用于数据驱动页面的矢量图层。</span><br><span class="hljs-string">    </span><br><span class="hljs-string">    典型应用场景：</span><br><span class="hljs-string">    - “宗地图层”（多）与“土地征收范围图层”（一）之间存在逻辑关联（如宗地.XMMC = 征收.NAME），</span><br><span class="hljs-string">      但二者无空间交集，无法使用空间连接。</span><br><span class="hljs-string">    - 目标是为每个宗地生成一条独立的记录，该记录的几何形状是其对应的征收范围，</span><br><span class="hljs-string">      属性则是该宗地的关键信息（如 bh 字段），并自动计算一个合适的制图比例尺。</span><br><span class="hljs-string">    </span><br><span class="hljs-string">    工具执行逻辑：</span><br><span class="hljs-string">    1.  读取“征收范围图层”，以其关联字段（如 NAME）为键，建立索引。键会进行标准化处理（去空格、转字符串）。</span><br><span class="hljs-string">    2.  遍历“宗地图层”的每一条记录。</span><br><span class="hljs-string">    3.  根据宗地的关联字段（如 XMMC）查找对应的征收范围要素。键同样会进行标准化处理。</span><br><span class="hljs-string">    4.  创建一个新要素：</span><br><span class="hljs-string">        - 几何 (Geometry)：完全复制自找到的“征收范围”要素。</span><br><span class="hljs-string">        - 属性 (Attributes)：包含用户选定的宗地字段 + 一个名为 &quot;SCALE&quot; 的整数字段。</span><br><span class="hljs-string">    5.  将所有新要素输出为一个新的矢量图层。</span><br><span class="hljs-string">    &quot;&quot;&quot;</span><br><br>    INPUT_PARCELS = <span class="hljs-string">&#x27;INPUT_PARCELS&#x27;</span><br>    PARCELS_JOIN_FIELD = <span class="hljs-string">&#x27;PARCELS_JOIN_FIELD&#x27;</span><br>    PARCELS_ATTRIBUTES = <span class="hljs-string">&#x27;PARCELS_ATTRIBUTES&#x27;</span><br>    INPUT_EXPROP = <span class="hljs-string">&#x27;INPUT_EXPROP&#x27;</span><br>    EXPROP_JOIN_FIELD = <span class="hljs-string">&#x27;EXPROP_JOIN_FIELD&#x27;</span><br>    OUTPUT = <span class="hljs-string">&#x27;OUTPUT&#x27;</span><br><br>    <span class="hljs-comment"># --- 比例尺配置 ---</span><br>    STANDARD_SCALES = [<span class="hljs-number">250</span>, <span class="hljs-number">500</span>, <span class="hljs-number">1000</span>, <span class="hljs-number">2000</span>, <span class="hljs-number">3000</span>, <span class="hljs-number">4000</span>, <span class="hljs-number">5000</span>, <span class="hljs-number">6000</span>, <span class="hljs-number">7000</span>, <span class="hljs-number">8000</span>, <span class="hljs-number">9000</span>, <span class="hljs-number">10000</span>, <span class="hljs-number">15000</span>, <span class="hljs-number">20000</span>, <span class="hljs-number">25000</span>]<br>    DATA_FRAME_USABLE_CM = <span class="hljs-number">20.0</span>  <span class="hljs-comment"># 默认出图区域可用宽度/高度（厘米）</span><br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">tr</span>(<span class="hljs-params">self, string</span>):<br>        <span class="hljs-keyword">return</span> QCoreApplication.translate(<span class="hljs-string">&#x27;Processing&#x27;</span>, string)<br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">createInstance</span>(<span class="hljs-params">self</span>):<br>        <span class="hljs-keyword">return</span> OneToManyJoinWithScaleAlgorithm()<br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">name</span>(<span class="hljs-params">self</span>):<br>        <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;onetomanyjoinwithscale&#x27;</span><br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">displayName</span>(<span class="hljs-params">self</span>):<br>        <span class="hljs-keyword">return</span> self.tr(<span class="hljs-string">&#x27;一对多属性连接（含比例尺）&#x27;</span>)<br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">group</span>(<span class="hljs-params">self</span>):<br>        <span class="hljs-keyword">return</span> self.tr(<span class="hljs-string">&#x27;数据驱动制图工具&#x27;</span>)<br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">groupId</span>(<span class="hljs-params">self</span>):<br>        <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;atlas_tools&#x27;</span><br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">shortHelpString</span>(<span class="hljs-params">self</span>):<br>        help_text = <span class="hljs-string">f&quot;&quot;&quot;</span><br><span class="hljs-string">        【核心功能】</span><br><span class="hljs-string">        将宗地图层（多）与征收范围图层（一）基于属性字段进行逻辑连接，</span><br><span class="hljs-string">        并展开为一对一记录。输出图层的几何形状100%来自征收范围图层，</span><br><span class="hljs-string">        属性则来自宗地，并附带自动计算的&quot;SCALE&quot;字段。</span><br><span class="hljs-string"></span><br><span class="hljs-string">        【比例尺计算】</span><br><span class="hljs-string">        使用以下标准比例尺: <span class="hljs-subst">&#123;self.STANDARD_SCALES&#125;</span></span><br><span class="hljs-string">        基于征收范围的外包矩形和预设的出图区域尺寸 (<span class="hljs-subst">&#123;self.DATA_FRAME_USABLE_CM&#125;</span> cm) 计算。</span><br><span class="hljs-string"></span><br><span class="hljs-string">        【参数说明】</span><br><span class="hljs-string">        - 宗地图层: 包含多个记录的源图层（如宗地）。</span><br><span class="hljs-string">        - 宗地关联字段: 用于匹配的字段（如 XMMC）。</span><br><span class="hljs-string">        - 要保留的宗地属性字段: 输出中需要的宗地字段（如 bh）。</span><br><span class="hljs-string">        - 征收范围图层: 包含唯一记录的源图层（如征收项目）。</span><br><span class="hljs-string">        - 征收范围关联字段: 用于匹配的字段（如 NAME）。</span><br><span class="hljs-string">        &quot;&quot;&quot;</span><br>        <span class="hljs-keyword">return</span> self.tr(help_text)<br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">initAlgorithm</span>(<span class="hljs-params">self, config=<span class="hljs-literal">None</span></span>):<br>        self.addParameter(<br>            QgsProcessingParameterVectorLayer(<br>                self.INPUT_PARCELS,<br>                self.tr(<span class="hljs-string">&#x27;宗地图层&#x27;</span>),<br>                types=[QgsProcessing.TypeVectorAnyGeometry]<br>            )<br>        )<br><br>        self.addParameter(<br>            QgsProcessingParameterField(<br>                self.PARCELS_JOIN_FIELD,<br>                self.tr(<span class="hljs-string">&#x27;宗地关联字段 (XMMC)&#x27;</span>),<br>                parentLayerParameterName=self.INPUT_PARCELS,<br>                <span class="hljs-built_in">type</span>=QgsProcessingParameterField.<span class="hljs-type">Any</span><br>            )<br>        )<br><br>        self.addParameter(<br>            QgsProcessingParameterField(<br>                self.PARCELS_ATTRIBUTES,<br>                self.tr(<span class="hljs-string">&#x27;要保留的宗地属性字段&#x27;</span>),<br>                parentLayerParameterName=self.INPUT_PARCELS,<br>                <span class="hljs-built_in">type</span>=QgsProcessingParameterField.<span class="hljs-type">Any</span>,<br>                allowMultiple=<span class="hljs-literal">True</span><br>            )<br>        )<br><br>        self.addParameter(<br>            QgsProcessingParameterVectorLayer(<br>                self.INPUT_EXPROP,<br>                self.tr(<span class="hljs-string">&#x27;征收范围图层&#x27;</span>),<br>                types=[QgsProcessing.TypeVectorAnyGeometry] <span class="hljs-comment"># 改为 AnyGeometry 以提高通用性</span><br>            )<br>        )<br><br>        self.addParameter(<br>            QgsProcessingParameterField(<br>                self.EXPROP_JOIN_FIELD,<br>                self.tr(<span class="hljs-string">&#x27;征收范围关联字段 (NAME)&#x27;</span>),<br>                parentLayerParameterName=self.INPUT_EXPROP,<br>                <span class="hljs-built_in">type</span>=QgsProcessingParameterField.<span class="hljs-type">Any</span><br>            )<br>        )<br><br>        self.addParameter(<br>            QgsProcessingParameterFeatureSink(<br>                self.OUTPUT,<br>                self.tr(<span class="hljs-string">&#x27;输出图层&#x27;</span>)<br>            )<br>        )<br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">standardize_key</span>(<span class="hljs-params">self, value</span>):<br>        <span class="hljs-string">&quot;&quot;&quot;标准化键值，用于更鲁棒的匹配&quot;&quot;&quot;</span><br>        <span class="hljs-keyword">if</span> value <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:<br>            <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span><br>        <span class="hljs-keyword">return</span> <span class="hljs-built_in">str</span>(value).strip()<br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">calc_standard_scale</span>(<span class="hljs-params">self, geometry</span>):<br>        <span class="hljs-string">&quot;&quot;&quot;计算标准比例尺&quot;&quot;&quot;</span><br>        rect = geometry.boundingBox()<br>        <span class="hljs-keyword">if</span> rect.isEmpty():<br>            <span class="hljs-keyword">return</span> self.STANDARD_SCALES[-<span class="hljs-number">1</span>]<br>            <br>        rect_width = rect.width()<br>        rect_height = rect.height()<br>        long_side_m = <span class="hljs-built_in">max</span>(rect_width, rect_height)<br>        long_side_cm = long_side_m * <span class="hljs-number">100</span><br>        <br>        <span class="hljs-keyword">if</span> self.DATA_FRAME_USABLE_CM &lt;= <span class="hljs-number">0</span>:<br>            <span class="hljs-keyword">return</span> self.STANDARD_SCALES[-<span class="hljs-number">1</span>]<br>            <br>        min_scale = long_side_cm / self.DATA_FRAME_USABLE_CM<br>        <br>        <span class="hljs-keyword">for</span> scale <span class="hljs-keyword">in</span> self.STANDARD_SCALES:<br>            <span class="hljs-keyword">if</span> min_scale &lt;= scale:<br>                <span class="hljs-keyword">return</span> scale<br>        <span class="hljs-keyword">return</span> self.STANDARD_SCALES[-<span class="hljs-number">1</span>]<br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">processAlgorithm</span>(<span class="hljs-params">self, parameters, context, feedback</span>):<br>        parcels_layer = self.parameterAsVectorLayer(parameters, self.INPUT_PARCELS, context)<br>        parcels_join_field = self.parameterAsString(parameters, self.PARCELS_JOIN_FIELD, context)<br>        parcels_attr_fields = self.parameterAsFields(parameters, self.PARCELS_ATTRIBUTES, context)<br>        exprop_layer = self.parameterAsVectorLayer(parameters, self.INPUT_EXPROP, context)<br>        exprop_join_field = self.parameterAsString(parameters, self.EXPROP_JOIN_FIELD, context)<br><br>        <span class="hljs-comment"># 构建输出字段</span><br>        output_fields = QgsFields()<br>        <span class="hljs-keyword">for</span> field_name <span class="hljs-keyword">in</span> parcels_attr_fields:<br>            orig_field = parcels_layer.fields().field(field_name)<br>            output_fields.append(orig_field)<br>        output_fields.append(QgsField(<span class="hljs-string">&quot;SCALE&quot;</span>, QVariant.Int))<br><br>        <span class="hljs-comment"># 明确指定输出几何和CRS</span><br>        output_wkb_type = exprop_layer.wkbType()<br>        output_crs = exprop_layer.crs()<br><br>        (sink, dest_id) = self.parameterAsSink(<br>            parameters,<br>            self.OUTPUT,<br>            context,<br>            output_fields,<br>            output_wkb_type,<br>            output_crs<br>        )<br><br>        <span class="hljs-keyword">if</span> sink <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:<br>            <span class="hljs-keyword">raise</span> QgsProcessingException(self.invalidSinkError(parameters, self.OUTPUT))<br><br>        <span class="hljs-comment"># --- 关键：构建征收范围字典，并标准化键 ---</span><br>        feedback.pushInfo(<span class="hljs-string">&quot;正在索引征收范围图层...&quot;</span>)<br>        exprop_dict = &#123;&#125;<br>        total_exprop = exprop_layer.featureCount()<br>        matched_keys = <span class="hljs-built_in">set</span>()<br>        <br>        <span class="hljs-keyword">for</span> current, feat <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(exprop_layer.getFeatures()):<br>            <span class="hljs-keyword">if</span> feedback.isCanceled():<br>                <span class="hljs-keyword">break</span><br>            raw_key = feat[exprop_join_field]<br>            key = self.standardize_key(raw_key)<br>            <span class="hljs-keyword">if</span> key <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span> <span class="hljs-keyword">and</span> key != <span class="hljs-string">&quot;&quot;</span>:<br>                <span class="hljs-comment"># 如果有重复的 NAME，只取第一个</span><br>                <span class="hljs-keyword">if</span> key <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> exprop_dict:<br>                    exprop_dict[key] = feat<br>                    matched_keys.add(key)<br>            <br>            <span class="hljs-keyword">if</span> total_exprop &gt; <span class="hljs-number">0</span>:<br>                feedback.setProgress(<span class="hljs-built_in">int</span>(<span class="hljs-number">100</span> * current / total_exprop))<br><br>        feedback.pushInfo(<span class="hljs-string">f&quot;成功索引 <span class="hljs-subst">&#123;<span class="hljs-built_in">len</span>(exprop_dict)&#125;</span> 个唯一的征收范围项目。&quot;</span>)<br><br>        <span class="hljs-comment"># --- 处理宗地 ---</span><br>        feedback.pushInfo(<span class="hljs-string">&quot;正在生成一对一记录...&quot;</span>)<br>        total_parcels = parcels_layer.featureCount()<br>        out_feature_count = <span class="hljs-number">0</span><br>        missing_count = <span class="hljs-number">0</span><br><br>        <span class="hljs-keyword">for</span> current, parcel_feat <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(parcels_layer.getFeatures()):<br>            <span class="hljs-keyword">if</span> feedback.isCanceled():<br>                <span class="hljs-keyword">break</span><br><br>            raw_xmmc = parcel_feat[parcels_join_field]<br>            key = self.standardize_key(raw_xmmc)<br>            <br>            <span class="hljs-keyword">if</span> key <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span> <span class="hljs-keyword">or</span> key == <span class="hljs-string">&quot;&quot;</span>:<br>                missing_count += <span class="hljs-number">1</span><br>                <span class="hljs-keyword">continue</span><br>                <br>            <span class="hljs-keyword">if</span> key <span class="hljs-keyword">in</span> exprop_dict:<br>                exprop_feat = exprop_dict[key]<br>                new_feat = QgsFeature()<br>                geom = exprop_feat.geometry()<br>                new_feat.setGeometry(geom)<br>                <br>                <span class="hljs-comment"># 设置属性</span><br>                attrs = [parcel_feat[field_name] <span class="hljs-keyword">for</span> field_name <span class="hljs-keyword">in</span> parcels_attr_fields]<br>                scale = self.calc_standard_scale(geom)<br>                attrs.append(scale)<br>                <br>                new_feat.setAttributes(attrs)<br>                sink.addFeature(new_feat, QgsFeatureSink.FastInsert)<br>                out_feature_count += <span class="hljs-number">1</span><br>            <span class="hljs-keyword">else</span>:<br>                missing_count += <span class="hljs-number">1</span><br>                <span class="hljs-comment"># 可选：将未匹配项记录到日志，方便排查</span><br>                <span class="hljs-comment"># QgsMessageLog.logMessage(f&quot;未匹配: XMMC=&#x27;&#123;raw_xmmc&#125;&#x27; (标准化后: &#x27;&#123;key&#125;&#x27;)&quot;, &#x27;OneToManyJoin&#x27;, Qgis.Warning)</span><br><br>            <span class="hljs-keyword">if</span> total_parcels &gt; <span class="hljs-number">0</span>:<br>                feedback.setProgress(<span class="hljs-built_in">int</span>(<span class="hljs-number">50</span> + <span class="hljs-number">50</span> * current / total_parcels))<br><br>        <span class="hljs-comment"># --- 最终报告 ---</span><br>        feedback.pushInfo(<span class="hljs-string">f&quot;✅ 成功生成 <span class="hljs-subst">&#123;out_feature_count&#125;</span> 条记录。&quot;</span>)<br>        <span class="hljs-keyword">if</span> missing_count &gt; <span class="hljs-number">0</span>:<br>            feedback.pushWarning(<span class="hljs-string">f&quot;⚠️ 警告: <span class="hljs-subst">&#123;missing_count&#125;</span> 个宗地未能匹配到征收范围。&quot;</span>)<br>            feedback.pushInfo(<span class="hljs-string">&quot;提示: 请检查两个关联字段的值是否完全一致（注意空格、大小写、数据类型）。&quot;</span>)<br><br>        <span class="hljs-keyword">return</span> &#123;self.OUTPUT: dest_id&#125;<br></code></pre></td></tr></table></figure>
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0/" class="category-chain-item">学习</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/ArcGIS/">#ArcGIS</a>
+      
+        <a href="/tags/Python/">#Python</a>
+      
+        <a href="/tags/%E5%B1%9E%E6%80%A7/">#属性</a>
+      
+        <a href="/tags/QGIS/">#QGIS</a>
+      
+        <a href="/tags/%E6%95%B0%E6%8D%AE%E9%A9%B1%E5%8A%A8/">#数据驱动</a>
+      
+        <a href="/tags/%E5%88%B6%E5%9B%BE/">#制图</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Arcgis数据驱动制图</div>
+      <div>http://kw1649190133.github.io/2026/03/27/Arcgis数据驱动制图/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Aŭtoro</div>
+          <div>Kwindy</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Postigita</div>
+          <div>March 27, 2026</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Lizenta</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/03/02/OrangePi5Max%E5%AE%89%E8%A3%85server%E7%B3%BB%E7%BB%9F/" title="OrangePi5Max安装server系统">
+                        <span class="hidden-mobile">OrangePi5Max安装server系统</span>
+                        <span class="visible-mobile">Sekva afiŝo</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Enhavtabelo</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Serĉi</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">ŝlosivorto</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blogo funkcias plej bone kun JavaScript ebligita</div>
+  </noscript>
+</body>
+</html>

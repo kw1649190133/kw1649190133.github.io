@@ -29,7 +29,7 @@
 <meta property="og:image" content="http://kw1649190133.github.io/2026/03/02/OrangePi5Max%E5%AE%89%E8%A3%85server%E7%B3%BB%E7%BB%9F/a65bd2ba8286ae808ba499e42ef2114c.png">
 <meta property="og:image" content="http://kw1649190133.github.io/2026/03/02/OrangePi5Max%E5%AE%89%E8%A3%85server%E7%B3%BB%E7%BB%9F/f7334d855ae441fb1557c6666c42a54a.png">
 <meta property="article:published_time" content="2026-03-02T03:27:51.000Z">
-<meta property="article:modified_time" content="2026-03-02T03:31:09.898Z">
+<meta property="article:modified_time" content="2026-03-04T10:35:53.143Z">
 <meta property="article:author" content="Kwindy">
 <meta property="article:tag" content="Linux">
 <meta property="article:tag" content="RK3588">
@@ -126,7 +126,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/">
                 <i class="iconfont icon-home-fill"></i>
-                <span>Home</span>
+                <span>Hejmpaĝo</span>
               </a>
             </li>
           
@@ -138,7 +138,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/archives/">
                 <i class="iconfont icon-archive-fill"></i>
-                <span>Archives</span>
+                <span>Arkivoj</span>
               </a>
             </li>
           
@@ -150,7 +150,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/categories/">
                 <i class="iconfont icon-category-fill"></i>
-                <span>Categories</span>
+                <span>Kategorio</span>
               </a>
             </li>
           
@@ -162,7 +162,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/tags/">
                 <i class="iconfont icon-tags-fill"></i>
-                <span>Tags</span>
+                <span>Etikedoj</span>
               </a>
             </li>
           
@@ -174,7 +174,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/about/">
                 <i class="iconfont icon-user-fill"></i>
-                <span>About</span>
+                <span>Pri</span>
               </a>
             </li>
           
@@ -231,7 +231,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          4k words
+          4.2k vortoj
         
       </span>
     
@@ -242,7 +242,7 @@
         
         
         
-          34 mins
+          35 minutoj
         
       </span>
     
@@ -303,7 +303,8 @@
 <p>🔁 或者：手动写入完整清华源（更干净）</p>
 <figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs awk">sudo tee <span class="hljs-regexp">/etc/</span>apt/sources.list &lt;&lt;EOF<br>deb https:<span class="hljs-regexp">//mi</span>rrors.tuna.tsinghua.edu.cn<span class="hljs-regexp">/ubuntu-ports/</span> jammy main restricted universe multiverse<br>deb https:<span class="hljs-regexp">//mi</span>rrors.tuna.tsinghua.edu.cn<span class="hljs-regexp">/ubuntu-ports/</span> jammy-updates main restricted universe multiverse<br>deb https:<span class="hljs-regexp">//mi</span>rrors.tuna.tsinghua.edu.cn<span class="hljs-regexp">/ubuntu-ports/</span> jammy-backports main restricted universe multiverse<br>deb https:<span class="hljs-regexp">//mi</span>rrors.tuna.tsinghua.edu.cn<span class="hljs-regexp">/ubuntu-ports/</span> jammy-security main restricted universe multiverse<br>EOF<br></code></pre></td></tr></table></figure>
 
-<h1 id="安装桌面"><a href="#安装桌面" class="headerlink" title="安装桌面"></a>安装桌面</h1><h2 id="官方界面（失败）"><a href="#官方界面（失败）" class="headerlink" title="官方界面（失败）"></a>官方界面（失败）</h2><p>一开始尝试安装官方GNOME桌面，但是遇到了进不去桌面的问题，折腾了一会只能暂时放弃。<br>据说官方GNOME桌面主要适配x86架构，对ARM的适配度一般，RK3588 对 Wayland 支持不成熟，需要强制 GNOME 使用 Xorg（X11）。</p>
+<h1 id="安装桌面"><a href="#安装桌面" class="headerlink" title="安装桌面"></a>安装桌面</h1><p>PS：后来我再次安装时发现，如果直接安装xubuntu界面，不仅安装中文会出问题，网络设置也会出问题，简直麻烦不断，所以先安装GNOME再删除安装xubuntu可能是我在不知不觉中做出的正确选择。</p>
+<h2 id="官方界面（失败）"><a href="#官方界面（失败）" class="headerlink" title="官方界面（失败）"></a>官方界面（失败）</h2><p>一开始尝试安装官方GNOME桌面，但是遇到了进不去桌面的问题，折腾了一会只能暂时放弃。<br>据说官方GNOME桌面主要适配x86架构，对ARM的适配度一般，RK3588 对 Wayland 支持不成熟，需要强制 GNOME 使用 Xorg（X11）。</p>
 <figure class="highlight dsconfig"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs dsconfig"><span class="hljs-comment"># 更新系统包</span><br><span class="hljs-string">sudo</span> <span class="hljs-string">apt</span> <span class="hljs-string">update</span> &amp;&amp; <span class="hljs-string">sudo</span> <span class="hljs-string">apt</span> <span class="hljs-string">upgrade</span> -<span class="hljs-string">y</span><br><br><span class="hljs-comment"># 安装GNOME 桌面、Firefox、LibreOffice 等官方套件</span><br><span class="hljs-comment"># 如果不想全部安装也有其他方法，但不建议新手尝试</span><br><span class="hljs-string">sudo</span> <span class="hljs-string">apt</span> <span class="hljs-string">install</span> <span class="hljs-string">ubuntu-desktop</span><br><br><span class="hljs-comment"># 设置启动方式</span><br><span class="hljs-string">sudo</span> <span class="hljs-string">systemctl</span> <span class="hljs-built_in">set-default</span> <span class="hljs-string">graphical</span>.<span class="hljs-string">target</span><br><br><span class="hljs-comment"># 【参考】如果你想临时切换到命令行模式，可用：sudo systemctl isolate multi-user.target</span><br><span class="hljs-comment"># 【参考】切回图形界面：sudo systemctl isolate graphical.target</span><br><br><span class="hljs-comment"># 重启系统</span><br><span class="hljs-string">sudo</span> <span class="hljs-string">reboot</span><br></code></pre></td></tr></table></figure>
 
 <p>⚠️ 注意事项</p>
@@ -322,7 +323,7 @@
 
 <p>成功进入界面，这不是和之前的Orangpi官方界面差不多吗，感觉刷了个寂寞。<br><img src="/2026/03/02/OrangePi5Max%E5%AE%89%E8%A3%85server%E7%B3%BB%E7%BB%9F/f7334d855ae441fb1557c6666c42a54a.png" srcset="/img/loading.gif" lazyload alt="f7334d855ae441fb1557c6666c42a54a.png"></p>
 <h1 id="安装中文界面和输入"><a href="#安装中文界面和输入" class="headerlink" title="安装中文界面和输入"></a>安装中文界面和输入</h1><p>进入界面还没有结束，还有中文界面和输入法需要改，不然无法直接在香橙派上做笔记和查阅资料，非常不方便。<br>⚠️ 注意：不建议将系统路径也改成中文，避免一些混乱，只改界面就可以了</p>
-<h2 id="🌐第一步：安装中文包"><a href="#🌐第一步：安装中文包" class="headerlink" title="🌐第一步：安装中文包"></a>🌐第一步：安装中文包</h2><figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">sudo</span> apt update<br><br><span class="hljs-comment"># 安装简体中文语言包</span><br><span class="hljs-attribute">sudo</span> apt install language-pack-zh-hans -y<br><br><span class="hljs-comment"># 生成中文 locale（如果未生成）</span><br><span class="hljs-attribute">sudo</span> locale-gen zh_CN.UTF-<span class="hljs-number">8</span><br></code></pre></td></tr></table></figure>
+<h2 id="🌐第一步：安装中文包"><a href="#🌐第一步：安装中文包" class="headerlink" title="🌐第一步：安装中文包"></a>🌐第一步：安装中文包</h2><figure class="highlight gauss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs gauss">sudo apt update<br><br><span class="hljs-meta"># 安装简体中文语言包</span><br>sudo apt install language-pack-zh-hans -y<br><br><span class="hljs-meta"># 生成中文 locale（如果未生成）</span><br>sudo locale-gen zh_CN.UTF<span class="hljs-number">-8</span><br><br><span class="hljs-meta"># 安装关键中文字体（解决乱码！该步骤不一定需要）</span><br>sudo apt install <span class="hljs-built_in">fonts</span>-wqy-microhei <span class="hljs-built_in">fonts</span>-wqy-zenhei <span class="hljs-built_in">fonts</span>-noto-cjk -y<br></code></pre></td></tr></table></figure>
 
 <h2 id="🖥️-第二步：在-XFCE-中设置中文显示（用户级）"><a href="#🖥️-第二步：在-XFCE-中设置中文显示（用户级）" class="headerlink" title="🖥️ 第二步：在 XFCE 中设置中文显示（用户级）"></a>🖥️ 第二步：在 XFCE 中设置中文显示（用户级）</h2><ol>
 <li>打开 Settings（设置） → Language（语言设置）</li>
@@ -391,20 +392,20 @@
     <div class="license-meta">
       
         <div class="license-meta-item">
-          <div>Author</div>
+          <div>Aŭtoro</div>
           <div>Kwindy</div>
         </div>
       
       
         <div class="license-meta-item license-meta-date">
-          <div>Posted on</div>
+          <div>Postigita</div>
           <div>March 2, 2026</div>
         </div>
       
       
       
         <div class="license-meta-item">
-          <div>Licensed under</div>
+          <div>Lizenta</div>
           <div>
             
               
@@ -430,13 +431,19 @@
                   <article class="post-prev col-6">
                     
                     
+                      <a href="/2026/03/27/Arcgis%E6%95%B0%E6%8D%AE%E9%A9%B1%E5%8A%A8%E5%88%B6%E5%9B%BE/" title="Arcgis数据驱动制图">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Arcgis数据驱动制图</span>
+                        <span class="visible-mobile">Antaŭa afiŝo</span>
+                      </a>
+                    
                   </article>
                   <article class="post-next col-6">
                     
                     
                       <a href="/2026/02/27/QGIS%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%951-%E5%9F%BA%E7%A1%80%E5%8A%9F%E8%83%BD/" title="QGIS使用方法1_基础功能">
                         <span class="hidden-mobile">QGIS使用方法1_基础功能</span>
-                        <span class="visible-mobile">Next</span>
+                        <span class="visible-mobile">Sekva afiŝo</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
                     
@@ -457,7 +464,7 @@
     <div id="toc">
   <p class="toc-header">
     <i class="iconfont icon-list"></i>
-    <span>Table of Contents</span>
+    <span>Enhavtabelo</span>
   </p>
   <div class="toc-body" id="toc-body"></div>
 </div>
@@ -513,7 +520,7 @@
   <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <h4 class="modal-title w-100 font-weight-bold">Serĉi</h4>
         <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -521,7 +528,7 @@
       <div class="modal-body mx-3">
         <div class="md-form mb-5">
           <input type="text" id="local-search-input" class="form-control validate">
-          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+          <label data-error="x" data-success="v" for="local-search-input">ŝlosivorto</label>
         </div>
         <div class="list-group" id="local-search-result"></div>
       </div>
@@ -700,7 +707,7 @@
   
 
   <noscript>
-    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+    <div class="noscript-warning">Blogo funkcias plej bone kun JavaScript ebligita</div>
   </noscript>
 </body>
 </html>

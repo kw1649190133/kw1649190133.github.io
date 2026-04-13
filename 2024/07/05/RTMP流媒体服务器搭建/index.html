@@ -35,7 +35,7 @@
 <meta property="og:image" content="http://kw1649190133.github.io/2024/07/05/RTMP%E6%B5%81%E5%AA%92%E4%BD%93%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E5%BB%BA/3cb5b7955cfa42084e9d4ac58c08653d.png">
 <meta property="og:image" content="http://kw1649190133.github.io/2024/07/05/RTMP%E6%B5%81%E5%AA%92%E4%BD%93%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E5%BB%BA/cea6aeeede3613b22db6346a5b23a58a.png">
 <meta property="article:published_time" content="2024-07-05T06:18:28.000Z">
-<meta property="article:modified_time" content="2024-07-08T05:43:42.614Z">
+<meta property="article:modified_time" content="2026-04-08T06:41:15.698Z">
 <meta property="article:author" content="Kwindy">
 <meta property="article:tag" content="RKNN">
 <meta property="article:tag" content="服务器">
@@ -136,7 +136,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/">
                 <i class="iconfont icon-home-fill"></i>
-                <span>Home</span>
+                <span>Hejmpaĝo</span>
               </a>
             </li>
           
@@ -148,7 +148,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/archives/">
                 <i class="iconfont icon-archive-fill"></i>
-                <span>Archives</span>
+                <span>Arkivoj</span>
               </a>
             </li>
           
@@ -160,7 +160,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/categories/">
                 <i class="iconfont icon-category-fill"></i>
-                <span>Categories</span>
+                <span>Kategorio</span>
               </a>
             </li>
           
@@ -172,7 +172,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/tags/">
                 <i class="iconfont icon-tags-fill"></i>
-                <span>Tags</span>
+                <span>Etikedoj</span>
               </a>
             </li>
           
@@ -184,7 +184,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/about/">
                 <i class="iconfont icon-user-fill"></i>
-                <span>About</span>
+                <span>Pri</span>
               </a>
             </li>
           
@@ -241,7 +241,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          7k words
+          7.5k vortoj
         
       </span>
     
@@ -252,7 +252,7 @@
         
         
         
-          59 mins
+          63 minutoj
         
       </span>
     
@@ -304,13 +304,19 @@
 <h1 id="实现过程"><a href="#实现过程" class="headerlink" title="实现过程"></a>实现过程</h1><p>推流端需要使用ffmpeg，而服务器端需要安装nginx和nginx-rtmp模块。</p>
 <h2 id="设备规格"><a href="#设备规格" class="headerlink" title="设备规格"></a>设备规格</h2><ul>
 <li>腾讯服务器 2核 2GB内存 40GB云硬盘SSD</li>
-<li>服务器系统 宝塔Linux面包-PnCX</li>
+<li>服务器系统 宝塔Linux面板-PnCX</li>
 <li>ffmpeg推流端 ubantu22.04 Orange pi 5 plus 16GB</li>
 </ul>
 <h2 id="推送端安装ffmpeg"><a href="#推送端安装ffmpeg" class="headerlink" title="推送端安装ffmpeg"></a>推送端安装ffmpeg</h2><p>【ffmpeg官网】<a target="_blank" rel="noopener" href="https://ffmpeg.org/download.html">https://ffmpeg.org/download.html</a><br>因为发送端使用的是Ubantu系统，所以直接通过包管理器来获取并安装。如果是其他情况可以下载源码再编译安装。（最近安装各种东西真是越来越熟练了）<br>Ubantu系统直接通过包管理安装ffmpeg：</p>
 <figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs routeros">sudo apt-<span class="hljs-built_in">get</span> install ffmpeg<br></code></pre></td></tr></table></figure>
 
 <h2 id="服务器安装Nginx"><a href="#服务器安装Nginx" class="headerlink" title="服务器安装Nginx"></a>服务器安装Nginx</h2><p>安装nginx可以通过宝塔安装，也可以自己下载之后编译安装。一开始是尝试通过宝塔的，但后来遇到了很多问题，现在唯一能跑通的就是单独下载之后编译安装。这样文件的结构会比较简单清晰，不会出现找不到配置文件的情况。</p>
+<p><strong>20260408 PS</strong><br>熟练之后直接用宝塔的nginx安装就可以了，更方便。</p>
+<ol>
+<li>git 获取nginx-rtmp-module</li>
+<li>宝塔主页选网站-nginx安装，选择编译安装，添加<code>--add-module=./nginx-rtmp-module</code>和<code>--with-http_ssl_module</code>两个参数。</li>
+<li>修改配置文件，直接点击nginx按钮就可以改配置、运行、停止、重载了，和单独安装的逻辑一致。这里配置文件会多很多不必要的参数，忽略就好。并且宝塔会对nginx配置文件进行格式检查，括号有问题会禁止保存。</li>
+</ol>
 <p>备选方案：<br>可以使用docker来运行nginx-rtmp。没尝试过，并且不熟悉docker。<br><code>git clone https://github.com/tiangolo/nginx-rtmp-docker.git</code></p>
 <h3 id="获取nginx"><a href="#获取nginx" class="headerlink" title="获取nginx"></a>获取nginx</h3><p>直接去官网下载<br>【官网】<a target="_blank" rel="noopener" href="https://nginx.org/en/download.html">https://nginx.org/en/download.html</a></p>
 <h3 id="获取nginx-rtmp-module"><a href="#获取nginx-rtmp-module" class="headerlink" title="获取nginx-rtmp-module"></a>获取nginx-rtmp-module</h3><p>可以先CD到自己想要的路径，然后用git直接下载模块。如果没有git就先安装git。这里我选择clone在/root/module目录下。</p>
@@ -324,6 +330,10 @@
 <h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><p>配置文件可能会有很多个，但这种自己进行编译安装的模式，需要修改的就是编译安装后的配置文件。<br>按照上面默认的安装方式，配置文件的路径就是：/usr/local/nginx/conf/nginx.conf<br>打开之后添加rtmp模块和stat页面。</p>
 <h4 id="1-rtmp端口配置"><a href="#1-rtmp端口配置" class="headerlink" title="1. rtmp端口配置"></a>1. rtmp端口配置</h4><p>在配置文件中加入rtmp{}</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs js">rtmp &#123;  <br>    server &#123;  <br>        listen <span class="hljs-number">1935</span>;  #监听的端口号<br>        chunk_size <span class="hljs-number">4096</span>; #数据传输块大小<br>        application vod &#123;<br>        play /opt/video;  #视频文件位置<br>      &#125;<br>        application mylive &#123;     #自定义直播的名字<br>            live on;  <br>            hls on; #直播服务器改为实时回放服务器<br>            wait_key on; #对视频切片进行保护，防止马赛克<br>            hls_path /tmp/hls; #hls切片视频文件保存目录<br>            hls_fragment 10s; #<span class="hljs-variable constant_">HLS</span>片段长度<br>            hls_playlist_length 1m; #<span class="hljs-variable constant_">HLS</span>播放长度列表<br>            hls_continuous on; #连续模式<br>            hls_cleanup on; #删除多余切片<br>            hls_nested on; #嵌套模式<br>       &#125;  <br>    &#125; <br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>20260408 PS补充:<br>关于降低时延的一些设置参考，大概能把延迟降低到3秒钟左右。<br>📌 关键原则：hls_playlist_length ≥ 3 × hls_fragment，否则播放器可能因列表过短而断流。</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-attribute">hls_fragment</span> <span class="hljs-number">5s</span>; <span class="hljs-comment">#HLS片段长度</span><br><span class="hljs-attribute">hls_playlist_length</span> <span class="hljs-number">15m</span>; <span class="hljs-comment">#HLS播放长度列表</span><br><span class="hljs-attribute">hls_nested</span> <span class="hljs-literal">off</span>; <span class="hljs-comment"># 关闭嵌套（减少路径层级，提升访问效率）</span><br></code></pre></td></tr></table></figure>
+
 <h4 id="2-网页和端口"><a href="#2-网页和端口" class="headerlink" title="2.网页和端口"></a>2.网页和端口</h4><p>网页端口可以改成自己开放的端口，服务名称也可以随意。</p>
 <figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs abnf">···<br>server &#123;<br>    listen  <span class="hljs-number">801</span><span class="hljs-comment">;</span><br>    server_name  rtmpserver<span class="hljs-comment">;</span><br>···<br></code></pre></td></tr></table></figure>
 
@@ -440,20 +450,20 @@
     <div class="license-meta">
       
         <div class="license-meta-item">
-          <div>Author</div>
+          <div>Aŭtoro</div>
           <div>Kwindy</div>
         </div>
       
       
         <div class="license-meta-item license-meta-date">
-          <div>Posted on</div>
+          <div>Postigita</div>
           <div>July 5, 2024</div>
         </div>
       
       
       
         <div class="license-meta-item">
-          <div>Licensed under</div>
+          <div>Lizenta</div>
           <div>
             
               
@@ -482,7 +492,7 @@
                       <a href="/2024/07/08/ffmpeg%E6%8E%A8%E9%80%81RKNN%E7%9B%AE%E6%A0%87%E8%AF%86%E5%88%AB%E7%BB%93%E6%9E%9C/" title="ffmpeg推送RKNN目标识别结果">
                         <i class="iconfont icon-arrowleft"></i>
                         <span class="hidden-mobile">ffmpeg推送RKNN目标识别结果</span>
-                        <span class="visible-mobile">Previous</span>
+                        <span class="visible-mobile">Antaŭa afiŝo</span>
                       </a>
                     
                   </article>
@@ -491,7 +501,7 @@
                     
                       <a href="/2024/06/28/ORB-SLAM%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%88%9D%E6%AC%A1%E5%B0%9D%E8%AF%95/" title="ORB_SLAM项目的初次尝试">
                         <span class="hidden-mobile">ORB_SLAM项目的初次尝试</span>
-                        <span class="visible-mobile">Next</span>
+                        <span class="visible-mobile">Sekva afiŝo</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
                     
@@ -512,7 +522,7 @@
     <div id="toc">
   <p class="toc-header">
     <i class="iconfont icon-list"></i>
-    <span>Table of Contents</span>
+    <span>Enhavtabelo</span>
   </p>
   <div class="toc-body" id="toc-body"></div>
 </div>
@@ -568,7 +578,7 @@
   <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <h4 class="modal-title w-100 font-weight-bold">Serĉi</h4>
         <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -576,7 +586,7 @@
       <div class="modal-body mx-3">
         <div class="md-form mb-5">
           <input type="text" id="local-search-input" class="form-control validate">
-          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+          <label data-error="x" data-success="v" for="local-search-input">ŝlosivorto</label>
         </div>
         <div class="list-group" id="local-search-result"></div>
       </div>
@@ -755,7 +765,7 @@
   
 
   <noscript>
-    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+    <div class="noscript-warning">Blogo funkcias plej bone kun JavaScript ebligita</div>
   </noscript>
 </body>
 </html>
