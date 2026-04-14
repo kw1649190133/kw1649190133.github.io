@@ -224,6 +224,81 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
+        <a href="/2024/07/08/ffmpeg%E6%8E%A8%E9%80%81RKNN%E7%9B%AE%E6%A0%87%E8%AF%86%E5%88%AB%E7%BB%93%E6%9E%9C/" target="_self">
+          ffmpeg推送RKNN目标识别结果
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/07/08/ffmpeg%E6%8E%A8%E9%80%81RKNN%E7%9B%AE%E6%A0%87%E8%AF%86%E5%88%AB%E7%BB%93%E6%9E%9C/" target="_self">
+        <div>
+          前言虽然之前尝试了通过摄像头直接推流，还以为稍微改改就可以直接拿下yolo+ffmpeg推流的成果了。但没想到实际操作起来难度还是超出了预期。但好在最终还是实现了。 参考文章：https://zhuanlan.zhihu.com/p/675013367一开始直接参考了一下OpenCV读取摄像头推流的方法，直接上来就改原来的识别程序。然后不出意料的失败了。只能拆分步骤，一步一步来实现了。 设备规格
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-07-08 12:16" pubdate>
+              2024-07-08
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0/" class="category-chain-item">学习</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%9C%8D%E5%8A%A1%E5%99%A8/">#服务器</a>
+            
+              <a href="/tags/%E6%B5%81%E5%AA%92%E4%BD%93/">#流媒体</a>
+            
+              <a href="/tags/RTMP/">#RTMP</a>
+            
+              <a href="/tags/%E6%8E%A8%E6%B5%81/">#推流</a>
+            
+              <a href="/tags/%E6%8B%89%E6%B5%81/">#拉流</a>
+            
+              <a href="/tags/ffmpeg/">#ffmpeg</a>
+            
+              <a href="/tags/OBS/">#OBS</a>
+            
+              <a href="/tags/VLC/">#VLC</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
         <a href="/2024/07/05/RTMP%E6%B5%81%E5%AA%92%E4%BD%93%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E5%BB%BA/" target="_self">
           RTMP流媒体服务器搭建
         </a>
@@ -275,6 +350,8 @@
             
               <a href="/tags/%E6%9C%8D%E5%8A%A1%E5%99%A8/">#服务器</a>
             
+              <a href="/tags/%E6%B5%81%E5%AA%92%E4%BD%93/">#流媒体</a>
+            
               <a href="/tags/RTMP/">#RTMP</a>
             
               <a href="/tags/%E6%8E%A8%E6%B5%81/">#推流</a>
@@ -286,8 +363,6 @@
               <a href="/tags/OBS/">#OBS</a>
             
               <a href="/tags/VLC/">#VLC</a>
-            
-              <a href="/tags/%E6%B5%81%E5%AA%92%E4%BD%93/">#流媒体</a>
             
               <a href="/tags/yolo/">#yolo</a>
             
@@ -854,75 +929,6 @@
               <a href="/tags/%E4%BB%B7%E6%A0%BC/">#价格</a>
             
               <a href="/tags/%E8%AE%BE%E5%A4%87/">#设备</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2024/05/29/Linux%E9%93%BE%E6%8E%A5USB%E6%91%84%E5%83%8F%E5%A4%B4%E6%B5%8B%E8%AF%95/" target="_self">
-          Linux链接USB摄像头测试
-        </a>
-      </h1>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/05/29/Linux%E9%93%BE%E6%8E%A5USB%E6%91%84%E5%83%8F%E5%A4%B4%E6%B5%8B%E8%AF%95/" target="_self">
-        <div>
-          前言最近在尝试使用RK3588接入摄像头进行实时的模型推理，但是模型一直无法运行，找不到原因，所以先测试测试摄像头。我原以为Linux的摄像头也是和Windows一样只要插进去就能用了。没想到还是有点难度的。 硬件设备核心：RK3588开发板：Orange pi 5 PLUS系统：Ubantu20.04摄像头：野蛮者 Webcom_HD USB摄像头 失败的尝试 安装测试软件1sudo apt-g
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-05-29 14:09" pubdate>
-              2024-05-29
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E5%AD%A6%E4%B9%A0/" class="category-chain-item">学习</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E6%91%84%E5%83%8F%E5%A4%B4/">#摄像头</a>
-            
-              <a href="/tags/Linux/">#Linux</a>
-            
-              <a href="/tags/RK3588/">#RK3588</a>
-            
-              <a href="/tags/OrangePI/">#OrangePI</a>
-            
-              <a href="/tags/%E5%BC%80%E5%8F%91%E6%9D%BF/">#开发板</a>
             
           </div>
         

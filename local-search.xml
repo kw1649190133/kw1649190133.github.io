@@ -4,6 +4,41 @@
   
   
   <entry>
+    <title>RTMP流媒体服务器升级计划</title>
+    <link href="/2026/04/14/RTMP%E6%B5%81%E5%AA%92%E4%BD%93%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%8D%87%E7%BA%A7%E8%AE%A1%E5%88%92/"/>
+    <url>/2026/04/14/RTMP%E6%B5%81%E5%AA%92%E4%BD%93%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%8D%87%E7%BA%A7%E8%AE%A1%E5%88%92/</url>
+    
+    <content type="html"><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>之前总是用nginx+rtmp module的形式做流媒体服务器，好处是比较简单，但坏处是仅支持rtmp，而实际使用中。另外发现，当rtmp流不是非常标准的时候，这种简单的流媒体服务也会失效，画面变成灰蒙蒙一片。为了能满足更多场景的需求，需要研究一下新的流媒体服务方法了。</p><p>综合考虑了一下，主要看上SRS和ZLMediaKit这两个流媒体服务器程序。实际应用中也有将二者结合使用的案例。<br>| 维度 | SRS (Simple Realtime Server) | ZLMediaKit |<br>|——|——————————-|—————-|<br>| 开发语言 | C++（早期是 C，现在主要是 C++） | C++11/14 + 多线程异步 |<br>| 协议支持 | ✅ RTMP、HTTP-FLV、HLS、WebRTC、SRT、GB28181（需插件） | ✅ RTMP、HTTP-FLV、HLS、WebRTC、原生 GB28181、RTP/RTSP |<br>| GB28181 支持 | ❌ 官方不支持，需第三方 patch 或商业版 | ✅ 原生支持，开箱即用（国内安防场景首选） |<br>| WebRTC 支持 | ✅ 成熟，延迟低（&lt;500ms） | ✅ 支持，但社区反馈稳定性略逊于 SRS |<br>| 配置复杂度 | ⭐⭐ 简单，文档极好 | ⭐⭐⭐ 中等，配置项多，需理解架构 |<br>| 性能 &amp; 资源占用 | 高并发优化好，内存占用较低 | 单机性能极强，但默认配置较吃内存 |<br>| 社区 &amp; 文档 | 🌟 极活跃（作者杨成立亲自维护），中文文档完善 | 活跃，但文档偏技术向，新手门槛稍高 |<br>| 适合场景 | 直播、低延迟互动、教育、通用流媒体 | 国标对接（GB28181）、视频监控、边缘推流 |</p><h1 id="SRS"><a href="#SRS" class="headerlink" title="SRS"></a>SRS</h1><p>注意版本差别，这里使用SRS 5，据说兼容性比较强，而且开源，而最新的SRS7是闭源的商用版本。</p><h2 id="端口开放"><a href="#端口开放" class="headerlink" title="端口开放"></a>端口开放</h2><p>SRS默认使用端口需要在服务器控制台开启</p><ol><li>1935端口：服务器接受推流的端口，可在srs.conf更改。</li><li>8080端口：SRS控制台端口，可在srs.conf更改。</li><li>1985端口：api端口。默认写死在软件里，改不了。</li></ol><h2 id="获取软件"><a href="#获取软件" class="headerlink" title="获取软件"></a>获取软件</h2><p>SRS会使用当前路径作为程序安装路径。所以clone的时候就直接放到需要安装的路径下。</p><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs awk">cd /opt<br>git clone -b <span class="hljs-number">5.0</span>release https:<span class="hljs-regexp">//gi</span>thub.com<span class="hljs-regexp">/ossrs/</span>srs.git<br><span class="hljs-comment"># 或国内镜像（更快）</span><br>git clone -b <span class="hljs-number">5.0</span>release https:<span class="hljs-regexp">//gi</span>tee.com<span class="hljs-regexp">/ossrs/</span>srs.git<br><br><span class="hljs-comment"># 安装依赖</span><br>sudo dnf install -y git gcc-c++ make cmake patch perl openssl-devel<br></code></pre></td></tr></table></figure><h2 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h2><p>编译还算比较快（10分钟内），依赖少，成功率高。</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cd</span> srs/trunk <span class="hljs-comment"># 进入文件夹</span><br>./configure --full  <span class="hljs-comment"># 应用配置 --full 包含 WebRTC/GB28181 等（可选）</span><br>make -j$(<span class="hljs-built_in">nproc</span>) <span class="hljs-comment"># 编译</span><br></code></pre></td></tr></table></figure><h2 id="运行"><a href="#运行" class="headerlink" title="运行"></a>运行</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 设置当前 shell 会话的 soft 和 hard 限制为 10000【可选】</span><br><span class="hljs-built_in">ulimit</span> -HSn 10000<br><br><span class="hljs-comment"># 然后启动 SRS</span><br><span class="hljs-built_in">cd</span> /opt/srs/trunk<br>./objs/srs -c conf/srs.conf<br></code></pre></td></tr></table></figure><p>访问服务器端8080端口，例如<code>http://152.136.56.181:8080/</code>，就能看到SRS主页，会提示推流地址、控制台链接、SRS播放器（用来播放flv的）。<br><img src="/2026/04/14/RTMP%E6%B5%81%E5%AA%92%E4%BD%93%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%8D%87%E7%BA%A7%E8%AE%A1%E5%88%92/ee18cc1c29ee7d0903be6b599297906d.png" alt="ee18cc1c29ee7d0903be6b599297906d.png"></p><h2 id="推流和拉流地址"><a href="#推流和拉流地址" class="headerlink" title="推流和拉流地址"></a>推流和拉流地址</h2><ul><li>推拉流地址<br>rtmp://your_ip/live/livestream</li><li>flv格式拉流地址<br><a href="http://your_ip:8080/live/livestream.flv">http://your_ip:8080/live/livestream.flv</a></li><li>HLS 拉流<br><a href="http://your_ip:8080/live/stream.m3u8">http://your_ip:8080/live/stream.m3u8</a></li></ul><ol><li>推流的时候SRS会自动定向1935端口，所以可以不用写在推理地址里。</li><li>当前的浏览器默认不支持flv直接播放，如果直接输入flv连接，会自动进入下载模式。需要使用播放器程序才能播放flv。</li></ol><p>一开始很奇怪，好像也没看到运行成功的字眼。后来发现，其实这是已经运行成功了的。可以使用<code>ps aux | grep srs</code>查看进程。如果重复开启的话会看到两个进程，可以使用<code>kill 进程PID</code>将其删除</p><ol><li>进入服务器8080端口</li><li>在URL栏输入<code>http://43.136.76.169:8080/live/livestream.flv</code>，选择播放。<br><img src="/2026/04/14/RTMP%E6%B5%81%E5%AA%92%E4%BD%93%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%8D%87%E7%BA%A7%E8%AE%A1%E5%88%92/f967cca6f6d032bbe739d831c4c71e4e.png" alt="f967cca6f6d032bbe739d831c4c71e4e.png"></li></ol><h2 id="其他相关设置"><a href="#其他相关设置" class="headerlink" title="其他相关设置"></a>其他相关设置</h2><p>如果不开放1985端口，也可以正常推拉流，只是8080的控制台界面会看不到视频流信息。<br><img src="/2026/04/14/RTMP%E6%B5%81%E5%AA%92%E4%BD%93%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%8D%87%E7%BA%A7%E8%AE%A1%E5%88%92/aa9d7f22de335c7297cec801f2b38eb6.png" alt="aa9d7f22de335c7297cec801f2b38eb6.png"></p><p>查看日志：<code>tail -f ./objs/srs.log</code><br>配置文件：/srs/trunk/conf/srs.conf<br>默认配置：</p><figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><code class="hljs coffeescript">listen              <span class="hljs-number">1935</span>;<br>max_connections     <span class="hljs-number">1000</span>;<br><span class="hljs-comment">#srs_log_tank        file;</span><br><span class="hljs-comment">#srs_log_file        ./objs/srs.log;</span><br>daemon              <span class="hljs-literal">on</span>;<br>http_api &#123;<br>    enabled         <span class="hljs-literal">on</span>;<br>    listen          <span class="hljs-number">1985</span>;<br>&#125;<br>http_server &#123;<br>    enabled         <span class="hljs-literal">on</span>;<br>    listen          <span class="hljs-number">8080</span>;<br>    dir             ./objs/nginx/html;<br>&#125;<br><span class="hljs-comment"># AI说rtc_server不用可以注释或删除掉，但不删也没影响。</span><br>rtc_server &#123;<br>    enabled <span class="hljs-literal">on</span>;<br>    listen <span class="hljs-number">8000</span>; <span class="hljs-comment"># UDP port</span><br>    <span class="hljs-comment"># @see https://ossrs.net/lts/zh-cn/docs/v4/doc/webrtc#config-candidate</span><br>    candidate $CANDIDATE;<br>&#125;<br>vhost __defaultVhost__ &#123;<br>    hls &#123;<br>        enabled         <span class="hljs-literal">on</span>;<br>    &#125;<br>    http_remux &#123;<br>        enabled     <span class="hljs-literal">on</span>;<br>        mount       [vhost]<span class="hljs-regexp">/[app]/</span>[stream].flv;<br>    &#125;<br>        <span class="hljs-comment"># AI说rtc不用可以注释或删除掉，但不删也没影响。</span><br>    rtc &#123;<br>        enabled     <span class="hljs-literal">on</span>;<br>        <span class="hljs-comment"># @see https://ossrs.net/lts/zh-cn/docs/v4/doc/webrtc#rtmp-to-rtc</span><br>        rtmp_to_rtc <span class="hljs-literal">off</span>;<br>        <span class="hljs-comment"># @see https://ossrs.net/lts/zh-cn/docs/v4/doc/webrtc#rtc-to-rtmp</span><br>        rtc_to_rtmp <span class="hljs-literal">off</span>;<br>    &#125;<br><br>    play&#123;<br>        gop_cache_max_frames <span class="hljs-number">2500</span>;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure><p>通过API查看服务器状态（需要在服务器端执行）：curl <a href="http://127.0.0.1:1985/api/v1/summary">http://127.0.0.1:1985/api/v1/summary</a></p><h1 id="RTSP补丁"><a href="#RTSP补丁" class="headerlink" title="RTSP补丁"></a>RTSP补丁</h1><p>因为SRS是没有rtsp格式的，偏偏有的软件没有rtmp模式，于是尝试使用一个轻量级的rtsp服务，将rtmp自动转换成rtsp，补上这一块拼图。</p><p>rtsp-simple-server（现更名为 MediaMTX）</p><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-comment"># 自己建文件夹，这个程序没有建。</span><br>cd /opt<br>sudo mkdir mediamtx<br>cd mediamtx<br><br><span class="hljs-comment"># 获取程序包</span><br>wget https:<span class="hljs-regexp">//gi</span>thub.com<span class="hljs-regexp">/bluenviron/m</span>ediamtx<span class="hljs-regexp">/releases/</span>download<span class="hljs-regexp">/v1.12.2/m</span>ediamtx_v1.<span class="hljs-number">12.2</span>_linux_amd64.tar.gz<br><span class="hljs-comment"># 解压缩</span><br>tar -zxvf mediamtx_v1.<span class="hljs-number">12.2</span>_linux_amd64.tar.gz<br></code></pre></td></tr></table></figure><p>解压后就三个文件，主要就是程序本体和yml配置文件。<br>LICENST、mediamtx、mediamtx.yml</p><p>需要自己调整yml文件，该文件对缩进敏感，注意格式。</p><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-comment"># 对于一些不需要的功能，可以在配置文件中参数改为no，启动时就不会调用。这样同时也能避免重复的端口监听。</span><br><span class="hljs-attr">rtmp:</span> <span class="hljs-literal">no</span><br><span class="hljs-attr">hls:</span> <span class="hljs-literal">no</span><br><br><span class="hljs-comment"># 关键设置，程序获取视频流的地址。</span><br><span class="hljs-attr">paths:</span><br>  <span class="hljs-attr">test:</span><br>    <span class="hljs-attr">source:</span> <span class="hljs-string">rtmp://localhost/live/livestream</span><br>    <span class="hljs-attr">sourceOnDemand:</span> <span class="hljs-literal">yes</span><br>  <span class="hljs-comment"># 直接使用正则匹配流名（不包含 /）</span><br>  <span class="hljs-string">&#x27;~^(.+)$&#x27;</span><span class="hljs-string">:</span><br>    <span class="hljs-attr">source:</span> <span class="hljs-string">rtmp://localhost/live/$1</span><br>    <span class="hljs-attr">sourceOnDemand:</span> <span class="hljs-literal">yes</span><br></code></pre></td></tr></table></figure><p>在路径下可直接运行程序</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 前台运行模式，关掉窗口会关闭程序，方便测试</span><br>sudo ./mediamtx mediamtx.yml<br></code></pre></td></tr></table></figure><p>启动成功后会看到信息<br><img src="/2026/04/14/RTMP%E6%B5%81%E5%AA%92%E4%BD%93%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%8D%87%E7%BA%A7%E8%AE%A1%E5%88%92/53efc7670637d87b236e5d39043ce115.png" alt="53efc7670637d87b236e5d39043ce115.png"></p><p>SRS推流到<code>rtmp://152.136.56.181/live/livestream</code>后，<br>使用固定连接的测试模式可以正常拉流（默认使用8554端口，需要在服务器后台开启）：<br><code>rtsp://152.136.56.181:8554/test</code><br>但是使用<code>rtsp://152.136.56.181:8554/live/livestream</code>或者<code>rtsp://152.136.56.181:8554/livestream</code>都不行，原因不明。<br>理论上使用正则表达式的配置，应该是可以自动监听1935推流端口的连接，然后转接进rtsp的，具体失败原因待研究。</p><p>实际使用中发现，VLC可以正常播放，但QGC拉取rtsp流就不行。后台会提示反复开启和关闭，应该是播放软件问题。<br>但QGC支持http格式，可以播放flv。</p><p>总结就是这个rtsp转接模块有一点作用，但不是特别好用。使用上挺方便的解压即用，不需要编译。可能是我不够了解具体功能。</p><h1 id="ZLMediaKit"><a href="#ZLMediaKit" class="headerlink" title="ZLMediaKit"></a>ZLMediaKit</h1><p>虽然SRS已经相当好用，并且安装方便，但功能上还是有些缺斤少两，例如不支持RTSP。还是有必要尝试一下功能更全面的ZLMediaKit。</p><p>这个现在暂时还没空尝试，首先在国内网络就是个问题，下载项目经常失败，后面有时间了再补充。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>学习</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>服务器</tag>
+      
+      <tag>rtmp</tag>
+      
+      <tag>rtsp</tag>
+      
+      <tag>http</tag>
+      
+      <tag>flv</tag>
+      
+      <tag>流媒体</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>Arcgis数据驱动制图</title>
     <link href="/2026/03/27/Arcgis%E6%95%B0%E6%8D%AE%E9%A9%B1%E5%8A%A8%E5%88%B6%E5%9B%BE/"/>
     <url>/2026/03/27/Arcgis%E6%95%B0%E6%8D%AE%E9%A9%B1%E5%8A%A8%E5%88%B6%E5%9B%BE/</url>
@@ -26,11 +61,11 @@
       
       <tag>属性</tag>
       
-      <tag>QGIS</tag>
-      
       <tag>数据驱动</tag>
       
       <tag>制图</tag>
+      
+      <tag>QGIS</tag>
       
     </tags>
     
@@ -766,6 +801,8 @@
       
       <tag>服务器</tag>
       
+      <tag>流媒体</tag>
+      
       <tag>RTMP</tag>
       
       <tag>推流</tag>
@@ -775,8 +812,6 @@
       <tag>ffmpeg</tag>
       
       <tag>VLC</tag>
-      
-      <tag>流媒体</tag>
       
     </tags>
     
@@ -805,9 +840,9 @@
       
       <tag>Arcgis</tag>
       
-      <tag>数据库</tag>
-      
       <tag>Oracle</tag>
+      
+      <tag>数据库</tag>
       
       <tag>ArcServer</tag>
       
@@ -1023,6 +1058,8 @@
       
       <tag>服务器</tag>
       
+      <tag>流媒体</tag>
+      
       <tag>RTMP</tag>
       
       <tag>推流</tag>
@@ -1034,8 +1071,6 @@
       <tag>OBS</tag>
       
       <tag>VLC</tag>
-      
-      <tag>流媒体</tag>
       
     </tags>
     
@@ -1064,6 +1099,8 @@
       
       <tag>服务器</tag>
       
+      <tag>流媒体</tag>
+      
       <tag>RTMP</tag>
       
       <tag>推流</tag>
@@ -1075,8 +1112,6 @@
       <tag>OBS</tag>
       
       <tag>VLC</tag>
-      
-      <tag>流媒体</tag>
       
       <tag>yolo</tag>
       
@@ -1453,9 +1488,9 @@
     
     <tags>
       
-      <tag>数据库</tag>
-      
       <tag>Oracle</tag>
+      
+      <tag>数据库</tag>
       
       <tag>锁定</tag>
       
@@ -1550,9 +1585,9 @@
       
       <tag>Linux</tag>
       
-      <tag>RK3588</tag>
-      
       <tag>嵌入式</tag>
+      
+      <tag>RK3588</tag>
       
       <tag>arm64</tag>
       
@@ -1779,11 +1814,11 @@
       
       <tag>Linux</tag>
       
+      <tag>单片机</tag>
+      
       <tag>OrangePI</tag>
       
       <tag>开发板</tag>
-      
-      <tag>单片机</tag>
       
       <tag>系统</tag>
       
@@ -1880,9 +1915,9 @@
     
     <tags>
       
-      <tag>yolov8</tag>
-      
       <tag>Android</tag>
+      
+      <tag>yolov8</tag>
       
       <tag>Python</tag>
       
@@ -1921,15 +1956,15 @@
     
     <tags>
       
-      <tag>yolov8</tag>
+      <tag>Java</tag>
       
       <tag>Android</tag>
       
-      <tag>helloworld</tag>
-      
       <tag>开发</tag>
       
-      <tag>Java</tag>
+      <tag>yolov8</tag>
+      
+      <tag>helloworld</tag>
       
       <tag>安卓</tag>
       
@@ -1958,15 +1993,15 @@
     
     <tags>
       
-      <tag>yolov8</tag>
+      <tag>Java</tag>
       
       <tag>Android</tag>
       
-      <tag>helloworld</tag>
-      
       <tag>开发</tag>
       
-      <tag>Java</tag>
+      <tag>yolov8</tag>
+      
+      <tag>helloworld</tag>
       
       <tag>安卓</tag>
       
@@ -2112,13 +2147,13 @@
     
     <tags>
       
-      <tag>Android</tag>
-      
-      <tag>开发</tag>
-      
       <tag>Java</tag>
       
+      <tag>Android</tag>
+      
       <tag>环境部署</tag>
+      
+      <tag>开发</tag>
       
     </tags>
     
@@ -2145,11 +2180,11 @@
       
       <tag>python</tag>
       
+      <tag>环境部署</tag>
+      
       <tag>开发</tag>
       
       <tag>JavAnaconda</tag>
-      
-      <tag>环境部署</tag>
       
       <tag>环境管理</tag>
       
@@ -2176,9 +2211,9 @@
     
     <tags>
       
-      <tag>yolov8</tag>
-      
       <tag>Android</tag>
+      
+      <tag>yolov8</tag>
       
       <tag>Python</tag>
       
@@ -2979,13 +3014,13 @@
     
     <tags>
       
-      <tag>Android</tag>
-      
-      <tag>开发</tag>
-      
       <tag>Java</tag>
       
+      <tag>Android</tag>
+      
       <tag>环境部署</tag>
+      
+      <tag>开发</tag>
       
     </tags>
     
