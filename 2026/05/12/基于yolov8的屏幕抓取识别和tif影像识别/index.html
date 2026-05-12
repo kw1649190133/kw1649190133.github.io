@@ -1,0 +1,713 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=dark>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Kwindy">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="前言最近需要做海滩上管线变化的AI识别，除了比较常用的照片识别、位置。大概2月份就一直在做了，只是一直没有闲下来进行整理。 环境环境使用的是之前就安装好的yolo环境，这里简单总结一下安装流程  安装miniconda，用于环境管理  在miniconda中创建合适的python环境 12conda create -n yolov8 python&#x3D;3.8 #创建python环境conda acti">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基于yolov8的屏幕抓取识别和tif影像识别">
+<meta property="og:url" content="http://kw1649190133.github.io/2026/05/12/%E5%9F%BA%E4%BA%8Eyolov8%E7%9A%84%E5%B1%8F%E5%B9%95%E6%8A%93%E5%8F%96%E8%AF%86%E5%88%AB%E5%92%8Ctif%E5%BD%B1%E5%83%8F%E8%AF%86%E5%88%AB/index.html">
+<meta property="og:site_name" content="kw&#39;s blog">
+<meta property="og:description" content="前言最近需要做海滩上管线变化的AI识别，除了比较常用的照片识别、位置。大概2月份就一直在做了，只是一直没有闲下来进行整理。 环境环境使用的是之前就安装好的yolo环境，这里简单总结一下安装流程  安装miniconda，用于环境管理  在miniconda中创建合适的python环境 12conda create -n yolov8 python&#x3D;3.8 #创建python环境conda acti">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/05/12/%E5%9F%BA%E4%BA%8Eyolov8%E7%9A%84%E5%B1%8F%E5%B9%95%E6%8A%93%E5%8F%96%E8%AF%86%E5%88%AB%E5%92%8Ctif%E5%BD%B1%E5%83%8F%E8%AF%86%E5%88%AB/f785bd26b78319a52829ce7432584bf1.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/05/12/%E5%9F%BA%E4%BA%8Eyolov8%E7%9A%84%E5%B1%8F%E5%B9%95%E6%8A%93%E5%8F%96%E8%AF%86%E5%88%AB%E5%92%8Ctif%E5%BD%B1%E5%83%8F%E8%AF%86%E5%88%AB/979c641b11a548e8c284cd6ed978d83d.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/05/12/%E5%9F%BA%E4%BA%8Eyolov8%E7%9A%84%E5%B1%8F%E5%B9%95%E6%8A%93%E5%8F%96%E8%AF%86%E5%88%AB%E5%92%8Ctif%E5%BD%B1%E5%83%8F%E8%AF%86%E5%88%AB/%E5%9B%BE%E7%89%871.png">
+<meta property="article:published_time" content="2026-05-12T03:07:22.000Z">
+<meta property="article:modified_time" content="2026-05-12T03:18:08.998Z">
+<meta property="article:author" content="Kwindy">
+<meta property="article:tag" content="yolov8">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="目标识别">
+<meta property="article:tag" content="计算机视觉">
+<meta property="article:tag" content="神经网络">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="Anaconda">
+<meta property="article:tag" content="CUDA">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://kw1649190133.github.io/2026/05/12/%E5%9F%BA%E4%BA%8Eyolov8%E7%9A%84%E5%B1%8F%E5%B9%95%E6%8A%93%E5%8F%96%E8%AF%86%E5%88%AB%E5%92%8Ctif%E5%BD%B1%E5%83%8F%E8%AF%86%E5%88%AB/f785bd26b78319a52829ce7432584bf1.png">
+  
+  
+  
+  <title>基于yolov8的屏幕抓取识别和tif影像识别 - kw&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"kw1649190133.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>天际边缘 Edge of the sky </strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="基于yolov8的屏幕抓取识别和tif影像识别"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-05-12 11:07" pubdate>
+          May 12, 2026 am
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          16k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          131 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">基于yolov8的屏幕抓取识别和tif影像识别</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>最近需要做海滩上管线变化的AI识别，除了比较常用的照片识别、位置。<br>大概2月份就一直在做了，只是一直没有闲下来进行整理。</p>
+<h1 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h1><p>环境使用的是之前就安装好的yolo环境，这里简单总结一下安装流程</p>
+<ol>
+<li><p>安装miniconda，用于环境管理</p>
+</li>
+<li><p>在miniconda中创建合适的python环境</p>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs applescript">conda create -n yolov8 python=<span class="hljs-number">3.8</span> <span class="hljs-comment">#创建python环境</span><br>conda <span class="hljs-built_in">activate</span> yolov8 <span class="hljs-comment">#进入环境</span><br></code></pre></td></tr></table></figure></li>
+<li><p>获取和安装 ultralytics 环境</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs awk">git clone https:<span class="hljs-regexp">//gi</span>thub.com<span class="hljs-regexp">/ultralytics/u</span>ltralytics.git <span class="hljs-comment">#下载代码</span><br>pip install ultralytics <span class="hljs-comment">#安装训练环境</span><br><span class="hljs-comment"># 预测模式运行测试</span><br>yolo detect predict model=yolov8m.pt source=ultralytics<span class="hljs-regexp">/assets/</span>bus.jpg<br></code></pre></td></tr></table></figure></li>
+<li><p>检查显卡版本，安装CUDA和cuDNN加速计算<br>妮维雅开发者官网(<a target="_blank" rel="noopener" href="https://developer.nvidia.com/">https://developer.nvidia.com/</a>)<br>下载CUDA并安装</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs CMD"># 检查显卡情况<br>nvidia-smi<br># 查看cuda版本<br>nvcc --version<br># 或者-V，注意必须是大写<br>nvcc -V<br></code></pre></td></tr></table></figure></li>
+<li><p>测试Torch和CUDA兼容性，完成匹配。<br>参考资料：<br>pytorch官网地址：<a target="_blank" rel="noopener" href="https://pytorch.org/get-started/locally/">https://pytorch.org/get-started/locally/</a><br>其他下载站：<a target="_blank" rel="noopener" href="https://download.pytorch.org/whl/cu116">https://download.pytorch.org/whl/cu116</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># 进入Python程序</span><br>python<br><span class="hljs-keyword">import</span> torch<br>torch.backends.cudnn.is_available()  <span class="hljs-comment"># 检查cudnn是否可用</span><br>torch.backends.cudnn.version()       <span class="hljs-comment"># 查看cudnn版本</span><br><br><span class="hljs-built_in">print</span>(torch.__version__)  <span class="hljs-comment">#查看当前torch版本</span><br><span class="hljs-built_in">print</span>(torch.cuda.is_available()) <span class="hljs-comment">#检查cuda和torch是否匹配</span><br></code></pre></td></tr></table></figure>
+<h1 id="数据标注"><a href="#数据标注" class="headerlink" title="数据标注"></a>数据标注</h1><p>做标注的软件很多，大部分导出是json格式，而yolo需要的是txt。<br>至少需要一个训练集和一个验证集，训练集中样本放多一点。<br>目录结构：<br>train<br>┗ image<br>┗ lab<br>val<br>┗ image<br>┗ lab<br>目录结构仅作为参考，具体的结构可以通过yaml定义。<br>因为这次做的是图像分割的模型，所以标签是一个封闭多边形，第一个数字表示样本类型，后面每两个数字表示一组图像坐标。<br><img src="/2026/05/12/%E5%9F%BA%E4%BA%8Eyolov8%E7%9A%84%E5%B1%8F%E5%B9%95%E6%8A%93%E5%8F%96%E8%AF%86%E5%88%AB%E5%92%8Ctif%E5%BD%B1%E5%83%8F%E8%AF%86%E5%88%AB/f785bd26b78319a52829ce7432584bf1.png" srcset="/img/loading.gif" lazyload alt="f785bd26b78319a52829ce7432584bf1.png"></p>
+</li>
+</ol>
+<h2 id="labelImg"><a href="#labelImg" class="headerlink" title="labelImg"></a>labelImg</h2><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-comment"># 安装</span><br>pip <span class="hljs-keyword">install</span> labelimg<br><br><span class="hljs-comment"># 使用</span><br>labelimg<br></code></pre></td></tr></table></figure>
+<p><img src="/2026/05/12/%E5%9F%BA%E4%BA%8Eyolov8%E7%9A%84%E5%B1%8F%E5%B9%95%E6%8A%93%E5%8F%96%E8%AF%86%E5%88%AB%E5%92%8Ctif%E5%BD%B1%E5%83%8F%E8%AF%86%E5%88%AB/979c641b11a548e8c284cd6ed978d83d.png" srcset="/img/loading.gif" lazyload alt="979c641b11a548e8c284cd6ed978d83d.png"></p>
+<h2 id="labelme"><a href="#labelme" class="headerlink" title="labelme"></a>labelme</h2><p>需要注意的是labelme工具在5.0之后的版本全面适配最新的numpy，而我的yolov8环境还用的是1.20的numpy，我又担心动了版本后yolo又跑不动了，目前只能另外做一个环境来装。</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-comment"># 创建专用环境</span><br><span class="hljs-attribute">conda</span> create -n labelme python=<span class="hljs-number">3</span>.<span class="hljs-number">9</span><br><span class="hljs-attribute">conda</span> activate labelme<br><br><span class="hljs-comment"># 安装最新 labelme</span><br><span class="hljs-attribute">pip</span> install labelme<br><br><span class="hljs-comment"># 启动</span><br><span class="hljs-attribute">labelme</span><br></code></pre></td></tr></table></figure>
+
+
+<p><img src="/2026/05/12/%E5%9F%BA%E4%BA%8Eyolov8%E7%9A%84%E5%B1%8F%E5%B9%95%E6%8A%93%E5%8F%96%E8%AF%86%E5%88%AB%E5%92%8Ctif%E5%BD%B1%E5%83%8F%E8%AF%86%E5%88%AB/%E5%9B%BE%E7%89%871.png" srcset="/img/loading.gif" lazyload alt="图片1.png"></p>
+<p>打开目录选择要标注图片所在文件夹<br>打开图片后选择“创建多边形”对目标进行标注<br>这里因为做的是海滩上裸露管线的识别，所以只做了一个pipe类，如果数据量允许的话，其实应该还有污水排放等目标的识别。</p>
+<h2 id="标注格式转换"><a href="#标注格式转换" class="headerlink" title="标注格式转换"></a>标注格式转换</h2><p>软件标注出来是json格式，需要自己做txt转换。也有的标注软件比较高级，自带转换成txt格式的功能。代码不是我写的，还有待验证和优化。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> json<br><span class="hljs-keyword">import</span> os<br><span class="hljs-keyword">from</span> tqdm <span class="hljs-keyword">import</span> tqdm<br><span class="hljs-comment">#需要在资源库中下载tqdm资源包</span><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">convert_label</span>(<span class="hljs-params">json_dir, save_dir, classes</span>):<br>    json_paths = os.listdir(json_dir)<br>    classes = classes.split(<span class="hljs-string">&#x27;,&#x27;</span>)<br><br>    <span class="hljs-keyword">for</span> json_path <span class="hljs-keyword">in</span> tqdm(json_paths):<br><br>        path = os.path.join(json_dir, json_path)<br>        <span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(path, <span class="hljs-string">&#x27;r&#x27;</span>) <span class="hljs-keyword">as</span> load_f:<br>            json_dict = json.load(load_f)<br>        h, w = json_dict[<span class="hljs-string">&#x27;imageHeight&#x27;</span>], json_dict[<span class="hljs-string">&#x27;imageWidth&#x27;</span>]<br><br>        <span class="hljs-comment"># save txt path</span><br>        txt_path = os.path.join(save_dir, json_path.replace(<span class="hljs-string">&#x27;json&#x27;</span>, <span class="hljs-string">&#x27;txt&#x27;</span>))<br>        txt_file = <span class="hljs-built_in">open</span>(txt_path, <span class="hljs-string">&#x27;w&#x27;</span>)<br><br>        <span class="hljs-keyword">for</span> shape_dict <span class="hljs-keyword">in</span> json_dict[<span class="hljs-string">&#x27;shapes&#x27;</span>]:<br>            label = shape_dict[<span class="hljs-string">&#x27;label&#x27;</span>]<br>            label_index = classes.index(label)<br>            points = shape_dict[<span class="hljs-string">&#x27;points&#x27;</span>]<br><br>            points_nor_list = []<br><br>            <span class="hljs-keyword">for</span> point <span class="hljs-keyword">in</span> points:<br>                points_nor_list.append(point[<span class="hljs-number">0</span>] / w)<br>                points_nor_list.append(point[<span class="hljs-number">1</span>] / h)<br><br>            points_nor_list = <span class="hljs-built_in">list</span>(<span class="hljs-built_in">map</span>(<span class="hljs-keyword">lambda</span> x: <span class="hljs-built_in">str</span>(x), points_nor_list))<br>            points_nor_str = <span class="hljs-string">&#x27; &#x27;</span>.join(points_nor_list)<br><br>            label_str = <span class="hljs-built_in">str</span>(label_index) + <span class="hljs-string">&#x27; &#x27;</span> + points_nor_str + <span class="hljs-string">&#x27;\n&#x27;</span><br>            txt_file.writelines(label_str)<br><br><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&quot;__main__&quot;</span>:<br><span class="hljs-comment">#需要在该工程文件同目录下创建命名为json、txt的文件，json文件夹中只能放入json文件</span><br>    json_dir = <span class="hljs-string">r&#x27;C:\json&#x27;</span>  <span class="hljs-comment">####将路径替换为你的json文件夹路径</span><br>    save_dir = <span class="hljs-string">r&#x27;C:\ txt&#x27;</span>  <span class="hljs-comment">####将路径替换为你的txt文件夹保存路径</span><br>    classes = <span class="hljs-string">&#x27;pipe&#x27;</span>  <span class="hljs-comment">####这里将自己标注的类别名称填进去,如果有还有其他标注目标，就在person后面加个，然后跟上就行</span><br>    <span class="hljs-comment"># classes = &#x27;person,others,others2,...&#x27;                 ####多个目标示例</span><br>    convert_label(json_dir, save_dir, classes)<br></code></pre></td></tr></table></figure>
+
+<h1 id="基于屏幕画面截屏的识别："><a href="#基于屏幕画面截屏的识别：" class="headerlink" title="基于屏幕画面截屏的识别："></a>基于屏幕画面截屏的识别：</h1><p>需要安装mss库</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cmake">pip <span class="hljs-keyword">install</span> mss<br></code></pre></td></tr></table></figure>
+
+<p>程序代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> ultralytics <span class="hljs-keyword">import</span> YOLO<br><span class="hljs-keyword">import</span> cv2<br><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np<br><span class="hljs-keyword">import</span> mss<br><span class="hljs-keyword">import</span> time<br><br><span class="hljs-comment"># === 配置 ===</span><br>MODEL_PATH = <span class="hljs-string">r&#x27;D:\\work\\海洋厅项目\\程序\\best.pt&#x27;</span><br>TARGET_FPS = <span class="hljs-number">5</span><br><br>model = YOLO(MODEL_PATH)<br><br><span class="hljs-comment"># 全局变量：用于鼠标交互</span><br>drawing = <span class="hljs-literal">False</span><br>ix, iy = -<span class="hljs-number">1</span>, -<span class="hljs-number">1</span><br>roi_selected = <span class="hljs-literal">False</span><br>selected_roi = <span class="hljs-literal">None</span>  <span class="hljs-comment"># (x, y, w, h)</span><br>full_screenshot = <span class="hljs-literal">None</span><br><br><span class="hljs-comment"># === 鼠标回调函数：用于框选区域 ===</span><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">select_roi_callback</span>(<span class="hljs-params">event, x, y, flags, param</span>):<br>    <span class="hljs-keyword">global</span> ix, iy, drawing, selected_roi, roi_selected, full_screenshot<br><br>    <span class="hljs-keyword">if</span> event == cv2.EVENT_LBUTTONDOWN:<br>        drawing = <span class="hljs-literal">True</span><br>        ix, iy = x, y<br><br>    <span class="hljs-keyword">elif</span> event == cv2.EVENT_MOUSEMOVE:<br>        <span class="hljs-keyword">if</span> drawing:<br>            img_copy = full_screenshot.copy()<br>            cv2.rectangle(img_copy, (ix, iy), (x, y), (<span class="hljs-number">0</span>, <span class="hljs-number">255</span>, <span class="hljs-number">0</span>), <span class="hljs-number">2</span>)<br>            cv2.imshow(<span class="hljs-string">&quot;Select ROI&quot;</span>, img_copy)<br><br>    <span class="hljs-keyword">elif</span> event == cv2.EVENT_LBUTTONUP:<br>        drawing = <span class="hljs-literal">False</span><br>        x1, y1 = <span class="hljs-built_in">min</span>(ix, x), <span class="hljs-built_in">min</span>(iy, y)<br>        x2, y2 = <span class="hljs-built_in">max</span>(ix, x), <span class="hljs-built_in">max</span>(iy, y)<br>        w, h = x2 - x1, y2 - y1<br>        <span class="hljs-keyword">if</span> w &gt; <span class="hljs-number">10</span> <span class="hljs-keyword">and</span> h &gt; <span class="hljs-number">10</span>:  <span class="hljs-comment"># 忽略太小的框</span><br>            selected_roi = (x1, y1, w, h)<br>            roi_selected = <span class="hljs-literal">True</span><br>            <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;✅ 已选择区域: x=<span class="hljs-subst">&#123;x1&#125;</span>, y=<span class="hljs-subst">&#123;y1&#125;</span>, w=<span class="hljs-subst">&#123;w&#125;</span>, h=<span class="hljs-subst">&#123;h&#125;</span>&quot;</span>)<br>            cv2.destroyWindow(<span class="hljs-string">&quot;Select ROI&quot;</span>)<br>        <span class="hljs-keyword">else</span>:<br>            <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;❌ 区域太小，请重新选择&quot;</span>)<br><br><span class="hljs-comment"># === 第一步：让用户选择 ROI ===</span><br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;📌 正在获取屏幕截图...&quot;</span>)<br><span class="hljs-keyword">with</span> mss.mss() <span class="hljs-keyword">as</span> sct:<br>    monitor = sct.monitors[<span class="hljs-number">1</span>]  <span class="hljs-comment"># 主屏</span><br>    screenshot = sct.grab(monitor)<br>    full_screenshot = np.array(screenshot)<br>    full_screenshot = cv2.cvtColor(full_screenshot, cv2.COLOR_BGRA2BGR)<br><br><span class="hljs-comment"># 显示全屏图，等待用户框选</span><br>cv2.namedWindow(<span class="hljs-string">&quot;Select ROI&quot;</span>, cv2.WINDOW_NORMAL)<br>cv2.setMouseCallback(<span class="hljs-string">&quot;Select ROI&quot;</span>, select_roi_callback)<br>cv2.imshow(<span class="hljs-string">&quot;Select ROI&quot;</span>, full_screenshot)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;👉 请在窗口中按住左键拖动，框选要识别的区域，然后松开鼠标。&quot;</span>)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;   （框选后窗口会自动关闭，开始实时识别）&quot;</span>)<br><br><span class="hljs-comment"># 等待用户完成选择</span><br><span class="hljs-keyword">while</span> <span class="hljs-keyword">not</span> roi_selected:<br>    <span class="hljs-keyword">if</span> cv2.waitKey(<span class="hljs-number">10</span>) &amp; <span class="hljs-number">0xFF</span> == <span class="hljs-built_in">ord</span>(<span class="hljs-string">&#x27;q&#x27;</span>):<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;用户取消&quot;</span>)<br>        cv2.destroyAllWindows()<br>        exit()<br><br>cv2.destroyAllWindows()<br><br><span class="hljs-comment"># === 第二步：实时识别选定区域 ===</span><br>x, y, w, h = selected_roi<br>screen_roi = &#123;<br>    <span class="hljs-string">&quot;top&quot;</span>: y,<br>    <span class="hljs-string">&quot;left&quot;</span>: x,<br>    <span class="hljs-string">&quot;width&quot;</span>: w,<br>    <span class="hljs-string">&quot;height&quot;</span>: h<br>&#125;<br><br><span class="hljs-comment"># 创建可缩放的结果窗口</span><br>RESULT_WINDOW = <span class="hljs-string">&quot;YOLO Detection - 拖拽可缩放&quot;</span><br>cv2.namedWindow(RESULT_WINDOW, cv2.WINDOW_NORMAL)<br>cv2.resizeWindow(RESULT_WINDOW, w, h)<br><br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;▶ 开始实时识别选定区域...&quot;</span>)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;按 &#x27;q&#x27; 退出&quot;</span>)<br><br><span class="hljs-keyword">with</span> mss.mss() <span class="hljs-keyword">as</span> sct:<br>    <span class="hljs-keyword">try</span>:<br>        <span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:<br>            start = time.time()<br><br>            <span class="hljs-comment"># 从屏幕实时截取选定区域</span><br>            img = np.array(sct.grab(screen_roi))<br>            img_bgr = cv2.cvtColor(img, cv2.COLOR_BGRA2BGR)<br><br>            <span class="hljs-comment"># YOLO 推理</span><br>            results = model.predict(source=img_bgr, verbose=<span class="hljs-literal">False</span>)<br>            annotated = results[<span class="hljs-number">0</span>].plot()<br><br>            <span class="hljs-comment"># 计算数量和面积</span><br>            <span class="hljs-keyword">if</span> results[<span class="hljs-number">0</span>].masks <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span>:<br>                masks = results[<span class="hljs-number">0</span>].masks.data.cpu().numpy()<br>                total_area = <span class="hljs-built_in">sum</span>(np.<span class="hljs-built_in">sum</span>(mask) <span class="hljs-keyword">for</span> mask <span class="hljs-keyword">in</span> masks)<br>                num = <span class="hljs-built_in">len</span>(masks)<br>            <span class="hljs-keyword">else</span>:<br>                boxes = results[<span class="hljs-number">0</span>].boxes<br>                num = <span class="hljs-built_in">len</span>(boxes)<br>                total_area = <span class="hljs-built_in">sum</span>((box.xywh[<span class="hljs-number">0</span>][<span class="hljs-number">2</span>] * box.xywh[<span class="hljs-number">0</span>][<span class="hljs-number">3</span>]).item() <span class="hljs-keyword">for</span> box <span class="hljs-keyword">in</span> boxes) <span class="hljs-keyword">if</span> num <span class="hljs-keyword">else</span> <span class="hljs-number">0</span><br><br>            <span class="hljs-comment"># 绘制文字</span><br>            cv2.putText(annotated, <span class="hljs-string">f&quot;Count: <span class="hljs-subst">&#123;num&#125;</span>&quot;</span>, (<span class="hljs-number">10</span>, <span class="hljs-number">30</span>),<br>                        cv2.FONT_HERSHEY_SIMPLEX, <span class="hljs-number">0.7</span>, (<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>), <span class="hljs-number">3</span>)<br>            cv2.putText(annotated, <span class="hljs-string">f&quot;Count: <span class="hljs-subst">&#123;num&#125;</span>&quot;</span>, (<span class="hljs-number">10</span>, <span class="hljs-number">30</span>),<br>                        cv2.FONT_HERSHEY_SIMPLEX, <span class="hljs-number">0.7</span>, (<span class="hljs-number">255</span>,<span class="hljs-number">255</span>,<span class="hljs-number">255</span>), <span class="hljs-number">1</span>)<br>            cv2.putText(annotated, <span class="hljs-string">f&quot;Area: <span class="hljs-subst">&#123;<span class="hljs-built_in">int</span>(total_area)&#125;</span> px&quot;</span>, (<span class="hljs-number">10</span>, <span class="hljs-number">60</span>),<br>                        cv2.FONT_HERSHEY_SIMPLEX, <span class="hljs-number">0.7</span>, (<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>), <span class="hljs-number">2</span>)<br>            cv2.putText(annotated, <span class="hljs-string">f&quot;Area: <span class="hljs-subst">&#123;<span class="hljs-built_in">int</span>(total_area)&#125;</span> px&quot;</span>, (<span class="hljs-number">10</span>, <span class="hljs-number">60</span>),<br>                        cv2.FONT_HERSHEY_SIMPLEX, <span class="hljs-number">0.7</span>, (<span class="hljs-number">255</span>,<span class="hljs-number">255</span>,<span class="hljs-number">255</span>), <span class="hljs-number">1</span>)<br><br>            <span class="hljs-comment"># 显示结果（窗口可手动缩放）</span><br>            cv2.imshow(RESULT_WINDOW, annotated)<br><br>            <span class="hljs-comment"># 控制帧率</span><br>            elapsed = time.time() - start<br>            delay = <span class="hljs-number">1.0</span> / TARGET_FPS<br>            <span class="hljs-keyword">if</span> elapsed &lt; delay:<br>                time.sleep(delay - elapsed)<br><br>            <span class="hljs-keyword">if</span> cv2.waitKey(<span class="hljs-number">1</span>) &amp; <span class="hljs-number">0xFF</span> == <span class="hljs-built_in">ord</span>(<span class="hljs-string">&#x27;q&#x27;</span>):<br>                <span class="hljs-keyword">break</span><br>    <span class="hljs-keyword">finally</span>:<br>        cv2.destroyAllWindows()<br></code></pre></td></tr></table></figure>
+
+<h1 id="影像识别"><a href="#影像识别" class="headerlink" title="影像识别"></a>影像识别</h1><p>这里的原理其实就是将巨大的二维影像切割成多个小块，每个小块单独检测，最后再将结果拼接到一起。同时，要注意地理坐标和投影的相关问题。影像要使用带有投影坐标系的，这样程序就可以读取影像的坐标，生成矢量时进行赋值。</p>
+<h2 id="模块依赖"><a href="#模块依赖" class="headerlink" title="模块依赖"></a>模块依赖</h2><figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs mipsasm"><span class="hljs-comment"># 安装rasterio</span><br>conda <span class="hljs-keyword">install </span>-c conda-forge rasterio<br><br><span class="hljs-comment"># 安装geopandas，使用 conda-forge 频道（官方推荐）</span><br>conda <span class="hljs-keyword">install </span>-c conda-forge geopandas<br><br><span class="hljs-comment"># 安装skimage</span><br>pip <span class="hljs-keyword">install </span><span class="hljs-keyword">scikit-image</span><br><span class="hljs-keyword"></span><span class="hljs-comment"># 或</span><br>conda <span class="hljs-keyword">install </span>-c conda-forge <span class="hljs-keyword">scikit-image</span><br><span class="hljs-keyword"></span><br></code></pre></td></tr></table></figure>
+
+<p>⚠️ 不建议直接 pip install geopandas！<br>因为 geopandas 依赖 GDAL、PROJ、fiona、shapely 等复杂 C/C++ 库，在 Windows 或 macOS 上用 pip 容易失败。rasterio同理。</p>
+<h2 id="程序代码"><a href="#程序代码" class="headerlink" title="程序代码"></a>程序代码</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># model/worker.py</span><br><br><span class="hljs-keyword">import</span> geopandas <span class="hljs-keyword">as</span> gpd<br><span class="hljs-keyword">import</span> rasterio<br><span class="hljs-keyword">from</span> PyQt5.QtCore <span class="hljs-keyword">import</span> QThread, pyqtSignal<br><span class="hljs-keyword">from</span> src.segmentation <span class="hljs-keyword">import</span> process_tiff_with_yolo_segment<br><span class="hljs-keyword">from</span> .yolo_loader <span class="hljs-keyword">import</span> load_yolo_model<br><span class="hljs-keyword">from</span> shapely.validation <span class="hljs-keyword">import</span> make_valid<br><br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">WorkerThread</span>(<span class="hljs-title class_ inherited__">QThread</span>):<br>    progress = pyqtSignal(<span class="hljs-built_in">int</span>)<br>    log = pyqtSignal(<span class="hljs-built_in">str</span>)<br>    finished_signal = pyqtSignal(<span class="hljs-built_in">str</span>)<br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, tiff_path, model_path, output_geojson,</span><br><span class="hljs-params">                 tile_size, overlap, conf_thresh, min_area</span>):<br>        <span class="hljs-built_in">super</span>().__init__()<br>        self.tiff_path = tiff_path<br>        self.model_path = model_path<br>        self.output_geojson = output_geojson<br>        self.tile_size = tile_size<br>        self.overlap = overlap<br>        self.conf_thresh = conf_thresh<br>        self.min_area = min_area<br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">run</span>(<span class="hljs-params">self</span>):<br>        <span class="hljs-keyword">try</span>:<br>            self.log.emit(<span class="hljs-string">&quot;Loading YOLO model...&quot;</span>)<br>            <span class="hljs-comment"># ✅ 统一使用 yolo_loader 加载模型</span><br>            model, device = load_yolo_model(self.model_path)<br>            self.log.emit(<span class="hljs-string">f&quot;Using device: <span class="hljs-subst">&#123;device&#125;</span>&quot;</span>)<br><br>            <span class="hljs-keyword">with</span> rasterio.<span class="hljs-built_in">open</span>(self.tiff_path) <span class="hljs-keyword">as</span> src:<br>                original_crs = src.crs<br><br>            self.log.emit(<span class="hljs-string">&quot;Processing large TIFF with YOLOv8 Segmentation...&quot;</span>)<br>            seg_gdf = process_tiff_with_yolo_segment(<br>                tiff_path=self.tiff_path,<br>                model=model,<br>                tile_size=self.tile_size,<br>                overlap=self.overlap,<br>                conf_thresh=self.conf_thresh,<br>                min_area=self.min_area,<br>                progress_callback=self.progress.emit<br>            )<br><br>            <span class="hljs-comment"># ... 后续融合、保存逻辑保持不变 ...</span><br>            <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(seg_gdf) == <span class="hljs-number">0</span>:<br>                self.log.emit(<span class="hljs-string">&quot;⚠️ Warning: No segmentation results found!&quot;</span>)<br>                empty_gdf = gpd.GeoDataFrame(<br>                    &#123;<span class="hljs-string">&#x27;geometry&#x27;</span>: [], <span class="hljs-string">&#x27;class_id&#x27;</span>: [], <span class="hljs-string">&#x27;confidence&#x27;</span>: []&#125;,<br>                    geometry=<span class="hljs-string">&#x27;geometry&#x27;</span>,<br>                    crs=original_crs<br>                )<br>                empty_gdf.to_file(self.output_geojson, driver=<span class="hljs-string">&quot;GeoJSON&quot;</span>)<br>                self.finished_signal.emit(<span class="hljs-string">&quot;Done! No features detected.&quot;</span>)<br>                <span class="hljs-keyword">return</span><br><br>            self.log.emit(<span class="hljs-string">f&quot;Total features before fusion: <span class="hljs-subst">&#123;<span class="hljs-built_in">len</span>(seg_gdf)&#125;</span>&quot;</span>)<br><br>            fused_geoms = []<br>            fused_classes = []<br>            fused_confs = []<br><br>            <span class="hljs-keyword">for</span> class_id <span class="hljs-keyword">in</span> seg_gdf[<span class="hljs-string">&#x27;class_id&#x27;</span>].unique():<br>                subset = seg_gdf[seg_gdf[<span class="hljs-string">&#x27;class_id&#x27;</span>] == class_id].copy()<br>                <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(subset) == <span class="hljs-number">0</span>:<br>                    <span class="hljs-keyword">continue</span><br>                <span class="hljs-keyword">try</span>:<br>                    union_geom = subset.geometry.union_all()<br>                <span class="hljs-keyword">except</span> Exception <span class="hljs-keyword">as</span> e:<br>                    self.log.emit(<span class="hljs-string">f&quot;Warning: Failed to fuse class <span class="hljs-subst">&#123;class_id&#125;</span>: <span class="hljs-subst">&#123;e&#125;</span>&quot;</span>)<br>                    <span class="hljs-keyword">continue</span><br>                <span class="hljs-keyword">if</span> union_geom.is_empty:<br>                    <span class="hljs-keyword">continue</span><br><br>                polygons = []<br>                <span class="hljs-keyword">if</span> union_geom.geom_type == <span class="hljs-string">&#x27;Polygon&#x27;</span>:<br>                    polygons = [union_geom]<br>                <span class="hljs-keyword">elif</span> union_geom.geom_type == <span class="hljs-string">&#x27;MultiPolygon&#x27;</span>:<br>                    polygons = <span class="hljs-built_in">list</span>(union_geom.geoms)<br>                <span class="hljs-keyword">else</span>:<br>                    <span class="hljs-keyword">continue</span><br><br>                avg_conf = <span class="hljs-built_in">float</span>(subset[<span class="hljs-string">&#x27;confidence&#x27;</span>].mean())<br>                <span class="hljs-keyword">for</span> poly <span class="hljs-keyword">in</span> polygons:<br>                    <span class="hljs-keyword">if</span> poly.is_empty:<br>                        <span class="hljs-keyword">continue</span><br>                    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> poly.is_valid:<br>                        <span class="hljs-keyword">try</span>:<br>                            poly = make_valid(poly)<br>                            <span class="hljs-keyword">if</span> poly.is_empty <span class="hljs-keyword">or</span> poly.geom_type != <span class="hljs-string">&#x27;Polygon&#x27;</span>:<br>                                <span class="hljs-keyword">continue</span><br>                        <span class="hljs-keyword">except</span> Exception:<br>                            <span class="hljs-keyword">continue</span><br>                    fused_geoms.append(poly)<br>                    fused_classes.append(<span class="hljs-built_in">int</span>(class_id))<br>                    fused_confs.append(avg_conf)<br><br>            <span class="hljs-keyword">if</span> fused_geoms:<br>                fused_gdf = gpd.GeoDataFrame(&#123;<br>                    <span class="hljs-string">&#x27;geometry&#x27;</span>: fused_geoms,<br>                    <span class="hljs-string">&#x27;class_id&#x27;</span>: fused_classes,<br>                    <span class="hljs-string">&#x27;confidence&#x27;</span>: fused_confs<br>                &#125;, crs=original_crs)<br>            <span class="hljs-keyword">else</span>:<br>                fused_gdf = gpd.GeoDataFrame(<br>                    &#123;<span class="hljs-string">&#x27;geometry&#x27;</span>: [], <span class="hljs-string">&#x27;class_id&#x27;</span>: [], <span class="hljs-string">&#x27;confidence&#x27;</span>: []&#125;,<br>                    geometry=<span class="hljs-string">&#x27;geometry&#x27;</span>,<br>                    crs=original_crs<br>                )<br><br>            final_count = <span class="hljs-built_in">len</span>(fused_gdf)<br>            self.log.emit(<span class="hljs-string">f&quot;Final valid single-part polygons: <span class="hljs-subst">&#123;final_count&#125;</span>&quot;</span>)<br>            fused_gdf.to_file(self.output_geojson, driver=<span class="hljs-string">&quot;GeoJSON&quot;</span>)<br>            self.finished_signal.emit(<span class="hljs-string">f&quot;✅ Done! Saved to:\n<span class="hljs-subst">&#123;self.output_geojson&#125;</span>\nFeatures: <span class="hljs-subst">&#123;final_count&#125;</span>&quot;</span>)<br><br>        <span class="hljs-keyword">except</span> Exception <span class="hljs-keyword">as</span> e:<br>            self.log.emit(<span class="hljs-string">f&quot;❌ Error: <span class="hljs-subst">&#123;<span class="hljs-built_in">str</span>(e)&#125;</span>&quot;</span>)<br>            self.finished_signal.emit(<span class="hljs-string">f&quot;Error: <span class="hljs-subst">&#123;<span class="hljs-built_in">str</span>(e)&#125;</span>&quot;</span>)<br></code></pre></td></tr></table></figure>
+
+<h1 id="直接调用模型的可视化界面"><a href="#直接调用模型的可视化界面" class="headerlink" title="直接调用模型的可视化界面"></a>直接调用模型的可视化界面</h1><p>因为经常需要进行模型调用和测试，总是用代码运行不是很方便，就简单搞了一个UI界面。<br>调用detect和segment模型的程序代码：</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br></pre></td><td class="code"><pre><code class="hljs routeros">import os<br>import threading<br>import tkinter as tk<br><span class="hljs-keyword">from</span> tkinter import filedialog, messagebox, ttk<br><span class="hljs-keyword">from</span> pathlib import Path<br><br><span class="hljs-keyword">from</span> ultralytics import YOLO<br><span class="hljs-keyword">from</span> PIL import Image, ImageTk<br><br><br>class YOLOGUI:<br>    def __init__(self, root):<br>        self.root = root<br>        self.root.title(<span class="hljs-string">&quot;YOLO 可视化推理工具 (Detect + Segment)&quot;</span>)<br>        self.root.geometry(<span class="hljs-string">&quot;650x550&quot;</span>)<br><br>        # 变量<br>        self.model_path = tk.StringVar()<br>        self.input_dir = tk.StringVar()<br>        self.output_dir = tk.StringVar()<br>        self.task_type = tk.StringVar(<span class="hljs-attribute">value</span>=<span class="hljs-string">&quot;detect&quot;</span>)  # detect / segment<br>        self.progress_var = tk.DoubleVar()<br><br>        self.setup_ui()<br><br>    def setup_ui(self):<br>        # 模型选择<br>        tk.Label(self.root, <span class="hljs-attribute">text</span>=<span class="hljs-string">&quot;模型路径 (.pt):&quot;</span>).grid(row=0, <span class="hljs-attribute">column</span>=0, <span class="hljs-attribute">sticky</span>=<span class="hljs-string">&quot;w&quot;</span>, <span class="hljs-attribute">padx</span>=10, <span class="hljs-attribute">pady</span>=5)<br>        tk.Entry(self.root, <span class="hljs-attribute">textvariable</span>=self.model_path, <span class="hljs-attribute">width</span>=50).grid(row=0, <span class="hljs-attribute">column</span>=1, <span class="hljs-attribute">padx</span>=5, <span class="hljs-attribute">pady</span>=5)<br>        tk.Button(self.root, <span class="hljs-attribute">text</span>=<span class="hljs-string">&quot;浏览&quot;</span>, <span class="hljs-attribute">command</span>=self.select_model).grid(row=0, <span class="hljs-attribute">column</span>=2, <span class="hljs-attribute">padx</span>=5)<br><br>        # 任务类型<br>        tk.Label(self.root, <span class="hljs-attribute">text</span>=<span class="hljs-string">&quot;任务类型:&quot;</span>).grid(row=1, <span class="hljs-attribute">column</span>=0, <span class="hljs-attribute">sticky</span>=<span class="hljs-string">&quot;w&quot;</span>, <span class="hljs-attribute">padx</span>=10, <span class="hljs-attribute">pady</span>=5)<br>        task_menu = tk.OptionMenu(self.root, self.task_type, <span class="hljs-string">&quot;detect&quot;</span>, <span class="hljs-string">&quot;segment&quot;</span>)<br>        task_menu.grid(<span class="hljs-attribute">row</span>=1, <span class="hljs-attribute">column</span>=1, <span class="hljs-attribute">sticky</span>=<span class="hljs-string">&quot;w&quot;</span>, <span class="hljs-attribute">padx</span>=5)<br><br>        # 输入目录<br>        tk.Label(self.root, <span class="hljs-attribute">text</span>=<span class="hljs-string">&quot;输入文件夹:&quot;</span>).grid(row=2, <span class="hljs-attribute">column</span>=0, <span class="hljs-attribute">sticky</span>=<span class="hljs-string">&quot;w&quot;</span>, <span class="hljs-attribute">padx</span>=10, <span class="hljs-attribute">pady</span>=5)<br>        tk.Entry(self.root, <span class="hljs-attribute">textvariable</span>=self.input_dir, <span class="hljs-attribute">width</span>=50).grid(row=2, <span class="hljs-attribute">column</span>=1, <span class="hljs-attribute">padx</span>=5, <span class="hljs-attribute">pady</span>=5)<br>        tk.Button(self.root, <span class="hljs-attribute">text</span>=<span class="hljs-string">&quot;浏览&quot;</span>, <span class="hljs-attribute">command</span>=self.select_input_dir).grid(row=2, <span class="hljs-attribute">column</span>=2, <span class="hljs-attribute">padx</span>=5)<br><br>        # 输出目录<br>        tk.Label(self.root, <span class="hljs-attribute">text</span>=<span class="hljs-string">&quot;输出文件夹:&quot;</span>).grid(row=3, <span class="hljs-attribute">column</span>=0, <span class="hljs-attribute">sticky</span>=<span class="hljs-string">&quot;w&quot;</span>, <span class="hljs-attribute">padx</span>=10, <span class="hljs-attribute">pady</span>=5)<br>        tk.Entry(self.root, <span class="hljs-attribute">textvariable</span>=self.output_dir, <span class="hljs-attribute">width</span>=50).grid(row=3, <span class="hljs-attribute">column</span>=1, <span class="hljs-attribute">padx</span>=5, <span class="hljs-attribute">pady</span>=5)<br>        tk.Button(self.root, <span class="hljs-attribute">text</span>=<span class="hljs-string">&quot;浏览&quot;</span>, <span class="hljs-attribute">command</span>=self.select_output_dir).grid(row=3, <span class="hljs-attribute">column</span>=2, <span class="hljs-attribute">padx</span>=5)<br><br>        # 开始按钮<br>        self.run_button = tk.Button(self.root, <span class="hljs-attribute">text</span>=<span class="hljs-string">&quot;开始处理&quot;</span>, <span class="hljs-attribute">command</span>=self.start_processing, <span class="hljs-attribute">bg</span>=<span class="hljs-string">&quot;#4CAF50&quot;</span>, <span class="hljs-attribute">fg</span>=<span class="hljs-string">&quot;white&quot;</span>)<br>        self.run_button.grid(<span class="hljs-attribute">row</span>=4, <span class="hljs-attribute">column</span>=1, <span class="hljs-attribute">pady</span>=20)<br><br>        # 进度条<br>        self.progress = ttk.Progressbar(self.root, <span class="hljs-attribute">variable</span>=self.progress_var, <span class="hljs-attribute">maximum</span>=100)<br>        self.progress.grid(<span class="hljs-attribute">row</span>=5, <span class="hljs-attribute">column</span>=0, <span class="hljs-attribute">columnspan</span>=3, <span class="hljs-attribute">padx</span>=20, <span class="hljs-attribute">pady</span>=10, <span class="hljs-attribute">sticky</span>=<span class="hljs-string">&quot;ew&quot;</span>)<br><br>        # 日志文本框<br>        self.log_text = tk.Text(self.root, <span class="hljs-attribute">height</span>=14, <span class="hljs-attribute">state</span>=<span class="hljs-string">&quot;disabled&quot;</span>)<br>        self.log_text.grid(<span class="hljs-attribute">row</span>=6, <span class="hljs-attribute">column</span>=0, <span class="hljs-attribute">columnspan</span>=3, <span class="hljs-attribute">padx</span>=10, <span class="hljs-attribute">pady</span>=10, <span class="hljs-attribute">sticky</span>=<span class="hljs-string">&quot;nsew&quot;</span>)<br><br>        scrollbar = tk.Scrollbar(self.root, <span class="hljs-attribute">command</span>=self.log_text.yview)<br>        scrollbar.grid(<span class="hljs-attribute">row</span>=6, <span class="hljs-attribute">column</span>=3, <span class="hljs-attribute">sticky</span>=<span class="hljs-string">&quot;ns&quot;</span>)<br>        self.log_text.config(<span class="hljs-attribute">yscrollcommand</span>=scrollbar.set)<br><br>        # 自适应布局<br>        self.root.grid_rowconfigure(6, <span class="hljs-attribute">weight</span>=1)<br>        self.root.grid_columnconfigure(1, <span class="hljs-attribute">weight</span>=1)<br><br>    def log(self, msg):<br>        self.log_text.config(<span class="hljs-attribute">state</span>=<span class="hljs-string">&quot;normal&quot;</span>)<br>        self.log_text.insert(tk.END, msg + <span class="hljs-string">&quot;\n&quot;</span>)<br>        self.log_text.see(tk.END)<br>        self.log_text.config(<span class="hljs-attribute">state</span>=<span class="hljs-string">&quot;disabled&quot;</span>)<br><br>    def select_model(self):<br>        path = filedialog.askopenfilename(filetypes=[(<span class="hljs-string">&quot;PyTorch Model&quot;</span>, <span class="hljs-string">&quot;*.pt&quot;</span>)])<br>        <span class="hljs-keyword">if</span> path:<br>            self.model_path.<span class="hljs-built_in">set</span>(path)<br><br>    def select_input_dir(self):<br>        path = filedialog.askdirectory()<br>        <span class="hljs-keyword">if</span> path:<br>            self.input_dir.<span class="hljs-built_in">set</span>(path)<br><br>    def select_output_dir(self):<br>        path = filedialog.askdirectory()<br>        <span class="hljs-keyword">if</span> path:<br>            self.output_dir.<span class="hljs-built_in">set</span>(path)<br><br>    def start_processing(self):<br>        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> all([self.model_path.<span class="hljs-built_in">get</span>(), self.input_dir.<span class="hljs-built_in">get</span>(), self.output_dir.<span class="hljs-built_in">get</span>()]):<br>            messagebox.showerror(<span class="hljs-string">&quot;错误&quot;</span>, <span class="hljs-string">&quot;请填写所有路径！&quot;</span>)<br>            return<br><br>        self.run_button.config(<span class="hljs-attribute">state</span>=<span class="hljs-string">&quot;disabled&quot;</span>)<br>        self.progress_var.<span class="hljs-built_in">set</span>(0)<br>        self.log(<span class="hljs-string">&quot;准备开始处理...&quot;</span>)<br><br>        thread = threading.Thread(<span class="hljs-attribute">target</span>=self.run_yolo_inference)<br>        thread.daemon = <span class="hljs-literal">True</span><br>        thread.start()<br><br>    def run_yolo_inference(self):<br>        try:<br>            model_path = self.model_path.<span class="hljs-built_in">get</span>()<br>            input_path = Path(self.input_dir.<span class="hljs-built_in">get</span>())<br>            output_path = Path(self.output_dir.<span class="hljs-built_in">get</span>())<br>            task = self.task_type.<span class="hljs-built_in">get</span>()<br><br>            # 加载模型<br>            self.log(f<span class="hljs-string">&quot;正在加载模型: &#123;os.path.basename(model_path)&#125;&quot;</span>)<br>            model = YOLO(model_path)<br><br>            # 支持的扩展<br>            img_exts = &#123;<span class="hljs-string">&#x27;.jpg&#x27;</span>, <span class="hljs-string">&#x27;.jpeg&#x27;</span>, <span class="hljs-string">&#x27;.png&#x27;</span>, <span class="hljs-string">&#x27;.bmp&#x27;</span>, <span class="hljs-string">&#x27;.tiff&#x27;</span>, <span class="hljs-string">&#x27;.webp&#x27;</span>&#125;<br>            vid_exts = &#123;<span class="hljs-string">&#x27;.mp4&#x27;</span>, <span class="hljs-string">&#x27;.avi&#x27;</span>, <span class="hljs-string">&#x27;.mov&#x27;</span>, <span class="hljs-string">&#x27;.mkv&#x27;</span>, <span class="hljs-string">&#x27;.flv&#x27;</span>, <span class="hljs-string">&#x27;.wmv&#x27;</span>&#125;<br><br>            files = []<br>            <span class="hljs-keyword">for</span> f <span class="hljs-keyword">in</span> input_path.rglob(<span class="hljs-string">&quot;*&quot;</span>):<br>                <span class="hljs-keyword">if</span> f.suffix.lower() <span class="hljs-keyword">in</span> img_exts <span class="hljs-keyword">or</span> f.suffix.lower() <span class="hljs-keyword">in</span> vid_exts:<br>                    files.append(f)<br><br>            total = len(files)<br>            <span class="hljs-keyword">if</span> total == 0:<br>                self.log(<span class="hljs-string">&quot;⚠️ 未找到支持的图像或视频文件。&quot;</span>)<br>                return<br><br>            self.log(f<span class="hljs-string">&quot;共发现 &#123;total&#125; 个文件（含图像/视频），开始处理...&quot;</span>)<br><br>            <span class="hljs-keyword">for</span> i, file <span class="hljs-keyword">in</span> enumerate(files):<br>                self.log(f<span class="hljs-string">&quot;→ 处理: &#123;file.name&#125;&quot;</span>)<br>                # 关键：指定 save_dir 为输出文件夹，并禁用自动创建 exp 子目录<br>                results = model.predict(<br>                    <span class="hljs-attribute">source</span>=str(file),<br>                    <span class="hljs-attribute">save</span>=<span class="hljs-literal">True</span>,<br>                    <span class="hljs-attribute">save_txt</span>=<span class="hljs-literal">False</span>,<br>                    <span class="hljs-attribute">save_conf</span>=<span class="hljs-literal">True</span>,<br>                    <span class="hljs-attribute">project</span>=output_path,      # 项目根目录<br>                    <span class="hljs-attribute">name</span>=<span class="hljs-string">&quot;&quot;</span>,                  # 不使用子文件夹（关键！）<br>                    <span class="hljs-attribute">exist_ok</span>=<span class="hljs-literal">True</span>,<br>                    <span class="hljs-attribute">verbose</span>=<span class="hljs-literal">False</span><br>                )<br><br>                # 更新进度<br>                progress = (i + 1) / total * 100<br>                self.progress_var.<span class="hljs-built_in">set</span>(progress)<br>                self.root.update_idletasks()<br><br>            self.log(<span class="hljs-string">&quot;✅ 所有文件处理完成！结果已保存至指定输出文件夹。&quot;</span>)<br><br>        except Exception as e:<br>            self.log(f<span class="hljs-string">&quot;❌ 处理出错: &#123;str(e)&#125;&quot;</span>)<br>            import traceback<br>            self.log(traceback.format_exc())<br>        finally:<br>            self.run_button.config(<span class="hljs-attribute">state</span>=<span class="hljs-string">&quot;normal&quot;</span>)<br><br><br><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&quot;__main__&quot;</span>:<br>    root = tk.Tk()<br>    app = YOLOGUI(root)<br>    root.mainloop()<br></code></pre></td></tr></table></figure>
+
+<h1 id="程序封装"><a href="#程序封装" class="headerlink" title="程序封装"></a>程序封装</h1><ol>
+<li>当程序依赖较多、环境比较复杂时，封装可能会遇到依赖无法完整识别的情况</li>
+<li>对复杂程序未做优化处理，可能导致程序体积过大。<h2 id="程序封装方法"><a href="#程序封装方法" class="headerlink" title="程序封装方法"></a>程序封装方法</h2>一般使用PyInstaller<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs crmsh"><span class="hljs-comment"># 通过spec文件来封装</span><br>PyInstaller app.<span class="hljs-keyword">spec</span><br></code></pre></td></tr></table></figure>
+<h2 id="图像化封装工具"><a href="#图像化封装工具" class="headerlink" title="图像化封装工具"></a>图像化封装工具</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># 安装图形化的封装工具</span><br>pip install auto-py-to-exe<br><span class="hljs-comment"># 或者拉取源码，解压后进入根目录，执行</span><br>python setup.py install<br></code></pre></td></tr></table></figure></li>
+</ol>
+<p>但是最终也没有解决封装后过大的问题，并且封装后的程序也无法运行。可能是因为程序导入的依赖太多，而实际上运行yolot预测不需要那么多链接库。我看别人封装好的程序也就只有50mb，看来还有很多可以优化的地方。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0/" class="category-chain-item">学习</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/yolov8/">#yolov8</a>
+      
+        <a href="/tags/Python/">#Python</a>
+      
+        <a href="/tags/%E7%9B%AE%E6%A0%87%E8%AF%86%E5%88%AB/">#目标识别</a>
+      
+        <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/">#计算机视觉</a>
+      
+        <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">#神经网络</a>
+      
+        <a href="/tags/AI/">#AI</a>
+      
+        <a href="/tags/Anaconda/">#Anaconda</a>
+      
+        <a href="/tags/CUDA/">#CUDA</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>基于yolov8的屏幕抓取识别和tif影像识别</div>
+      <div>http://kw1649190133.github.io/2026/05/12/基于yolov8的屏幕抓取识别和tif影像识别/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Kwindy</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>May 12, 2026</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/04/21/%E5%9F%BA%E4%BA%8Ewxauto%E7%9A%84%E5%BE%AE%E4%BF%A1bot/" title="基于wxauto的微信bot">
+                        <span class="hidden-mobile">基于wxauto的微信bot</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

@@ -1,7 +1,7 @@
 
 
 <!DOCTYPE html>
-<html lang="CN" data-default-color-scheme=dark>
+<html lang="en" data-default-color-scheme=dark>
 
 
 
@@ -22,7 +22,7 @@
 <meta property="og:url" content="http://kw1649190133.github.io/2024/06/18/Arcpy%E5%AE%9E%E7%8E%B0%E5%BD%B1%E5%83%8F%E6%89%B9%E9%87%8F%E6%8C%89%E6%8E%A9%E8%86%9C%E6%8F%90%E5%8F%96/index.html">
 <meta property="og:site_name" content="kw&#39;s blog">
 <meta property="og:description" content="前言之前在制作AI样本库的时候遇到了一些问题，例如栅格与矢量无法对齐，栅格不能精准的裁剪成512*515，还有矢量数据导出之后没有属性表。总之就是匆匆忙忙，一地鸡毛。不过万事开头难，现在我已经掌握了大致的流程和关键的步骤，现在只需要针对性的进行过程优化就可以了。 环境Arcgis 10.4.1Python 2.7 影像裁剪的容差问题使用按掩膜提取工具提取影像，按理来说应该严丝合缝的，但是从10.4">
-<meta property="og:locale">
+<meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://kw1649190133.github.io/2024/06/18/Arcpy%E5%AE%9E%E7%8E%B0%E5%BD%B1%E5%83%8F%E6%89%B9%E9%87%8F%E6%8C%89%E6%8E%A9%E8%86%9C%E6%8F%90%E5%8F%96/2b4e8484f907d44576da9d63b0dfeb64.png">
 <meta property="og:image" content="http://kw1649190133.github.io/2024/06/18/Arcpy%E5%AE%9E%E7%8E%B0%E5%BD%B1%E5%83%8F%E6%89%B9%E9%87%8F%E6%8C%89%E6%8E%A9%E8%86%9C%E6%8F%90%E5%8F%96/79526ff1a0b874dbf7a483c887d9144b.png">
 <meta property="og:image" content="http://kw1649190133.github.io/2024/06/18/Arcpy%E5%AE%9E%E7%8E%B0%E5%BD%B1%E5%83%8F%E6%89%B9%E9%87%8F%E6%8C%89%E6%8E%A9%E8%86%9C%E6%8F%90%E5%8F%96/9e751ddda4cfe745313938561b634c4e.png">
@@ -127,7 +127,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/">
                 <i class="iconfont icon-home-fill"></i>
-                <span>Hejmpaĝo</span>
+                <span>Home</span>
               </a>
             </li>
           
@@ -139,7 +139,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/archives/">
                 <i class="iconfont icon-archive-fill"></i>
-                <span>Arkivoj</span>
+                <span>Archives</span>
               </a>
             </li>
           
@@ -151,7 +151,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/categories/">
                 <i class="iconfont icon-category-fill"></i>
-                <span>Kategorio</span>
+                <span>Categories</span>
               </a>
             </li>
           
@@ -163,7 +163,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/tags/">
                 <i class="iconfont icon-tags-fill"></i>
-                <span>Etikedoj</span>
+                <span>Tags</span>
               </a>
             </li>
           
@@ -175,7 +175,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/about/">
                 <i class="iconfont icon-user-fill"></i>
-                <span>Pri</span>
+                <span>About</span>
               </a>
             </li>
           
@@ -232,7 +232,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          3.4k vortoj
+          3.4k words
         
       </span>
     
@@ -243,7 +243,7 @@
         
         
         
-          29 minutoj
+          29 mins
         
       </span>
     
@@ -362,20 +362,20 @@
     <div class="license-meta">
       
         <div class="license-meta-item">
-          <div>Aŭtoro</div>
+          <div>Author</div>
           <div>Kwindy</div>
         </div>
       
       
         <div class="license-meta-item license-meta-date">
-          <div>Postigita</div>
+          <div>Posted on</div>
           <div>June 18, 2024</div>
         </div>
       
       
       
         <div class="license-meta-item">
-          <div>Lizenta</div>
+          <div>Licensed under</div>
           <div>
             
               
@@ -404,7 +404,7 @@
                       <a href="/2024/06/19/OrangePI5Plus%E7%9A%84RKNN%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85%E6%B5%81%E7%A8%8B/" title="OrangePI5Plus的RKNN环境安装流程">
                         <i class="iconfont icon-arrowleft"></i>
                         <span class="hidden-mobile">OrangePI5Plus的RKNN环境安装流程</span>
-                        <span class="visible-mobile">Antaŭa afiŝo</span>
+                        <span class="visible-mobile">Previous</span>
                       </a>
                     
                   </article>
@@ -413,7 +413,7 @@
                     
                       <a href="/2024/06/07/AI%E5%BD%B1%E5%83%8F%E8%AF%86%E5%88%AB%E6%A0%B7%E6%9C%AC%E5%BA%93%E5%88%B6%E4%BD%9C/" title="AI影像识别样本库制作">
                         <span class="hidden-mobile">AI影像识别样本库制作</span>
-                        <span class="visible-mobile">Sekva afiŝo</span>
+                        <span class="visible-mobile">Next</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
                     
@@ -434,7 +434,7 @@
     <div id="toc">
   <p class="toc-header">
     <i class="iconfont icon-list"></i>
-    <span>Enhavtabelo</span>
+    <span>Table of Contents</span>
   </p>
   <div class="toc-body" id="toc-body"></div>
 </div>
@@ -490,7 +490,7 @@
   <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold">Serĉi</h4>
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
         <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -498,7 +498,7 @@
       <div class="modal-body mx-3">
         <div class="md-form mb-5">
           <input type="text" id="local-search-input" class="form-control validate">
-          <label data-error="x" data-success="v" for="local-search-input">ŝlosivorto</label>
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
         </div>
         <div class="list-group" id="local-search-result"></div>
       </div>
@@ -677,7 +677,7 @@
   
 
   <noscript>
-    <div class="noscript-warning">Blogo funkcias plej bone kun JavaScript ebligita</div>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
   </noscript>
 </body>
 </html>
