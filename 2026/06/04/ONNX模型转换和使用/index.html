@@ -1,0 +1,716 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=dark>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Kwindy">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="之前做YOLO训练，一般训练结束之后得到的是PT模型。但PT模型的调用依赖于pytorch库，这是一个非常麻烦的东西，封装也不方便。 格式转换方法ultralytics库自带ONNX的转换功能，使用指令就可以直接转换。需要注意，yolov8以及之后的模型，与yolov7和之前的模型导出方法有所不同。 命令行导出12345# 安装依赖库pip install ultralytics onnx onn">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ONNX模型转换和使用">
+<meta property="og:url" content="http://kw1649190133.github.io/2026/06/04/ONNX%E6%A8%A1%E5%9E%8B%E8%BD%AC%E6%8D%A2%E5%92%8C%E4%BD%BF%E7%94%A8/index.html">
+<meta property="og:site_name" content="kw&#39;s blog">
+<meta property="og:description" content="之前做YOLO训练，一般训练结束之后得到的是PT模型。但PT模型的调用依赖于pytorch库，这是一个非常麻烦的东西，封装也不方便。 格式转换方法ultralytics库自带ONNX的转换功能，使用指令就可以直接转换。需要注意，yolov8以及之后的模型，与yolov7和之前的模型导出方法有所不同。 命令行导出12345# 安装依赖库pip install ultralytics onnx onn">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/06/04/ONNX%E6%A8%A1%E5%9E%8B%E8%BD%AC%E6%8D%A2%E5%92%8C%E4%BD%BF%E7%94%A8/b0e8e2668b5b17192718f69cf1ba1a80.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/06/04/ONNX%E6%A8%A1%E5%9E%8B%E8%BD%AC%E6%8D%A2%E5%92%8C%E4%BD%BF%E7%94%A8/effcca17c601ea7a1d241ea442956f19.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/06/04/ONNX%E6%A8%A1%E5%9E%8B%E8%BD%AC%E6%8D%A2%E5%92%8C%E4%BD%BF%E7%94%A8/0901e6d4a029ef57b47efd0dc95a19ef.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/06/04/ONNX%E6%A8%A1%E5%9E%8B%E8%BD%AC%E6%8D%A2%E5%92%8C%E4%BD%BF%E7%94%A8/d2d5fc6d7a8922089e180d3c9f1f2b95.png">
+<meta property="article:published_time" content="2026-06-04T02:00:32.000Z">
+<meta property="article:modified_time" content="2026-06-04T02:30:12.566Z">
+<meta property="article:author" content="Kwindy">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="开发">
+<meta property="article:tag" content="模型">
+<meta property="article:tag" content="转换">
+<meta property="article:tag" content="ONNX">
+<meta property="article:tag" content="yolo">
+<meta property="article:tag" content="ultralytics">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://kw1649190133.github.io/2026/06/04/ONNX%E6%A8%A1%E5%9E%8B%E8%BD%AC%E6%8D%A2%E5%92%8C%E4%BD%BF%E7%94%A8/b0e8e2668b5b17192718f69cf1ba1a80.png">
+  
+  
+  
+  <title>ONNX模型转换和使用 - kw&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"kw1649190133.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>天际边缘 Edge of the sky </strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="ONNX模型转换和使用"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-06-04 10:00" pubdate>
+          June 4, 2026 am
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.6k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          14 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">ONNX模型转换和使用</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>之前做YOLO训练，一般训练结束之后得到的是PT模型。但PT模型的调用依赖于pytorch库，这是一个非常麻烦的东西，封装也不方便。</p>
+<h1 id="格式转换方法"><a href="#格式转换方法" class="headerlink" title="格式转换方法"></a>格式转换方法</h1><p>ultralytics库自带ONNX的转换功能，使用指令就可以直接转换。<br>需要注意，yolov8以及之后的模型，与yolov7和之前的模型导出方法有所不同。</p>
+<h2 id="命令行导出"><a href="#命令行导出" class="headerlink" title="命令行导出"></a>命令行导出</h2><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs routeros"><span class="hljs-comment"># 安装依赖库</span><br>pip install ultralytics onnx onnx-simplifier&gt;=0.4.33<br><br><span class="hljs-comment"># 命令行一键导出</span><br>yolo <span class="hljs-built_in">export</span> <span class="hljs-attribute">model</span>=best.pt <span class="hljs-attribute">format</span>=onnx <span class="hljs-attribute">imgsz</span>=640 <span class="hljs-attribute">simplify</span>=<span class="hljs-literal">True</span> <span class="hljs-attribute">opset</span>=12<br></code></pre></td></tr></table></figure>
+
+<h2 id="python程序导出"><a href="#python程序导出" class="headerlink" title="python程序导出"></a>python程序导出</h2><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs routeros"><span class="hljs-keyword">from</span> ultralytics import YOLO<br><br><span class="hljs-comment"># 加载训练好的 .pt 权重文件</span><br>model = YOLO(<span class="hljs-string">&quot;best.pt&quot;</span>) <br><br><span class="hljs-comment"># 切换到评估模式并导出为 ONNX</span><br>model.eval() <br>model.<span class="hljs-built_in">export</span>(<br>    <span class="hljs-attribute">format</span>=<span class="hljs-string">&quot;onnx&quot;</span>, <br>    <span class="hljs-attribute">imgsz</span>=640,       # 输入图像尺寸，必须与训练时一致<br>    <span class="hljs-attribute">opset</span>=12,        # 指定 ONNX 算子集版本<br>    <span class="hljs-attribute">simplify</span>=<span class="hljs-literal">True</span>,   # 简化模型结构，去除冗余节点<br>    <span class="hljs-attribute">dynamic</span>=<span class="hljs-literal">False</span>    # 建议固定输入尺寸，避免动态轴导致部署异常<br>)<br></code></pre></td></tr></table></figure>
+<h1 id="ONNX格式与PT的对比"><a href="#ONNX格式与PT的对比" class="headerlink" title="ONNX格式与PT的对比"></a>ONNX格式与PT的对比</h1><table>
+<thead>
+<tr>
+<th align="left">维度</th>
+<th align="left">直接使用 <code>.pt</code></th>
+<th align="left">转换为 <code>ONNX</code></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">上手难度</td>
+<td align="left">极低。只需 <code>pip install ultralytics</code>，代码只需 3 行。</td>
+<td align="left">中等。需要处理预处理（Resize/归一化）和后处理（解析输出张量），代码量增加 3-5 倍。</td>
+</tr>
+<tr>
+<td align="left">环境依赖</td>
+<td align="left">重。必须安装 PyTorch、Ultralytics 等库，环境包体积大（通常 &gt;1GB）。</td>
+<td align="left">轻。只需 <code>onnxruntime</code>，无 PyTorch 依赖，适合打包成小体积 exe 或部署到服务器。</td>
+</tr>
+<tr>
+<td align="left">推理速度</td>
+<td align="left">基准速度。PyTorch 动态图机制有一定 overhead，GPU 显存占用略高。</td>
+<td align="left">提速 20%-30%。ONNX 会融合算子，且支持 FP16 量化，CPU/GPU 推理更高效。</td>
+</tr>
+<tr>
+<td align="left">跨平台性</td>
+<td align="left">差。依赖 Python 环境，难以移植到 C++、Android 或嵌入式设备。</td>
+<td align="left">极强。ONNX 是 AI 界的“通用语言”，可被 OpenCV DNN、TensorRT、CANN 等引擎加载。</td>
+</tr>
+<tr>
+<td align="left">适用场景</td>
+<td align="left">本地调试、快速验证效果、PC端演示、非实时性批量处理。</td>
+<td align="left">生产环境部署、Web后端服务、边缘设备（如 Jetson）、对 FPS 要求高的场景。</td>
+</tr>
+</tbody></table>
+<p>ONNX不仅可以直接使用，也支持作为中间格式，转换成其他平台需要的特定格式，例如放在RK芯片上的RKNN，提升模型在特殊设备和环境上的运行效率。</p>
+<h1 id="应用程序"><a href="#应用程序" class="headerlink" title="应用程序"></a>应用程序</h1><h2 id="网页端-ONNX-JS"><a href="#网页端-ONNX-JS" class="headerlink" title="网页端 ONNX.JS"></a>网页端 ONNX.JS</h2><p>简单做一个ONNX调用</p>
+<p>直接启动赛博工程队：<br><img src="/2026/06/04/ONNX%E6%A8%A1%E5%9E%8B%E8%BD%AC%E6%8D%A2%E5%92%8C%E4%BD%BF%E7%94%A8/b0e8e2668b5b17192718f69cf1ba1a80.png" srcset="/img/loading.gif" lazyload alt="b0e8e2668b5b17192718f69cf1ba1a80.png"></p>
+<p>一开始遇到了阈值异常，导致很多不应该出现的结果被显示出来。<br><img src="/2026/06/04/ONNX%E6%A8%A1%E5%9E%8B%E8%BD%AC%E6%8D%A2%E5%92%8C%E4%BD%BF%E7%94%A8/effcca17c601ea7a1d241ea442956f19.png" srcset="/img/loading.gif" lazyload alt="effcca17c601ea7a1d241ea442956f19.png"></p>
+<p>调整阈值设置后现在终于正常了，顺便增加一个读取文件夹的功能，可以直接切照片。<br><img src="/2026/06/04/ONNX%E6%A8%A1%E5%9E%8B%E8%BD%AC%E6%8D%A2%E5%92%8C%E4%BD%BF%E7%94%A8/0901e6d4a029ef57b47efd0dc95a19ef.png" srcset="/img/loading.gif" lazyload alt="0901e6d4a029ef57b47efd0dc95a19ef.png"></p>
+<p>渲染速度上，WebGPU → WebGL → WASM，哪个能用用哪个。使用WebGPU会快很多。</p>
+<h2 id="桌面端-ONNXruntime"><a href="#桌面端-ONNXruntime" class="headerlink" title="桌面端 ONNXruntime"></a>桌面端 ONNXruntime</h2><p>尝试过将之前的yolo项目重新转换成ONNX模型调用并封装，简单运行一个屏幕实时识别，可以看到识别对象是没问题的，但不知为何画面中总是包含凌乱色块，有可能是表示识别目标的？但可能是渲染出了问题。<br>虽然还有点问题没有解决，但是封装是正常的，封装之后的体积也小了很多，不像之前的pt模型和torch依赖，根本没法封装。<br><img src="/2026/06/04/ONNX%E6%A8%A1%E5%9E%8B%E8%BD%AC%E6%8D%A2%E5%92%8C%E4%BD%BF%E7%94%A8/d2d5fc6d7a8922089e180d3c9f1f2b95.png" srcset="/img/loading.gif" lazyload alt="d2d5fc6d7a8922089e180d3c9f1f2b95.png"></p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>现在测试来看，ONNX模型的调用没有太大问题，尤其是对Web端算比较友好。只有一些细节需要注意<br>1.图像分割模型与原来pt格式一样，支持显示Boxes和分割像素，可以根据需要设置<br>2.关键参数Confidence Threshold，确定激活标识框的阈值，默认0.6左右，可以根据模型的实际情况调整，太低会有许多识别错误，太高会遗漏很多目标。<br>3.优先使用WebGPU进行加速处理</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0/" class="category-chain-item">学习</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/python/">#python</a>
+      
+        <a href="/tags/%E5%BC%80%E5%8F%91/">#开发</a>
+      
+        <a href="/tags/%E6%A8%A1%E5%9E%8B/">#模型</a>
+      
+        <a href="/tags/%E8%BD%AC%E6%8D%A2/">#转换</a>
+      
+        <a href="/tags/ONNX/">#ONNX</a>
+      
+        <a href="/tags/yolo/">#yolo</a>
+      
+        <a href="/tags/ultralytics/">#ultralytics</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>ONNX模型转换和使用</div>
+      <div>http://kw1649190133.github.io/2026/06/04/ONNX模型转换和使用/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Kwindy</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>June 4, 2026</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2026/06/04/%E5%BD%B1%E5%83%8F%E5%BF%AB%E9%80%9F%E6%8B%BC%E6%8E%A5%E7%AE%97%E6%B3%95/" title="影像快速拼接算法">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">影像快速拼接算法</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/06/01/Cesium%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0%EF%BC%88%E5%9B%9B%EF%BC%89%E7%85%A7%E7%89%87%E6%8A%95%E5%BD%B1%E5%8A%9F%E8%83%BD%E5%AE%9E%E7%8E%B0/" title="Cesium开发笔记（四）照片投影功能实现">
+                        <span class="hidden-mobile">Cesium开发笔记（四）照片投影功能实现</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

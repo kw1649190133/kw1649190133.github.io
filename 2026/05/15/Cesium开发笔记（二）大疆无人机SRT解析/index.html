@@ -1,0 +1,724 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=dark>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Kwindy">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="前言最近有空进行一下开发。之前一直使用别人的商业无人机平台，但是只有试用权限，并且最近权限到期了，还没法续，为了日后的数据和功能展示考虑，以及实际的项目需要，长久来看还是要做自己的平台。但是开发是一个非常非常复杂的过程，尤其是只有我一个人的情况下，所以目标也不能定得太高。首先要解决一下历史数据展示的问题，目前积累了很多无人机素材，但只是观看视频和照片或者查看三维模型显然不够直观，并且后续还要考虑和">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Cesium开发笔记（二）大疆无人机SRT解析">
+<meta property="og:url" content="http://kw1649190133.github.io/2026/05/15/Cesium%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%EF%BC%89%E5%A4%A7%E7%96%86%E6%97%A0%E4%BA%BA%E6%9C%BASRT%E8%A7%A3%E6%9E%90/index.html">
+<meta property="og:site_name" content="kw&#39;s blog">
+<meta property="og:description" content="前言最近有空进行一下开发。之前一直使用别人的商业无人机平台，但是只有试用权限，并且最近权限到期了，还没法续，为了日后的数据和功能展示考虑，以及实际的项目需要，长久来看还是要做自己的平台。但是开发是一个非常非常复杂的过程，尤其是只有我一个人的情况下，所以目标也不能定得太高。首先要解决一下历史数据展示的问题，目前积累了很多无人机素材，但只是观看视频和照片或者查看三维模型显然不够直观，并且后续还要考虑和">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/05/15/Cesium%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%EF%BC%89%E5%A4%A7%E7%96%86%E6%97%A0%E4%BA%BA%E6%9C%BASRT%E8%A7%A3%E6%9E%90/3cd76f71dc38c756f65cf3cea2b869c9.png">
+<meta property="article:published_time" content="2026-05-15T08:27:01.000Z">
+<meta property="article:modified_time" content="2026-05-15T09:19:28.658Z">
+<meta property="article:author" content="Kwindy">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="Cesium">
+<meta property="article:tag" content="Node.js">
+<meta property="article:tag" content="json">
+<meta property="article:tag" content="SRT">
+<meta property="article:tag" content="大疆无人机">
+<meta property="article:tag" content="解析">
+<meta property="article:tag" content="3D">
+<meta property="article:tag" content="视频">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://kw1649190133.github.io/2026/05/15/Cesium%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%EF%BC%89%E5%A4%A7%E7%96%86%E6%97%A0%E4%BA%BA%E6%9C%BASRT%E8%A7%A3%E6%9E%90/3cd76f71dc38c756f65cf3cea2b869c9.png">
+  
+  
+  
+  <title>Cesium开发笔记（二）大疆无人机SRT解析 - kw&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"kw1649190133.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>天际边缘 Edge of the sky </strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Cesium开发笔记（二）大疆无人机SRT解析"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-05-15 16:27" pubdate>
+          May 15, 2026 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          9.6k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          81 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Cesium开发笔记（二）大疆无人机SRT解析</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>最近有空进行一下开发。之前一直使用别人的商业无人机平台，但是只有试用权限，并且最近权限到期了，还没法续，为了日后的数据和功能展示考虑，以及实际的项目需要，长久来看还是要做自己的平台。但是开发是一个非常非常复杂的过程，尤其是只有我一个人的情况下，所以目标也不能定得太高。<br>首先要解决一下历史数据展示的问题，目前积累了很多无人机素材，但只是观看视频和照片或者查看三维模型显然不够直观，并且后续还要考虑和目标识别功能结合需要，所以首先考虑能不能解析历史的飞行记录，有了坐标和姿态之类的信息，就可以将数据还原到三维场景中。</p>
+<h1 id="大疆无人机SRT解析"><a href="#大疆无人机SRT解析" class="headerlink" title="大疆无人机SRT解析"></a>大疆无人机SRT解析</h1><h2 id="SRT文件提取"><a href="#SRT文件提取" class="headerlink" title="SRT文件提取"></a>SRT文件提取</h2><p>大疆的无人机在拍摄照片和视频时，会同步记录拍摄的时间、坐标、高度、镜头参数等，通过明文的方式记录为一个srt字幕文件，通过解析SRT文件，就可以大致还原飞机当时的位置和姿态。<br>不同机型还有一些差别，像nimi3的srt字幕文件的单独的，并且信息比较少，尤其是没有云台信息。而M4E在拍照片时会记录MRK文件，在录视频时就只会保留一个视频文件，具体的信息需要使用工具从视频中提取。</p>
+<p>大疆无人机字幕提取在线工具：<br><a target="_blank" rel="noopener" href="https://djitelemetryoverlay.com/subtitle-extractor/#">https://djitelemetryoverlay.com/subtitle-extractor/#</a></p>
+<h2 id="MINI3pro文件解析"><a href="#MINI3pro文件解析" class="headerlink" title="MINI3pro文件解析"></a>MINI3pro文件解析</h2><p>参考SRT字幕文件格式</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs srt">1<br>00:00:00,000 --&gt; 00:00:00,033<br>&lt;font size=&quot;28&quot;&gt;SrtCnt : 1, DiffTime : 33ms<br>2026-02-05 11:47:33.371<br>[iso : 110] [shutter : 1/5000.0] [fnum : 170] [ev : 0] [ct : 4791] [color_md : default] [focal_len : 240] [dzoom_ratio: 24833, delta:14833],[latitude: 20.106396] [longitude: 110.625347] [rel_alt: 40.200 abs_alt: 17.728] &lt;/font&gt;<br><br>2<br>00:00:00,033 --&gt; 00:00:00,066<br>&lt;font size=&quot;28&quot;&gt;SrtCnt : 2, DiffTime : 33ms<br>2026-02-05 11:47:33.404<br>[iso : 110] [shutter : 1/5000.0] [fnum : 170] [ev : 0] [ct : 4791] [color_md : default] [focal_len : 240] [dzoom_ratio: 24833, delta:0],[latitude: 20.106396] [longitude: 110.625347] [rel_alt: 40.200 abs_alt: 17.728] &lt;/font&gt;<br><br></code></pre></td></tr></table></figure>
+
+<p>iso : 110 (感光度)<br>表示相机感光元件对光线的敏感程度。数值越低（如100），画质越纯净；数值越高（如800以上），画面可能噪点增多，但能在暗光下获得更亮的画面。<br>shutter : 1/5000.0 (快门速度)<br>表示相机快门的开启时间，这里是 1/5000 秒。这是一个非常高的快门速度，通常用于在光线极强的环境下拍摄，或者凝固高速运动的物体。<br>fnum : 170 (光圈值)<br>代表镜头的光圈大小。注意：这里的 170 并非我们常说的 f/2.8、f/8 这样的标准光圈值。它很可能是大疆内部用于记录光圈叶片位置的一个原始数据或特定编码，而非直接的光圈F数。<br>ev : 0 (曝光补偿)<br>表示你对相机自动测光结果的亮度调整。0 代表没有进行任何增亮或减暗的补偿，完全信任相机的自动曝光。<br>ct : 4791 (色温)<br>代表白平衡的色温值，单位是开尔文（K）。4791K 是一个接近中性白的色温，略低于正午日光（约5500K），画面会显得比较真实自然。<br>color_md : default (色彩模式)<br>表示拍摄时使用的色彩风格。default 指的是普通或标准模式，相机会直出色彩鲜艳、对比度正常的画面。<br>focal_len : 240 (焦距)<br>表示当前镜头的等效焦距。这里的 240 很可能指等效于全画幅相机的 24mm 广角端，这是大多数消费级无人机主摄的标准广角视角。<br>dzoom_ratio: 24833 (数码变焦比例)<br>表示当前的数码变焦倍率。这个数值同样可能是内部编码，需要换算。例如，如果基准值是10000代表1倍，那么 24833 大约表示进行了 2.48 倍的数码变焦。<br>🛰️ 飞行与姿态参数<br>这些参数记录了无人机在空间中的位置和角度。<br>latitude: 20.106396 (纬度) &amp; longitude: 110.625347 (经度)<br>这是无人机拍摄该帧画面时的精确 GPS 地理坐标。根据这个坐标，可以定位到拍摄地点位于中国海南省文昌市附近海域。<br>rel_alt: 40.200 (相对高度)<br>表示无人机相对于起飞点的垂直高度。这里显示无人机在当时距离起飞点有 40.2米 高。<br>abs_alt: 17.728 (绝对高度)<br>表示无人机相对于海平面的海拔高度。这里的海拔是 17.728米。<br>注意：通过 相对高度(40.2m) 和 绝对高度(17.728m) 可以反推出，你的起飞点海拔约为 -22.5米 (17.728 - 40.2)。这说明你可能是在一个比海平面低的地方起飞的，或者气压计受到环境影响导致读数有偏差。<br>📝 其他信息<br>SrtCnt : 3: 这是 SRT 文件的内部序号，代表这是第3条记录。<br>DiffTime : 34ms: 表示与上一条记录的时间间隔为34毫秒。<br>delta:0: 通常是某个参数变化的差值，这里为0，表示相关参数没有变化。</p>
+<h2 id="M4E文件解析"><a href="#M4E文件解析" class="headerlink" title="M4E文件解析"></a>M4E文件解析</h2><p>从视频导出的srt文件：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-string">……</span><br><span class="hljs-number">5988</span><br><span class="hljs-number">00</span><span class="hljs-string">:03:20,000</span> <span class="hljs-string">--&gt;</span> <span class="hljs-number">00</span><span class="hljs-string">:03:20,000</span><br><span class="hljs-attr">FrameCnt:</span> <span class="hljs-number">5989 </span><span class="hljs-number">2026-04-29 17:56:12.367</span><br>[<span class="hljs-attr">iso:</span> <span class="hljs-number">140</span>] [<span class="hljs-attr">shutter:</span> <span class="hljs-number">1</span><span class="hljs-string">/2000.0</span>] [<span class="hljs-attr">fnum:</span> <span class="hljs-number">2.8</span>] [<span class="hljs-attr">ev:</span> <span class="hljs-number">0</span>] [<span class="hljs-attr">color_md:</span> <span class="hljs-string">default</span>] [<span class="hljs-attr">ae_meter_md:</span> <span class="hljs-number">1</span>] [<span class="hljs-attr">focal_len:</span> <span class="hljs-number">34.50</span>] [<span class="hljs-attr">dzoom_ratio:</span> <span class="hljs-number">1.44</span>]<span class="hljs-string">,</span> [<span class="hljs-attr">latitude:</span> <span class="hljs-number">20.082025</span>] [<span class="hljs-attr">longitude:</span> <span class="hljs-number">110.380204</span>] [<span class="hljs-attr">rel_alt: 107.695 abs_alt:</span> <span class="hljs-number">101.334</span>] [<span class="hljs-attr">gb_yaw: -37.5 gb_pitch: -11.7 gb_roll:</span> <span class="hljs-number">0.0</span>] [<span class="hljs-attr">dehaze_level:</span> <span class="hljs-number">0</span>] [<span class="hljs-attr">dehaze_mode:</span> <span class="hljs-number">0</span>]<br><br><span class="hljs-number">5989</span><br><span class="hljs-number">00</span><span class="hljs-string">:03:20,000</span> <span class="hljs-string">--&gt;</span> <span class="hljs-number">00</span><span class="hljs-string">:03:20,000</span><br><span class="hljs-attr">FrameCnt:</span> <span class="hljs-number">5990 </span><span class="hljs-number">2026-04-29 17:56:12.401</span><br>[<span class="hljs-attr">iso:</span> <span class="hljs-number">130</span>] [<span class="hljs-attr">shutter:</span> <span class="hljs-number">1</span><span class="hljs-string">/2000.0</span>] [<span class="hljs-attr">fnum:</span> <span class="hljs-number">2.8</span>] [<span class="hljs-attr">ev:</span> <span class="hljs-number">0</span>] [<span class="hljs-attr">color_md:</span> <span class="hljs-string">default</span>] [<span class="hljs-attr">ae_meter_md:</span> <span class="hljs-number">1</span>] [<span class="hljs-attr">focal_len:</span> <span class="hljs-number">34.50</span>] [<span class="hljs-attr">dzoom_ratio:</span> <span class="hljs-number">1.44</span>]<span class="hljs-string">,</span> [<span class="hljs-attr">latitude:</span> <span class="hljs-number">20.082025</span>] [<span class="hljs-attr">longitude:</span> <span class="hljs-number">110.380203</span>] [<span class="hljs-attr">rel_alt: 107.697 abs_alt:</span> <span class="hljs-number">101.336</span>] [<span class="hljs-attr">gb_yaw: -35.0 gb_pitch: -11.5 gb_roll:</span> <span class="hljs-number">0.0</span>] [<span class="hljs-attr">dehaze_level:</span> <span class="hljs-number">0</span>] [<span class="hljs-attr">dehaze_mode:</span> <span class="hljs-number">0</span>]<br><span class="hljs-string">……</span><br></code></pre></td></tr></table></figure>
+
+<p>解析<br>相机参数：</p>
+<ul>
+<li>iso: 100: 感光度为100。</li>
+<li>shutter: 1/1250.0: 快门速度为1/1250秒。</li>
+<li>fnum: 2.8: 光圈值为 f/2.8。这里的数值是标准化的，可以直接理解。</li>
+<li>ev: 0: 曝光补偿为0。</li>
+<li>color_md: default: 色彩模式为标准。</li>
+<li>ae_meter_md: 1: 测光模式。1 通常代表中央重点平均测光。</li>
+<li>focal_len: 24.00: 焦距为24mm（等效全画幅）。</li>
+<li>dzoom_ratio: 1.00: 数码变焦倍率为1.00倍，即没有进行数码变焦。</li>
+</ul>
+<p>飞机参数：</p>
+<ul>
+<li>latitude: 20.080980: 纬度。</li>
+<li>longitude: 110.374042: 经度。</li>
+<li>rel_alt: -0.000: 相对高度。这是相对于起飞点的高度。-0.000 表明这一帧画面是在地面拍摄的。</li>
+<li>abs_alt: -6.363: 绝对高度。这是相对于海平面的海拔高度。负值表示起飞点的海拔低于海平面。</li>
+</ul>
+<p>云台参数：</p>
+<ul>
+<li>gb_yaw: -31.9: 云台偏航角 (Yaw)。表示云台在水平方向上向左（逆时针）旋转了约 32 度。</li>
+<li>gb_pitch: 0.0: 云台俯仰角 (Pitch)。表示云台镜头处于水平状态，没有向上或向下倾斜。</li>
+<li>gb_roll: 0.0: 云台横滚角 (Roll)。表示云台没有发生左右倾斜，保持水平。这个一般一直都是0</li>
+</ul>
+<p>其他高级参数：</p>
+<ul>
+<li>dehaze_level: 0: 去雾等级。当前设置为0，表示未开启去雾功能。</li>
+<li>dehaze_mode: 0: 去雾模式。当前设置为0，可能是自动或标准模式。</li>
+</ul>
+<p>很明显，主打行业应用的M4E的信息会比老款消费级的小飞机信息更多。主要的差别就是在姿态信息、去雾参数上，还有云台角度。M4E应该是有云台信息的，一开始我也感觉<br>好像没有云台信息，但经过与别人的数据对比猜测，gb应该就是指的”gimbal_attitude”，但是根据使用无人机的经验，云台一般是默认朝前的，只有俯仰可以从遥控器上进行调整，横滚一般也不会发生，所以这个偏航角yaw应该也能当作是飞机的方向？</p>
+<p>需要注意的是，航线记录中的yaw方向与平台上加载的glb模型的方向可能不一样，将模型显示在地图上的时候可能还需要做一个旋转，或者干脆在Yaw数值的处理上直接-90。<br><img src="/2026/05/15/Cesium%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%EF%BC%89%E5%A4%A7%E7%96%86%E6%97%A0%E4%BA%BA%E6%9C%BASRT%E8%A7%A3%E6%9E%90/3cd76f71dc38c756f65cf3cea2b869c9.png" srcset="/img/loading.gif" lazyload alt="3cd76f71dc38c756f65cf3cea2b869c9.png"></p>
+<h1 id="Json格式转换与Cesium开发"><a href="#Json格式转换与Cesium开发" class="headerlink" title="Json格式转换与Cesium开发"></a>Json格式转换与Cesium开发</h1><p>解析了文件之后，下一步就是考虑如何将航线显示在三维平台下。使用浏览器启动的网页平台，显然是不方便读取srt文件的，需要将srt转换成json。直接做一个浏览器上的json转换不是不行，但目前开发能力有限，还是先简单做一个py脚本就行。</p>
+<h2 id="SRT转JSON"><a href="#SRT转JSON" class="headerlink" title="SRT转JSON"></a>SRT转JSON</h2><p>srt转json的py程序：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> json<br><span class="hljs-keyword">import</span> re<br><span class="hljs-keyword">import</span> os<br><span class="hljs-keyword">import</span> sys<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">parse_srt_to_json</span>(<span class="hljs-params">srt_path, output_path, interval=<span class="hljs-number">1.0</span></span>):<br>    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> os.path.exists(srt_path):<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;❌ 错误：找不到输入文件 &#x27;<span class="hljs-subst">&#123;srt_path&#125;</span>&#x27;&quot;</span>)<br>        <span class="hljs-keyword">return</span><br><br>    <span class="hljs-keyword">try</span>:<br>        <span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(srt_path, <span class="hljs-string">&#x27;r&#x27;</span>, encoding=<span class="hljs-string">&#x27;utf-8&#x27;</span>) <span class="hljs-keyword">as</span> f:<br>            content = f.read()<br>    <span class="hljs-keyword">except</span> Exception <span class="hljs-keyword">as</span> e:<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;❌ 读取文件失败: <span class="hljs-subst">&#123;e&#125;</span>&quot;</span>)<br>        <span class="hljs-keyword">return</span><br><br>    blocks = content.replace(<span class="hljs-string">&#x27;\r\n&#x27;</span>, <span class="hljs-string">&#x27;\n&#x27;</span>).strip().split(<span class="hljs-string">&#x27;\n\n&#x27;</span>)<br>    <br>    parsed_data = []<br>    last_timestamp = -<span class="hljs-number">1.0</span><br><br>    <span class="hljs-comment"># 1. 时间戳提取（兼容逗号或点号）</span><br>    pattern_time = re.<span class="hljs-built_in">compile</span>(<span class="hljs-string">r&#x27;(\d&#123;2&#125;):(\d&#123;2&#125;):(\d&#123;2&#125;)[,.](\d&#123;3&#125;)\s*--&gt;&#x27;</span>)<br>    <span class="hljs-comment"># ✅ 新增：提取 FrameCnt 后面的数字（例如：FrameCnt: 6596）</span><br>    pattern_frame_cnt = re.<span class="hljs-built_in">compile</span>(<span class="hljs-string">r&#x27;FrameCnt:\s*(\d+)&#x27;</span>)<br>    <br>    <span class="hljs-comment"># 2. 各类参数的正则表达式</span><br>    p_iso = re.<span class="hljs-built_in">compile</span>(<span class="hljs-string">r&#x27;\[iso:\s*([-\d.]+)\]&#x27;</span>)<br>    p_shutter = re.<span class="hljs-built_in">compile</span>(<span class="hljs-string">r&#x27;\[shutter:\s*([-\d./]+)\]&#x27;</span>)<br>    p_fnum = re.<span class="hljs-built_in">compile</span>(<span class="hljs-string">r&#x27;\[fnum:\s*([-\d.]+)\]&#x27;</span>)<br>    p_ev = re.<span class="hljs-built_in">compile</span>(<span class="hljs-string">r&#x27;\[ev:\s*([-\d.]+)\]&#x27;</span>)<br>    p_color_md = re.<span class="hljs-built_in">compile</span>(<span class="hljs-string">r&#x27;\[color_md:\s*([^\]]+)\]&#x27;</span>)<br>    p_ae_meter_md = re.<span class="hljs-built_in">compile</span>(<span class="hljs-string">r&#x27;\[ae_meter_md:\s*([-\d.]+)\]&#x27;</span>)<br>    p_focal_len = re.<span class="hljs-built_in">compile</span>(<span class="hljs-string">r&#x27;\[focal_len:\s*([-\d.]+)\]&#x27;</span>)<br>    p_dzoom_ratio = re.<span class="hljs-built_in">compile</span>(<span class="hljs-string">r&#x27;\[dzoom_ratio:\s*([-\d.]+)\]&#x27;</span>)<br>    p_dehaze_level = re.<span class="hljs-built_in">compile</span>(<span class="hljs-string">r&#x27;\[dehaze_level:\s*([-\d.]+)\]&#x27;</span>)<br>    p_dehaze_mode = re.<span class="hljs-built_in">compile</span>(<span class="hljs-string">r&#x27;\[dehaze_mode:\s*([-\d.]+)\]&#x27;</span>)<br><br>    p_latitude = re.<span class="hljs-built_in">compile</span>(<span class="hljs-string">r&#x27;\[latitude:\s*([-\d.]+)\]&#x27;</span>)<br>    p_longitude = re.<span class="hljs-built_in">compile</span>(<span class="hljs-string">r&#x27;\[longitude:\s*([-\d.]+)\]&#x27;</span>)<br>    p_rel_alt = re.<span class="hljs-built_in">compile</span>(<span class="hljs-string">r&#x27;\[rel_alt:\s*([-\d.]+)&#x27;</span>)<br>    p_abs_alt = re.<span class="hljs-built_in">compile</span>(<span class="hljs-string">r&#x27;abs_alt:\s*([-\d.]+)\]&#x27;</span>)<br>    p_gb_yaw = re.<span class="hljs-built_in">compile</span>(<span class="hljs-string">r&#x27;\[gb_yaw:\s*([-\d.]+)&#x27;</span>)<br>    p_gb_pitch = re.<span class="hljs-built_in">compile</span>(<span class="hljs-string">r&#x27;gb_pitch:\s*([-\d.]+)&#x27;</span>)<br>    p_gb_roll = re.<span class="hljs-built_in">compile</span>(<span class="hljs-string">r&#x27;gb_roll:\s*([-\d.]+)&#x27;</span>)<br><br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;⏳ 正在解析 SRT 数据...&quot;</span>)<br><br>    <span class="hljs-keyword">for</span> block <span class="hljs-keyword">in</span> blocks:<br>        lines = block.strip().split(<span class="hljs-string">&#x27;\n&#x27;</span>)<br>        <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(lines) &lt; <span class="hljs-number">4</span>:<br>            <span class="hljs-keyword">continue</span><br><br>        <span class="hljs-comment"># ✅ 提取开头的帧编号 (即 lines[0]，例如 &quot;32433&quot;)</span><br>        frame_index = lines[<span class="hljs-number">0</span>].strip()<br>        <br>        <span class="hljs-comment"># ✅ 提取原始的完整时间戳字符串 (即 lines[1]，例如 &quot;00:03:41,000 --&gt; ...&quot;)</span><br>        raw_timestamp_str = lines[<span class="hljs-number">1</span>].strip()<br><br>        <span class="hljs-comment"># ✅ 新增：提取 FrameCnt 后面的完整日期时间字符串</span><br>        pattern_datetime = re.<span class="hljs-built_in">compile</span>(<span class="hljs-string">r&#x27;FrameCnt:\s*\d+\s+([\d-]+\s+[\d:.]+)&#x27;</span>)<br>        <br>        <span class="hljs-comment"># 提取用于跳帧计算的数值型时间戳</span><br>        time_match = pattern_time.search(lines[<span class="hljs-number">1</span>])<br>        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> time_match:<br>            <span class="hljs-keyword">continue</span><br>        <br>        h, m, s, ms = <span class="hljs-built_in">map</span>(<span class="hljs-built_in">int</span>, time_match.groups())<br>        current_timestamp = h * <span class="hljs-number">3600</span> + m * <span class="hljs-number">60</span> + s + ms / <span class="hljs-number">1000.0</span><br><br>        <span class="hljs-comment"># 跳帧逻辑</span><br>        <span class="hljs-keyword">if</span> current_timestamp - last_timestamp &lt; interval:<br>            <span class="hljs-keyword">continue</span><br><br>        data_line = lines[<span class="hljs-number">3</span>]<br>        <br>        lat_match = p_latitude.search(data_line)<br>        lon_match = p_longitude.search(data_line)<br>        <br>        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> lat_match <span class="hljs-keyword">or</span> <span class="hljs-keyword">not</span> lon_match:<br>            <span class="hljs-keyword">continue</span><br><br>        <span class="hljs-comment"># ✅ 提取 FrameCnt 的数值</span><br>        frame_cnt_match = pattern_frame_cnt.search(lines[<span class="hljs-number">2</span>])<br>        frame_cnt_val = <span class="hljs-built_in">int</span>(frame_cnt_match.group(<span class="hljs-number">1</span>)) <span class="hljs-keyword">if</span> frame_cnt_match <span class="hljs-keyword">else</span> <span class="hljs-literal">None</span><br><br>        <span class="hljs-comment"># ✅ 新增：提取原始日期时间字符串</span><br>        datetime_match = pattern_datetime.search(lines[<span class="hljs-number">2</span>])<br>        raw_datetime_str = datetime_match.group(<span class="hljs-number">1</span>) <span class="hljs-keyword">if</span> datetime_match <span class="hljs-keyword">else</span> <span class="hljs-literal">None</span><br><br>        <span class="hljs-keyword">def</span> <span class="hljs-title function_">get_float</span>(<span class="hljs-params">pattern, line</span>):<br>            <span class="hljs-keyword">match</span> = pattern.search(line)<br>            <span class="hljs-keyword">return</span> <span class="hljs-built_in">float</span>(<span class="hljs-keyword">match</span>.group(<span class="hljs-number">1</span>)) <span class="hljs-keyword">if</span> <span class="hljs-keyword">match</span> <span class="hljs-keyword">else</span> <span class="hljs-literal">None</span><br>            <br>        <span class="hljs-keyword">def</span> <span class="hljs-title function_">get_str</span>(<span class="hljs-params">pattern, line</span>):<br>            <span class="hljs-keyword">match</span> = pattern.search(line)<br>            <span class="hljs-keyword">return</span> <span class="hljs-keyword">match</span>.group(<span class="hljs-number">1</span>).strip() <span class="hljs-keyword">if</span> <span class="hljs-keyword">match</span> <span class="hljs-keyword">else</span> <span class="hljs-literal">None</span><br><br>        frame_info = &#123;<br>            <span class="hljs-comment"># ✅ 新增的三项原始数据</span><br>            <span class="hljs-string">&quot;frame_index&quot;</span>: frame_index,          <span class="hljs-comment"># 开头的帧编号</span><br>            <span class="hljs-string">&quot;raw_timestamp&quot;</span>: raw_timestamp_str,  <span class="hljs-comment"># 原始时间戳字符串</span><br>            <span class="hljs-string">&quot;frame_cnt&quot;</span>: frame_cnt_val,          <span class="hljs-comment"># FrameCnt 数值</span><br>            <span class="hljs-string">&quot;raw_datetime&quot;</span>: raw_datetime_str,    <span class="hljs-comment"># ✅ 新增：将提取到的日期时间放入字典</span><br>            <br>            <span class="hljs-comment"># 基础定位信息</span><br>            <span class="hljs-string">&quot;latitude&quot;</span>: get_float(p_latitude, data_line),<br>            <span class="hljs-string">&quot;longitude&quot;</span>: get_float(p_longitude, data_line),<br>            <span class="hljs-string">&quot;rel_alt&quot;</span>: get_float(p_rel_alt, data_line),<br>            <span class="hljs-string">&quot;abs_alt&quot;</span>: get_float(p_abs_alt, data_line),<br>            <span class="hljs-comment"># 云台姿态</span><br>            <span class="hljs-string">&quot;gb_yaw&quot;</span>: get_float(p_gb_yaw, data_line),<br>            <span class="hljs-string">&quot;gb_pitch&quot;</span>: get_float(p_gb_pitch, data_line),<br>            <span class="hljs-string">&quot;gb_roll&quot;</span>: get_float(p_gb_roll, data_line),<br>            <span class="hljs-comment"># 相机完整参数</span><br>            <span class="hljs-string">&quot;iso&quot;</span>: get_float(p_iso, data_line),<br>            <span class="hljs-string">&quot;shutter&quot;</span>: get_str(p_shutter, data_line),<br>            <span class="hljs-string">&quot;fnum&quot;</span>: get_float(p_fnum, data_line),<br>            <span class="hljs-string">&quot;ev&quot;</span>: get_float(p_ev, data_line),<br>            <span class="hljs-string">&quot;focal_len&quot;</span>: get_float(p_focal_len, data_line),<br>            <span class="hljs-string">&quot;dzoom_ratio&quot;</span>: get_float(p_dzoom_ratio, data_line),<br>            <span class="hljs-string">&quot;color_md&quot;</span>: get_str(p_color_md, data_line),<br>            <span class="hljs-string">&quot;ae_meter_md&quot;</span>: get_float(p_ae_meter_md, data_line),<br>            <span class="hljs-string">&quot;dehaze_level&quot;</span>: get_float(p_dehaze_level, data_line),<br>            <span class="hljs-string">&quot;dehaze_mode&quot;</span>: get_float(p_dehaze_mode, data_line)<br>        &#125;<br><br>        parsed_data.append(frame_info)<br>        last_timestamp = current_timestamp<br><br>    <span class="hljs-keyword">try</span>:<br>        <span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(output_path, <span class="hljs-string">&#x27;w&#x27;</span>, encoding=<span class="hljs-string">&#x27;utf-8&#x27;</span>) <span class="hljs-keyword">as</span> f:<br>            json.dump(parsed_data, f, ensure_ascii=<span class="hljs-literal">False</span>, indent=<span class="hljs-number">2</span>)<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;\n✅ 转换成功！&quot;</span>)<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;📂 输出文件: <span class="hljs-subst">&#123;output_path&#125;</span>&quot;</span>)<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;📊 共提取了 <span class="hljs-subst">&#123;<span class="hljs-built_in">len</span>(parsed_data)&#125;</span> 条有效数据（按 <span class="hljs-subst">&#123;interval&#125;</span> 秒间隔）。&quot;</span>)<br>    <span class="hljs-keyword">except</span> Exception <span class="hljs-keyword">as</span> e:<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;❌ 写入 JSON 文件失败: <span class="hljs-subst">&#123;e&#125;</span>&quot;</span>)<br><br><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&quot;__main__&quot;</span>:<br>    INPUT_SRT = <span class="hljs-string">r&quot;C:\app\create\cesium_kwindy\DJI_20260417171524_0007_V.srt&quot;</span>       <span class="hljs-comment"># 如果你改成了txt后缀，记得在这里修改文件名</span><br>    OUTPUT_JSON = <span class="hljs-string">r&quot;C:\app\create\cesium_kwindy\DJI_20260417171524_0007_V.json&quot;</span><br>    INTERVAL_SECONDS = <span class="hljs-number">1.0</span><br><br>    <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(sys.argv) &gt; <span class="hljs-number">1</span>:<br>        INPUT_SRT = sys.argv[<span class="hljs-number">1</span>]<br>    <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(sys.argv) &gt; <span class="hljs-number">2</span>:<br>        OUTPUT_JSON = sys.argv[<span class="hljs-number">2</span>]<br>    <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(sys.argv) &gt; <span class="hljs-number">3</span>:<br>        INTERVAL_SECONDS = <span class="hljs-built_in">float</span>(sys.argv[<span class="hljs-number">3</span>])<br><br>    parse_srt_to_json(INPUT_SRT, OUTPUT_JSON, INTERVAL_SECONDS)<br></code></pre></td></tr></table></figure>
+
+<p>让AI编辑程序的时候，考虑到数据压缩和保留的问题。</p>
+<ol>
+<li>原视频是4K30帧的，每一帧都是一条srt记录，对于显示整条航线来说就有点多了，按照每一秒钟一条json记录的形式提取，可以大幅度压缩数据量。</li>
+<li>尽可能保留所有参数，需要的时候就可以更方便的调用。</li>
+</ol>
+<p>其实这样子用起来肯定是不够方便的，后续还是要做一个界面，或者改一下代码放到网页端项目里去。</p>
+<h2 id="JSON验证"><a href="#JSON验证" class="headerlink" title="JSON验证"></a>JSON验证</h2><p>json文件可以看作是一个多维数组，它对内容几乎没有限制，但是对格式有严格要求，少一个符号都不行。<br>JSON检验的工具在网上有很多，转换过程一般也不会有这种低级错误。<br>JSON校验：<a target="_blank" rel="noopener" href="https://jsonlint.com/">https://jsonlint.com/</a><br>格式化与压缩工具：<a target="_blank" rel="noopener" href="https://www.bejson.com/">https://www.bejson.com/</a><br>完成这些后，可以准备进入Cesium的开发环节了。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0/" class="category-chain-item">学习</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/python/">#python</a>
+      
+        <a href="/tags/Cesium/">#Cesium</a>
+      
+        <a href="/tags/Node-js/">#Node.js</a>
+      
+        <a href="/tags/json/">#json</a>
+      
+        <a href="/tags/SRT/">#SRT</a>
+      
+        <a href="/tags/%E5%A4%A7%E7%96%86%E6%97%A0%E4%BA%BA%E6%9C%BA/">#大疆无人机</a>
+      
+        <a href="/tags/%E8%A7%A3%E6%9E%90/">#解析</a>
+      
+        <a href="/tags/3D/">#3D</a>
+      
+        <a href="/tags/%E8%A7%86%E9%A2%91/">#视频</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Cesium开发笔记（二）大疆无人机SRT解析</div>
+      <div>http://kw1649190133.github.io/2026/05/15/Cesium开发笔记（二）大疆无人机SRT解析/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Kwindy</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>May 15, 2026</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2026/05/18/Cesium%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%89%EF%BC%89%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8%E4%B8%8E%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/" title="Cesium笔记（三）基础入门与架构设计">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Cesium笔记（三）基础入门与架构设计</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/05/12/%E5%9F%BA%E4%BA%8Eyolov8%E7%9A%84%E5%B1%8F%E5%B9%95%E6%8A%93%E5%8F%96%E8%AF%86%E5%88%AB%E5%92%8Ctif%E5%BD%B1%E5%83%8F%E8%AF%86%E5%88%AB/" title="基于yolov8的屏幕抓取识别和tif影像识别">
+                        <span class="hidden-mobile">基于yolov8的屏幕抓取识别和tif影像识别</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

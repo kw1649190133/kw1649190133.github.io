@@ -1,0 +1,667 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=dark>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Kwindy">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Gridea博客的创建和部署想要使用Gridea的原因原来用hexo的时候，刚开始还觉得很新鲜，要挂个指令行去输代码来更新页面非常酷，但用了一段时间就累了，实在是太麻烦了，大大降低了写文档的欲望。并且hexo+github最大的问题不是它自己，而是github，在国内连不上才是常态，开加速又会遇到各种问题，更新文档都有意外发生，头疼死了。而且自己之前作死往里头塞了2Dlive，搞得页面有点卡，加载">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Gridea博客创建和部署">
+<meta property="og:url" content="http://kw1649190133.github.io/2023/02/09/Gridea%E5%8D%9A%E5%AE%A2%E5%88%9B%E5%BB%BA%E5%92%8C%E9%83%A8%E7%BD%B2/index.html">
+<meta property="og:site_name" content="kw&#39;s blog">
+<meta property="og:description" content="Gridea博客的创建和部署想要使用Gridea的原因原来用hexo的时候，刚开始还觉得很新鲜，要挂个指令行去输代码来更新页面非常酷，但用了一段时间就累了，实在是太麻烦了，大大降低了写文档的欲望。并且hexo+github最大的问题不是它自己，而是github，在国内连不上才是常态，开加速又会遇到各种问题，更新文档都有意外发生，头疼死了。而且自己之前作死往里头塞了2Dlive，搞得页面有点卡，加载">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2023-02-09T08:35:37.000Z">
+<meta property="article:modified_time" content="2026-06-17T07:15:04.179Z">
+<meta property="article:author" content="Kwindy">
+<meta property="article:tag" content="hexo">
+<meta property="article:tag" content="Gridea">
+<meta property="article:tag" content="失败经历">
+<meta property="article:tag" content="blog">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>Gridea博客创建和部署 - kw&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"kw1649190133.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>天际边缘 Edge of the sky </strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Gridea博客创建和部署"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-02-09 16:35" pubdate>
+          February 9, 2023 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.1k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          18 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Gridea博客创建和部署</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="Gridea博客的创建和部署"><a href="#Gridea博客的创建和部署" class="headerlink" title="Gridea博客的创建和部署"></a>Gridea博客的创建和部署</h1><h2 id="想要使用Gridea的原因"><a href="#想要使用Gridea的原因" class="headerlink" title="想要使用Gridea的原因"></a>想要使用Gridea的原因</h2><p>原来用hexo的时候，刚开始还觉得很新鲜，要挂个指令行去输代码来更新页面非常酷，但用了一段时间就累了，实在是太麻烦了，大大降低了写文档的欲望。并且hexo+github最大的问题不是它自己，而是github，在国内连不上才是常态，开加速又会遇到各种问题，更新文档都有意外发生，头疼死了。而且自己之前作死往里头塞了2Dlive，搞得页面有点卡，加载非常慢。综上所述正在头疼的我正好看到了一个介绍Gridea的视频，那个简洁漂亮的界面和一键同步的便捷，瞬间击穿了我的防线，决定迁移博客。</p>
+<h2 id="关于Hexo在Github-page上更新的问题"><a href="#关于Hexo在Github-page上更新的问题" class="headerlink" title="关于Hexo在Github page上更新的问题"></a>关于Hexo在Github page上更新的问题</h2><p><strong>unable to verify the first certificate</strong><br>这是使用steam++（现在更名为瓦特工具箱）加速器加速了github后出现的问题。<br>message: “unable to verify the first certificate”, success: false</p>
+<p><strong>网络链接不上的问题</strong><br>关掉加速器后，又出现了新的问题<br><code>报错：connect ETIMEDOUT 192.30.253.113:443</code></p>
+<p>用检测工具一测就看到国内没有一个地方能访问的<br>ping检测工具:<br><a target="_blank" rel="noopener" href="http://ping.chinaz.com/github.com">http://ping.chinaz.com/github.com</a><br><code>报错：message: &quot;connect ETIMEDOUT 192.30.253.113:443&quot;, success: false</code></p>
+<p>虽然可以通过一些其他的方式访问，比如翻个墙，设置一下代理。但显然麻烦程度指数上升，背离了简单高效的初衷。<br>所以最好的解决办法就是当前大环境不允许的情况下，不用github pages。</p>
+<h2 id="寻找GIthub-page的替代品"><a href="#寻找GIthub-page的替代品" class="headerlink" title="寻找GIthub page的替代品"></a>寻找GIthub page的替代品</h2><p>目前比较好的就是<strong>Netlify</strong>和<strong>gitee</strong>这两个选择。<br>Netlify好像是个专门托管网站代码的平台，它的好处就是不需要复杂的认证，就可以白嫖网站建设的资源，用来做个人的博客已经绰绰有余。<br>Gitee是国内为了不被卡脖子仿造Github打造的代码托管平台，在GitHub被墙的情况下，用Gitee也是不错的选择，只是它受到官方的严格管辖，不仅代码的发布者要统一平台的协议，不能传敏感内容，否则要承担责任，要想使用它的gitee page功能还必须实名制。</p>
+<p>我折腾了半天Netlify，还是没整明白，暂时放弃了，先申请gitee的实名吧。以防万一，看来hexo+GitHub还不能丢，偶尔还是得更新一下，留个备份。</p>
+<p>ps:gitee的实名制申请巨久，过了一整天还没好。</p>
+<h2 id="Hexo文章迁移到Gridea"><a href="#Hexo文章迁移到Gridea" class="headerlink" title="Hexo文章迁移到Gridea"></a>Hexo文章迁移到Gridea</h2><p><strong>从Hexo导入文章到Gridea，需要将头部词条中的分类(Categories)删掉，因为Gridea中只有标签(Tag)</strong><br>不删掉的话会导致Gridea打不开。感谢前人的经验。<br>另外，Gridea也是支持中文文件名的，但是从软件里面新建文章的时候，标题总是会自动变成汉语拼音，以后标题可能还得单独去编辑一下，或者干脆在Vscode里写好了再搬运过来，毕竟用这个软件主要还是图它界面好看和同步方便，一点小小的问题无伤大雅。</p>
+<p><strong>Gridea的图片导入无法使用相对路径</strong><br>当我把装了图片的文件夹也拖入post文件夹时，就出大问题了，Gridea界面又打不开了，进去就是空白，把文件夹路径删掉又好了。看来是读取文件路径的问题，它只能从固定的post-images路径里读图片。而当我使用图片插入功能将图片转换成链接时，它又只能是绝对路径，直接指到了我的博客路径里的post-images文件夹，并且自动生成了一张重命名为随即数字编码的图片，这下不光是好不好看的问题，而是能不能用的问题了，就算能用，兼容性也不行，我想搬到别的地方去这图片就全寄了。百度了一下也没找到合适的解决办法，好像大神们都是直接用的网图链接，反正我是受不了。</p>
+<p>现在界面是打开了，同步也没有问题，但是图片链接的兼容寄了，这就是鱼和熊掌不可得兼吗。</p>
+<h2 id="世上无难事，只要肯放弃"><a href="#世上无难事，只要肯放弃" class="headerlink" title="世上无难事，只要肯放弃"></a>世上无难事，只要肯放弃</h2><p>到这一步我真的快崩溃了，这些个无良自媒体摁夸Gridea界面好看写作方便一键预览一键同步，那是只字不提排版与兼容的问题啊（TAT ），网上能找到的教程屈指可数，几乎找不到足够全面的内容。Markdown原生的相对路径都不支持，这™整的我浑身难受，想简简单单传个图片还得挂网图，真就只适合纯文字呗。我经常需要做一些步骤和教程的文档，图片还是非常重要的，我做不到割舍图片功能。<br>对不起Hexo刚才是我说话太大声了，我这就把Github Page布回去，以后有空了再做个python程序来实现一键更新和一键同步，还有头文件生成之类的东西。也尝试一下把网站放到gitee page或者netlify上，这样至少不会因为网络链接的问题无法实现同步。<br>再次感谢程序羊Codesheep的hexo保姆级教程，帮我实现了自己的第一个博客。这次尝试虽然有些失败，但也算一次有趣的探索，让我认识到了自己的能力的不足。失败是成功之母，下次继续加油。接下来该抓紧时间研究YOLO神经网络了。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0/" class="category-chain-item">学习</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/hexo/">#hexo</a>
+      
+        <a href="/tags/Gridea/">#Gridea</a>
+      
+        <a href="/tags/%E5%A4%B1%E8%B4%A5%E7%BB%8F%E5%8E%86/">#失败经历</a>
+      
+        <a href="/tags/blog/">#blog</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Gridea博客创建和部署</div>
+      <div>http://kw1649190133.github.io/2023/02/09/Gridea博客创建和部署/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Kwindy</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>February 9, 2023</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/02/10/Hexo%E7%9A%84%E5%A4%8D%E6%B4%BB%E5%92%8C%E5%8D%87%E7%BA%A7%E8%AE%A1%E5%88%92/" title="Hexo的复活和升级计划">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Hexo的复活和升级计划</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/01/07/%E5%85%B3%E4%BA%8E2023%E5%B9%B4%E7%9A%84%E5%B9%B4%E5%88%9D%E5%B1%95%E6%9C%9B/" title="关于2023年的年初展望">
+                        <span class="hidden-mobile">关于2023年的年初展望</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

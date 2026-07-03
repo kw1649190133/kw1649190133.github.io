@@ -1,0 +1,724 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=dark>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Kwindy">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Cesium基本导入方法简单做一个html，在头文件中加入css和js调用，在body中div一个container，再new一个Viewer，这就是Cesium的极简调用了。这里使用的是本地库路径，需要注意路径正确。 1234567891011121314151617181920&lt;!DOCTYPE html&gt;&lt;html lang&#x3D;&quot;zh-CN&quot;&gt;&amp;lt">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Cesium笔记（三）基础入门与架构设计">
+<meta property="og:url" content="http://kw1649190133.github.io/2026/05/18/Cesium%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%89%EF%BC%89%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8%E4%B8%8E%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/index.html">
+<meta property="og:site_name" content="kw&#39;s blog">
+<meta property="og:description" content="Cesium基本导入方法简单做一个html，在头文件中加入css和js调用，在body中div一个container，再new一个Viewer，这就是Cesium的极简调用了。这里使用的是本地库路径，需要注意路径正确。 1234567891011121314151617181920&lt;!DOCTYPE html&gt;&lt;html lang&#x3D;&quot;zh-CN&quot;&gt;&amp;lt">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/05/18/Cesium%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%89%EF%BC%89%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8%E4%B8%8E%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/f4ba6b14fadf8c437772d6c2bacdb832.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/05/18/Cesium%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%89%EF%BC%89%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8%E4%B8%8E%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/42e8a9d1aef19d78e65f5e081ab23e97.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/05/18/Cesium%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%89%EF%BC%89%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8%E4%B8%8E%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/5361c9a5daf51507775c8aa8268fd7fc.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/05/18/Cesium%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%89%EF%BC%89%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8%E4%B8%8E%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/a843620dea06ee630bd1512a7413d76b.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/05/18/Cesium%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%89%EF%BC%89%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8%E4%B8%8E%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/f35de56b7450b84fb22fe4b740d37031.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/05/18/Cesium%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%89%EF%BC%89%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8%E4%B8%8E%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/6e452c9cdb0ef1c4631bcf1ad873b276.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/05/18/Cesium%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%89%EF%BC%89%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8%E4%B8%8E%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/ce71a5abe1cfc060049d8e377b23d5fe.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/05/18/Cesium%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%89%EF%BC%89%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8%E4%B8%8E%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/ac16dab34959cb854c415acc4f2c74f3.png">
+<meta property="article:published_time" content="2026-05-18T07:01:40.000Z">
+<meta property="article:modified_time" content="2026-06-29T01:59:32.240Z">
+<meta property="article:author" content="Kwindy">
+<meta property="article:tag" content="开发">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="Cesium">
+<meta property="article:tag" content="Node.js">
+<meta property="article:tag" content="json">
+<meta property="article:tag" content="架构">
+<meta property="article:tag" content="SRT">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://kw1649190133.github.io/2026/05/18/Cesium%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%89%EF%BC%89%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8%E4%B8%8E%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/f4ba6b14fadf8c437772d6c2bacdb832.png">
+  
+  
+  
+  <title>Cesium笔记（三）基础入门与架构设计 - kw&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"kw1649190133.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>天际边缘 Edge of the sky </strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Cesium笔记（三）基础入门与架构设计"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-05-18 15:01" pubdate>
+          May 18, 2026 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          21k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          179 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Cesium笔记（三）基础入门与架构设计</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="Cesium基本导入方法"><a href="#Cesium基本导入方法" class="headerlink" title="Cesium基本导入方法"></a>Cesium基本导入方法</h1><p>简单做一个html，在头文件中加入css和js调用，在body中div一个container，再new一个Viewer，这就是Cesium的极简调用了。这里使用的是本地库路径，需要注意路径正确。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-keyword">html</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">&quot;zh-CN&quot;</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">&quot;UTF-8&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>第一个地球<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span><br>    <span class="hljs-comment">&lt;!-- 引入本地 Cesium 的样式 --&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;./libs/Cesium/Cesium.js&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">link</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;./libs/Cesium/Widgets/widgets.css&quot;</span> <span class="hljs-attr">rel</span>=<span class="hljs-string">&quot;stylesheet&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">style</span>&gt;</span><span class="language-css"></span><br><span class="language-css">        <span class="hljs-selector-tag">html</span>, <span class="hljs-selector-tag">body</span>&#123; <span class="hljs-attribute">margin</span>: <span class="hljs-number">0</span>; <span class="hljs-attribute">padding</span>: <span class="hljs-number">0</span>;&#125;</span><br><span class="language-css">    </span><span class="hljs-tag">&lt;/<span class="hljs-name">style</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;cesiumContainer&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="language-javascript"></span><br><span class="language-javascript">        <span class="hljs-comment">// 创建 Cesium Viewer 实例</span></span><br><span class="language-javascript">        <span class="hljs-keyword">const</span> viewer = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Cesium</span>.<span class="hljs-title class_">Viewer</span>(<span class="hljs-string">&#x27;cesiumContainer&#x27;</span>);</span><br><span class="language-javascript">    </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h1 id="更现代的开发逻辑"><a href="#更现代的开发逻辑" class="headerlink" title="更现代的开发逻辑"></a>更现代的开发逻辑</h1><p>前端技术的发展变化很快，早已不是一个http和css的事，为了能够更方便的进行开发和测试，随即出现了各种组件、工具，核心的思路还是将程序模块化，将系统拆分成小功能，通过组合与复用，构成一个完整的程序。</p>
+<h2 id="Vue和Vite"><a href="#Vue和Vite" class="headerlink" title="Vue和Vite"></a>Vue和Vite</h2><p>Vue是组件化的开发架构，一个用于构建用户界面的 JavaScript 框架。在传统的网页里，改一个按钮可能牵一发而动全身。而在 Vue 中，页面被拆分成一个个独立的“组件”（比如一个导航栏、一个数据卡片、一个弹窗）。这些组件像乐高积木一样，可以独立开发、反复使用，最后拼装成一个完整的复杂应用。对这种需要展示大量数据面板（如飞行参数、地图控件）的项目非常友好。<br>Vite是Vue的作者开发的前端构建工具，在没有 Vite 之前，传统工具（如 Webpack）每次修改代码都要把所有文件重新打包一遍，项目越大越慢，保存后可能要等好几秒甚至几十秒才能在浏览器看到变化。而 Vite 利用了浏览器的原生能力，能做到“秒开”服务器，你刚按下保存键，浏览器里几乎是瞬间更新，完全感觉不到延迟。<br> Vue 3 + Vite 标准工程结构如下</p>
+<figure class="highlight axapta"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs axapta">my-cesium-app/                <span class="hljs-meta"># 项目根目录</span><br>├── <span class="hljs-keyword">public</span>/                   <span class="hljs-meta"># 静态资源（不需要打包处理的文件，如 Cesium 的静态库、favicon 图标）</span><br>├── src/                      <span class="hljs-meta"># 源代码目录（我们90%的工作都在这里）</span><br>│   ├── assets/               <span class="hljs-meta"># 需打包的静态资源（全局 CSS、图片、字体等）</span><br>│   ├── components/           <span class="hljs-meta"># 公共组件（可复用的 UI，比如通用的按钮、搜索框、Cesium 地图容器组件）</span><br>│   │   ├── <span class="hljs-keyword">common</span>/           <span class="hljs-meta"># 基础通用组件</span><br>│   │   └── business/         <span class="hljs-meta"># 业务相关组件（比如专门展示飞行参数的卡片）</span><br>│   ├── views/                <span class="hljs-meta"># 页面视图（对应路由的完整页面，如“飞行回放页”、“数据统计页”）</span><br>│   ├── router/               <span class="hljs-meta"># 路由配置（管理页面之间的跳转关系）</span><br>│   ├── store/                <span class="hljs-meta"># 状态管理（Pinia，用来存放跨页面的共享数据，比如当前的飞行任务信息）</span><br>│   ├── api/                  <span class="hljs-meta"># 接口请求（封装所有向后端或本地读取 JSON 数据的 axios 请求）</span><br>│   ├── utils/                <span class="hljs-meta"># 工具函数（放一些纯逻辑的工具，比如时间格式化、坐标转换工具）</span><br>│   ├── hooks/ 或 composables/<span class="hljs-meta"># 组合式逻辑（Vue3 特有，抽离可复用的业务逻辑，比如 useDroneTrack.js）</span><br>│   ├── App.vue               <span class="hljs-meta"># 根组件（整个应用的入口外壳）</span><br>│   └── main.js               <span class="hljs-meta"># 入口文件（初始化 Vue 实例、挂载 Cesium 等）</span><br>├── <span class="hljs-keyword">index</span>.html                <span class="hljs-meta"># 主 HTML 页面</span><br>├── vite.config.js            <span class="hljs-meta"># Vite 配置文件（配置别名、代理、打包规则等）</span><br>└── package.json              <span class="hljs-meta"># 项目依赖清单（记录你安装了哪些插件）</span><br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>关注点分离：页面长什么样交给 views 和 components，数据怎么获取交给 api，复杂的业务逻辑抽离到 hooks。当你发现 Cesium 的轨迹画不出来时，你只需要去查相关的工具函数或 API 调用，不用在一团乱麻的代码里大海捞针。</li>
+<li>高复用性：比如你在多个页面都需要展示无人机的姿态仪表盘，你只需要在 <code>components/business</code> 里写好一次，其他地方随时引用即可。<h2 id="1-创建项目"><a href="#1-创建项目" class="headerlink" title="1.创建项目"></a>1.创建项目</h2>打开终端（命令行），使用官方脚手架一键创建项目（这里推荐使用 TypeScript 模板，对 Cesium 的类型提示更友好）：<figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs coffeescript"><span class="hljs-comment"># 创建项目（项目名称可以自定义，比如 cesium-drone-app）</span><br><span class="hljs-built_in">npm</span> create vite@latest cesium-vueapp -- --template vue-ts<br><br><span class="hljs-comment"># 进入项目目录</span><br>cd cesium-vueapp<br><br><span class="hljs-comment"># 安装核心依赖</span><br><span class="hljs-comment"># cesium: 3D地球核心库</span><br><span class="hljs-comment"># vite-plugin-cesium: 专门解决Cesium在Vite中加载Worker和静态资源的插件（必装！）</span><br><span class="hljs-built_in">npm</span> install cesium vite-plugin-cesium<br></code></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="2-配置Vite"><a href="#2-配置Vite" class="headerlink" title="2.配置Vite"></a>2.配置Vite</h2><p>打开项目根目录下的 <code>vite.config.ts</code> 文件，引入并配置 <code>vite-plugin-cesium</code> 插件。这一步能自动帮你处理好 Cesium 复杂的资源路径问题，避免常见的 Worker 加载报错：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> &#123; defineConfig &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;vite&#x27;</span><br><span class="hljs-keyword">import</span> vue <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@vitejs/plugin-vue&#x27;</span><br><span class="hljs-keyword">import</span> cesium <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;vite-plugin-cesium&#x27;</span> <span class="hljs-comment">// 引入插件</span><br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-title function_">defineConfig</span>(&#123;<br>  <span class="hljs-attr">plugins</span>: [<span class="hljs-title function_">vue</span>(), <span class="hljs-title function_">cesium</span>()], <span class="hljs-comment">// 注册插件</span><br>  <span class="hljs-attr">server</span>: &#123;<br>    <span class="hljs-attr">port</span>: <span class="hljs-number">5173</span>, <span class="hljs-comment">// 启动端口</span><br>    <span class="hljs-attr">open</span>: <span class="hljs-literal">true</span>  <span class="hljs-comment">// 启动后自动打开浏览器</span><br>  &#125;<br>&#125;)<br></code></pre></td></tr></table></figure>
+
+<h2 id="3-封装全局组件"><a href="#3-封装全局组件" class="headerlink" title="3.封装全局组件"></a>3.封装全局组件</h2><p>在 <code>src/components/</code> 目录下新建一个 <code>CesiumViewer.vue</code> 组件。这样以后在任何页面想展示地图，直接引用这个组件即可。<br>将以下代码复制到 <code>src/components/CesiumViewer.vue</code>：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">template</span>&gt;</span><br>  <span class="hljs-comment">&lt;!-- 地图容器，宽高设为100%以占满父元素 --&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">ref</span>=<span class="hljs-string">&quot;cesiumContainer&quot;</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;width: 100%; height: 100vh;&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span><br><br><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">setup</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">&quot;ts&quot;</span>&gt;</span><span class="language-javascript"></span><br><span class="language-javascript"><span class="hljs-keyword">import</span> &#123; onMounted, onUnmounted, ref &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;vue&#x27;</span></span><br><span class="language-javascript"><span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> <span class="hljs-title class_">Cesium</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;cesium&#x27;</span></span><br><span class="language-javascript"><span class="hljs-comment">// 引入Cesium自带的控件样式</span></span><br><span class="language-javascript"><span class="hljs-keyword">import</span> <span class="hljs-string">&#x27;cesium/Build/Cesium/Widgets/widgets.css&#x27;</span> </span><br><span class="language-javascript"></span><br><span class="language-javascript"><span class="hljs-keyword">const</span> cesiumContainer = ref&lt;<span class="hljs-title class_">HTMLDivElement</span> | <span class="hljs-literal">null</span>&gt;(<span class="hljs-literal">null</span>)</span><br><span class="language-javascript"><span class="hljs-keyword">let</span> <span class="hljs-attr">viewer</span>: <span class="hljs-title class_">Cesium</span>.<span class="hljs-property">Viewer</span> | <span class="hljs-literal">null</span> = <span class="hljs-literal">null</span></span><br><span class="language-javascript"></span><br><span class="language-javascript"><span class="hljs-title function_">onMounted</span>(<span class="hljs-function">() =&gt;</span> &#123;</span><br><span class="language-javascript">  <span class="hljs-keyword">if</span> (!cesiumContainer.<span class="hljs-property">value</span>) <span class="hljs-keyword">return</span></span><br><span class="language-javascript"></span><br><span class="language-javascript">  <span class="hljs-comment">// 初始化 Cesium Viewer</span></span><br><span class="language-javascript">  viewer = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Cesium</span>.<span class="hljs-title class_">Viewer</span>(cesiumContainer.<span class="hljs-property">value</span>, &#123;</span><br><span class="language-javascript">    <span class="hljs-attr">animation</span>: <span class="hljs-literal">false</span>,        <span class="hljs-comment">// 隐藏动画控件</span></span><br><span class="language-javascript">    <span class="hljs-attr">timeline</span>: <span class="hljs-literal">false</span>,         <span class="hljs-comment">// 隐藏时间轴</span></span><br><span class="language-javascript">    <span class="hljs-attr">baseLayerPicker</span>: <span class="hljs-literal">true</span>,   <span class="hljs-comment">// 显示底图切换工具</span></span><br><span class="language-javascript">    <span class="hljs-attr">geocoder</span>: <span class="hljs-literal">true</span>,          <span class="hljs-comment">// 显示地名搜索</span></span><br><span class="language-javascript">    <span class="hljs-attr">homeButton</span>: <span class="hljs-literal">true</span>,        <span class="hljs-comment">// 显示复位按钮</span></span><br><span class="language-javascript">    <span class="hljs-attr">sceneModePicker</span>: <span class="hljs-literal">true</span>,   <span class="hljs-comment">// 显示2D/3D切换</span></span><br><span class="language-javascript">    <span class="hljs-attr">navigationHelpButton</span>: <span class="hljs-literal">false</span> <span class="hljs-comment">// 隐藏帮助按钮</span></span><br><span class="language-javascript">  &#125;)</span><br><span class="language-javascript"></span><br><span class="language-javascript">  <span class="hljs-comment">// 💡 小建议：可以把海口设为初始视角，方便你调试之前的无人机数据</span></span><br><span class="language-javascript">  viewer.<span class="hljs-property">camera</span>.<span class="hljs-title function_">flyTo</span>(&#123;</span><br><span class="language-javascript">    <span class="hljs-attr">destination</span>: <span class="hljs-title class_">Cesium</span>.<span class="hljs-property">Cartesian3</span>.<span class="hljs-title function_">fromDegrees</span>(<span class="hljs-number">110.38</span>, <span class="hljs-number">20.08</span>, <span class="hljs-number">15000</span>), <span class="hljs-comment">// 海口大致坐标</span></span><br><span class="language-javascript">    <span class="hljs-attr">duration</span>: <span class="hljs-number">2</span></span><br><span class="language-javascript">  &#125;)</span><br><span class="language-javascript">&#125;)</span><br><span class="language-javascript"></span><br><span class="language-javascript"><span class="hljs-comment">// 组件销毁时，记得销毁 viewer 实例，防止内存泄漏</span></span><br><span class="language-javascript"><span class="hljs-title function_">onUnmounted</span>(<span class="hljs-function">() =&gt;</span> &#123;</span><br><span class="language-javascript">  <span class="hljs-keyword">if</span> (viewer) &#123;</span><br><span class="language-javascript">    viewer.<span class="hljs-title function_">destroy</span>()</span><br><span class="language-javascript">  &#125;</span><br><span class="language-javascript">&#125;)</span><br><span class="language-javascript"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="4-在主页挂载地图"><a href="#4-在主页挂载地图" class="headerlink" title="4.在主页挂载地图"></a>4.在主页挂载地图</h2><p>将<code>src/App.vue</code>的默认内容清空，填入地图组件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs vue">&lt;script setup lang=&quot;ts&quot;&gt;<br>import CesiumViewer from &#x27;./components/CesiumViewer.vue&#x27;<br>&lt;/script&gt;<br><br>&lt;template&gt;<br>  &lt;CesiumViewer /&gt;<br>&lt;/template&gt;<br><br>&lt;style&gt;<br>/* 清除默认边距，让地图全屏显示 */<br>body, html, #app &#123;<br>  margin: 0;<br>  padding: 0;<br>  width: 100%;<br>  height: 100%;<br>  overflow: hidden;<br>&#125;<br>&lt;/style&gt;<br></code></pre></td></tr></table></figure>
+
+<h2 id="5-运行项目"><a href="#5-运行项目" class="headerlink" title="5.运行项目"></a>5.运行项目</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">npm run dev<br></code></pre></td></tr></table></figure>
+
+<p>运行后：<br><img src="/2026/05/18/Cesium%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%89%EF%BC%89%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8%E4%B8%8E%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/f4ba6b14fadf8c437772d6c2bacdb832.png" srcset="/img/loading.gif" lazyload alt="f4ba6b14fadf8c437772d6c2bacdb832.png"></p>
+<p>如果需要关闭项目，直接ctrl+C就可以。</p>
+<h1 id="轨迹导入"><a href="#轨迹导入" class="headerlink" title="轨迹导入"></a>轨迹导入</h1><p>一开始想通过语言描述让AI直接把整套逻辑实现，但结果就是代码放进去根本无法运行，点击加载数据就报错。只能一点一点来。</p>
+<p>先让AI制作一个简单一些的json，命名为simple_test.json，放入public文件夹。</p>
+<figure class="highlight prolog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs prolog">[<br>  &#123; <span class="hljs-string">&quot;name&quot;</span>: <span class="hljs-string">&quot;起点-北京&quot;</span>, <span class="hljs-string">&quot;longitude&quot;</span>: <span class="hljs-number">116.40</span>, <span class="hljs-string">&quot;latitude&quot;</span>: <span class="hljs-number">39.90</span>, <span class="hljs-string">&quot;height&quot;</span>: <span class="hljs-number">1000</span> &#125;,<br>  &#123; <span class="hljs-string">&quot;name&quot;</span>: <span class="hljs-string">&quot;途经-上海&quot;</span>, <span class="hljs-string">&quot;longitude&quot;</span>: <span class="hljs-number">121.47</span>, <span class="hljs-string">&quot;latitude&quot;</span>: <span class="hljs-number">31.23</span>, <span class="hljs-string">&quot;height&quot;</span>: <span class="hljs-number">1000</span> &#125;,<br>  &#123; <span class="hljs-string">&quot;name&quot;</span>: <span class="hljs-string">&quot;终点-广州&quot;</span>, <span class="hljs-string">&quot;longitude&quot;</span>: <span class="hljs-number">113.26</span>, <span class="hljs-string">&quot;latitude&quot;</span>: <span class="hljs-number">23.12</span>, <span class="hljs-string">&quot;height&quot;</span>: <span class="hljs-number">1000</span> &#125;<br>]<br></code></pre></td></tr></table></figure>
+
+<p>再制作一个CesiumViewer_simpletest.vue页面，专门进行测试，避免与原来的页面冲突。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">template</span>&gt;</span><br>  <span class="hljs-comment">&lt;!-- 悬浮的操作面板 --&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;position: absolute; top: 20px; left: 20px; z-index: 100; background: rgba(255, 255, 255, 0.9); padding: 15px; border-radius: 8px;&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">input</span> </span><br><span class="hljs-tag">      <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;file&quot;</span> </span><br><span class="hljs-tag">      <span class="hljs-attr">ref</span>=<span class="hljs-string">&quot;fileInput&quot;</span> </span><br><span class="hljs-tag">      <span class="hljs-attr">accept</span>=<span class="hljs-string">&quot;.json&quot;</span> </span><br><span class="hljs-tag">      @<span class="hljs-attr">change</span>=<span class="hljs-string">&quot;handleFileChange&quot;</span> </span><br><span class="hljs-tag">      <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;display: none;&quot;</span> </span><br><span class="hljs-tag">    /&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">button</span> @<span class="hljs-attr">click</span>=<span class="hljs-string">&quot;triggerFileSelect&quot;</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;padding: 8px 16px; cursor: pointer;&quot;</span>&gt;</span><br>      📂 导入航线 (flight_data.json)<br>    <span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">v-if</span>=<span class="hljs-string">&quot;loading&quot;</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;margin-left: 10px; color: #666;&quot;</span>&gt;</span>正在解析...<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span><br>  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>  <span class="hljs-comment">&lt;!-- Cesium 地图容器 --&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">ref</span>=<span class="hljs-string">&quot;cesiumContainer&quot;</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;width: 100%; height: 100vh;&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span><br><br><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">setup</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">&quot;ts&quot;</span>&gt;</span><span class="language-javascript"></span><br><span class="language-javascript"><span class="hljs-keyword">import</span> &#123; onMounted, ref &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;vue&#x27;</span></span><br><span class="language-javascript"><span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> <span class="hljs-title class_">Cesium</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;cesium&#x27;</span></span><br><span class="language-javascript"><span class="hljs-keyword">import</span> <span class="hljs-string">&#x27;cesium/Build/Cesium/Widgets/widgets.css&#x27;</span> </span><br><span class="language-javascript"></span><br><span class="language-javascript"><span class="hljs-keyword">const</span> cesiumContainer = ref&lt;<span class="hljs-title class_">HTMLDivElement</span> | <span class="hljs-literal">null</span>&gt;(<span class="hljs-literal">null</span>)</span><br><span class="language-javascript"><span class="hljs-keyword">const</span> fileInput = ref&lt;<span class="hljs-title class_">HTMLInputElement</span> | <span class="hljs-literal">null</span>&gt;(<span class="hljs-literal">null</span>)</span><br><span class="language-javascript"></span><br><span class="language-javascript"><span class="hljs-keyword">let</span> <span class="hljs-attr">viewer</span>: <span class="hljs-title class_">Cesium</span>.<span class="hljs-property">Viewer</span> | <span class="hljs-literal">null</span> = <span class="hljs-literal">null</span></span><br><span class="language-javascript"></span><br><span class="language-javascript"><span class="hljs-title function_">onMounted</span>(<span class="hljs-function">() =&gt;</span> &#123;</span><br><span class="language-javascript">  <span class="hljs-keyword">if</span> (!cesiumContainer.<span class="hljs-property">value</span>) <span class="hljs-keyword">return</span></span><br><span class="language-javascript">  <span class="hljs-comment">// 初始化 Viewer</span></span><br><span class="language-javascript">  viewer = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Cesium</span>.<span class="hljs-title class_">Viewer</span>(cesiumContainer.<span class="hljs-property">value</span>, &#123;</span><br><span class="language-javascript">    <span class="hljs-attr">animation</span>: <span class="hljs-literal">false</span>,</span><br><span class="language-javascript">    <span class="hljs-attr">timeline</span>: <span class="hljs-literal">false</span>,</span><br><span class="language-javascript">    <span class="hljs-attr">baseLayerPicker</span>: <span class="hljs-literal">true</span></span><br><span class="language-javascript">  &#125;)</span><br><span class="language-javascript">  viewer.<span class="hljs-property">cesiumWidget</span>.<span class="hljs-property">creditContainer</span>.<span class="hljs-property">style</span>.<span class="hljs-property">display</span> = <span class="hljs-string">&#x27;none&#x27;</span></span><br><span class="language-javascript">&#125;)</span><br><span class="language-javascript"></span><br><span class="language-javascript"><span class="hljs-comment">// 触发文件选择</span></span><br><span class="language-javascript"><span class="hljs-keyword">const</span> <span class="hljs-title function_">triggerFileSelect</span> = (<span class="hljs-params"></span>) =&gt; &#123;</span><br><span class="language-javascript">  fileInput.<span class="hljs-property">value</span>?.<span class="hljs-title function_">click</span>()</span><br><span class="language-javascript">&#125;</span><br><span class="language-javascript"></span><br><span class="language-javascript"><span class="hljs-comment">// 处理文件读取与渲染（极简版）</span></span><br><span class="language-javascript"><span class="hljs-keyword">const</span> <span class="hljs-title function_">handleFileChange</span> = (<span class="hljs-params">event: Event</span>) =&gt; &#123;</span><br><span class="language-javascript">  <span class="hljs-keyword">const</span> target = event.<span class="hljs-property">target</span> <span class="hljs-keyword">as</span> <span class="hljs-title class_">HTMLInputElement</span></span><br><span class="language-javascript">  <span class="hljs-keyword">const</span> file = target.<span class="hljs-property">files</span>?.[<span class="hljs-number">0</span>]</span><br><span class="language-javascript">  <span class="hljs-keyword">if</span> (!file) <span class="hljs-keyword">return</span></span><br><span class="language-javascript"></span><br><span class="language-javascript">  <span class="hljs-keyword">const</span> reader = <span class="hljs-keyword">new</span> <span class="hljs-title class_">FileReader</span>()</span><br><span class="language-javascript">  reader.<span class="hljs-property">onload</span> = <span class="hljs-function">(<span class="hljs-params">e</span>) =&gt;</span> &#123;</span><br><span class="language-javascript">    <span class="hljs-keyword">try</span> &#123;</span><br><span class="language-javascript">      <span class="hljs-comment">// 1. 解析 JSON</span></span><br><span class="language-javascript">      <span class="hljs-keyword">const</span> data = <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">parse</span>(e.<span class="hljs-property">target</span>?.<span class="hljs-property">result</span> <span class="hljs-keyword">as</span> string)</span><br><span class="language-javascript">      </span><br><span class="language-javascript">      <span class="hljs-comment">// 2. 校验是否为数组</span></span><br><span class="language-javascript">      <span class="hljs-keyword">if</span> (!<span class="hljs-title class_">Array</span>.<span class="hljs-title function_">isArray</span>(data)) <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(<span class="hljs-string">&#x27;JSON 根节点必须是一个数组 []&#x27;</span>)</span><br><span class="language-javascript"></span><br><span class="language-javascript">      <span class="hljs-comment">// 3. 提取坐标点并转换为 Cesium 笛卡尔坐标系</span></span><br><span class="language-javascript">      <span class="hljs-keyword">const</span> <span class="hljs-attr">positions</span>: <span class="hljs-title class_">Cesium</span>.<span class="hljs-property">Cartesian3</span>[] = []</span><br><span class="language-javascript">      data.<span class="hljs-title function_">forEach</span>(<span class="hljs-function">(<span class="hljs-params">item: any</span>) =&gt;</span> &#123;</span><br><span class="language-javascript">        <span class="hljs-comment">// 确保每个对象都有经度、纬度和高度</span></span><br><span class="language-javascript">        <span class="hljs-keyword">if</span> (item.<span class="hljs-property">longitude</span> !== <span class="hljs-literal">undefined</span> &amp;&amp; item.<span class="hljs-property">latitude</span> !== <span class="hljs-literal">undefined</span>) &#123;</span><br><span class="language-javascript">          <span class="hljs-keyword">const</span> height = item.<span class="hljs-property">height</span> || <span class="hljs-number">0</span></span><br><span class="language-javascript">          positions.<span class="hljs-title function_">push</span>(<span class="hljs-title class_">Cesium</span>.<span class="hljs-property">Cartesian3</span>.<span class="hljs-title function_">fromDegrees</span>(item.<span class="hljs-property">longitude</span>, item.<span class="hljs-property">latitude</span>, height))</span><br><span class="language-javascript">        &#125;</span><br><span class="language-javascript">      &#125;)</span><br><span class="language-javascript"></span><br><span class="language-javascript">      <span class="hljs-keyword">if</span> (positions.<span class="hljs-property">length</span> &lt; <span class="hljs-number">2</span>) <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(<span class="hljs-string">&#x27;有效坐标点不足2个，无法绘制线条&#x27;</span>)</span><br><span class="language-javascript"></span><br><span class="language-javascript">      <span class="hljs-comment">// 4. 在地图上绘制一条红色的折线</span></span><br><span class="language-javascript">      viewer!.<span class="hljs-property">entities</span>.<span class="hljs-title function_">add</span>(&#123;</span><br><span class="language-javascript">        <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;测试路线&#x27;</span>,</span><br><span class="language-javascript">        <span class="hljs-attr">polyline</span>: &#123;</span><br><span class="language-javascript">          <span class="hljs-attr">positions</span>: positions,</span><br><span class="language-javascript">          <span class="hljs-attr">width</span>: <span class="hljs-number">5</span>,</span><br><span class="language-javascript">          <span class="hljs-attr">material</span>: <span class="hljs-title class_">Cesium</span>.<span class="hljs-property">Color</span>.<span class="hljs-property">RED</span>,</span><br><span class="language-javascript">          <span class="hljs-attr">clampToGround</span>: <span class="hljs-literal">false</span> <span class="hljs-comment">// 设为 true 可以让线贴地</span></span><br><span class="language-javascript">        &#125;</span><br><span class="language-javascript">      &#125;)</span><br><span class="language-javascript"></span><br><span class="language-javascript">      <span class="hljs-comment">// 5. 让相机自动飞到这条线的正上方</span></span><br><span class="language-javascript">      <span class="hljs-keyword">const</span> boundingSphere = <span class="hljs-title class_">Cesium</span>.<span class="hljs-property">BoundingSphere</span>.<span class="hljs-title function_">fromPoints</span>(positions)</span><br><span class="language-javascript">      viewer!.<span class="hljs-property">camera</span>.<span class="hljs-title function_">flyToBoundingSphere</span>(boundingSphere, &#123;</span><br><span class="language-javascript">        <span class="hljs-attr">duration</span>: <span class="hljs-number">2</span>,</span><br><span class="language-javascript">        <span class="hljs-attr">offset</span>: <span class="hljs-keyword">new</span> <span class="hljs-title class_">Cesium</span>.<span class="hljs-title class_">HeadingPitchRange</span>(<span class="hljs-number">0</span>, -<span class="hljs-title class_">Cesium</span>.<span class="hljs-property">Math</span>.<span class="hljs-property">PI_OVER_FOUR</span>, boundingSphere.<span class="hljs-property">radius</span> * <span class="hljs-number">2.0</span>)</span><br><span class="language-javascript">      &#125;)</span><br><span class="language-javascript"></span><br><span class="language-javascript">      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`✅ 成功加载 <span class="hljs-subst">$&#123;positions.length&#125;</span> 个点！`</span>)</span><br><span class="language-javascript"></span><br><span class="language-javascript">    &#125; <span class="hljs-keyword">catch</span> (error) &#123;</span><br><span class="language-javascript">      <span class="hljs-title function_">alert</span>(<span class="hljs-string">`解析失败: <span class="hljs-subst">$&#123;error.message&#125;</span>`</span>)</span><br><span class="language-javascript">      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(error)</span><br><span class="language-javascript">    &#125; <span class="hljs-keyword">finally</span> &#123;</span><br><span class="language-javascript">      <span class="hljs-comment">// 清空 input，允许重复上传同一个文件</span></span><br><span class="language-javascript">      <span class="hljs-keyword">if</span> (fileInput.<span class="hljs-property">value</span>) fileInput.<span class="hljs-property">value</span>.<span class="hljs-property">value</span> = <span class="hljs-string">&#x27;&#x27;</span></span><br><span class="language-javascript">    &#125;</span><br><span class="language-javascript">  &#125;</span><br><span class="language-javascript">  reader.<span class="hljs-title function_">readAsText</span>(file)</span><br><span class="language-javascript">&#125;</span><br><span class="language-javascript"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>同时，需要将主页app.vue的导入修改成新建的测试页面路径<br><code>import CesiumViewer from &#39;./components/CesiumViewer_simpletest.vue&#39;</code><br>再次运行后，得到一条简单的轨迹线。<br><img src="/2026/05/18/Cesium%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%89%EF%BC%89%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8%E4%B8%8E%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/42e8a9d1aef19d78e65f5e081ab23e97.png" srcset="/img/loading.gif" lazyload alt="42e8a9d1aef19d78e65f5e081ab23e97.png"></p>
+<p>然后观察数据之间的差别，首先我自己的json也是经过了jsonlint检验的，明明没有问题，和简单案例的参数差别只有高度参数，只需要把显示高度的位置改为rel_alt，然后重新加载json。</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs reasonml"><span class="hljs-comment">// 确保每个对象都有经度、纬度和高度</span><br><span class="hljs-keyword">if</span> (item.longitude !== undefined<span class="hljs-operator"> &amp;&amp; </span>item.latitude !== undefined) &#123;<br>  const height = item.rel_alt<span class="hljs-operator"> || </span><span class="hljs-number">0</span><br>  positions.push(<span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">Cesium</span>.</span><span class="hljs-module"><span class="hljs-identifier">Cartesian3</span>.</span></span>from<span class="hljs-constructor">Degrees(<span class="hljs-params">item</span>.<span class="hljs-params">longitude</span>, <span class="hljs-params">item</span>.<span class="hljs-params">latitude</span>, <span class="hljs-params">item</span>.<span class="hljs-params">rel_alt</span>)</span>)<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>运行后，成功显示飞机轨迹：<br><img src="/2026/05/18/Cesium%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%89%EF%BC%89%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8%E4%B8%8E%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/5361c9a5daf51507775c8aa8268fd7fc.png" srcset="/img/loading.gif" lazyload alt="5361c9a5daf51507775c8aa8268fd7fc.png"></p>
+<h2 id="无人机加载和轨迹播放"><a href="#无人机加载和轨迹播放" class="headerlink" title="无人机加载和轨迹播放"></a>无人机加载和轨迹播放</h2><p>在处理姿态的时候，遇到了飞行方向与模型方向不一致的问题，大概因为一个是右手系一个是左手系，通过旋转矩阵就可以把模型方向调整回来。但我直接用了更暴力的方式，在读取航向数值时直接-90，更为简单。</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs reasonml"><span class="hljs-comment">// --- 处理姿态 (直接使用 JSON 中的 gb_yaw/pitch/roll) ---</span><br>    <span class="hljs-comment">// 注意：Cesium 的 HeadingPitchRoll 需要弧度制，且顺序是 Heading(Yaw), Pitch, Roll</span><br>    const heading = <span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">Cesium</span>.</span><span class="hljs-module"><span class="hljs-identifier">Math</span>.</span></span><span class="hljs-keyword">to</span><span class="hljs-constructor">Radians(<span class="hljs-params">item</span>.<span class="hljs-params">gb_yaw</span>-90 <span class="hljs-operator">||</span> 0)</span><br>    const pitch = <span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">Cesium</span>.</span><span class="hljs-module"><span class="hljs-identifier">Math</span>.</span></span><span class="hljs-keyword">to</span><span class="hljs-constructor">Radians(<span class="hljs-params">item</span>.<span class="hljs-params">gb_pitch</span> <span class="hljs-operator">||</span> 0)</span><br>    const roll = <span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">Cesium</span>.</span><span class="hljs-module"><span class="hljs-identifier">Math</span>.</span></span><span class="hljs-keyword">to</span><span class="hljs-constructor">Radians(<span class="hljs-params">item</span>.<span class="hljs-params">gb_roll</span> <span class="hljs-operator">||</span> 0)</span><br></code></pre></td></tr></table></figure>
+
+<p>重新建了一个CesiumViewer_5timesystem.vue文件：</p>
+<figure class="highlight handlebars"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br></pre></td><td class="code"><pre><code class="hljs handlebars"><span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">template</span>&gt;</span></span><br><span class="language-xml">  <span class="hljs-comment">&lt;!-- 悬浮操作面板 --&gt;</span></span><br><span class="language-xml">  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;position: absolute; top: 20px; left: 20px; z-index: 100; background: rgba(255, 255, 255, 0.9); padding: 15px; border-radius: 8px; display: flex; gap: 10px; align-items: center;&quot;</span>&gt;</span></span><br><span class="language-xml">    <span class="hljs-tag">&lt;<span class="hljs-name">input</span> </span></span><br><span class="hljs-tag"><span class="language-xml">      <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;file&quot;</span> </span></span><br><span class="hljs-tag"><span class="language-xml">      <span class="hljs-attr">ref</span>=<span class="hljs-string">&quot;fileInput&quot;</span> </span></span><br><span class="hljs-tag"><span class="language-xml">      <span class="hljs-attr">accept</span>=<span class="hljs-string">&quot;.json&quot;</span> </span></span><br><span class="hljs-tag"><span class="language-xml">      @<span class="hljs-attr">change</span>=<span class="hljs-string">&quot;handleFileChange&quot;</span> </span></span><br><span class="hljs-tag"><span class="language-xml">      <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;display: none;&quot;</span> </span></span><br><span class="hljs-tag"><span class="language-xml">    /&gt;</span></span><br><span class="language-xml">    <span class="hljs-tag">&lt;<span class="hljs-name">button</span> @<span class="hljs-attr">click</span>=<span class="hljs-string">&quot;triggerFileSelect&quot;</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;padding: 6px 12px; cursor: pointer;&quot;</span>&gt;</span>📂 导入航线<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span></span><br><span class="language-xml">    </span><br><span class="language-xml">    <span class="hljs-comment">&lt;!-- 只有在加载了数据后才显示的控制按钮 --&gt;</span></span><br><span class="language-xml">    <span class="hljs-tag">&lt;<span class="hljs-name">template</span> <span class="hljs-attr">v-if</span>=<span class="hljs-string">&quot;isDataLoaded&quot;</span>&gt;</span></span><br><span class="language-xml">      <span class="hljs-tag">&lt;<span class="hljs-name">button</span> @<span class="hljs-attr">click</span>=<span class="hljs-string">&quot;togglePlay&quot;</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;padding: 6px 12px; cursor: pointer;&quot;</span>&gt;</span></span><br><span class="language-xml">        </span><span class="hljs-template-variable">&#123;&#123; <span class="hljs-name">isPlaying</span> ? <span class="hljs-string">&#x27;⏸️ 暂停&#x27;</span> : <span class="hljs-string">&#x27;▶️ 播放&#x27;</span> &#125;&#125;</span><span class="language-xml"></span><br><span class="language-xml">      <span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span></span><br><span class="language-xml">      <span class="hljs-tag">&lt;<span class="hljs-name">button</span> @<span class="hljs-attr">click</span>=<span class="hljs-string">&quot;resetFlight&quot;</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;padding: 6px 12px; cursor: pointer;&quot;</span>&gt;</span>🔄 重置<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span></span><br><span class="language-xml">      <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;font-size: 12px; color: #666;&quot;</span>&gt;</span>速度: </span><span class="hljs-template-variable">&#123;&#123; <span class="hljs-name">speedMultiplier</span> &#125;&#125;</span><span class="language-xml">x<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span></span><br><span class="language-xml">      <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;range&quot;</span> <span class="hljs-attr">min</span>=<span class="hljs-string">&quot;1&quot;</span> <span class="hljs-attr">max</span>=<span class="hljs-string">&quot;50&quot;</span> <span class="hljs-attr">v-model.number</span>=<span class="hljs-string">&quot;speedMultiplier&quot;</span> @<span class="hljs-attr">input</span>=<span class="hljs-string">&quot;updateSpeed&quot;</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;width: 100px;&quot;</span>&gt;</span></span><br><span class="language-xml">    <span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span></span><br><span class="language-xml">  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span><br><span class="language-xml"></span><br><span class="language-xml">  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">ref</span>=<span class="hljs-string">&quot;cesiumContainer&quot;</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;width: 100%; height: 100vh;&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span><br><span class="language-xml"><span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span></span><br><span class="language-xml"></span><br><span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">setup</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">&quot;ts&quot;</span>&gt;</span><span class="language-javascript"></span></span><br><span class="language-javascript"><span class="language-xml"><span class="hljs-keyword">import</span> &#123; onMounted, onUnmounted, ref &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;vue&#x27;</span></span></span><br><span class="language-javascript"><span class="language-xml"><span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> <span class="hljs-title class_">Cesium</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;cesium&#x27;</span></span></span><br><span class="language-javascript"><span class="language-xml"><span class="hljs-keyword">import</span> <span class="hljs-string">&#x27;cesium/Build/Cesium/Widgets/widgets.css&#x27;</span> </span></span><br><span class="language-javascript"><span class="language-xml"></span></span><br><span class="language-javascript"><span class="language-xml"><span class="hljs-keyword">const</span> cesiumContainer = ref&lt;<span class="hljs-title class_">HTMLDivElement</span> | <span class="hljs-literal">null</span>&gt;(<span class="hljs-literal">null</span>)</span></span><br><span class="language-javascript"><span class="language-xml"><span class="hljs-keyword">const</span> fileInput = ref&lt;<span class="hljs-title class_">HTMLInputElement</span> | <span class="hljs-literal">null</span>&gt;(<span class="hljs-literal">null</span>)</span></span><br><span class="language-javascript"><span class="language-xml"></span></span><br><span class="language-javascript"><span class="language-xml"><span class="hljs-keyword">let</span> <span class="hljs-attr">viewer</span>: <span class="hljs-title class_">Cesium</span>.<span class="hljs-property">Viewer</span> | <span class="hljs-literal">null</span> = <span class="hljs-literal">null</span></span></span><br><span class="language-javascript"><span class="language-xml"><span class="hljs-keyword">let</span> <span class="hljs-attr">droneEntity</span>: <span class="hljs-title class_">Cesium</span>.<span class="hljs-property">Entity</span> | <span class="hljs-literal">null</span> = <span class="hljs-literal">null</span> <span class="hljs-comment">// 记录无人机实体</span></span></span><br><span class="language-javascript"><span class="language-xml"><span class="hljs-keyword">const</span> isDataLoaded = <span class="hljs-title function_">ref</span>(<span class="hljs-literal">false</span>)</span></span><br><span class="language-javascript"><span class="language-xml"><span class="hljs-keyword">const</span> isPlaying = <span class="hljs-title function_">ref</span>(<span class="hljs-literal">false</span>)</span></span><br><span class="language-javascript"><span class="language-xml"><span class="hljs-keyword">const</span> speedMultiplier = <span class="hljs-title function_">ref</span>(<span class="hljs-number">10</span>) <span class="hljs-comment">// 默认播放速度倍数</span></span></span><br><span class="language-javascript"><span class="language-xml"></span></span><br><span class="language-javascript"><span class="language-xml"><span class="hljs-title function_">onMounted</span>(<span class="hljs-function">() =&gt;</span> &#123;</span></span><br><span class="language-javascript"><span class="language-xml">  <span class="hljs-keyword">if</span> (!cesiumContainer.<span class="hljs-property">value</span>) <span class="hljs-keyword">return</span></span></span><br><span class="language-javascript"><span class="language-xml">  viewer = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Cesium</span>.<span class="hljs-title class_">Viewer</span>(cesiumContainer.<span class="hljs-property">value</span>, &#123;</span></span><br><span class="language-javascript"><span class="language-xml">    <span class="hljs-attr">animation</span>: <span class="hljs-literal">true</span>,       <span class="hljs-comment">// 开启左下角动画控件（可选）</span></span></span><br><span class="language-javascript"><span class="language-xml">    <span class="hljs-attr">timeline</span>: <span class="hljs-literal">true</span>,        <span class="hljs-comment">// 开启底部时间轴（可选）</span></span></span><br><span class="language-javascript"><span class="language-xml">    <span class="hljs-attr">shouldAnimate</span>: <span class="hljs-literal">false</span>   <span class="hljs-comment">// 初始不自动播放</span></span></span><br><span class="language-javascript"><span class="language-xml">  &#125;)</span></span><br><span class="language-javascript"><span class="language-xml">  viewer.<span class="hljs-property">cesiumWidget</span>.<span class="hljs-property">creditContainer</span>.<span class="hljs-property">style</span>.<span class="hljs-property">display</span> = <span class="hljs-string">&#x27;none&#x27;</span></span></span><br><span class="language-javascript"><span class="language-xml">&#125;)</span></span><br><span class="language-javascript"><span class="language-xml"></span></span><br><span class="language-javascript"><span class="language-xml"><span class="hljs-comment">// 触发文件选择</span></span></span><br><span class="language-javascript"><span class="language-xml"><span class="hljs-keyword">const</span> <span class="hljs-title function_">triggerFileSelect</span> = (<span class="hljs-params"></span>) =&gt; fileInput.<span class="hljs-property">value</span>?.<span class="hljs-title function_">click</span>()</span></span><br><span class="language-javascript"><span class="language-xml"></span></span><br><span class="language-javascript"><span class="language-xml"><span class="hljs-comment">// 处理文件读取与渲染</span></span></span><br><span class="language-javascript"><span class="language-xml"><span class="hljs-keyword">const</span> <span class="hljs-title function_">handleFileChange</span> = (<span class="hljs-params">event: Event</span>) =&gt; &#123;</span></span><br><span class="language-javascript"><span class="language-xml">  <span class="hljs-keyword">const</span> target = event.<span class="hljs-property">target</span> <span class="hljs-keyword">as</span> <span class="hljs-title class_">HTMLInputElement</span></span></span><br><span class="language-javascript"><span class="language-xml">  <span class="hljs-keyword">const</span> file = target.<span class="hljs-property">files</span>?.[<span class="hljs-number">0</span>]</span></span><br><span class="language-javascript"><span class="language-xml">  <span class="hljs-keyword">if</span> (!file) <span class="hljs-keyword">return</span></span></span><br><span class="language-javascript"><span class="language-xml"></span></span><br><span class="language-javascript"><span class="language-xml">  <span class="hljs-keyword">const</span> reader = <span class="hljs-keyword">new</span> <span class="hljs-title class_">FileReader</span>()</span></span><br><span class="language-javascript"><span class="language-xml">  reader.<span class="hljs-property">onload</span> = <span class="hljs-function">(<span class="hljs-params">e</span>) =&gt;</span> &#123;</span></span><br><span class="language-javascript"><span class="language-xml">    <span class="hljs-keyword">try</span> &#123;</span></span><br><span class="language-javascript"><span class="language-xml">      <span class="hljs-keyword">let</span> text = e.<span class="hljs-property">target</span>?.<span class="hljs-property">result</span> <span class="hljs-keyword">as</span> string</span></span><br><span class="language-javascript"><span class="language-xml">      <span class="hljs-comment">// 简单的脏数据清洗（针对你之前遇到的 time_location 问题）</span></span></span><br><span class="language-javascript"><span class="language-xml">      <span class="hljs-keyword">if</span> (text.<span class="hljs-title function_">includes</span>(<span class="hljs-string">&#x27;&lt;time_location&gt;&#x27;</span>)) &#123;</span></span><br><span class="language-javascript"><span class="language-xml">        text = text.<span class="hljs-title function_">split</span>(<span class="hljs-string">&#x27;&lt;time_location&gt;&#x27;</span>)[<span class="hljs-number">0</span>].<span class="hljs-title function_">trim</span>()</span></span><br><span class="language-javascript"><span class="language-xml">        <span class="hljs-keyword">if</span> (text.<span class="hljs-title function_">endsWith</span>(<span class="hljs-string">&#x27;,&#x27;</span>)) text = text.<span class="hljs-title function_">slice</span>(<span class="hljs-number">0</span>, -<span class="hljs-number">1</span>)</span></span><br><span class="language-javascript"><span class="language-xml">      &#125;</span></span><br><span class="language-javascript"><span class="language-xml"></span></span><br><span class="language-javascript"><span class="language-xml">      <span class="hljs-keyword">const</span> data = <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">parse</span>(text)</span></span><br><span class="language-javascript"><span class="language-xml">      <span class="hljs-keyword">if</span> (!<span class="hljs-title class_">Array</span>.<span class="hljs-title function_">isArray</span>(data)) <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(<span class="hljs-string">&#x27;JSON格式错误&#x27;</span>)</span></span><br><span class="language-javascript"><span class="language-xml"></span></span><br><span class="language-javascript"><span class="language-xml">      <span class="hljs-title function_">renderDynamicFlight</span>(data)</span></span><br><span class="language-javascript"><span class="language-xml">      </span></span><br><span class="language-javascript"><span class="language-xml">      isDataLoaded.<span class="hljs-property">value</span> = <span class="hljs-literal">true</span></span></span><br><span class="language-javascript"><span class="language-xml">      isPlaying.<span class="hljs-property">value</span> = <span class="hljs-literal">true</span></span></span><br><span class="language-javascript"><span class="language-xml">      viewer!.<span class="hljs-property">clock</span>.<span class="hljs-property">shouldAnimate</span> = <span class="hljs-literal">true</span></span></span><br><span class="language-javascript"><span class="language-xml">    &#125; <span class="hljs-keyword">catch</span> (error) &#123;</span></span><br><span class="language-javascript"><span class="language-xml">      <span class="hljs-title function_">alert</span>(<span class="hljs-string">`解析失败: <span class="hljs-subst">$&#123;error.message&#125;</span>`</span>)</span></span><br><span class="language-javascript"><span class="language-xml">    &#125; <span class="hljs-keyword">finally</span> &#123;</span></span><br><span class="language-javascript"><span class="language-xml">      <span class="hljs-keyword">if</span> (fileInput.<span class="hljs-property">value</span>) fileInput.<span class="hljs-property">value</span>.<span class="hljs-property">value</span> = <span class="hljs-string">&#x27;&#x27;</span></span></span><br><span class="language-javascript"><span class="language-xml">    &#125;</span></span><br><span class="language-javascript"><span class="language-xml">  &#125;</span></span><br><span class="language-javascript"><span class="language-xml">  reader.<span class="hljs-title function_">readAsText</span>(file)</span></span><br><span class="language-javascript"><span class="language-xml">&#125;</span></span><br><span class="language-javascript"><span class="language-xml"></span></span><br><span class="language-javascript"><span class="language-xml"><span class="hljs-comment">// 核心：渲染带时间系统的动态飞行</span></span></span><br><span class="language-javascript"><span class="language-xml"><span class="hljs-keyword">const</span> <span class="hljs-title function_">renderDynamicFlight</span> = (<span class="hljs-params">data: any[]</span>) =&gt; &#123;</span></span><br><span class="language-javascript"><span class="language-xml">  <span class="hljs-keyword">if</span> (!viewer) <span class="hljs-keyword">return</span></span></span><br><span class="language-javascript"><span class="language-xml">  </span></span><br><span class="language-javascript"><span class="language-xml">  <span class="hljs-comment">// 如果已有模型，先移除旧的</span></span></span><br><span class="language-javascript"><span class="language-xml">  <span class="hljs-keyword">if</span> (droneEntity) viewer.<span class="hljs-property">entities</span>.<span class="hljs-title function_">remove</span>(droneEntity)</span></span><br><span class="language-javascript"><span class="language-xml"></span></span><br><span class="language-javascript"><span class="language-xml">  <span class="hljs-comment">// 1. 设置时间轴范围</span></span></span><br><span class="language-javascript"><span class="language-xml">  <span class="hljs-keyword">const</span> startTime = <span class="hljs-title class_">Cesium</span>.<span class="hljs-property">JulianDate</span>.<span class="hljs-title function_">fromIso8601</span>(data[<span class="hljs-number">0</span>].<span class="hljs-property">raw_datetime</span>.<span class="hljs-title function_">replace</span>(<span class="hljs-string">&#x27; &#x27;</span>, <span class="hljs-string">&#x27;T&#x27;</span>))</span></span><br><span class="language-javascript"><span class="language-xml">  <span class="hljs-keyword">const</span> stopTime = <span class="hljs-title class_">Cesium</span>.<span class="hljs-property">JulianDate</span>.<span class="hljs-title function_">fromIso8601</span>(data[data.<span class="hljs-property">length</span> - <span class="hljs-number">1</span>].<span class="hljs-property">raw_datetime</span>.<span class="hljs-title function_">replace</span>(<span class="hljs-string">&#x27; &#x27;</span>, <span class="hljs-string">&#x27;T&#x27;</span>))</span></span><br><span class="language-javascript"><span class="language-xml">  </span></span><br><span class="language-javascript"><span class="language-xml">  viewer.<span class="hljs-property">clock</span>.<span class="hljs-property">startTime</span> = startTime.<span class="hljs-title function_">clone</span>()</span></span><br><span class="language-javascript"><span class="language-xml">  viewer.<span class="hljs-property">clock</span>.<span class="hljs-property">stopTime</span> = stopTime.<span class="hljs-title function_">clone</span>()</span></span><br><span class="language-javascript"><span class="language-xml">  viewer.<span class="hljs-property">clock</span>.<span class="hljs-property">currentTime</span> = startTime.<span class="hljs-title function_">clone</span>()</span></span><br><span class="language-javascript"><span class="language-xml">  viewer.<span class="hljs-property">clock</span>.<span class="hljs-property">clockRange</span> = <span class="hljs-title class_">Cesium</span>.<span class="hljs-property">ClockRange</span>.<span class="hljs-property">CLAMPED</span></span></span><br><span class="language-javascript"><span class="language-xml">  viewer.<span class="hljs-property">clock</span>.<span class="hljs-property">multiplier</span> = speedMultiplier.<span class="hljs-property">value</span></span></span><br><span class="language-javascript"><span class="language-xml"></span></span><br><span class="language-javascript"><span class="language-xml">  <span class="hljs-comment">// 2. 创建带时间插值的【位置】属性</span></span></span><br><span class="language-javascript"><span class="language-xml">  <span class="hljs-keyword">const</span> positionProperty = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Cesium</span>.<span class="hljs-title class_">SampledPositionProperty</span>()</span></span><br><span class="language-javascript"><span class="language-xml">  <span class="hljs-comment">// 3. 创建带时间插值的【姿态(朝向)】属性 (核心修改点！)</span></span></span><br><span class="language-javascript"><span class="language-xml">  <span class="hljs-keyword">const</span> orientationProperty = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Cesium</span>.<span class="hljs-title class_">SampledProperty</span>(<span class="hljs-title class_">Cesium</span>.<span class="hljs-property">Quaternion</span>)</span></span><br><span class="language-javascript"><span class="language-xml">  </span></span><br><span class="language-javascript"><span class="language-xml">  <span class="hljs-keyword">const</span> <span class="hljs-attr">staticPositions</span>: <span class="hljs-title class_">Cesium</span>.<span class="hljs-property">Cartesian3</span>[] = []</span></span><br><span class="language-javascript"><span class="language-xml"></span></span><br><span class="language-javascript"><span class="language-xml">  data.<span class="hljs-title function_">forEach</span>(<span class="hljs-function"><span class="hljs-params">item</span> =&gt;</span> &#123;</span></span><br><span class="language-javascript"><span class="language-xml">    <span class="hljs-keyword">const</span> time = <span class="hljs-title class_">Cesium</span>.<span class="hljs-property">JulianDate</span>.<span class="hljs-title function_">fromIso8601</span>(item.<span class="hljs-property">raw_datetime</span>.<span class="hljs-title function_">replace</span>(<span class="hljs-string">&#x27; &#x27;</span>, <span class="hljs-string">&#x27;T&#x27;</span>))</span></span><br><span class="language-javascript"><span class="language-xml">    </span></span><br><span class="language-javascript"><span class="language-xml">    <span class="hljs-comment">// --- 处理位置 ---</span></span></span><br><span class="language-javascript"><span class="language-xml">    <span class="hljs-keyword">const</span> position = <span class="hljs-title class_">Cesium</span>.<span class="hljs-property">Cartesian3</span>.<span class="hljs-title function_">fromDegrees</span>(item.<span class="hljs-property">longitude</span>, item.<span class="hljs-property">latitude</span>, (item.<span class="hljs-property">abs_alt</span> || <span class="hljs-number">0</span>) + <span class="hljs-number">50</span>)</span></span><br><span class="language-javascript"><span class="language-xml">    positionProperty.<span class="hljs-title function_">addSample</span>(time, position)</span></span><br><span class="language-javascript"><span class="language-xml">    staticPositions.<span class="hljs-title function_">push</span>(position)</span></span><br><span class="language-javascript"><span class="language-xml"></span></span><br><span class="language-javascript"><span class="language-xml">    <span class="hljs-comment">// --- 处理姿态 (直接使用 JSON 中的 gb_yaw/pitch/roll) ---</span></span></span><br><span class="language-javascript"><span class="language-xml">    <span class="hljs-comment">// 注意：Cesium 的 HeadingPitchRoll 需要弧度制，且顺序是 Heading(Yaw), Pitch, Roll</span></span></span><br><span class="language-javascript"><span class="language-xml">    <span class="hljs-keyword">const</span> heading = <span class="hljs-title class_">Cesium</span>.<span class="hljs-property">Math</span>.<span class="hljs-title function_">toRadians</span>(item.<span class="hljs-property">gb_yaw</span>-<span class="hljs-number">90</span> || <span class="hljs-number">0</span>)</span></span><br><span class="language-javascript"><span class="language-xml">    <span class="hljs-keyword">const</span> pitch = <span class="hljs-title class_">Cesium</span>.<span class="hljs-property">Math</span>.<span class="hljs-title function_">toRadians</span>(item.<span class="hljs-property">gb_pitch</span> || <span class="hljs-number">0</span>)</span></span><br><span class="language-javascript"><span class="language-xml">    <span class="hljs-keyword">const</span> roll = <span class="hljs-title class_">Cesium</span>.<span class="hljs-property">Math</span>.<span class="hljs-title function_">toRadians</span>(item.<span class="hljs-property">gb_roll</span> || <span class="hljs-number">0</span>)</span></span><br><span class="language-javascript"><span class="language-xml">    </span></span><br><span class="language-javascript"><span class="language-xml">    <span class="hljs-comment">// 将欧拉角转换为四元数</span></span></span><br><span class="language-javascript"><span class="language-xml">    <span class="hljs-keyword">const</span> hpr = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Cesium</span>.<span class="hljs-title class_">HeadingPitchRoll</span>(heading, pitch, roll)</span></span><br><span class="language-javascript"><span class="language-xml">    <span class="hljs-keyword">const</span> quaternion = <span class="hljs-title class_">Cesium</span>.<span class="hljs-property">Transforms</span>.<span class="hljs-title function_">headingPitchRollQuaternion</span>(position, hpr)</span></span><br><span class="language-javascript"><span class="language-xml">    </span></span><br><span class="language-javascript"><span class="language-xml">    <span class="hljs-comment">// 将带有时间戳的姿态加入采样属性</span></span></span><br><span class="language-javascript"><span class="language-xml">    orientationProperty.<span class="hljs-title function_">addSample</span>(time, quaternion)</span></span><br><span class="language-javascript"><span class="language-xml">  &#125;)</span></span><br><span class="language-javascript"><span class="language-xml"></span></span><br><span class="language-javascript"><span class="language-xml">  <span class="hljs-comment">// 4. 添加无人机模型实体</span></span></span><br><span class="language-javascript"><span class="language-xml">  droneEntity = viewer.<span class="hljs-property">entities</span>.<span class="hljs-title function_">add</span>(&#123;</span></span><br><span class="language-javascript"><span class="language-xml">    <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;DJI Drone&quot;</span>,</span></span><br><span class="language-javascript"><span class="language-xml">    <span class="hljs-attr">position</span>: positionProperty,</span></span><br><span class="language-javascript"><span class="language-xml">    <span class="hljs-attr">orientation</span>: orientationProperty, <span class="hljs-comment">// 👈 使用我们手动计算好的姿态属性，替代 VelocityOrientationProperty</span></span></span><br><span class="language-javascript"><span class="language-xml">    <span class="hljs-attr">model</span>: &#123;</span></span><br><span class="language-javascript"><span class="language-xml">      <span class="hljs-attr">uri</span>: <span class="hljs-string">&#x27;/plane.glb&#x27;</span>, </span></span><br><span class="language-javascript"><span class="language-xml">      <span class="hljs-attr">minimumPixelSize</span>: <span class="hljs-number">64</span>,</span></span><br><span class="language-javascript"><span class="language-xml">      <span class="hljs-attr">scale</span>: <span class="hljs-number">2.0</span></span></span><br><span class="language-javascript"><span class="language-xml">      <span class="hljs-comment">// 💡 进阶提示：如果飞机朝向依然不对（比如机头朝上或朝侧面），</span></span></span><br><span class="language-javascript"><span class="language-xml">      <span class="hljs-comment">// 说明 plane.glb 建模时的默认朝向和 Cesium 的标准不一致。</span></span></span><br><span class="language-javascript"><span class="language-xml">      <span class="hljs-comment">// 你可能需要在 ModelGraphics 里加一个 orientation: Cesium.Matrix3.fromRotationX(Cesium.Math.toRadians(90)) 之类的修正矩阵。</span></span></span><br><span class="language-javascript"><span class="language-xml">    &#125;,</span></span><br><span class="language-javascript"><span class="language-xml">    <span class="hljs-attr">path</span>: &#123;</span></span><br><span class="language-javascript"><span class="language-xml">      <span class="hljs-attr">resolution</span>: <span class="hljs-number">1</span>,</span></span><br><span class="language-javascript"><span class="language-xml">      <span class="hljs-attr">material</span>: <span class="hljs-keyword">new</span> <span class="hljs-title class_">Cesium</span>.<span class="hljs-title class_">PolylineGlowMaterialProperty</span>(&#123; <span class="hljs-attr">glowPower</span>: <span class="hljs-number">0.1</span>, <span class="hljs-attr">color</span>: <span class="hljs-title class_">Cesium</span>.<span class="hljs-property">Color</span>.<span class="hljs-property">CYAN</span> &#125;),</span></span><br><span class="language-javascript"><span class="language-xml">      <span class="hljs-attr">width</span>: <span class="hljs-number">5</span>,</span></span><br><span class="language-javascript"><span class="language-xml">      <span class="hljs-attr">trailTime</span>: <span class="hljs-number">60</span></span></span><br><span class="language-javascript"><span class="language-xml">    &#125;</span></span><br><span class="language-javascript"><span class="language-xml">  &#125;)</span></span><br><span class="language-javascript"><span class="language-xml"></span></span><br><span class="language-javascript"><span class="language-xml">  <span class="hljs-comment">// 绘制全程静态红线</span></span></span><br><span class="language-javascript"><span class="language-xml">  viewer.<span class="hljs-property">entities</span>.<span class="hljs-title function_">add</span>(&#123;</span></span><br><span class="language-javascript"><span class="language-xml">    <span class="hljs-attr">polyline</span>: &#123; <span class="hljs-attr">positions</span>: staticPositions, <span class="hljs-attr">width</span>: <span class="hljs-number">2</span>, <span class="hljs-attr">material</span>: <span class="hljs-title class_">Cesium</span>.<span class="hljs-property">Color</span>.<span class="hljs-property">RED</span>.<span class="hljs-title function_">withAlpha</span>(<span class="hljs-number">0.5</span>) &#125;</span></span><br><span class="language-javascript"><span class="language-xml">  &#125;)</span></span><br><span class="language-javascript"><span class="language-xml"></span></span><br><span class="language-javascript"><span class="language-xml">  <span class="hljs-comment">// 视角锁定跟随</span></span></span><br><span class="language-javascript"><span class="language-xml">  viewer.<span class="hljs-property">trackedEntity</span> = droneEntity</span></span><br><span class="language-javascript"><span class="language-xml">&#125;</span></span><br><span class="language-javascript"><span class="language-xml"></span></span><br><span class="language-javascript"><span class="language-xml"><span class="hljs-comment">// --- 界面控制逻辑 ---</span></span></span><br><span class="language-javascript"><span class="language-xml"></span></span><br><span class="language-javascript"><span class="language-xml"><span class="hljs-comment">// 播放 / 暂停</span></span></span><br><span class="language-javascript"><span class="language-xml"><span class="hljs-keyword">const</span> <span class="hljs-title function_">togglePlay</span> = (<span class="hljs-params"></span>) =&gt; &#123;</span></span><br><span class="language-javascript"><span class="language-xml">  <span class="hljs-keyword">if</span> (!viewer) <span class="hljs-keyword">return</span></span></span><br><span class="language-javascript"><span class="language-xml">  isPlaying.<span class="hljs-property">value</span> = !isPlaying.<span class="hljs-property">value</span></span></span><br><span class="language-javascript"><span class="language-xml">  viewer.<span class="hljs-property">clock</span>.<span class="hljs-property">shouldAnimate</span> = isPlaying.<span class="hljs-property">value</span></span></span><br><span class="language-javascript"><span class="language-xml">&#125;</span></span><br><span class="language-javascript"><span class="language-xml"></span></span><br><span class="language-javascript"><span class="language-xml"><span class="hljs-comment">// 重置（回到起点并暂停）</span></span></span><br><span class="language-javascript"><span class="language-xml"><span class="hljs-keyword">const</span> <span class="hljs-title function_">resetFlight</span> = (<span class="hljs-params"></span>) =&gt; &#123;</span></span><br><span class="language-javascript"><span class="language-xml">  <span class="hljs-keyword">if</span> (!viewer) <span class="hljs-keyword">return</span></span></span><br><span class="language-javascript"><span class="language-xml">  viewer.<span class="hljs-property">clock</span>.<span class="hljs-property">currentTime</span> = viewer.<span class="hljs-property">clock</span>.<span class="hljs-property">startTime</span>.<span class="hljs-title function_">clone</span>()</span></span><br><span class="language-javascript"><span class="language-xml">  viewer.<span class="hljs-property">clock</span>.<span class="hljs-property">shouldAnimate</span> = <span class="hljs-literal">false</span></span></span><br><span class="language-javascript"><span class="language-xml">  isPlaying.<span class="hljs-property">value</span> = <span class="hljs-literal">false</span></span></span><br><span class="language-javascript"><span class="language-xml">&#125;</span></span><br><span class="language-javascript"><span class="language-xml"></span></span><br><span class="language-javascript"><span class="language-xml"><span class="hljs-comment">// 更新播放速度</span></span></span><br><span class="language-javascript"><span class="language-xml"><span class="hljs-keyword">const</span> <span class="hljs-title function_">updateSpeed</span> = (<span class="hljs-params"></span>) =&gt; &#123;</span></span><br><span class="language-javascript"><span class="language-xml">  <span class="hljs-keyword">if</span> (viewer) viewer.<span class="hljs-property">clock</span>.<span class="hljs-property">multiplier</span> = speedMultiplier.<span class="hljs-property">value</span></span></span><br><span class="language-javascript"><span class="language-xml">&#125;</span></span><br><span class="language-javascript"><span class="language-xml"></span></span><br><span class="language-javascript"><span class="language-xml"><span class="hljs-title function_">onUnmounted</span>(<span class="hljs-function">() =&gt;</span> &#123;</span></span><br><span class="language-javascript"><span class="language-xml">  <span class="hljs-keyword">if</span> (viewer) viewer.<span class="hljs-title function_">destroy</span>()</span></span><br><span class="language-javascript"><span class="language-xml">&#125;)</span></span><br><span class="language-javascript"><span class="language-xml"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></span><br></code></pre></td></tr></table></figure>
+
+<h2 id="视频同步"><a href="#视频同步" class="headerlink" title="视频同步"></a>视频同步</h2><p>视频同步的效果还没做出来，倒是实现了在网页里放视频的效果，但奇怪的是视频一旦开始播放，飞机的航线就无法继续播放了，这俩没法同步。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">template</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> </span><br><span class="hljs-tag">    <span class="hljs-attr">ref</span>=<span class="hljs-string">&quot;videoWindow&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;draggable-video-window&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">:style</span>=<span class="hljs-string">&quot;&#123; width: windowWidth + &#x27;px&#x27;, height: windowHeight + &#x27;px&#x27;, left: windowLeft + &#x27;px&#x27;, top: windowTop + &#x27;px&#x27; &#125;&quot;</span></span><br><span class="hljs-tag">  &gt;</span><br>    <span class="hljs-comment">&lt;!-- 顶部标题栏 --&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;window-header&quot;</span> @<span class="hljs-attr">mousedown</span>=<span class="hljs-string">&quot;startDrag&quot;</span>&gt;</span><br>      <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>无人机实时画面<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span><br>      <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;close-btn&quot;</span> @<span class="hljs-attr">click</span>=<span class="hljs-string">&quot;handleClose&quot;</span>&gt;</span>×<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>    <br>    <span class="hljs-comment">&lt;!-- 视频主体 --&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">video</span> <span class="hljs-attr">ref</span>=<span class="hljs-string">&quot;videoElement&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;video-content&quot;</span> <span class="hljs-attr">muted</span> <span class="hljs-attr">playsinline</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">video</span>&gt;</span><br>    <br>    <span class="hljs-comment">&lt;!-- 右下角缩放手柄 --&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;resize-handle&quot;</span> @<span class="hljs-attr">mousedown</span>=<span class="hljs-string">&quot;startResize&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span><br><br><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">setup</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">&quot;ts&quot;</span>&gt;</span><span class="language-javascript"></span><br><span class="language-javascript"><span class="hljs-keyword">import</span> &#123; ref, onUnmounted &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;vue&#x27;</span></span><br><span class="language-javascript"><span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> <span class="hljs-title class_">Cesium</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;cesium&#x27;</span></span><br><span class="language-javascript"></span><br><span class="language-javascript"><span class="hljs-comment">// 接收父组件传入的 Cesium Viewer 实例</span></span><br><span class="language-javascript"><span class="hljs-keyword">const</span> props = defineProps&lt;&#123;</span><br><span class="language-javascript">  <span class="hljs-attr">viewer</span>: <span class="hljs-title class_">Cesium</span>.<span class="hljs-property">Viewer</span> | <span class="hljs-literal">null</span></span><br><span class="language-javascript">&#125;&gt;()</span><br><span class="language-javascript"><span class="hljs-comment">// 定义关闭事件，告诉父组件销毁自己</span></span><br><span class="language-javascript"><span class="hljs-keyword">const</span> emit = <span class="hljs-title function_">defineEmits</span>([<span class="hljs-string">&#x27;close&#x27;</span>])</span><br><span class="language-javascript"></span><br><span class="language-javascript"><span class="hljs-keyword">const</span> videoElement = ref&lt;<span class="hljs-title class_">HTMLVideoElement</span> | <span class="hljs-literal">null</span>&gt;(<span class="hljs-literal">null</span>)</span><br><span class="language-javascript"><span class="hljs-keyword">const</span> videoWindow = ref&lt;<span class="hljs-title class_">HTMLDivElement</span> | <span class="hljs-literal">null</span>&gt;(<span class="hljs-literal">null</span>)</span><br><span class="language-javascript"></span><br><span class="language-javascript"><span class="hljs-comment">// 窗口位置与大小</span></span><br><span class="language-javascript"><span class="hljs-keyword">const</span> windowLeft = <span class="hljs-title function_">ref</span>(<span class="hljs-number">50</span>)</span><br><span class="language-javascript"><span class="hljs-keyword">const</span> windowTop = <span class="hljs-title function_">ref</span>(<span class="hljs-number">100</span>)</span><br><span class="language-javascript"><span class="hljs-keyword">const</span> windowWidth = <span class="hljs-title function_">ref</span>(<span class="hljs-number">320</span>)</span><br><span class="language-javascript"><span class="hljs-keyword">const</span> windowHeight = <span class="hljs-title function_">ref</span>(<span class="hljs-number">240</span>)</span><br><span class="language-javascript"></span><br><span class="language-javascript"><span class="hljs-comment">// 拖拽与缩放相关变量</span></span><br><span class="language-javascript"><span class="hljs-keyword">let</span> isDragging = <span class="hljs-literal">false</span>, dragStartX = <span class="hljs-number">0</span>, dragStartY = <span class="hljs-number">0</span>, initialLeft = <span class="hljs-number">0</span>, initialTop = <span class="hljs-number">0</span></span><br><span class="language-javascript"><span class="hljs-keyword">let</span> isResizing = <span class="hljs-literal">false</span>, resizeStartX = <span class="hljs-number">0</span>, resizeStartY = <span class="hljs-number">0</span>, initialWidth = <span class="hljs-number">0</span>, initialHeight = <span class="hljs-number">0</span></span><br><span class="language-javascript"><span class="hljs-keyword">let</span> <span class="hljs-attr">animationFrameId</span>: number | <span class="hljs-literal">null</span> = <span class="hljs-literal">null</span></span><br><span class="language-javascript"></span><br><span class="language-javascript"><span class="hljs-comment">// 暴露给父组件的方法：加载并播放视频</span></span><br><span class="language-javascript"><span class="hljs-keyword">const</span> <span class="hljs-title function_">loadVideo</span> = (<span class="hljs-params">file: File</span>) =&gt; &#123;</span><br><span class="language-javascript">  <span class="hljs-keyword">if</span> (!videoElement.<span class="hljs-property">value</span>) <span class="hljs-keyword">return</span></span><br><span class="language-javascript">  <span class="hljs-keyword">const</span> videoURL = <span class="hljs-variable constant_">URL</span>.<span class="hljs-title function_">createObjectURL</span>(file)</span><br><span class="language-javascript">  videoElement.<span class="hljs-property">value</span>.<span class="hljs-property">src</span> = videoURL</span><br><span class="language-javascript">  videoElement.<span class="hljs-property">value</span>.<span class="hljs-property">onloadeddata</span> = <span class="hljs-function">() =&gt;</span> &#123;</span><br><span class="language-javascript">    videoElement.<span class="hljs-property">value</span>?.<span class="hljs-title function_">play</span>()</span><br><span class="language-javascript">    <span class="hljs-title function_">startSyncLoop</span>() <span class="hljs-comment">// 视频加载好后启动同步循环</span></span><br><span class="language-javascript">  &#125;</span><br><span class="language-javascript">&#125;</span><br><span class="language-javascript"></span><br><span class="language-javascript"><span class="hljs-comment">// 核心：视频与 Cesium 时钟同步</span></span><br><span class="language-javascript"><span class="hljs-keyword">const</span> <span class="hljs-title function_">startSyncLoop</span> = (<span class="hljs-params"></span>) =&gt; &#123;</span><br><span class="language-javascript">  <span class="hljs-keyword">if</span> (!props.<span class="hljs-property">viewer</span> || !videoElement.<span class="hljs-property">value</span>) <span class="hljs-keyword">return</span></span><br><span class="language-javascript">  </span><br><span class="language-javascript">  <span class="hljs-keyword">const</span> <span class="hljs-title function_">sync</span> = (<span class="hljs-params"></span>) =&gt; &#123;</span><br><span class="language-javascript">    <span class="hljs-comment">// 只有当视频在播放时，才去同步时间</span></span><br><span class="language-javascript">    <span class="hljs-keyword">if</span> (videoElement.<span class="hljs-property">value</span> &amp;&amp; !videoElement.<span class="hljs-property">value</span>.<span class="hljs-property">paused</span> &amp;&amp; !videoElement.<span class="hljs-property">value</span>.<span class="hljs-property">ended</span>) &#123;</span><br><span class="language-javascript">      <span class="hljs-keyword">const</span> videoTime = <span class="hljs-title class_">Cesium</span>.<span class="hljs-property">JulianDate</span>.<span class="hljs-title function_">fromIso8601</span>(</span><br><span class="language-javascript">        <span class="hljs-keyword">new</span> <span class="hljs-title class_">Date</span>(videoElement.<span class="hljs-property">value</span>.<span class="hljs-property">currentTime</span> * <span class="hljs-number">1000</span>).<span class="hljs-title function_">toISOString</span>()</span><br><span class="language-javascript">      )</span><br><span class="language-javascript">      props.<span class="hljs-property">viewer</span>!.<span class="hljs-property">clock</span>.<span class="hljs-property">currentTime</span> = videoTime</span><br><span class="language-javascript">    &#125;</span><br><span class="language-javascript">    animationFrameId = <span class="hljs-title function_">requestAnimationFrame</span>(sync)</span><br><span class="language-javascript">  &#125;</span><br><span class="language-javascript">  <span class="hljs-title function_">sync</span>()</span><br><span class="language-javascript">&#125;</span><br><span class="language-javascript"></span><br><span class="language-javascript"><span class="hljs-keyword">const</span> <span class="hljs-title function_">handleClose</span> = (<span class="hljs-params"></span>) =&gt; &#123;</span><br><span class="language-javascript">  <span class="hljs-comment">// 关闭前彻底清理定时器和视频资源</span></span><br><span class="language-javascript">  <span class="hljs-keyword">if</span> (animationFrameId) <span class="hljs-title function_">cancelAnimationFrame</span>(animationFrameId)</span><br><span class="language-javascript">  <span class="hljs-keyword">if</span> (videoElement.<span class="hljs-property">value</span>) &#123;</span><br><span class="language-javascript">    videoElement.<span class="hljs-property">value</span>.<span class="hljs-title function_">pause</span>()</span><br><span class="language-javascript">    videoElement.<span class="hljs-property">value</span>.<span class="hljs-property">src</span> = <span class="hljs-string">&#x27;&#x27;</span></span><br><span class="language-javascript">  &#125;</span><br><span class="language-javascript">  <span class="hljs-title function_">emit</span>(<span class="hljs-string">&#x27;close&#x27;</span>) <span class="hljs-comment">// 通知父组件</span></span><br><span class="language-javascript">&#125;</span><br><span class="language-javascript"></span><br><span class="language-javascript"><span class="hljs-comment">// --- 拖拽与缩放逻辑 (保持原样) ---</span></span><br><span class="language-javascript"><span class="hljs-keyword">const</span> <span class="hljs-title function_">startDrag</span> = (<span class="hljs-params">e: MouseEvent</span>) =&gt; &#123;</span><br><span class="language-javascript">  isDragging = <span class="hljs-literal">true</span>; dragStartX = e.<span class="hljs-property">clientX</span>; dragStartY = e.<span class="hljs-property">clientY</span></span><br><span class="language-javascript">  initialLeft = windowLeft.<span class="hljs-property">value</span>; initialTop = windowTop.<span class="hljs-property">value</span></span><br><span class="language-javascript">  <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">&#x27;mousemove&#x27;</span>, onDrag); <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">&#x27;mouseup&#x27;</span>, stopDrag)</span><br><span class="language-javascript">&#125;</span><br><span class="language-javascript"><span class="hljs-keyword">const</span> <span class="hljs-title function_">onDrag</span> = (<span class="hljs-params">e: MouseEvent</span>) =&gt; &#123;</span><br><span class="language-javascript">  <span class="hljs-keyword">if</span> (!isDragging) <span class="hljs-keyword">return</span></span><br><span class="language-javascript">  windowLeft.<span class="hljs-property">value</span> = initialLeft + (e.<span class="hljs-property">clientX</span> - dragStartX)</span><br><span class="language-javascript">  windowTop.<span class="hljs-property">value</span> = initialTop + (e.<span class="hljs-property">clientY</span> - dragStartY)</span><br><span class="language-javascript">&#125;</span><br><span class="language-javascript"><span class="hljs-keyword">const</span> <span class="hljs-title function_">stopDrag</span> = (<span class="hljs-params"></span>) =&gt; &#123; isDragging = <span class="hljs-literal">false</span>; <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">removeEventListener</span>(<span class="hljs-string">&#x27;mousemove&#x27;</span>, onDrag); <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">removeEventListener</span>(<span class="hljs-string">&#x27;mouseup&#x27;</span>, stopDrag) &#125;</span><br><span class="language-javascript"></span><br><span class="language-javascript"><span class="hljs-keyword">const</span> <span class="hljs-title function_">startResize</span> = (<span class="hljs-params">e: MouseEvent</span>) =&gt; &#123;</span><br><span class="language-javascript">  e.<span class="hljs-title function_">stopPropagation</span>(); isResizing = <span class="hljs-literal">true</span></span><br><span class="language-javascript">  resizeStartX = e.<span class="hljs-property">clientX</span>; resizeStartY = e.<span class="hljs-property">clientY</span></span><br><span class="language-javascript">  initialWidth = windowWidth.<span class="hljs-property">value</span>; initialHeight = windowHeight.<span class="hljs-property">value</span></span><br><span class="language-javascript">  <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">&#x27;mousemove&#x27;</span>, onResize); <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">&#x27;mouseup&#x27;</span>, stopResize)</span><br><span class="language-javascript">&#125;</span><br><span class="language-javascript"><span class="hljs-keyword">const</span> <span class="hljs-title function_">onResize</span> = (<span class="hljs-params">e: MouseEvent</span>) =&gt; &#123;</span><br><span class="language-javascript">  <span class="hljs-keyword">if</span> (!isResizing) <span class="hljs-keyword">return</span></span><br><span class="language-javascript">  windowWidth.<span class="hljs-property">value</span> = <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">max</span>(<span class="hljs-number">200</span>, initialWidth + (e.<span class="hljs-property">clientX</span> - resizeStartX))</span><br><span class="language-javascript">  windowHeight.<span class="hljs-property">value</span> = <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">max</span>(<span class="hljs-number">150</span>, initialHeight + (e.<span class="hljs-property">clientY</span> - resizeStartY))</span><br><span class="language-javascript">&#125;</span><br><span class="language-javascript"><span class="hljs-keyword">const</span> <span class="hljs-title function_">stopResize</span> = (<span class="hljs-params"></span>) =&gt; &#123; isResizing = <span class="hljs-literal">false</span>; <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">removeEventListener</span>(<span class="hljs-string">&#x27;mousemove&#x27;</span>, onResize); <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">removeEventListener</span>(<span class="hljs-string">&#x27;mouseup&#x27;</span>, stopResize) &#125;</span><br><span class="language-javascript"></span><br><span class="language-javascript"><span class="hljs-comment">// 组件销毁时（比如父组件 v-if=false），确保清理所有残留</span></span><br><span class="language-javascript"><span class="hljs-title function_">onUnmounted</span>(<span class="hljs-function">() =&gt;</span> &#123;</span><br><span class="language-javascript">  <span class="hljs-keyword">if</span> (animationFrameId) <span class="hljs-title function_">cancelAnimationFrame</span>(animationFrameId)</span><br><span class="language-javascript">  <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">removeEventListener</span>(<span class="hljs-string">&#x27;mousemove&#x27;</span>, onDrag); <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">removeEventListener</span>(<span class="hljs-string">&#x27;mouseup&#x27;</span>, stopDrag)</span><br><span class="language-javascript">  <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">removeEventListener</span>(<span class="hljs-string">&#x27;mousemove&#x27;</span>, onResize); <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">removeEventListener</span>(<span class="hljs-string">&#x27;mouseup&#x27;</span>, stopResize)</span><br><span class="language-javascript">&#125;)</span><br><span class="language-javascript"></span><br><span class="language-javascript"><span class="hljs-comment">// 将 loadVideo 方法暴露出去，供父组件调用</span></span><br><span class="language-javascript"><span class="hljs-title function_">defineExpose</span>(&#123; loadVideo &#125;)</span><br><span class="language-javascript"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span><br><br><span class="hljs-tag">&lt;<span class="hljs-name">style</span> <span class="hljs-attr">scoped</span>&gt;</span><span class="language-css"></span><br><span class="language-css"><span class="hljs-comment">/* 样式保持不变 */</span></span><br><span class="language-css"><span class="hljs-selector-class">.draggable-video-window</span> &#123; <span class="hljs-attribute">position</span>: absolute; <span class="hljs-attribute">z-index</span>: <span class="hljs-number">100</span>; <span class="hljs-attribute">background</span>: <span class="hljs-number">#000</span>; <span class="hljs-attribute">border</span>: <span class="hljs-number">2px</span> solid <span class="hljs-number">#409eff</span>; <span class="hljs-attribute">border-radius</span>: <span class="hljs-number">8px</span>; <span class="hljs-attribute">box-shadow</span>: <span class="hljs-number">0</span> <span class="hljs-number">4px</span> <span class="hljs-number">12px</span> <span class="hljs-built_in">rgba</span>(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0.3</span>); <span class="hljs-attribute">overflow</span>: hidden; <span class="hljs-attribute">display</span>: flex; <span class="hljs-attribute">flex-direction</span>: column; &#125;</span><br><span class="language-css"><span class="hljs-selector-class">.window-header</span> &#123; <span class="hljs-attribute">height</span>: <span class="hljs-number">30px</span>; <span class="hljs-attribute">background</span>: <span class="hljs-number">#409eff</span>; <span class="hljs-attribute">color</span>: white; <span class="hljs-attribute">display</span>: flex; <span class="hljs-attribute">align-items</span>: center; <span class="hljs-attribute">justify-content</span>: space-between; <span class="hljs-attribute">padding</span>: <span class="hljs-number">0</span> <span class="hljs-number">10px</span>; <span class="hljs-attribute">cursor</span>: move; user-select: none; <span class="hljs-attribute">font-size</span>: <span class="hljs-number">12px</span>; &#125;</span><br><span class="language-css"><span class="hljs-selector-class">.close-btn</span> &#123; <span class="hljs-attribute">background</span>: transparent; <span class="hljs-attribute">border</span>: none; <span class="hljs-attribute">color</span>: white; <span class="hljs-attribute">cursor</span>: pointer; <span class="hljs-attribute">font-size</span>: <span class="hljs-number">16px</span>; &#125;</span><br><span class="language-css"><span class="hljs-selector-class">.video-content</span> &#123; <span class="hljs-attribute">flex</span>: <span class="hljs-number">1</span>; <span class="hljs-attribute">width</span>: <span class="hljs-number">100%</span>; <span class="hljs-attribute">object-fit</span>: contain; &#125;</span><br><span class="language-css"><span class="hljs-selector-class">.resize-handle</span> &#123; <span class="hljs-attribute">position</span>: absolute; <span class="hljs-attribute">right</span>: <span class="hljs-number">0</span>; <span class="hljs-attribute">bottom</span>: <span class="hljs-number">0</span>; <span class="hljs-attribute">width</span>: <span class="hljs-number">15px</span>; <span class="hljs-attribute">height</span>: <span class="hljs-number">15px</span>; <span class="hljs-attribute">cursor</span>: nwse-resize; <span class="hljs-attribute">background</span>: <span class="hljs-built_in">linear-gradient</span>(<span class="hljs-number">135deg</span>, transparent <span class="hljs-number">50%</span>, <span class="hljs-number">#409eff</span> <span class="hljs-number">50%</span>); &#125;</span><br><span class="language-css"></span><span class="hljs-tag">&lt;/<span class="hljs-name">style</span>&gt;</span><br></code></pre></td></tr></table></figure>
+<p>显示效果：<br><img src="/2026/05/18/Cesium%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%89%EF%BC%89%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8%E4%B8%8E%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/a843620dea06ee630bd1512a7413d76b.png" srcset="/img/loading.gif" lazyload alt="a843620dea06ee630bd1512a7413d76b.png"></p>
+<p>或许应该从更简单一些的照片开始，或者先做一个从视频中截取照片帧的工具出来。</p>
+<h1 id="参考别人的项目"><a href="#参考别人的项目" class="headerlink" title="参考别人的项目"></a>参考别人的项目</h1><p>博主GIS小丸子的私域社区，优点是确实有一些演示项目和代码，部分思路可以参考。<br>缺点是这个项目的代码根本不做维护，数据路径写死在文件里；Cesium路径用的是网络的，两年过去直接打不开；还有图像拼接的程序总是出问题，一启动拼接就闪退刷新页面；说明书也不写一个，纯纯靠自己摸索；整个社区文章没有几篇，代码也是AI写的一坨，就这知识星球还卖500块，感觉被坑了，最多50差不多。<br><img src="/2026/05/18/Cesium%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%89%EF%BC%89%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8%E4%B8%8E%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/f35de56b7450b84fb22fe4b740d37031.png" srcset="/img/loading.gif" lazyload alt="f35de56b7450b84fb22fe4b740d37031.png"></p>
+<h1 id="AI做程序的弊端"><a href="#AI做程序的弊端" class="headerlink" title="AI做程序的弊端"></a>AI做程序的弊端</h1><p>目前的AI用来做一些简单的函数或者自身可以逻辑闭环的程序，成功率还是比较高的，只要程序的规模不大，修改和测试都相对容易，就算中间缺少了一些环节，AI都能够自己暴力破解过去。但只要代码规模一上去，或者功能一变复杂，涉及到架构设计，AI出错的概率就会暴增，并且最大的问题是难以修改和维护，一旦让AI自己改，那问题可能会越改越多。<br>之前比较成功的开发经历，都是使用了一个非常简单的架构设计，就是线性分支，一个功能只对应一个子版块，子版块对应单独的py模块，模块之间互不干涉，最后用一个主界面程序进行调用。而这些模块都分别用AI初步开发，然后我再手动进行一些调整，尤其是最核心的那部分算法。<br>所以换到网页端程序也是如此，必须首先构建一个合适的文件结构，再去调整各种代码细节。</p>
+<h1 id="WorkBuddy"><a href="#WorkBuddy" class="headerlink" title="WorkBuddy"></a>WorkBuddy</h1><p>周末在网上看到了英雄哥的推广，用WorkBuddy搞了一个网页的音游，于是尝试了一下腾讯的Openclaw，只能说有点厉害，比单纯用对话AI来编程强了不少，可以自己创建任务自己执行，还能直接动文件。<br><img src="/2026/05/18/Cesium%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%89%EF%BC%89%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8%E4%B8%8E%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/6e452c9cdb0ef1c4631bcf1ad873b276.png" srcset="/img/loading.gif" lazyload alt="6e452c9cdb0ef1c4631bcf1ad873b276.png"><br>AI直接帮我设计了一个分层架构，好不好用不知道，看着是真唬人。<br><img src="/2026/05/18/Cesium%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%89%EF%BC%89%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8%E4%B8%8E%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/ce71a5abe1cfc060049d8e377b23d5fe.png" srcset="/img/loading.gif" lazyload alt="ce71a5abe1cfc060049d8e377b23d5fe.png"></p>
+<p>修改了项目结构之后，一次运行成功，并且相机视线也显示出来了，只是方向好像不太对。不过这些细节可以慢慢解决，更重要的问题是，我已经跟不上AI大人的思路了。<br><img src="/2026/05/18/Cesium%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%89%EF%BC%89%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8%E4%B8%8E%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/ac16dab34959cb854c415acc4f2c74f3.png" srcset="/img/loading.gif" lazyload alt="ac16dab34959cb854c415acc4f2c74f3.png"></p>
+<h2 id="新的目录结构设计"><a href="#新的目录结构设计" class="headerlink" title="新的目录结构设计"></a>新的目录结构设计</h2><p>重新梳理一下当前的目录结构：<br>node_modules 调用模块<br>public 静态资源<br>src<br>┗archive 历史垃圾堆文件夹<br>┗assets 图标文件夹<br>┗components<br>        ┗CesiumView.vue 主界面<br>        ┗VideoWindow.vue 视频读取界面<br>┗composables<br>        ┗useFlightPlayer.ts 数据清洗解析<br>┗services<br>        ┗CameraTrackManager.ts 相机跟踪管理器<br>        ┗DroneEnityManager.ts 无人机实体管理<br>        ┗FlightDataParser.ts 飞行数据解析器<br>┗types<br>    ┗drone.ts 接口定义<br>app.vue 程序主入口</p>
+<p>现在文件输入路径：<br>文件输入 → FlightDataParser.parse() → DroneEntityManager.render() → Cesium，每一层只做自己分内的事，改任何一处都不会影响到其他层。<br>到这已经有点长了，后面的内容放在下一篇笔记里。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0/" class="category-chain-item">学习</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E5%BC%80%E5%8F%91/">#开发</a>
+      
+        <a href="/tags/AI/">#AI</a>
+      
+        <a href="/tags/Cesium/">#Cesium</a>
+      
+        <a href="/tags/Node-js/">#Node.js</a>
+      
+        <a href="/tags/json/">#json</a>
+      
+        <a href="/tags/%E6%9E%B6%E6%9E%84/">#架构</a>
+      
+        <a href="/tags/SRT/">#SRT</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Cesium笔记（三）基础入门与架构设计</div>
+      <div>http://kw1649190133.github.io/2026/05/18/Cesium开发笔记（三）基础入门与架构设计/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Kwindy</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>May 18, 2026</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2026/05/19/%E6%97%A5%E8%AE%B0%E6%9C%AC%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91/" title="日记本程序开发">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">日记本程序开发</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/05/15/Cesium%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%EF%BC%89%E5%A4%A7%E7%96%86%E6%97%A0%E4%BA%BA%E6%9C%BASRT%E8%A7%A3%E6%9E%90/" title="Cesium开发笔记（二）大疆无人机SRT解析">
+                        <span class="hidden-mobile">Cesium开发笔记（二）大疆无人机SRT解析</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

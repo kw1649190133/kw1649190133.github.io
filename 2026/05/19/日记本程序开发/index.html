@@ -1,0 +1,678 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=dark>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Kwindy">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="背景我一直想要一个写日记的程序，毕竟总是新建txt然后改日期，非常不方便，更重要的是这样让我非常没有写日记的欲望，缺少了重要的仪式感。在年初曾经尝试开发过，使用我比较熟悉的python+tk界面，用对话式的千问AI来做设计和代码，但实际上效果并不理想。AI对话的上下文有限，用来写一个组件还行，当多个组件结合，并且容易产生冲突的时候，单靠对话AI已经很难处理了，除非开发者自己本身有极强的能力，自己进">
+<meta property="og:type" content="article">
+<meta property="og:title" content="日记本程序开发">
+<meta property="og:url" content="http://kw1649190133.github.io/2026/05/19/%E6%97%A5%E8%AE%B0%E6%9C%AC%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91/index.html">
+<meta property="og:site_name" content="kw&#39;s blog">
+<meta property="og:description" content="背景我一直想要一个写日记的程序，毕竟总是新建txt然后改日期，非常不方便，更重要的是这样让我非常没有写日记的欲望，缺少了重要的仪式感。在年初曾经尝试开发过，使用我比较熟悉的python+tk界面，用对话式的千问AI来做设计和代码，但实际上效果并不理想。AI对话的上下文有限，用来写一个组件还行，当多个组件结合，并且容易产生冲突的时候，单靠对话AI已经很难处理了，除非开发者自己本身有极强的能力，自己进">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/05/19/%E6%97%A5%E8%AE%B0%E6%9C%AC%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91/d13b0ab055febe5c64817e925e1027e9.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/05/19/%E6%97%A5%E8%AE%B0%E6%9C%AC%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91/9919bc5d1bb40b913f3e4350860a0c32.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/05/19/%E6%97%A5%E8%AE%B0%E6%9C%AC%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91/b062ef6bdf308eaaa24c7dd2e50a2b98.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/05/19/%E6%97%A5%E8%AE%B0%E6%9C%AC%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91/79d8f7c58a04604beb0292c493522095.png">
+<meta property="article:published_time" content="2026-05-19T04:28:53.000Z">
+<meta property="article:modified_time" content="2026-05-26T03:28:02.512Z">
+<meta property="article:author" content="Kwindy">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="开发">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="日记">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://kw1649190133.github.io/2026/05/19/%E6%97%A5%E8%AE%B0%E6%9C%AC%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91/d13b0ab055febe5c64817e925e1027e9.png">
+  
+  
+  
+  <title>日记本程序开发 - kw&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"kw1649190133.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>天际边缘 Edge of the sky </strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="日记本程序开发"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-05-19 12:28" pubdate>
+          May 19, 2026 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.9k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          16 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">日记本程序开发</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>我一直想要一个写日记的程序，毕竟总是新建txt然后改日期，非常不方便，更重要的是这样让我非常没有写日记的欲望，缺少了重要的仪式感。<br>在年初曾经尝试开发过，使用我比较熟悉的python+tk界面，用对话式的千问AI来做设计和代码，但实际上效果并不理想。AI对话的上下文有限，用来写一个组件还行，当多个组件结合，并且容易产生冲突的时候，单靠对话AI已经很难处理了，除非开发者自己本身有极强的能力，自己进行总体设计，仅使用AI开发特定函数。这样倒也不是不能做，毕竟日记本只是一个非常简单的小应用，慢慢磨时间总能做出来。</p>
+<p>但是最近发生了转机，从年初OpenClaw爆火，到现在腾讯也推出了自己的CodeBuddy，这种把权限交给AI的一站式工作平台解决了人类思考过慢的问题，让AI自己规划任务，自己分析和执行。<br>以前我是懒得折腾的，但是在网上看了英雄哥的视频后发现，CodeBuddy安装使用还挺方便的，相当于腾讯大厂给用户做适配了，就像安装一个QQ一样简单，于是我抽了半天来尝试让AI接管我的开发进度。</p>
+<h1 id="v1-0版本"><a href="#v1-0版本" class="headerlink" title="v1.0版本"></a>v1.0版本</h1><h2 id="重新设计架构"><a href="#重新设计架构" class="headerlink" title="重新设计架构"></a>重新设计架构</h2><blockquote>
+<p>我正在做一个日记本应用，目的是为了更方便的管理我的日记，首先需要增加、查找、删除、编辑的功能，其次还需要一个日历进行参考，知道哪天写了哪天没写。最核心的要求是，数据与程序解耦，这样随时可以保存和备份原始数据，更有安全感。数据按照年份来区分文件夹，每一篇日记的名称固定采用20240424这样的年月日命名习惯。感觉目前用tk做的效果不是特别理想，程序整体的架构也不是很清晰，帮我重新进行一下设计。</p>
+</blockquote>
+<p>架构图：<br><img src="/2026/05/19/%E6%97%A5%E8%AE%B0%E6%9C%AC%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91/d13b0ab055febe5c64817e925e1027e9.png" srcset="/img/loading.gif" lazyload alt="d13b0ab055febe5c64817e925e1027e9.png"></p>
+<p>全新目录结构：</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><code class="hljs awk">Diary_manager/<br>├── data/                    <span class="hljs-comment"># 数据存储（保持不变）</span><br>│   └── <span class="hljs-number">2026</span>/<span class="hljs-number">20260101</span>.txt<br>│<br>├── core/                    <span class="hljs-comment"># 🆕 核心业务逻辑</span><br>│   ├── __init__.py<br>│   ├── models.py            <span class="hljs-comment"># DiaryEntry 数据模型</span><br>│   ├── storage.py            <span class="hljs-comment"># 文件存储（可替换为 DB）</span><br>│   ├── diary_manager.py      <span class="hljs-comment"># CRUD 业务逻辑</span><br>│   └── calendar_service.py  <span class="hljs-comment"># 🆕 日历服务（查询某月有日记的日期等）</span><br>│<br>├── cli<span class="hljs-regexp">/                     # 🆕 命令行接口（重构自 commands/</span>）<br>│   ├── __init__.py<br>│   ├── commands.py           <span class="hljs-comment"># 命令解析</span><br>│   └── commands/<br>│       ├── new.py<br>│       ├── save.py<br>│       ├── view.py<br>│       ├── <span class="hljs-keyword">delete</span>.py<br>│       ├── list.py<br>│       └── search.py         <span class="hljs-comment"># 🆕 搜索命令</span><br>│<br>├── gui<span class="hljs-regexp">/                     # 🆕 GUI（使用 PyQt6/</span>PySide6）<br>│   ├── __init__.py<br>│   ├── main.py               <span class="hljs-comment"># 入口</span><br>│   ├── main_window.py        <span class="hljs-comment"># 主窗口</span><br>│   ├── calendar_view.py       <span class="hljs-comment"># 🆕 日历组件</span><br>│   ├── diary_list.py          <span class="hljs-comment"># 🆕 日记列表</span><br>│   ├── diary_editor.py        <span class="hljs-comment"># 🆕 编辑器</span><br>│   └── styles.py              <span class="hljs-comment"># 🆕 样式表</span><br>│<br>└── utils/                    <span class="hljs-comment"># 工具函数</span><br>    ├── __init__.py<br>    ├── date_utils.py          <span class="hljs-comment"># 日期解析（已有）</span><br>    └── file_utils.py          <span class="hljs-comment"># 🆕 文件工具</span><br></code></pre></td></tr></table></figure>
+
+<p>推荐使用 PySide6：与 PyQt6 API 几乎相同，但许可证更友好（LGPL）</p>
+<h2 id="执行开发进程"><a href="#执行开发进程" class="headerlink" title="执行开发进程"></a>执行开发进程</h2><p>分析完成后，进行需求追加，并执行开发进程</p>
+<blockquote>
+<p>使用PySide6，直接实现新架构。日记编辑时我习惯使用纯文字txt，文字编辑区要能够方便的放大缩小字体。日历功能需要提示我哪一天没有写日记，然后可以更方便的直接创建那一天的日记文件。另外还需要一个统计功能，统计每天写了多少字，写了多少天。另外要考虑历史数据如何导入，是放在指定目录下就能自动识别，还是需要功能调用？最好是放在数据文件路径下就能直接识别到。</p>
+</blockquote>
+<p>结束了，每个任务都会显示进度，十分友好。<br><img src="/2026/05/19/%E6%97%A5%E8%AE%B0%E6%9C%AC%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91/9919bc5d1bb40b913f3e4350860a0c32.png" srcset="/img/loading.gif" lazyload alt="9919bc5d1bb40b913f3e4350860a0c32.png"><br>打包完成后的路径也非常简洁，看着十分清爽，体积也不大，大概才100MB。<br><img src="/2026/05/19/%E6%97%A5%E8%AE%B0%E6%9C%AC%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91/b062ef6bdf308eaaa24c7dd2e50a2b98.png" srcset="/img/loading.gif" lazyload alt="b062ef6bdf308eaaa24c7dd2e50a2b98.png"></p>
+<h1 id="v1-1更新"><a href="#v1-1更新" class="headerlink" title="v1.1更新"></a>v1.1更新</h1><p>刚封装完，想想还是有个缺点，就是日历跳转太麻烦了，一个月一个月的点击，根据经验，应该有直接切换年份和输入日期的方法。于是提了一下更新需求，甚至我还没有提到要重新封装，AI已经自动把封装流程跑完了。<br>最终页面效果如下：<br><img src="/2026/05/19/%E6%97%A5%E8%AE%B0%E6%9C%AC%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91/79d8f7c58a04604beb0292c493522095.png" srcset="/img/loading.gif" lazyload alt="79d8f7c58a04604beb0292c493522095.png"></p>
+<p>AI神力，恐怖如斯。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>虽然AI确实厉害，但目前主要还是依靠人来进行目标驱动，实际上大模型自己并不会产生目标，它本质上还是那个进行词语接龙的参数集群。<br>最后回归到人本身，<strong>你，究竟想要什么。</strong></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0/" class="category-chain-item">学习</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/python/">#python</a>
+      
+        <a href="/tags/%E5%BC%80%E5%8F%91/">#开发</a>
+      
+        <a href="/tags/AI/">#AI</a>
+      
+        <a href="/tags/%E6%97%A5%E8%AE%B0/">#日记</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>日记本程序开发</div>
+      <div>http://kw1649190133.github.io/2026/05/19/日记本程序开发/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Kwindy</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>May 19, 2026</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2026/06/01/%E6%B0%B4%E4%B8%8B%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E6%8A%80%E6%9C%AF%E5%88%86%E6%9E%90/" title="水下三维重建技术分析">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">水下三维重建技术分析</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/05/18/Cesium%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%89%EF%BC%89%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8%E4%B8%8E%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/" title="Cesium笔记（三）基础入门与架构设计">
+                        <span class="hidden-mobile">Cesium笔记（三）基础入门与架构设计</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

@@ -1,0 +1,670 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=dark>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Kwindy">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="“三旧”改造入库数据处理流程前期需要准备的材料 旧时期的影像（如2009年） 范围内的建筑物矢量数据（可以自己用影像画） 土地规划数据 第二次国土调查数据 最新国土调查数据 土地证数据   以宗地为基本单元。有合法用地手续的，以用地批文（按项目报批）、土地划拨决定书、土地出让合同、建设用地批准书、不动产权证（土地使用证）确定的宗地范围为基本单元入库；  无合法用地手续的，按历史用地协议（包括流转土">
+<meta property="og:type" content="article">
+<meta property="og:title" content="“三旧”改造入库数据处理流程">
+<meta property="og:url" content="http://kw1649190133.github.io/2023/10/18/%E2%80%9C%E4%B8%89%E6%97%A7%E2%80%9D%E6%94%B9%E9%80%A0%E5%85%A5%E5%BA%93%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86%E6%B5%81%E7%A8%8B/index.html">
+<meta property="og:site_name" content="kw&#39;s blog">
+<meta property="og:description" content="“三旧”改造入库数据处理流程前期需要准备的材料 旧时期的影像（如2009年） 范围内的建筑物矢量数据（可以自己用影像画） 土地规划数据 第二次国土调查数据 最新国土调查数据 土地证数据   以宗地为基本单元。有合法用地手续的，以用地批文（按项目报批）、土地划拨决定书、土地出让合同、建设用地批准书、不动产权证（土地使用证）确定的宗地范围为基本单元入库；  无合法用地手续的，按历史用地协议（包括流转土">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2023-10-18T07:39:54.000Z">
+<meta property="article:modified_time" content="2023-10-18T07:41:09.471Z">
+<meta property="article:author" content="Kwindy">
+<meta property="article:tag" content="三旧改造">
+<meta property="article:tag" content="内业">
+<meta property="article:tag" content="标图建库">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>“三旧”改造入库数据处理流程 - kw&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"kw1649190133.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>天际边缘 Edge of the sky </strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="“三旧”改造入库数据处理流程"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-10-18 15:39" pubdate>
+          October 18, 2023 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.1k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          10 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">“三旧”改造入库数据处理流程</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="“三旧”改造入库数据处理流程"><a href="#“三旧”改造入库数据处理流程" class="headerlink" title="“三旧”改造入库数据处理流程"></a>“三旧”改造入库数据处理流程</h1><h2 id="前期需要准备的材料"><a href="#前期需要准备的材料" class="headerlink" title="前期需要准备的材料"></a>前期需要准备的材料</h2><ol>
+<li>旧时期的影像（如2009年）</li>
+<li>范围内的建筑物矢量数据（可以自己用影像画）</li>
+<li>土地规划数据</li>
+<li>第二次国土调查数据</li>
+<li>最新国土调查数据</li>
+<li>土地证数据</li>
+</ol>
+<ul>
+<li>以宗地为基本单元。有合法用地手续的，以用地批文（按项目报批）、土地划拨决定书、土地出让合同、建设用地批准书、不动产权证（土地使用证）确定的宗地范围为基本单元入库；</li>
+</ul>
+<p>无合法用地手续的，按历史用地协议（包括流转土地所有权、使用权的各类用地合同或协议）约定的用地范围、违法用地处罚决定书、行政区划界限、详细规划控制单元、道路、河流或者产权边界等因素合理确定入库范围。</p>
+<h2 id="处理步骤"><a href="#处理步骤" class="headerlink" title="处理步骤"></a>处理步骤</h2><h3 id="1-确认入库范围"><a href="#1-确认入库范围" class="headerlink" title="1. 确认入库范围"></a>1. 确认入库范围</h3><p>入库范围由地方资源局的更新股提供，一般而言土地证范围就是入库范围。若土地证面积过大而指标不足时，需要自定范围。入库范围必须符合土地规划（必须是建设用地、允许建设区）、第二次国土调查（建设用地）、第三次国土调查（建设用地或城镇村范围内）。自定范围时若宗地的图形节点过多，可以做适量的删减，这样界址点成果表就不会太长。土地证一般拿不到矢量，需要自己，若能拿到界址点成果表也可以自己生成范围。</p>
+<p>入库范围和一些字段要求需要和材料的提交方核对，例如改造类型、图斑编号等。<br>确认入库范围以后就可以制作入库矢量数据了，根据系统不同，可能是shp、mdb、gdb，甚至离谱一点的用txt。</p>
+<h3 id="2-制作建筑物测量图"><a href="#2-制作建筑物测量图" class="headerlink" title="2. 制作建筑物测量图"></a>2. 制作建筑物测量图</h3><p>一般而言入库范围根据法规要求，建筑基底面积需要满足一定的比例，例如大于等于30%，才能入库。工厂等建筑稀少的特殊区域不受此限制。测量图需要标明宗地线、范围内的建筑物以及建筑物的占地面积。需要核对旧时期的影像，确保建筑物是旧时期的建筑，把不是旧建筑的去除。确认建筑物矢量后，计算建筑物占地面积占宗地总面积的比例。入库范围和建筑比例都确认无误后，可以制作图框，生成界址点成果表，补充文字说明。</p>
+<h3 id="3-制作其他地图"><a href="#3-制作其他地图" class="headerlink" title="3. 制作其他地图"></a>3. 制作其他地图</h3><p>土地利用总体规划图、旧时期土地利用现状图、最新一期土地利用现状图、旧时期影像图。若入库地块的相邻处有已入库的地块，要需要一个入库范围示意图。在有模板的情况下套用数据，出图就很快；若没有模板则需要自己制作模板，一些图例等可以从参考资料的图片里抠下来直接贴在地图上，避免自己制作图例。</p>
+<h3 id="4-制作其他材料"><a href="#4-制作其他材料" class="headerlink" title="4. 制作其他材料"></a>4. 制作其他材料</h3><p>入库申请表、确认函、测绘报告、面积统计表、XX证明等等，根据文件的要求进行准备。整理完毕后放一起，排个序，列一个成果清单。</p>
+<h3 id="5-提交盖章的电子版材料-需要盖章的部分用扫描件-，同时线下提交盖章的纸质版材料。"><a href="#5-提交盖章的电子版材料-需要盖章的部分用扫描件-，同时线下提交盖章的纸质版材料。" class="headerlink" title="5. 提交盖章的电子版材料(需要盖章的部分用扫描件)，同时线下提交盖章的纸质版材料。"></a>5. 提交盖章的电子版材料(需要盖章的部分用扫描件)，同时线下提交盖章的纸质版材料。</h3><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>需要和更新股沟通好需要的数据，尤其是土地证，一些国有土地的城市区域可能很难找到相关的材料，早都遗失不知道哪去了，或者是土地权利太过分散的，也不好弄，因为要以宗地为基本的入库单元。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%B7%A5%E4%BD%9C/" class="category-chain-item">工作</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E4%B8%89%E6%97%A7%E6%94%B9%E9%80%A0/">#三旧改造</a>
+      
+        <a href="/tags/%E5%86%85%E4%B8%9A/">#内业</a>
+      
+        <a href="/tags/%E6%A0%87%E5%9B%BE%E5%BB%BA%E5%BA%93/">#标图建库</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>“三旧”改造入库数据处理流程</div>
+      <div>http://kw1649190133.github.io/2023/10/18/“三旧”改造入库数据处理流程/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Kwindy</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>October 18, 2023</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/10/18/markdown%E6%96%87%E6%A1%A3%E7%BC%96%E8%BE%91%E5%92%8C%E8%A3%85%E9%A5%B0%E6%8A%80%E5%B7%A7/" title="markdown文档编辑和装饰技巧">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">markdown文档编辑和装饰技巧</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/10/18/%E5%87%A0%E7%A7%8Dosgb%E6%A0%BC%E5%BC%8F%E8%BD%AC3Dtiles%E6%A0%BC%E5%BC%8F%E7%9A%84%E6%96%B9%E6%B3%95/" title="几种osgb格式转3Dtiles格式的方法">
+                        <span class="hidden-mobile">几种osgb格式转3Dtiles格式的方法</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

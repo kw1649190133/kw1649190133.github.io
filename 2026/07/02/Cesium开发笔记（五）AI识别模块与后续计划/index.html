@@ -1,0 +1,742 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=dark>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Kwindy">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="当前版本号V1.0 任务拆分 ONNX模型运转的单独验证 识别结果的投影实现 连续识别和结果去重 结果导出KML  投影后的识别效果 同时开启AI识别、识别结果记录、照片记录、航线播放，识别结果已经做了去重处理，咋一看还挺像回事的。 V0.9 新增了热力图功能，增加了KML导出功能 版本更新至V0.9现在平台的基本显示功能已经没有问题了，视频和轨迹同步的功能以后再做，现在完善数据转换工具和压缩工具">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Cesium开发笔记（五）AI识别模块与后续计划">
+<meta property="og:url" content="http://kw1649190133.github.io/2026/07/02/Cesium%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%94%EF%BC%89AI%E8%AF%86%E5%88%AB%E6%A8%A1%E5%9D%97%E4%B8%8E%E5%90%8E%E7%BB%AD%E8%AE%A1%E5%88%92/index.html">
+<meta property="og:site_name" content="kw&#39;s blog">
+<meta property="og:description" content="当前版本号V1.0 任务拆分 ONNX模型运转的单独验证 识别结果的投影实现 连续识别和结果去重 结果导出KML  投影后的识别效果 同时开启AI识别、识别结果记录、照片记录、航线播放，识别结果已经做了去重处理，咋一看还挺像回事的。 V0.9 新增了热力图功能，增加了KML导出功能 版本更新至V0.9现在平台的基本显示功能已经没有问题了，视频和轨迹同步的功能以后再做，现在完善数据转换工具和压缩工具">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/07/02/Cesium%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%94%EF%BC%89AI%E8%AF%86%E5%88%AB%E6%A8%A1%E5%9D%97%E4%B8%8E%E5%90%8E%E7%BB%AD%E8%AE%A1%E5%88%92/9b8dc4239953893f2b86e4cbea78f787.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/07/02/Cesium%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%94%EF%BC%89AI%E8%AF%86%E5%88%AB%E6%A8%A1%E5%9D%97%E4%B8%8E%E5%90%8E%E7%BB%AD%E8%AE%A1%E5%88%92/f255b0b153dcaf4670d1e01bbbbe9454.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/07/02/Cesium%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%94%EF%BC%89AI%E8%AF%86%E5%88%AB%E6%A8%A1%E5%9D%97%E4%B8%8E%E5%90%8E%E7%BB%AD%E8%AE%A1%E5%88%92/8726b6e1f7fb97cc7c740bae72b6fbe3.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/07/02/Cesium%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%94%EF%BC%89AI%E8%AF%86%E5%88%AB%E6%A8%A1%E5%9D%97%E4%B8%8E%E5%90%8E%E7%BB%AD%E8%AE%A1%E5%88%92/76b89a845c4cf87f629b7271441416cf.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/07/02/Cesium%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%94%EF%BC%89AI%E8%AF%86%E5%88%AB%E6%A8%A1%E5%9D%97%E4%B8%8E%E5%90%8E%E7%BB%AD%E8%AE%A1%E5%88%92/960d5e4f5c3a0ddf5d720f3dc0564c06.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/07/02/Cesium%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%94%EF%BC%89AI%E8%AF%86%E5%88%AB%E6%A8%A1%E5%9D%97%E4%B8%8E%E5%90%8E%E7%BB%AD%E8%AE%A1%E5%88%92/2059fbd0afaf3cbf95699e28ce64f253.png">
+<meta property="article:published_time" content="2026-07-02T09:30:36.000Z">
+<meta property="article:modified_time" content="2026-07-03T09:07:45.831Z">
+<meta property="article:author" content="Kwindy">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="Cesium">
+<meta property="article:tag" content="git">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://kw1649190133.github.io/2026/07/02/Cesium%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%94%EF%BC%89AI%E8%AF%86%E5%88%AB%E6%A8%A1%E5%9D%97%E4%B8%8E%E5%90%8E%E7%BB%AD%E8%AE%A1%E5%88%92/9b8dc4239953893f2b86e4cbea78f787.png">
+  
+  
+  
+  <title>Cesium开发笔记（五）AI识别模块与后续计划 - kw&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"kw1649190133.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>天际边缘 Edge of the sky </strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Cesium开发笔记（五）AI识别模块与后续计划"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-07-02 17:30" pubdate>
+          July 2, 2026 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.6k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          22 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Cesium开发笔记（五）AI识别模块与后续计划</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>当前版本号V1.0</p>
+<h1 id="任务拆分"><a href="#任务拆分" class="headerlink" title="任务拆分"></a>任务拆分</h1><ol>
+<li>ONNX模型运转的单独验证</li>
+<li>识别结果的投影实现</li>
+<li>连续识别和结果去重</li>
+<li>结果导出KML</li>
+</ol>
+<p>投影后的识别效果<br><img src="/2026/07/02/Cesium%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%94%EF%BC%89AI%E8%AF%86%E5%88%AB%E6%A8%A1%E5%9D%97%E4%B8%8E%E5%90%8E%E7%BB%AD%E8%AE%A1%E5%88%92/9b8dc4239953893f2b86e4cbea78f787.png" srcset="/img/loading.gif" lazyload alt="9b8dc4239953893f2b86e4cbea78f787.png"></p>
+<p>同时开启AI识别、识别结果记录、照片记录、航线播放，识别结果已经做了去重处理，咋一看还挺像回事的。<br><img src="/2026/07/02/Cesium%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%94%EF%BC%89AI%E8%AF%86%E5%88%AB%E6%A8%A1%E5%9D%97%E4%B8%8E%E5%90%8E%E7%BB%AD%E8%AE%A1%E5%88%92/f255b0b153dcaf4670d1e01bbbbe9454.png" srcset="/img/loading.gif" lazyload alt="f255b0b153dcaf4670d1e01bbbbe9454.png"></p>
+<p>V0.9 新增了热力图功能，增加了KML导出功能<br><img src="/2026/07/02/Cesium%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%94%EF%BC%89AI%E8%AF%86%E5%88%AB%E6%A8%A1%E5%9D%97%E4%B8%8E%E5%90%8E%E7%BB%AD%E8%AE%A1%E5%88%92/8726b6e1f7fb97cc7c740bae72b6fbe3.png" srcset="/img/loading.gif" lazyload alt="8726b6e1f7fb97cc7c740bae72b6fbe3.png"></p>
+<p>版本更新至V0.9<br>现在平台的基本显示功能已经没有问题了，视频和轨迹同步的功能以后再做，现在完善数据转换工具和压缩工具。关于实时影像拼接的问题，目前看来要实现前后端的实时联动还有些困难，现在的目标是将其作为单独的工具使用，前端只需要用已有功能导入影像就可以了。</p>
+<p>后端工具的集成<br>跟平台配套的相关工具，现在还是零散的状态，使用不方便。<br>1、我需要一个界面，来融合影像拼接、图片压缩和图片裁切、json格式文件转换。文件转换放第一个标签页，图片处理放第二个，影像快速拼接放第三个。界面尽量设计美观、紧凑，可以合理优化布局，但不要把字体搞太小。<br>2、图片压缩处理要对应工具中现有的参数接口，可以选择压缩分辨率，可以用带刻度的进度条调整裁剪比例（默认为0）。<br>3、影像拼接，界面要对应可调整的参数。可以通过滑块或输入来调整输入的照片序列。</p>
+<h1 id="程序打包"><a href="#程序打包" class="headerlink" title="程序打包"></a>程序打包</h1><p>前端的开发目前告一段落，当前版本1.0，对平台和配套工具都进行了打包，在windows环境一键就能运行。</p>
+<h1 id="WebGPU支持"><a href="#WebGPU支持" class="headerlink" title="WebGPU支持"></a>WebGPU支持</h1><ol>
+<li>WebGPU运行测试<br>WebGPU测试页【 <a target="_blank" rel="noopener" href="https://webgpureport.org/">https://webgpureport.org/</a> 】</li>
+</ol>
+<p>正常启动后会看到一个绿色页面。<br><img src="/2026/07/02/Cesium%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%94%EF%BC%89AI%E8%AF%86%E5%88%AB%E6%A8%A1%E5%9D%97%E4%B8%8E%E5%90%8E%E7%BB%AD%E8%AE%A1%E5%88%92/76b89a845c4cf87f629b7271441416cf.png" srcset="/img/loading.gif" lazyload alt="76b89a845c4cf87f629b7271441416cf.png"></p>
+<p>chrome 【 chrome://gpu 】<br>edge 【 edge://gpu/ 】<br>在倒数第二行会看到WebGPU的启用情况<br><img src="/2026/07/02/Cesium%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%94%EF%BC%89AI%E8%AF%86%E5%88%AB%E6%A8%A1%E5%9D%97%E4%B8%8E%E5%90%8E%E7%BB%AD%E8%AE%A1%E5%88%92/960d5e4f5c3a0ddf5d720f3dc0564c06.png" srcset="/img/loading.gif" lazyload alt="960d5e4f5c3a0ddf5d720f3dc0564c06.png"></p>
+<p>如果没有启动成功，需要注意浏览器版本，chrome浏览器版本需要113+ ，在实验性设置中查询是否启用。据说一般新版本的浏览器都是默认开启的。<br>edge 【 edge://flags/ 】<br>chrome 【 chrome://flags/ 】<br>在设置页搜索WebGPU，可以找到相应设置。</p>
+<h1 id="目前阶段的计划"><a href="#目前阶段的计划" class="headerlink" title="目前阶段的计划"></a>目前阶段的计划</h1><p>1、基于Cesium+VUE+vtie做的地理信息平台，已经具有一个界面雏形，具有可以展示历史数据的功能，但是还没有接通实时的数据。当前平台是在本地开发环境的，还没有部署到服务器，以及完成服务器的无人机数据接收和转发服务。<br>2、目前无人机也已经做出来了并且可以飞，但是集成度不高，只能飞五分钟。而无人机的算法部分，还需要完成ROS系统与飞控的联通控制、激光雷达稳定算法、避障导航算法。飞机自身的控制和避障算法是飞行部在做。<br>3、关于无人机数据发送到服务器的部分、从服务器远程控制的部分、独立的控制界面（改动QGC，或者重新构建一个程序界面），目前是没有开始做的。<br>4、目前主要做的的基础能力，而最终实现的功能，例如自动探索建图、巡检、数据分析，需要和实际的需求对接。</p>
+<h1 id="下一阶段计划"><a href="#下一阶段计划" class="headerlink" title="下一阶段计划"></a>下一阶段计划</h1><h2 id="2-0计划"><a href="#2-0计划" class="headerlink" title="2.0计划"></a>2.0计划</h2><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs arduino">v1<span class="hljs-number">.0</span> (离线工具)                        v2<span class="hljs-number">.0</span> (实时平台)<br>─────────────────     ─────────────────<br>本地 <span class="hljs-built_in">SD</span> 卡 → 电脑 → 平台              无人机 → <span class="hljs-number">4</span>G/<span class="hljs-built_in">WiFi</span> → 云端 → 网页<br>照片航点回放（离线）                   实时遥测 + 实时轨迹<br>拼接工具（命令行）                     自动 <span class="hljs-number">3</span>D Tiles 生成<br>Python 单文件服务                      Go 微服务架构 + Docker 部署<br>固定 IP 局域网                         公网 / VPN 穿透<br></code></pre></td></tr></table></figure>
+
+<h2 id="技术栈"><a href="#技术栈" class="headerlink" title="技术栈"></a>技术栈</h2><table>
+<thead>
+<tr>
+<th>层级</th>
+<th>v1.0（当前）</th>
+<th>v2.0（目标）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>前端框架</td>
+<td>Vue 3 + TypeScript + CesiumJS</td>
+<td>不变</td>
+</tr>
+<tr>
+<td>后端框架</td>
+<td>Python（单文件）</td>
+<td>Go（微服务架构）</td>
+</tr>
+<tr>
+<td>消息通道</td>
+<td>WebSocket（直连）</td>
+<td>MQTT (EMQX) + WebSocket</td>
+</tr>
+<tr>
+<td>数据库</td>
+<td>本地文件系统</td>
+<td>PostgreSQL + TimescaleDB + PostGIS</td>
+</tr>
+<tr>
+<td>缓存</td>
+<td>无</td>
+<td>Redis</td>
+</tr>
+<tr>
+<td>对象存储</td>
+<td>本地文件夹</td>
+<td>MinIO / S3</td>
+</tr>
+<tr>
+<td>视频</td>
+<td>本地文件播放</td>
+<td>WebRTC (ZLMediaKit 转发)</td>
+</tr>
+<tr>
+<td>点云</td>
+<td>离线 CSV/LAZ 导入</td>
+<td>HTTP 批量上传 → 自动 3D Tiles</td>
+</tr>
+<tr>
+<td>部署</td>
+<td>Windows EXE</td>
+<td>Docker Compose + EXE</td>
+</tr>
+</tbody></table>
+<h2 id="大模型接入"><a href="#大模型接入" class="headerlink" title="大模型接入"></a>大模型接入</h2><p>最初的简单设想是通过大模型来进行目标识别、还有无人机的自主导航。那是2023年的设想了，而24年deepseek、千问都有了相应的VL视觉模型，大模型的目标识别算是已经被轻易实现的内容。但自主导航这方面，目前看到的成果不多，更多的还是依赖egoplan这样的快速避障和路径规划算法。<br>其核心在于，大模型计算速度慢，相当于用大脑进行缓慢但深度的思考，而不像脑干一样直接的神经反射和身体驱动。实际上也确实应该这么设计，大模型只负责宏观整体规划，执行和避障交给其他算法就行了。<br>现在的大模型相关技术，正在以难以想象的速度突飞猛进着，也许今天还正在研究的东西，明天就直接被更强劲的模型和更牛逼的设计直接取代了。目前最好的策略就是，不要妄图自己搞明白大模型和agent之类的东西，有什么就用什么，实现最基础功能，让大厂的大模型专家和程序员们去尝试和实践，跟在后面捡成果用就行了。</p>
+<h1 id="连接大疆飞机"><a href="#连接大疆飞机" class="headerlink" title="连接大疆飞机"></a>连接大疆飞机</h1><p>考虑到自己做的飞机各项性能指标还没那么好用，现阶段还是大疆的产品比较成熟。参考大疆提供的两套连接第三方平台的方案。<br>一种是通过MobileSDK，去开发自己的安卓APP，然后自己的APP再使用自己定义的协议，与第三方平台进行通信。低空大师就是使用的这种方案，好处是方便灵活，可以自己定义遥控器端的功能，例如本地识别、快速建模之类的。<br>另一种是直接用大疆的Pilot2，输入服务器地址后，接收大疆的上云API数据。好处是节约了开发APP的成本，代价就是会收到一定限制，这种模式的就需要将功能重点放在平台端进行建设。<br><img src="/2026/07/02/Cesium%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%94%EF%BC%89AI%E8%AF%86%E5%88%AB%E6%A8%A1%E5%9D%97%E4%B8%8E%E5%90%8E%E7%BB%AD%E8%AE%A1%E5%88%92/2059fbd0afaf3cbf95699e28ce64f253.png" srcset="/img/loading.gif" lazyload alt="2059fbd0afaf3cbf95699e28ce64f253.png"></p>
+<h1 id="代码托管"><a href="#代码托管" class="headerlink" title="代码托管"></a>代码托管</h1><p>为了方便共同开发，将代码托管到了GitHub上。私有化仓库，无法直接访问，必须使用git工具下载。或者添加为协作者之后才能看到。<br>【仓库地址】<br><a target="_blank" rel="noopener" href="https://github.com/kw1649190133/flyerPlatform-cesium/">https://github.com/kw1649190133/flyerPlatform-cesium/</a><br>【token】<br>&lt;你的GitHub Token&gt;</p>
+<p>使用方法：</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-comment"># 其他人 clone（输入密码时粘贴 token）</span><br>git clone https:<span class="hljs-regexp">//gi</span>thub.com<span class="hljs-regexp">/kw1649190133/</span>flyerPlatform-cesium.git<br><span class="hljs-comment"># 出现登录界面，不登录（只有被添加为协作者的情况，登录才有用），选择token认证模式</span><br><span class="hljs-comment"># &lt;你的GitHub Token&gt;</span><br><span class="hljs-comment"># 粘贴 token</span><br><br><span class="hljs-comment"># 后续 push/pull 都正常</span><br>git pull<br>git push<br></code></pre></td></tr></table></figure>
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Cesium%E5%BC%80%E5%8F%91/" class="category-chain-item">Cesium开发</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Python/">#Python</a>
+      
+        <a href="/tags/AI/">#AI</a>
+      
+        <a href="/tags/Cesium/">#Cesium</a>
+      
+        <a href="/tags/git/">#git</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Cesium开发笔记（五）AI识别模块与后续计划</div>
+      <div>http://kw1649190133.github.io/2026/07/02/Cesium开发笔记（五）AI识别模块与后续计划/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Kwindy</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>July 2, 2026</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2026/07/02/Git%E4%B8%8EGithub/" title="Git与Github">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Git与Github</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/06/08/JoplinToHexo%E8%BD%AC%E6%8D%A2%E5%B7%A5%E5%85%B7%E5%BC%80%E5%8F%91/" title="JoplinToHexo转换工具开发">
+                        <span class="hidden-mobile">JoplinToHexo转换工具开发</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

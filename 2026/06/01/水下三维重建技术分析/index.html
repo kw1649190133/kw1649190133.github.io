@@ -1,0 +1,1124 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=dark>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Kwindy">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="最近在看水下三维重建相关的内容。地面上的三维重建已经非常成熟了，三角网的模型已经有广泛的测绘应用，而3D高斯最近也火热起来。但是，水下的建模和地面上有些不同，主要就是面对照片效果的劣化和水介质对镜头光路的影响，还有，水下没有GPS。【参考资料】https:&#x2F;&#x2F;blog.csdn.net&#x2F;m0_52592798&#x2F;article&#x2F;details&#x2F;147854046 一、总体概览123456789101">
+<meta property="og:type" content="article">
+<meta property="og:title" content="水下三维重建技术分析">
+<meta property="og:url" content="http://kw1649190133.github.io/2026/06/01/%E6%B0%B4%E4%B8%8B%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E6%8A%80%E6%9C%AF%E5%88%86%E6%9E%90/index.html">
+<meta property="og:site_name" content="kw&#39;s blog">
+<meta property="og:description" content="最近在看水下三维重建相关的内容。地面上的三维重建已经非常成熟了，三角网的模型已经有广泛的测绘应用，而3D高斯最近也火热起来。但是，水下的建模和地面上有些不同，主要就是面对照片效果的劣化和水介质对镜头光路的影响，还有，水下没有GPS。【参考资料】https:&#x2F;&#x2F;blog.csdn.net&#x2F;m0_52592798&#x2F;article&#x2F;details&#x2F;147854046 一、总体概览123456789101">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/06/01/%E6%B0%B4%E4%B8%8B%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E6%8A%80%E6%9C%AF%E5%88%86%E6%9E%90/622e7bfba58257ce3394ac53994e534c.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/06/01/%E6%B0%B4%E4%B8%8B%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E6%8A%80%E6%9C%AF%E5%88%86%E6%9E%90/142b71c272c3cd5d30c0959b24d23250.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/06/01/%E6%B0%B4%E4%B8%8B%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E6%8A%80%E6%9C%AF%E5%88%86%E6%9E%90/db25576774730cde429abddafecf8759.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/06/01/%E6%B0%B4%E4%B8%8B%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E6%8A%80%E6%9C%AF%E5%88%86%E6%9E%90/c348d57a316a77eb9259f3e725ece33c.png">
+<meta property="article:published_time" content="2026-06-01T10:12:50.000Z">
+<meta property="article:modified_time" content="2026-06-04T02:33:59.869Z">
+<meta property="article:author" content="Kwindy">
+<meta property="article:tag" content="3DGS">
+<meta property="article:tag" content="水下机器人">
+<meta property="article:tag" content="三维重建">
+<meta property="article:tag" content="声纳">
+<meta property="article:tag" content="光学">
+<meta property="article:tag" content="分析">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://kw1649190133.github.io/2026/06/01/%E6%B0%B4%E4%B8%8B%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E6%8A%80%E6%9C%AF%E5%88%86%E6%9E%90/622e7bfba58257ce3394ac53994e534c.png">
+  
+  
+  
+  <title>水下三维重建技术分析 - kw&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"kw1649190133.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>天际边缘 Edge of the sky </strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="水下三维重建技术分析"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-06-01 18:12" pubdate>
+          June 1, 2026 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4.2k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          35 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">水下三维重建技术分析</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>最近在看水下三维重建相关的内容。地面上的三维重建已经非常成熟了，三角网的模型已经有广泛的测绘应用，而3D高斯最近也火热起来。<br>但是，水下的建模和地面上有些不同，主要就是面对照片效果的劣化和水介质对镜头光路的影响，还有，水下没有GPS。<br>【参考资料】<a target="_blank" rel="noopener" href="https://blog.csdn.net/m0_52592798/article/details/147854046">https://blog.csdn.net/m0_52592798/article/details/147854046</a></p>
+<h1 id="一、总体概览"><a href="#一、总体概览" class="headerlink" title="一、总体概览"></a>一、总体概览</h1><figure class="highlight subunit"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><code class="hljs subunit">水下三维重建<br>├── 光学方法<br>│   ├── 无源方法<br>│   │   ├── 运动结构恢复 (SfM)<br>│   │   │   ├── 通用 SfM<br>│   │   │   └── 折射感知 SfM (RSfM)<br>│   │   ├── 立体视觉 (Stereo Vision)<br>│   │   │   ├── 水下相机校准<br>│   │   │   ├── 立体 SLAM<br>│   │   │   └── 半全局匹配 (SGM)<br>│   │   ├── 光度学立体 (Photometric Stereo)<br>│   │   └── 水下摄影测量<br>│   └── 有源方法<br>│       ├── 结构光 (Structured Light)<br>│       ├── 激光三角测量 (Laser Triangulation)<br>│       └── 编码光投影<br>├── 声学方法<br>│   ├── 多波束声纳 (MBS)<br>│   ├── 侧扫声纳 (SSS)<br>│   ├── 成像声纳 / DIDSON<br>│   └── 多静态成像声纳 (MSIS)<br>├── 声光融合方法<br>│   ├── 光-声立体匹配<br>│   ├── 声纳约束光学重建<br>│   └── 多传感器 SLAM<br>└── 深度学习新范式<br>    ├── SeaThru-NeRF (散射介质 NeRF)<br>    ├── WaterHE-NeRF (水射线匹配 NeRF)<br>    ├── WaterSplatting (3DGS + 体积渲染)<br>    ├── UW-GS (抗干扰 3DGS)<br>    ├── UW<span class="hljs-string">-3</span>DGS (物理感知 3DGS)<br>    └── SonarSweep (声光融合深度学习)<br></code></pre></td></tr></table></figure>
+<h1 id="二、光学重建的相关理论"><a href="#二、光学重建的相关理论" class="headerlink" title="二、光学重建的相关理论"></a>二、光学重建的相关理论</h1><h2 id="图像劣化"><a href="#图像劣化" class="headerlink" title="图像劣化"></a>图像劣化</h2><p>水深小于十米，阳光不断在空气和水面折射，焦散效应（曲面反射或折射光的复杂无力现象）是降低所有无源光学传感器图像的主要因素，它会破坏多数图像匹配算法那，导致特征匹配不准确。一般在中午采集数据，或使用强烈人工照明。</p>
+<p>焦散效果<br><img src="/2026/06/01/%E6%B0%B4%E4%B8%8B%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E6%8A%80%E6%9C%AF%E5%88%86%E6%9E%90/622e7bfba58257ce3394ac53994e534c.png" srcset="/img/loading.gif" lazyload alt="622e7bfba58257ce3394ac53994e534c.png"></p>
+<p>思路：通过神经网络去除焦散，类似于去马赛克、去雾等算法。</p>
+<h2 id="光的吸收和散射"><a href="#光的吸收和散射" class="headerlink" title="光的吸收和散射"></a>光的吸收和散射</h2><p>色差：</p>
+<ul>
+<li>红光： 5米内迅速减弱和消失</li>
+<li>蓝光：60米深度消失</li>
+</ul>
+<p>色差与雾化<br> <img src="/2026/06/01/%E6%B0%B4%E4%B8%8B%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E6%8A%80%E6%9C%AF%E5%88%86%E6%9E%90/142b71c272c3cd5d30c0959b24d23250.png" srcset="/img/loading.gif" lazyload alt="142b71c272c3cd5d30c0959b24d23250.png"></p>
+<p>使用一些算法去修补水下图像散射、雾化、光吸收和衰减的问题。</p>
+<h2 id="相机校准"><a href="#相机校准" class="headerlink" title="相机校准"></a>相机校准</h2><p>常规地面上进行的相机校准已经有非常成熟的方案，介质变化是空气、玻璃、空气，水底的介质变化是水、玻璃、空气，所以不能套用原本的校准方法。<br><img src="/2026/06/01/%E6%B0%B4%E4%B8%8B%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E6%8A%80%E6%9C%AF%E5%88%86%E6%9E%90/db25576774730cde429abddafecf8759.png" srcset="/img/loading.gif" lazyload alt="db25576774730cde429abddafecf8759.png"></p>
+<h2 id="光度立体学"><a href="#光度立体学" class="headerlink" title="光度立体学"></a>光度立体学</h2><p>同一场景被不同光源照射，会呈现不同的反射效果，即使在纹理较弱的区域也具有高分辨率和精细 3D 重建的优势。光度立体场景重建技术需要获取在各种照明情况下拍摄的几张照片，并且通过移动光源的位置，可以检索 3D 信息，同时保持相机和物体的稳定位置。<br><img src="/2026/06/01/%E6%B0%B4%E4%B8%8B%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E6%8A%80%E6%9C%AF%E5%88%86%E6%9E%90/c348d57a316a77eb9259f3e725ece33c.png" srcset="/img/loading.gif" lazyload alt="c348d57a316a77eb9259f3e725ece33c.png"></p>
+<p>在空气中这项技术应用的比较多，但是水下的特殊环境需要一些额外的处理。</p>
+<h2 id="光学与声纳的对比"><a href="#光学与声纳的对比" class="headerlink" title="光学与声纳的对比"></a>光学与声纳的对比</h2><p>光学设备比声纳便宜很多，声纳一旦涉及到多波束，价格就蹭蹭蹭的涨，几万块到几百万都有，而一个便宜的摄像头才几十几百块。而且声纳的小型化很难，大部分尺寸都比较大。<br>光学技术非常成熟，成像精度也更好，但受限与物理特性，在水下很难像声纳一样大范围和高效率，因此实际应用非常有限，主要是科研科考在使用。而声光融合，目前还是比较新的领域，并且价格更是昂贵。</p>
+<h1 id="三、水下光学建模的参数总表"><a href="#三、水下光学建模的参数总表" class="headerlink" title="三、水下光学建模的参数总表"></a>三、水下光学建模的参数总表</h1><h3 id="Tier-1：必需参数（决定重建是否可行）"><a href="#Tier-1：必需参数（决定重建是否可行）" class="headerlink" title="Tier 1：必需参数（决定重建是否可行）"></a>Tier 1：必需参数（决定重建是否可行）</h3><table>
+<thead>
+<tr>
+<th>#</th>
+<th>参数</th>
+<th>符号/单位</th>
+<th>获取方式</th>
+<th>影响</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>焦距</td>
+<td>fₓ, fᵧ (pixel)</td>
+<td>空气中棋盘格标定</td>
+<td>所有 SfM/NeRF 的几何基础</td>
+</tr>
+<tr>
+<td>2</td>
+<td>主点</td>
+<td>cₓ, cᵧ (pixel)</td>
+<td>空气中棋盘格标定</td>
+<td>同上</td>
+</tr>
+<tr>
+<td>3</td>
+<td>径向畸变系数</td>
+<td>k₁, k₂, k₃</td>
+<td>空气中棋盘格标定</td>
+<td>纠正镜头畸变</td>
+</tr>
+<tr>
+<td>4</td>
+<td>切向畸变系数</td>
+<td>p₁, p₂</td>
+<td>空气中棋盘格标定</td>
+<td>纠正镜头组装偏差</td>
+</tr>
+<tr>
+<td>5</td>
+<td>防水罩类型</td>
+<td>flat port / dome port</td>
+<td>设备配置参数</td>
+<td><strong>决定是否产生折射畸变</strong></td>
+</tr>
+<tr>
+<td>6</td>
+<td>镜头到防水罩内壁距离</td>
+<td>d (mm)</td>
+<td>卡尺实测</td>
+<td><strong>flat port 折射模型的关键输入</strong></td>
+</tr>
+<tr>
+<td>7</td>
+<td>防水罩玻璃/亚克力厚度</td>
+<td>t (mm)</td>
+<td>卡尺实测或查规格</td>
+<td>三层折射模型参数之一</td>
+</tr>
+<tr>
+<td>8</td>
+<td>玻璃/亚克力折射率</td>
+<td>n_glass</td>
+<td>查材料表（亚克力≈1.49，BK7≈1.52）</td>
+<td>三层折射模型参数之一</td>
+</tr>
+<tr>
+<td>9</td>
+<td>水的折射率</td>
+<td>n_water</td>
+<td>查表（淡水≈1.33，海水≈1.34）</td>
+<td>三层折射模型参数之一</td>
+</tr>
+</tbody></table>
+<h3 id="Tier-2：强烈建议参数（显著影响重建质量）"><a href="#Tier-2：强烈建议参数（显著影响重建质量）" class="headerlink" title="Tier 2：强烈建议参数（显著影响重建质量）"></a>Tier 2：强烈建议参数（显著影响重建质量）</h3><table>
+<thead>
+<tr>
+<th>#</th>
+<th>参数</th>
+<th>符号/单位</th>
+<th>获取方式</th>
+<th>影响</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>10</td>
+<td>场景标尺/参照物</td>
+<td>已知尺寸的物体（如 300mm 标尺）</td>
+<td>拍摄时放置在场景中</td>
+<td><strong>唯一可靠的绝对尺度来源</strong></td>
+</tr>
+<tr>
+<td>11</td>
+<td>拍摄深度</td>
+<td>h (m)</td>
+<td>压力传感器 / 手动记录</td>
+<td>深度影响光衰减曲线，SeaThru-NeRF 等物理模型需要</td>
+</tr>
+<tr>
+<td>12</td>
+<td>照明方式</td>
+<td>自然光 / 人工补光 / 补光方向</td>
+<td>拍摄时记录</td>
+<td>影响光度一致性和阴影</td>
+</tr>
+<tr>
+<td>13</td>
+<td>水质/浑浊度</td>
+<td>NTU 或肉眼描述（清/微浑/浑浊）</td>
+<td>浊度计或目测记录</td>
+<td>影响散射模型参数和特征点质量</td>
+</tr>
+<tr>
+<td>14</td>
+<td>拍摄距离范围</td>
+<td>相机到目标的距离 (m)</td>
+<td>估算或激光测距</td>
+<td>影响覆盖精度和重投影误差</td>
+</tr>
+<tr>
+<td>15</td>
+<td>照片重叠率</td>
+<td>≥60% 相邻重叠</td>
+<td>拍摄规划时控制</td>
+<td><strong>SfM 成功的关键</strong>，不足则重建失败</td>
+</tr>
+<tr>
+<td>16</td>
+<td>拍摄路径类型</td>
+<td>网格/圆周/直线</td>
+<td>拍摄规划时记录</td>
+<td>影响重建完整性和闭合能力</td>
+</tr>
+</tbody></table>
+<h3 id="Tier-3：锦上添花参数（增强鲁棒性或便利性）"><a href="#Tier-3：锦上添花参数（增强鲁棒性或便利性）" class="headerlink" title="Tier 3：锦上添花参数（增强鲁棒性或便利性）"></a>Tier 3：锦上添花参数（增强鲁棒性或便利性）</h3><table>
+<thead>
+<tr>
+<th>#</th>
+<th>参数</th>
+<th>符号/单位</th>
+<th>获取方式</th>
+<th>影响</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>17</td>
+<td>水温</td>
+<td>℃</td>
+<td>温度计</td>
+<td>精确计算水的折射率（温度修正）</td>
+</tr>
+<tr>
+<td>18</td>
+<td>盐度</td>
+<td>ppt (‰)</td>
+<td>盐度计</td>
+<td>精确计算水的折射率（盐度修正）</td>
+</tr>
+<tr>
+<td>19</td>
+<td>光照色温</td>
+<td>K</td>
+<td>色温计</td>
+<td>辅助白平衡校正</td>
+</tr>
+<tr>
+<td>20</td>
+<td>镜头型号与焦距</td>
+<td>mm（物理焦距）</td>
+<td>镜头规格</td>
+<td>后续标定参考</td>
+</tr>
+<tr>
+<td>21</td>
+<td>图像分辨率与传感器尺寸</td>
+<td>MP / mm</td>
+<td>相机规格</td>
+<td>评估理论精度上限</td>
+</tr>
+<tr>
+<td>22</td>
+<td>拍摄时间戳</td>
+<td>ISO 8601</td>
+<td>相机元数据</td>
+<td>与潮汐/光照变化关联分析</td>
+</tr>
+<tr>
+<td>23</td>
+<td>场景照片数量</td>
+<td>张</td>
+<td>拍摄时统计</td>
+<td>评估重建冗余度（推荐 50-300 张）</td>
+</tr>
+</tbody></table>
+<h2 id="场景标尺设置"><a href="#场景标尺设置" class="headerlink" title="场景标尺设置"></a>场景标尺设置</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 最简单的做法：</span><br><span class="hljs-comment"># 在场景中放一把防水尺子 / 标定板 / 已知尺寸的物体</span><br><span class="hljs-comment"># 拍摄时确保标尺在 3-5 张不同角度的照片中可见</span><br><span class="hljs-comment"># 重建后用 CloudCompare 测量点云中的标尺长度</span><br><span class="hljs-comment"># 计算缩放因子：s = 真实长度 / 测得长度</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="各重建方法对参数的需求矩阵"><a href="#各重建方法对参数的需求矩阵" class="headerlink" title="各重建方法对参数的需求矩阵"></a>各重建方法对参数的需求矩阵</h2><table>
+<thead>
+<tr>
+<th>重建方法</th>
+<th>镜头内参</th>
+<th>防水罩参数</th>
+<th>折射模型</th>
+<th>场景标尺</th>
+<th>深度/水质</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>COLMAP (SfM)</td>
+<td><strong>必需</strong></td>
+<td>可选</td>
+<td>无（盲补偿）</td>
+<td><strong>强烈建议</strong></td>
+<td>可选</td>
+</tr>
+<tr>
+<td>COLMAP + RSfM</td>
+<td><strong>必需</strong></td>
+<td><strong>必需</strong></td>
+<td><strong>有</strong></td>
+<td><strong>强烈建议</strong></td>
+<td>可选</td>
+</tr>
+<tr>
+<td>SeaThru-NeRF</td>
+<td><strong>必需</strong></td>
+<td><strong>必需</strong></td>
+<td><strong>内置</strong></td>
+<td><strong>强烈建议</strong></td>
+<td><strong>必需</strong></td>
+</tr>
+<tr>
+<td>WaterSplatting</td>
+<td><strong>必需</strong></td>
+<td>可选</td>
+<td>预处理时补偿</td>
+<td><strong>强烈建议</strong></td>
+<td><strong>必需</strong></td>
+</tr>
+<tr>
+<td>UW-GS / UW-3DGS</td>
+<td><strong>必需</strong></td>
+<td>可选</td>
+<td><strong>内置</strong></td>
+<td><strong>强烈建议</strong></td>
+<td><strong>必需</strong></td>
+</tr>
+<tr>
+<td>SeaSplat</td>
+<td><strong>必需</strong></td>
+<td>可选</td>
+<td><strong>内置</strong></td>
+<td><strong>强烈建议</strong></td>
+<td>可选</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>解读</strong>：不管选哪个方法，内参和场景标尺都是通用的必备项。防水罩参数和物理模型参数取决于你选的具体算法。</p>
+</blockquote>
+<p>之前我一直以为IMU是必须的，仅凭画面去还原镜头位置，怎么想都不是很靠谱，但查阅资料发现，其实除了画面，更重要的是镜头内参和镜头距离。</p>
+<h1 id="四、参考项目"><a href="#四、参考项目" class="headerlink" title="四、参考项目"></a>四、参考项目</h1><p>找了一些水底重建相关的项目，但是想要复现并不容易，而且数据集都在外网，下载还需要开VPN<br>WaterSplatting好像说明还是比较全的，就是需要Linux环境和指定版本的CUDA。<br>这个领域还是有点偏门了，所以没有人做那种安装即用的程序。</p>
+<h2 id="一、项目基本信息"><a href="#一、项目基本信息" class="headerlink" title="一、项目基本信息"></a>一、项目基本信息</h2><table>
+<thead>
+<tr>
+<th>项目</th>
+<th>论文</th>
+<th>会议/年份</th>
+<th>代码仓库</th>
+<th>项目主页</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>WaterSplatting</strong></td>
+<td><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2408.08206">arXiv 2408.08206</a></td>
+<td>3DV 2025</td>
+<td><a target="_blank" rel="noopener" href="https://github.com/water-splatting/water-splatting">water-splatting/water-splatting</a></td>
+<td><a target="_blank" rel="noopener" href="https://water-splatting.github.io/">water-splatting.github.io</a></td>
+</tr>
+<tr>
+<td><strong>SeaSplat</strong></td>
+<td><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2409.17345">arXiv 2409.17345</a></td>
+<td>arXiv 2024</td>
+<td><a target="_blank" rel="noopener" href="https://github.com/dxyang/seasplat">dxyang/seasplat</a></td>
+<td><a target="_blank" rel="noopener" href="https://seasplat.github.io/">seasplat.github.io</a></td>
+</tr>
+<tr>
+<td><strong>SeaThru-NeRF</strong></td>
+<td><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2304.07743">arXiv 2304.07743</a></td>
+<td>CVPR 2023</td>
+<td><a target="_blank" rel="noopener" href="https://github.com/deborahLevy130/seathru_NeRF">deborahLevy130/seathru_NeRF</a></td>
+<td><a target="_blank" rel="noopener" href="https://sea-thru-nerf.github.io/">sea-thru-nerf.github.io</a></td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="二、技术路线"><a href="#二、技术路线" class="headerlink" title="二、技术路线"></a>二、技术路线</h2><table>
+<thead>
+<tr>
+<th>项目</th>
+<th>基础框架</th>
+<th>核心方法</th>
+<th>ML 框架</th>
+<th>渲染方式</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>WaterSplatting</strong></td>
+<td>NeRFStudio</td>
+<td>3DGS + 体渲染（散射介质建模）</td>
+<td><strong>PyTorch</strong></td>
+<td>实时渲染</td>
+</tr>
+<tr>
+<td><strong>SeaSplat</strong></td>
+<td>原生 3DGS (INRIA)</td>
+<td>3DGS + 物理水下图像形成模型</td>
+<td><strong>PyTorch</strong></td>
+<td>实时渲染</td>
+</tr>
+<tr>
+<td><strong>SeaThru-NeRF</strong></td>
+<td>MultiNeRF (Mip-NeRF 360)</td>
+<td>NeRF + SeaThru 散射模型</td>
+<td><strong>JAX / Flax</strong></td>
+<td>离线渲染（慢）</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="三、环境依赖对比"><a href="#三、环境依赖对比" class="headerlink" title="三、环境依赖对比"></a>三、环境依赖对比</h2><table>
+<thead>
+<tr>
+<th>项目</th>
+<th>Python</th>
+<th>PyTorch / JAX</th>
+<th>CUDA</th>
+<th align="center">需要编译 CUDA 扩展</th>
+<th align="center">子模块</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>WaterSplatting</strong></td>
+<td><strong>3.8</strong></td>
+<td>PyTorch 2.1.2+cu118</td>
+<td><strong>11.8</strong></td>
+<td align="center">✅ tiny-cuda-nn + 自研 rasterizer</td>
+<td align="center">glm</td>
+</tr>
+<tr>
+<td><strong>SeaSplat</strong></td>
+<td><strong>3.10</strong></td>
+<td>PyTorch 2.0.1+cu118</td>
+<td><strong>11.8</strong> (Docker)</td>
+<td align="center">✅ diff-gaussian-rasterization + simple-knn</td>
+<td align="center">2 个关键</td>
+</tr>
+<tr>
+<td><strong>SeaThru-NeRF</strong></td>
+<td><strong>3.9</strong></td>
+<td>JAX 0.3.23+cuda11</td>
+<td><strong>11.x</strong></td>
+<td align="center">❌ <strong>无需编译</strong></td>
+<td align="center">无</td>
+</tr>
+</tbody></table>
+<h3 id="CUDA-扩展详情"><a href="#CUDA-扩展详情" class="headerlink" title="CUDA 扩展详情"></a>CUDA 扩展详情</h3><table>
+<thead>
+<tr>
+<th>项目</th>
+<th>需编译的扩展</th>
+<th align="center">代码量</th>
+<th align="center">Windows 编译难度</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>WaterSplatting</strong></td>
+<td>tiny-cuda-nn (NVlabs) + 自研 CUDA kernel (forward/backward ~52KB)</td>
+<td align="center">~52KB .cu</td>
+<td align="center">⭐⭐⭐⭐⭐ 极高</td>
+</tr>
+<tr>
+<td><strong>SeaSplat</strong></td>
+<td>diff-gaussian-rasterization + simple-knn (来自 INRIA 3DGS)</td>
+<td align="center">标准 3DGS 扩展</td>
+<td align="center">⭐⭐⭐⭐ 高</td>
+</tr>
+<tr>
+<td><strong>SeaThru-NeRF</strong></td>
+<td><strong>无</strong>（纯 Python + JAX）</td>
+<td align="center">0</td>
+<td align="center">✅ 没问题</td>
+</tr>
+</tbody></table>
+<h3 id="额外系统依赖"><a href="#额外系统依赖" class="headerlink" title="额外系统依赖"></a>额外系统依赖</h3><table>
+<thead>
+<tr>
+<th>项目</th>
+<th>系统库需求</th>
+<th align="center">COLMAP</th>
+<th align="center">Docker</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>WaterSplatting</strong></td>
+<td>minimal（NeRFStudio 自带）</td>
+<td align="center">数据预处理需要</td>
+<td align="center">❌ 无</td>
+</tr>
+<tr>
+<td><strong>SeaSplat</strong></td>
+<td><strong>极多</strong>: OpenCV, Boost, Embree, CGAL, Ceres, Eigen, FLANN…</td>
+<td align="center">数据预处理 + 运行时需要</td>
+<td align="center">✅ <strong>有完整 Dockerfile</strong></td>
+</tr>
+<tr>
+<td><strong>SeaThru-NeRF</strong></td>
+<td>minimal</td>
+<td align="center">数据预处理需要（pycolmap）</td>
+<td align="center">❌ 无</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="四、数据集"><a href="#四、数据集" class="headerlink" title="四、数据集"></a>四、数据集</h2><p>三个项目都使用 <strong>SeaThru-NeRF 数据集</strong>（相同的来源）：</p>
+<table>
+<thead>
+<tr>
+<th>数据集</th>
+<th align="center">大小</th>
+<th>来源</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>SeaThru-NeRF</td>
+<td align="center">~30 GB</td>
+<td><a target="_blank" rel="noopener" href="https://drive.google.com/uc?export=download&id=1RzojBFvBWjUUhuJb95xJPSNP3nJwZWaT">Google Drive</a></td>
+</tr>
+<tr>
+<td>SeaSplat SaltPond</td>
+<td align="center">~? GB</td>
+<td><a target="_blank" rel="noopener" href="https://drive.google.com/file/d/1gItZkfEFmXZzIRh5b6wXeWD6GappX-QN">Google Drive</a></td>
+</tr>
+</tbody></table>
+<p>数据预处理均需 <strong>COLMAP image_undistorter</strong> 处理相机参数。</p>
+<h1 id="五、总结"><a href="#五、总结" class="headerlink" title="五、总结"></a>五、总结</h1><p>综合来看，目前水下三维重建虽然理论有相关研究，也有一些成功案例，但没有那种商业化的软件，都是研究者们自己手搓的代码，数据格式也没有明确的规范，归根结底还是需求小众，成本高，现在水下行业大概部分还是依赖于潜水员和潜水器。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0/" class="category-chain-item">学习</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/3DGS/">#3DGS</a>
+      
+        <a href="/tags/%E6%B0%B4%E4%B8%8B%E6%9C%BA%E5%99%A8%E4%BA%BA/">#水下机器人</a>
+      
+        <a href="/tags/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA/">#三维重建</a>
+      
+        <a href="/tags/%E5%A3%B0%E7%BA%B3/">#声纳</a>
+      
+        <a href="/tags/%E5%85%89%E5%AD%A6/">#光学</a>
+      
+        <a href="/tags/%E5%88%86%E6%9E%90/">#分析</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>水下三维重建技术分析</div>
+      <div>http://kw1649190133.github.io/2026/06/01/水下三维重建技术分析/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Kwindy</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>June 1, 2026</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2026/06/01/Cesium%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0%EF%BC%88%E5%9B%9B%EF%BC%89%E7%85%A7%E7%89%87%E6%8A%95%E5%BD%B1%E5%8A%9F%E8%83%BD%E5%AE%9E%E7%8E%B0/" title="Cesium开发笔记（四）照片投影功能实现">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Cesium开发笔记（四）照片投影功能实现</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/05/19/%E6%97%A5%E8%AE%B0%E6%9C%AC%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91/" title="日记本程序开发">
+                        <span class="hidden-mobile">日记本程序开发</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

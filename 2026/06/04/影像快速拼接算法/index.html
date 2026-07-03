@@ -1,0 +1,704 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=dark>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Kwindy">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="影像拼接第一版原理解析 第一帧使用GPS和云台航向角作为基准来确定位置和方向，后续帧使用SIFT特征匹配来计算当前与上一帧的相对变换。 创建一个巨大画布，将影像贴到上面去 当连续匹配了4帧之后，就强制退回到GPS模式，避免全局误差扩大。 使用增量处理模式，仅加载当前处理的数据。 保留最终图片成果和外部参考坐标系。  算是一个典型的 VIO (视觉惯性里程计) 简化版实现。 调整目录结构直接由AI做">
+<meta property="og:type" content="article">
+<meta property="og:title" content="影像快速拼接算法">
+<meta property="og:url" content="http://kw1649190133.github.io/2026/06/04/%E5%BD%B1%E5%83%8F%E5%BF%AB%E9%80%9F%E6%8B%BC%E6%8E%A5%E7%AE%97%E6%B3%95/index.html">
+<meta property="og:site_name" content="kw&#39;s blog">
+<meta property="og:description" content="影像拼接第一版原理解析 第一帧使用GPS和云台航向角作为基准来确定位置和方向，后续帧使用SIFT特征匹配来计算当前与上一帧的相对变换。 创建一个巨大画布，将影像贴到上面去 当连续匹配了4帧之后，就强制退回到GPS模式，避免全局误差扩大。 使用增量处理模式，仅加载当前处理的数据。 保留最终图片成果和外部参考坐标系。  算是一个典型的 VIO (视觉惯性里程计) 简化版实现。 调整目录结构直接由AI做">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/06/04/%E5%BD%B1%E5%83%8F%E5%BF%AB%E9%80%9F%E6%8B%BC%E6%8E%A5%E7%AE%97%E6%B3%95/232f90b02eb9cac58bfd53bcceb05a5e.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/06/04/%E5%BD%B1%E5%83%8F%E5%BF%AB%E9%80%9F%E6%8B%BC%E6%8E%A5%E7%AE%97%E6%B3%95/2b134394f7487d8d770ff560caf9d8f7.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/06/04/%E5%BD%B1%E5%83%8F%E5%BF%AB%E9%80%9F%E6%8B%BC%E6%8E%A5%E7%AE%97%E6%B3%95/faf526d7a93a2b2046bc74a1f4845004.png">
+<meta property="article:published_time" content="2026-06-04T02:25:53.000Z">
+<meta property="article:modified_time" content="2026-06-04T02:33:51.081Z">
+<meta property="article:author" content="Kwindy">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="json">
+<meta property="article:tag" content="影像拼接">
+<meta property="article:tag" content="GPS">
+<meta property="article:tag" content="SfM">
+<meta property="article:tag" content="AI编程">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://kw1649190133.github.io/2026/06/04/%E5%BD%B1%E5%83%8F%E5%BF%AB%E9%80%9F%E6%8B%BC%E6%8E%A5%E7%AE%97%E6%B3%95/232f90b02eb9cac58bfd53bcceb05a5e.png">
+  
+  
+  
+  <title>影像快速拼接算法 - kw&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"kw1649190133.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>天际边缘 Edge of the sky </strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="影像快速拼接算法"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-06-04 10:25" pubdate>
+          June 4, 2026 am
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4.1k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          35 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">影像快速拼接算法</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="影像拼接第一版"><a href="#影像拼接第一版" class="headerlink" title="影像拼接第一版"></a>影像拼接第一版</h1><h2 id="原理解析"><a href="#原理解析" class="headerlink" title="原理解析"></a>原理解析</h2><ul>
+<li>第一帧使用GPS和云台航向角作为基准来确定位置和方向，后续帧使用SIFT特征匹配来计算当前与上一帧的相对变换。</li>
+<li>创建一个巨大画布，将影像贴到上面去</li>
+<li>当连续匹配了4帧之后，就强制退回到GPS模式，避免全局误差扩大。</li>
+<li>使用增量处理模式，仅加载当前处理的数据。</li>
+<li>保留最终图片成果和外部参考坐标系。</li>
+</ul>
+<p>算是一个典型的 VIO (视觉惯性里程计) 简化版实现。</p>
+<h2 id="调整目录结构"><a href="#调整目录结构" class="headerlink" title="调整目录结构"></a>调整目录结构</h2><p>直接由AI做架构调整，同时保留原始的文件。</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs stylus">pingjietest/<br>├── <span class="hljs-selector-tag">main</span><span class="hljs-selector-class">.py</span>                          ← 新主入口（交互式 + 命令行）<br>├── hybrid_stitcher<span class="hljs-selector-class">.py</span>               ← 原文件保留不动<br>├── stitcher/                        ← 新模块包<br>│   ├── __init__<span class="hljs-selector-class">.py</span><br>│   ├── core/<br>│   │   └── stitcher<span class="hljs-selector-class">.py</span>              ← 核心拼接类（重构版）<br>│   └── utils/<br>│       ├── geo_utils<span class="hljs-selector-class">.py</span>             ← GPS/坐标/相机参数<br>│       ├── feature_matcher<span class="hljs-selector-class">.py</span>       ← SIFT特征提取/匹配/变换<br>│       └── canvas_utils<span class="hljs-selector-class">.py</span>          ← 画布叠加/标注/后处理<br>├── archive/                         ← 原始文件归档<br>│   ├── hybrid_stitcher_original<span class="hljs-selector-class">.py</span><br>│   ├── test_vertical_original<span class="hljs-selector-class">.py</span><br>│   └── test_mid_section_original<span class="hljs-selector-class">.py</span><br>└── test_vertical<span class="hljs-selector-class">.py</span>                 ← 已更新使用新包<br></code></pre></td></tr></table></figure>
+
+<h2 id="外部参考文件"><a href="#外部参考文件" class="headerlink" title="外部参考文件"></a>外部参考文件</h2><p>要让影像能够正常在地图或者地球上显示，还需要一个外部参考，而原程序好像没有这个，也不知道原来是怎么实现的了，反正我选择把数据圆上。 这种文件好像英文叫 World File（世界文件），所以后缀一般用图片格式+w 。<br>其中最后两项明显是经纬度，其他的就不是特别清楚了，还是让AI解析一下。</p>
+<figure class="highlight dns"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs dns"><span class="hljs-number">0</span>.<span class="hljs-number">0000010352</span><br><span class="hljs-number">0</span>.<span class="hljs-number">0000000000</span><br><span class="hljs-number">0</span>.<span class="hljs-number">0000000000</span><br>-<span class="hljs-number">0</span>.<span class="hljs-number">0000008580</span><br><span class="hljs-number">108</span>.<span class="hljs-number">7469490007</span><br><span class="hljs-number">34</span>.<span class="hljs-number">0155657626</span><br></code></pre></td></tr></table></figure>
+<p>第1行 (A)：X 方向的像素分辨率。 表示地图单元中一个像素在 X 方向上的宽度（即东西向分辨率）。你的数值 0.0000010352 代表每个像素在经度方向上跨越的距离。<br>第2行 (D)：Y 方向的旋转系数。 用于处理影像倾斜或旋转的情况。如果影像正北朝上且没有旋转，该值通常为 0.0000000000。<br>第3行 (B)：X 方向的旋转系数。 同样用于处理影像旋转。如果没有旋转，该值也通常为 0.0000000000。<br>第4行 (E)：Y 方向的像素分辨率（负值）。 表示一个像素在 Y 方向上的高度。注意这里通常是负数，因为图像坐标系的原点在左上角（向下为正），而地理坐标系的原点在左下角（向上为正）。你的数值 -0.0000008580 代表每个像素在纬度方向上跨越的距离。<br>第5行 (C)：左上角像素中心的 X 坐标。 即影像最左上角那个像素中心点对应的实际地理经度（108.7469490007）。<br>第6行 (F)：左上角像素中心的 Y 坐标。 即影像最左上角那个像素中心点对应的实际地理纬度（34.0155657626）。<br>💡 补充说明与注意事项<br>数学转换公式：通过这六个参数，GIS 软件可以将任意一个像素点 (x, y) 转换为真实的地理坐标 (GeoX, GeoY)，计算公式为：<br>GeoX = A × x + B × y + C<br>GeoY = D × x + E × y + F</p>
+<h2 id="坐标文件总结"><a href="#坐标文件总结" class="headerlink" title="坐标文件总结"></a>坐标文件总结</h2><p>现在可以根据经验总结了：</p>
+<ul>
+<li>png 对应 pgw 或者pngw</li>
+<li>jpg 对应 jpw</li>
+<li>tif 对应 tfw</li>
+<li>tif 还有特殊的 Geotiff，转换信息是内嵌的，只有tif文件但是可以正常加载</li>
+<li>他们的格式顺序是一致的，只有后缀不同，本质是ASCII码纯文本</li>
+</ul>
+<p>生成记录文件</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-comment"># 无人机影像拼接 - 帧坐标记录文件</span><br><span class="hljs-comment"># 生成时间: 2026-05-26 11:09:36</span><br><span class="hljs-comment"># 总帧数: 13</span><br><span class="hljs-comment"># 参考点 GPS（第一帧）: 34.01427916, 108.75315929</span><br><span class="hljs-comment"># 坐标系: WGS 84 (EPSG:4326)</span><br><span class="hljs-comment"># 画布尺寸: 12000 × 3000 像素</span><br><span class="hljs-comment"># 像素比例: 7.9734 像素/米</span><br><span class="hljs-comment">#</span><br><span class="hljs-comment"># 列说明:</span><br><span class="hljs-comment">#   frame_no      - 帧编号（轨迹点序号）</span><br><span class="hljs-comment">#   longitude     - GPS 经度（WGS 84，度）</span><br><span class="hljs-comment">#   latitude      - GPS 纬度（WGS 84，度）</span><br><span class="hljs-comment">#   altitude_msl  - GPS 海拔（米 MSL）</span><br><span class="hljs-comment">#   yaw_deg       - 偏航角（度，0=北，顺时针）</span><br><span class="hljs-comment">#   canvas_x_px   - 帧中心在画布上的 X 坐标（像素）</span><br><span class="hljs-comment">#   canvas_y_px   - 帧中心在画布上的 Y 坐标（像素）</span><br><span class="hljs-comment">#   rel_x_m       - 相对第一帧的东偏移量（米）</span><br><span class="hljs-comment">#   rel_y_m       - 相对第一帧的北偏移量（米）</span><br><span class="hljs-comment">#   method        - 定位方式（GPS_INIT/GPS_FALLBACK/FEATURE_SUCCESS）</span><br><span class="hljs-comment">#</span><br><span class="hljs-attribute">frame_no</span>	longitude	latitude	altitude_msl	yaw_deg	canvas_x_px	canvas_y_px	rel_x_m	rel_y_m	method<br><span class="hljs-attribute">208</span>	<span class="hljs-number">108</span>.<span class="hljs-number">75315929</span>	<span class="hljs-number">34</span>.<span class="hljs-number">01427916</span>	<span class="hljs-number">484</span>.<span class="hljs-number">03</span>	-<span class="hljs-number">87</span>.<span class="hljs-number">82</span>	<span class="hljs-number">6000</span>	<span class="hljs-number">1500</span>	<span class="hljs-number">0</span>.<span class="hljs-number">000</span>	<span class="hljs-number">0</span>.<span class="hljs-number">000</span>	GPS_INIT<br><span class="hljs-attribute">209</span>	<span class="hljs-number">108</span>.<span class="hljs-number">75298209</span>	<span class="hljs-number">34</span>.<span class="hljs-number">01428535</span>	<span class="hljs-number">484</span>.<span class="hljs-number">03</span>	-<span class="hljs-number">87</span>.<span class="hljs-number">92</span>	<span class="hljs-number">5719</span>	<span class="hljs-number">1483</span>	-<span class="hljs-number">16</span>.<span class="hljs-number">351</span>	<span class="hljs-number">0</span>.<span class="hljs-number">689</span>	FEATURE_SUCCESS<br><span class="hljs-attribute">210</span>	<span class="hljs-number">108</span>.<span class="hljs-number">75276506</span>	<span class="hljs-number">34</span>.<span class="hljs-number">01429305</span>	<span class="hljs-number">483</span>.<span class="hljs-number">93</span>	-<span class="hljs-number">88</span>.<span class="hljs-number">01</span>	<span class="hljs-number">5527</span>	<span class="hljs-number">1469</span>	-<span class="hljs-number">36</span>.<span class="hljs-number">377</span>	<span class="hljs-number">1</span>.<span class="hljs-number">546</span>	FEATURE_SUCCESS<br><span class="hljs-attribute">211</span>	<span class="hljs-number">108</span>.<span class="hljs-number">75255864</span>	<span class="hljs-number">34</span>.<span class="hljs-number">01430047</span>	<span class="hljs-number">484</span>.<span class="hljs-number">03</span>	-<span class="hljs-number">88</span>.<span class="hljs-number">01</span>	<span class="hljs-number">5225</span>	<span class="hljs-number">1444</span>	-<span class="hljs-number">55</span>.<span class="hljs-number">423</span>	<span class="hljs-number">2</span>.<span class="hljs-number">372</span>	FEATURE_SUCCESS<br><span class="hljs-attribute">212</span>	<span class="hljs-number">108</span>.<span class="hljs-number">75233038</span>	<span class="hljs-number">34</span>.<span class="hljs-number">01430828</span>	<span class="hljs-number">484</span>.<span class="hljs-number">03</span>	-<span class="hljs-number">88</span>.<span class="hljs-number">11</span>	<span class="hljs-number">4984</span>	<span class="hljs-number">1421</span>	-<span class="hljs-number">76</span>.<span class="hljs-number">486</span>	<span class="hljs-number">3</span>.<span class="hljs-number">242</span>	FEATURE_SUCCESS<br><span class="hljs-attribute">213</span>	<span class="hljs-number">108</span>.<span class="hljs-number">75211606</span>	<span class="hljs-number">34</span>.<span class="hljs-number">01431594</span>	<span class="hljs-number">484</span>.<span class="hljs-number">03</span>	-<span class="hljs-number">88</span>.<span class="hljs-number">11</span>	<span class="hljs-number">4933</span>	<span class="hljs-number">1416</span>	-<span class="hljs-number">96</span>.<span class="hljs-number">261</span>	<span class="hljs-number">4</span>.<span class="hljs-number">094</span>	FEATURE_SUCCESS<br><span class="hljs-attribute">214</span>	<span class="hljs-number">108</span>.<span class="hljs-number">75211606</span>	<span class="hljs-number">34</span>.<span class="hljs-number">01431594</span>	<span class="hljs-number">484</span>.<span class="hljs-number">03</span>	-<span class="hljs-number">88</span>.<span class="hljs-number">11</span>	<span class="hljs-number">4867</span>	<span class="hljs-number">1410</span>	-<span class="hljs-number">96</span>.<span class="hljs-number">261</span>	<span class="hljs-number">4</span>.<span class="hljs-number">094</span>	FEATURE_SUCCESS<br><span class="hljs-attribute">215</span>	<span class="hljs-number">108</span>.<span class="hljs-number">75211606</span>	<span class="hljs-number">34</span>.<span class="hljs-number">01431594</span>	<span class="hljs-number">484</span>.<span class="hljs-number">03</span>	-<span class="hljs-number">88</span>.<span class="hljs-number">11</span>	<span class="hljs-number">5232</span>	<span class="hljs-number">1467</span>	-<span class="hljs-number">96</span>.<span class="hljs-number">261</span>	<span class="hljs-number">4</span>.<span class="hljs-number">094</span>	GPS_FALLBACK<br><span class="hljs-attribute">216</span>	<span class="hljs-number">108</span>.<span class="hljs-number">75211606</span>	<span class="hljs-number">34</span>.<span class="hljs-number">01431594</span>	<span class="hljs-number">484</span>.<span class="hljs-number">03</span>	-<span class="hljs-number">88</span>.<span class="hljs-number">11</span>	<span class="hljs-number">5118</span>	<span class="hljs-number">1460</span>	-<span class="hljs-number">96</span>.<span class="hljs-number">261</span>	<span class="hljs-number">4</span>.<span class="hljs-number">094</span>	FEATURE_SUCCESS<br><span class="hljs-attribute">217</span>	<span class="hljs-number">108</span>.<span class="hljs-number">75189986</span>	<span class="hljs-number">34</span>.<span class="hljs-number">01432327</span>	<span class="hljs-number">484</span>.<span class="hljs-number">03</span>	-<span class="hljs-number">88</span>.<span class="hljs-number">11</span>	<span class="hljs-number">4869</span>	<span class="hljs-number">1446</span>	-<span class="hljs-number">116</span>.<span class="hljs-number">211</span>	<span class="hljs-number">4</span>.<span class="hljs-number">910</span>	FEATURE_SUCCESS<br><span class="hljs-attribute">218</span>	<span class="hljs-number">108</span>.<span class="hljs-number">75169331</span>	<span class="hljs-number">34</span>.<span class="hljs-number">01433054</span>	<span class="hljs-number">483</span>.<span class="hljs-number">93</span>	-<span class="hljs-number">88</span>.<span class="hljs-number">11</span>	<span class="hljs-number">4632</span>	<span class="hljs-number">1431</span>	-<span class="hljs-number">135</span>.<span class="hljs-number">270</span>	<span class="hljs-number">5</span>.<span class="hljs-number">720</span>	FEATURE_SUCCESS<br><span class="hljs-attribute">219</span>	<span class="hljs-number">108</span>.<span class="hljs-number">75147762</span>	<span class="hljs-number">34</span>.<span class="hljs-number">01433804</span>	<span class="hljs-number">484</span>.<span class="hljs-number">03</span>	-<span class="hljs-number">88</span>.<span class="hljs-number">11</span>	<span class="hljs-number">4382</span>	<span class="hljs-number">1413</span>	-<span class="hljs-number">155</span>.<span class="hljs-number">172</span>	<span class="hljs-number">6</span>.<span class="hljs-number">554</span>	FEATURE_SUCCESS<br><span class="hljs-attribute">220</span>	<span class="hljs-number">108</span>.<span class="hljs-number">75125031</span>	<span class="hljs-number">34</span>.<span class="hljs-number">01434598</span>	<span class="hljs-number">484</span>.<span class="hljs-number">03</span>	-<span class="hljs-number">88</span>.<span class="hljs-number">11</span>	<span class="hljs-number">4162</span>	<span class="hljs-number">1397</span>	-<span class="hljs-number">176</span>.<span class="hljs-number">146</span>	<span class="hljs-number">7</span>.<span class="hljs-number">438</span>	FEATURE_SUCCESS<br></code></pre></td></tr></table></figure>
+
+<p>最终效果：<br><img src="/2026/06/04/%E5%BD%B1%E5%83%8F%E5%BF%AB%E9%80%9F%E6%8B%BC%E6%8E%A5%E7%AE%97%E6%B3%95/232f90b02eb9cac58bfd53bcceb05a5e.png" srcset="/img/loading.gif" lazyload alt="232f90b02eb9cac58bfd53bcceb05a5e.png"><br>总体来说还不错，但我感觉还是有一些提升空间的。</p>
+<h1 id="其他方案与升级计划"><a href="#其他方案与升级计划" class="headerlink" title="其他方案与升级计划"></a>其他方案与升级计划</h1><p>我知道效率与质量不可兼得，但是在传统空三和极速快拼之间还是有很多可调整的余地的。让AI整理了一下可以参考的方向：<br><img src="/2026/06/04/%E5%BD%B1%E5%83%8F%E5%BF%AB%E9%80%9F%E6%8B%BC%E6%8E%A5%E7%AE%97%E6%B3%95/2b134394f7487d8d770ff560caf9d8f7.png" srcset="/img/loading.gif" lazyload alt="2b134394f7487d8d770ff560caf9d8f7.png"></p>
+<p>各档方案详解</p>
+<ul>
+<li><p>档位 1：OpenSfM / COLMAP + 直接正射（20 分钟~2 小时）<br>这是目前工程上用的最广的”中偏重”方案。它不跑密集点云，只做：<br>稀疏 SfM 得到相机位姿（即空三结果，但没有密集重建）<br>用解算出的精确位姿做直接正射投影（orthorectification）拼到一张图上<br>核心优势：无拼缝、几何精度高，输出就是标准的 GeoTIFF 正射影像，Cesium/ArcGIS 直接用。<br>代表工具：OpenDroneMap（ODM） 的 –fast-orthophoto 模式、Agisoft Metashape 的”快速正射”。</p>
+</li>
+<li><p>档位 2：稀疏 SfM 只算位姿，直接贴图（3~15 分钟）<br>这是最适合你当前项目的中间档，思路是：<br>用 SIFT/ORB 做多帧特征匹配，构建 essential matrix 估计相机位姿（不解算 3D 点云）<br>直接用位姿做单应变换（homography）将每帧投影到公共平面<br>用 多波段融合（multi-band blending，如 OpenCV 的 detail::MultiBandBlender）消除拼缝<br>对比你现在的方案，关键改进点是：<br>当前：逐帧累积变换（误差叠加，越往后越偏）<br>中间档：用全局位姿约束，所有帧同时解算，不累积误差<br>拼缝处用多分辨率金字塔融合替代硬混合，撕裂消失<br>实现可以基于 OpenCV 的 cv2.detail 模块，它内置了完整的拼接流水线，不需要 ODM 那种重量级框架。</p>
+</li>
+<li><p>档位 3：GPU 加速特征匹配（30 秒~5 分钟，有 GPU 时）<br>如果你有 NVIDIA GPU（yolo 环境本来就是 CUDA 环境），可以替换特征匹配器：<br>SuperPoint + SuperGlue / LightGlue：深度学习特征匹配，匹配精度远超 SIFT，对重复纹理（水面、农田）更鲁棒<br>匹配成功率提升后，GPS 回退的情况大幅减少，整体效果接近标准 SfM<br>这个改动只需替换 feature_matcher.py 里的匹配器，其余流程不变，你的项目结构已经为这个扩展预留了接口。</p>
+</li>
+</ul>
+<h1 id="影像拼接第二版"><a href="#影像拼接第二版" class="headerlink" title="影像拼接第二版"></a>影像拼接第二版</h1><p> 原本的影像拼接有一些问题，加载原始数据的时候还好，加载大一些的影像就崩溃了，后来发现这个拼接算法的画布是固定12000*3000像素的，无法自动进行扩展，当拼接的影像超出范围的时候，就会被裁减。</p>
+<p>增加了初始画布大小，调整了参数输入形式。<br> <img src="/2026/06/04/%E5%BD%B1%E5%83%8F%E5%BF%AB%E9%80%9F%E6%8B%BC%E6%8E%A5%E7%AE%97%E6%B3%95/faf526d7a93a2b2046bc74a1f4845004.png" srcset="/img/loading.gif" lazyload alt="faf526d7a93a2b2046bc74a1f4845004.png"></p>
+<p>PS：折腾了半天，最后的效果感觉还不如直接用GPS显示照片来的好，唉。具体的算法细节还是要从头梳理一下，目前看来，不实用。还有很多需要完善的地方。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0/" class="category-chain-item">学习</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/python/">#python</a>
+      
+        <a href="/tags/json/">#json</a>
+      
+        <a href="/tags/%E5%BD%B1%E5%83%8F%E6%8B%BC%E6%8E%A5/">#影像拼接</a>
+      
+        <a href="/tags/GPS/">#GPS</a>
+      
+        <a href="/tags/SfM/">#SfM</a>
+      
+        <a href="/tags/AI%E7%BC%96%E7%A8%8B/">#AI编程</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>影像快速拼接算法</div>
+      <div>http://kw1649190133.github.io/2026/06/04/影像快速拼接算法/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Kwindy</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>June 4, 2026</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2026/06/08/JoplinToHexo%E8%BD%AC%E6%8D%A2%E5%B7%A5%E5%85%B7%E5%BC%80%E5%8F%91/" title="JoplinToHexo转换工具开发">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">JoplinToHexo转换工具开发</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/06/04/ONNX%E6%A8%A1%E5%9E%8B%E8%BD%AC%E6%8D%A2%E5%92%8C%E4%BD%BF%E7%94%A8/" title="ONNX模型转换和使用">
+                        <span class="hidden-mobile">ONNX模型转换和使用</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

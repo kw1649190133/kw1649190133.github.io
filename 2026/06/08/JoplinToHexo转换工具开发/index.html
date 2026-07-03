@@ -1,0 +1,914 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=dark>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Kwindy">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="前言我一直保持着用hexo博客记录开发和实验过程的习惯，但是每次用joplin打字，再转到vscode中处理，最后在命令行打包更新的流程实在是有点繁琐了。一直想给自己做一套工具，但苦于没有能力，也没有时间。但现在不一样了，大模型即将主宰一切。 需求描述我一般使用joplin来写文档，用hexo发布，但是期间的格式转换和数据迁移过程实在是太麻烦了。使用joplin导出MD文档后，每次我还需要在hex">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JoplinToHexo转换工具开发">
+<meta property="og:url" content="http://kw1649190133.github.io/2026/06/08/JoplinToHexo%E8%BD%AC%E6%8D%A2%E5%B7%A5%E5%85%B7%E5%BC%80%E5%8F%91/index.html">
+<meta property="og:site_name" content="kw&#39;s blog">
+<meta property="og:description" content="前言我一直保持着用hexo博客记录开发和实验过程的习惯，但是每次用joplin打字，再转到vscode中处理，最后在命令行打包更新的流程实在是有点繁琐了。一直想给自己做一套工具，但苦于没有能力，也没有时间。但现在不一样了，大模型即将主宰一切。 需求描述我一般使用joplin来写文档，用hexo发布，但是期间的格式转换和数据迁移过程实在是太麻烦了。使用joplin导出MD文档后，每次我还需要在hex">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/06/08/JoplinToHexo%E8%BD%AC%E6%8D%A2%E5%B7%A5%E5%85%B7%E5%BC%80%E5%8F%91/30febdb7c30f6e9cd48fbfcd09977a40.png">
+<meta property="article:published_time" content="2026-06-08T09:37:09.000Z">
+<meta property="article:modified_time" content="2026-06-09T03:11:34.421Z">
+<meta property="article:author" content="Kwindy">
+<meta property="article:tag" content="hexo">
+<meta property="article:tag" content="blog">
+<meta property="article:tag" content="vibe">
+<meta property="article:tag" content="工具">
+<meta property="article:tag" content="joplin">
+<meta property="article:tag" content="markdown">
+<meta property="article:tag" content="转换">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://kw1649190133.github.io/2026/06/08/JoplinToHexo%E8%BD%AC%E6%8D%A2%E5%B7%A5%E5%85%B7%E5%BC%80%E5%8F%91/30febdb7c30f6e9cd48fbfcd09977a40.png">
+  
+  
+  
+  <title>JoplinToHexo转换工具开发 - kw&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"kw1649190133.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>天际边缘 Edge of the sky </strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="JoplinToHexo转换工具开发"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-06-08 17:37" pubdate>
+          June 8, 2026 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4.3k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          36 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">JoplinToHexo转换工具开发</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>我一直保持着用hexo博客记录开发和实验过程的习惯，但是每次用joplin打字，再转到vscode中处理，最后在命令行打包更新的流程实在是有点繁琐了。一直想给自己做一套工具，但苦于没有能力，也没有时间。<br>但现在不一样了，大模型即将主宰一切。</p>
+<h1 id="需求描述"><a href="#需求描述" class="headerlink" title="需求描述"></a>需求描述</h1><p>我一般使用joplin来写文档，用hexo发布，但是期间的格式转换和数据迁移过程实在是太麻烦了。使用joplin导出MD文档后，每次我还需要在hexo中进行hexo new，然后复制文档内容到posts文件夹，修改图片路径，添加标签和分类，最后再更新上传。<br>hexo博客的_posts文件夹中是每一篇MD文档和同名文件夹，图片、附件都放在同名文件夹中。<br>1、参考文档抬头部分</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-meta">---</span><br><span class="hljs-attr">title:</span> <span class="hljs-string">Arcgis脚本工具制作</span><br><span class="hljs-attr">date:</span> <span class="hljs-number">2024-11-23 16:02:13</span><br><span class="hljs-attr">tags:</span> [<span class="hljs-string">&#x27;python&#x27;</span>,<span class="hljs-string">&#x27;arcgis&#x27;</span>,<span class="hljs-string">&#x27;arcpy&#x27;</span>,<span class="hljs-string">&#x27;工具箱&#x27;</span>,<span class="hljs-string">&#x27;脚本工具&#x27;</span>]<br><span class="hljs-attr">categories:</span> [<span class="hljs-string">学习</span>]<br><span class="hljs-meta">---</span><br></code></pre></td></tr></table></figure>
+<p>每次hexo n之后，tags是空的需要自己补充。categories分类会缺失，需要手动写上去。<br>2、MD文档中的图片需要修改路径<br>从Joplin导出的MD文档，文档中的图片都是这样格式的。<br><code>![b0e8e2668b5b17192718f69cf1ba1a80.png](../_resources/b0e8e2668b5b17192718f69cf1ba1a80.png)</code>，而实际上地址的前缀<code>../_resources/</code>应该被删除。<br>3、导出路径里面是记事本名称/文档名称/，_resources文件夹里面是所有文档的图片，一次性导出多篇文档时容易图片混淆，需要根据MD文档的图片名称，精确复制到_posts文件夹对应文档的同名文件夹中。<br>参考导出路径<br>C:\app\blog\临时<br>参考_posts文件夹路径<br>C:\app\blog\备份_posts<br>我希望做一个python有界面的程序，由我输入一个MD文档导出地址，和hexo博客的posts文件夹地址，然后按键读取到文档列表后，再按转换自动帮我完成文档抬头部分生成，图片拷贝迁移，标签和分类完善。我可以直接在程序里修改每篇文档的标签tags、分类categories并保存。并且，程序最好能记住我上一次运行的输入路径，这样每次打开按转换按钮就可以了。</p>
+<p>第一次生成的程序还有点路径读取的小问题，经过反馈和修复，第二次就直接成功了，还顺便做了图标美化、界面UI调整。这样我只要在Joplin中编辑好文档，直接导出并转换就能同步到hexo里了。</p>
+<p>最终版本，基本上该有的功能都有了，体积也不大。<br><img src="/2026/06/08/JoplinToHexo%E8%BD%AC%E6%8D%A2%E5%B7%A5%E5%85%B7%E5%BC%80%E5%8F%91/30febdb7c30f6e9cd48fbfcd09977a40.png" srcset="/img/loading.gif" lazyload alt="30febdb7c30f6e9cd48fbfcd09977a40.png"></p>
+<p>不过实际使用的时候还是发现了一点小问题，例如针对<code>../_resources/</code>的识别没有剔除特殊情况，把说明书里的内容也删除了，实际上应该优化检测逻辑，剔除特殊情况。不过这种特殊情况比较少，以后一般也不会遇到，无所谓了。<br>最后，用AI生成说明书。</p>
+<h1 id="HexoBlogTool-使用说明书"><a href="#HexoBlogTool-使用说明书" class="headerlink" title="HexoBlogTool 使用说明书"></a>HexoBlogTool 使用说明书</h1><blockquote>
+<p>Joplin → Hexo 博客一键转换工具</p>
+</blockquote>
+<hr>
+<h2 id="一、简介"><a href="#一、简介" class="headerlink" title="一、简介"></a>一、简介</h2><p>如果你和我一样，用 <strong>Joplin</strong> 写笔记、用 <strong>Hexo</strong> 发博客，那你一定经历过这套痛苦流程：</p>
+<ol>
+<li>Joplin 导出 MD</li>
+<li><code>hexo new</code> 创建文章</li>
+<li>复制内容到 <code>_posts</code></li>
+<li>手动改图片路径 <code>../_resources/xxx.png</code> → <code>xxx.png</code></li>
+<li>手动复制图片到文章同名文件夹</li>
+<li>手动补 tags、categories</li>
+<li>最后 <code>hexo g -d</code> 发布</li>
+</ol>
+<p><strong>HexoBlogTool</strong> 就是来解决这个问题的。填好两个路径，点一下按钮，上面的第 2~6 步全部自动化完成。</p>
+<hr>
+<h2 id="二、快速开始"><a href="#二、快速开始" class="headerlink" title="二、快速开始"></a>二、快速开始</h2><h3 id="2-1-运行方式"><a href="#2-1-运行方式" class="headerlink" title="2.1 运行方式"></a>2.1 运行方式</h3><p>直接双击 <code>HexoBlogTool.exe</code> 即可启动，无需安装任何依赖。</p>
+<p>如果从源码运行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">python main.py<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>纯 Python 标准库，无外部依赖。</p>
+</blockquote>
+<h3 id="2-2-三步完成转换"><a href="#2-2-三步完成转换" class="headerlink" title="2.2 三步完成转换"></a>2.2 三步完成转换</h3><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs">① 设置目录  →  ② 读取 + 编辑标签  →  ③ 一键转换<br></code></pre></td></tr></table></figure>
+
+<h4 id="第一步：设置目录"><a href="#第一步：设置目录" class="headerlink" title="第一步：设置目录"></a>第一步：设置目录</h4><table>
+<thead>
+<tr>
+<th>输入项</th>
+<th>说明</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Joplin 导出目录</td>
+<td>Joplin 导出 MD 时的目标文件夹</td>
+<td><code>C:\app\blog\临时</code></td>
+</tr>
+<tr>
+<td>Hexo _posts 目录</td>
+<td>Hexo 项目的 <code>source/_posts/</code></td>
+<td><code>C:\app\blog\备份\_posts</code></td>
+</tr>
+</tbody></table>
+<p>可以手动输入路径，也可以点击**浏览…**选择文件夹。</p>
+<blockquote>
+<p>程序会记住你上次填的路径，下次打开自动填入。</p>
+</blockquote>
+<h4 id="第二步：读取文章"><a href="#第二步：读取文章" class="headerlink" title="第二步：读取文章"></a>第二步：读取文章</h4><p>点击 <strong>📖 读取文章</strong> 按钮，程序自动扫描导出目录，找出所有 <code>.md</code> 文件。</p>
+<table>
+<thead>
+<tr>
+<th>列</th>
+<th>说明</th>
+<th>可编辑</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>✓</td>
+<td>勾选要转换的文章</td>
+<td>单击切换</td>
+</tr>
+<tr>
+<td>文章标题</td>
+<td>MD 文件名（去掉 <code>.md</code> 后缀）</td>
+<td>否</td>
+</tr>
+<tr>
+<td>来源笔记本</td>
+<td>文件所在的文件夹名</td>
+<td>否</td>
+</tr>
+<tr>
+<td>Tags</td>
+<td>文章的标签</td>
+<td><strong>双击编辑</strong></td>
+</tr>
+<tr>
+<td>Categories</td>
+<td>文章的分类</td>
+<td><strong>双击编辑</strong></td>
+</tr>
+<tr>
+<td>状态</td>
+<td>当前状态（待转换/已转换）</td>
+<td>否</td>
+</tr>
+</tbody></table>
+<ul>
+<li><strong>双击</strong> Tags 或 Categories 列即可内联编辑，按回车保存。</li>
+<li>点击 <strong>☑ 全选</strong> / <strong>☐ 取消全选</strong> 快速批量操作。</li>
+</ul>
+<h4 id="第三步：转换"><a href="#第三步：转换" class="headerlink" title="第三步：转换"></a>第三步：转换</h4><p>勾选需要转换的文章，点击 <strong>🚀 转换选中文章</strong>。</p>
+<p>程序自动执行：</p>
+<ol>
+<li>剥离 Joplin 旧 front matter</li>
+<li>生成 Hexo 格式 front matter（含你填的 tags / categories）</li>
+<li>修正图片路径（<code>../_resources/xxx.png</code> → <code>xxx.png</code>）</li>
+<li>复制图片到 <code>_posts/文章标题/</code> 文件夹</li>
+<li>写入最终的 <code>.md</code> 文件</li>
+</ol>
+<p>底部日志区实时显示进度，完成后弹出汇总提示。</p>
+<hr>
+<h2 id="三、目录结构说明"><a href="#三、目录结构说明" class="headerlink" title="三、目录结构说明"></a>三、目录结构说明</h2><h3 id="3-1-Joplin-导出目录结构（源）"><a href="#3-1-Joplin-导出目录结构（源）" class="headerlink" title="3.1 Joplin 导出目录结构（源）"></a>3.1 Joplin 导出目录结构（源）</h3><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs stylus">导出根目录/<br>  ├── 笔记本A/          ← 笔记本名，默认充当 categories<br>  │   ├── 文章<span class="hljs-number">1</span><span class="hljs-selector-class">.md</span><br>  │   └── 文章<span class="hljs-number">2</span><span class="hljs-selector-class">.md</span><br>  ├── 笔记本B/<br>  │   ├── 文章<span class="hljs-number">3</span><span class="hljs-selector-class">.md</span><br>  │   └── ...<br>  └── _resources/       ← 所有文档的图片存放处<br>      ├── abc123<span class="hljs-selector-class">.png</span><br>      └── def456.jpg<br></code></pre></td></tr></table></figure>
+
+<p>要求：</p>
+<ul>
+<li>导出格式选择 <strong>MD - Markdown</strong></li>
+<li><code>_resources/</code> 文件夹必须与 MD 文件在同一导出根目录下</li>
+<li>MD 文件可以放在任意深度的子文件夹中，程序会递归搜索全部</li>
+</ul>
+<h3 id="3-2-Hexo-posts-目录结构（目标）"><a href="#3-2-Hexo-posts-目录结构（目标）" class="headerlink" title="3.2 Hexo _posts 目录结构（目标）"></a>3.2 Hexo _posts 目录结构（目标）</h3><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs stylus">_posts/<br>  ├── 文章<span class="hljs-number">1</span><span class="hljs-selector-class">.md</span><br>  ├── 文章<span class="hljs-number">1</span>/             ← 同名文件夹，存放文章图片<br>  │   ├── abc123<span class="hljs-selector-class">.png</span><br>  │   └── def456<span class="hljs-selector-class">.jpg</span><br>  ├── 文章<span class="hljs-number">2</span><span class="hljs-selector-class">.md</span><br>  └── 文章<span class="hljs-number">2</span>/<br>      └── xyz789.png<br></code></pre></td></tr></table></figure>
+
+<p>转换后自动生成以上结构。</p>
+<hr>
+<h2 id="四、Front-Matter-格式"><a href="#四、Front-Matter-格式" class="headerlink" title="四、Front Matter 格式"></a>四、Front Matter 格式</h2><p>程序生成的标准 Hexo front matter：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-meta">---</span><br><span class="hljs-attr">title:</span> <span class="hljs-string">ONNX模型转换和使用</span><br><span class="hljs-attr">date:</span> <span class="hljs-number">2024-11-23 16:02:13</span><br><span class="hljs-attr">tags:</span> [<span class="hljs-string">&#x27;python&#x27;</span>,<span class="hljs-string">&#x27;onnx&#x27;</span>,<span class="hljs-string">&#x27;AI&#x27;</span>]<br><span class="hljs-attr">categories:</span> [<span class="hljs-string">&#x27;方案&#x27;</span>]<br><span class="hljs-meta">---</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="4-1-Tags-编辑规则"><a href="#4-1-Tags-编辑规则" class="headerlink" title="4.1 Tags 编辑规则"></a>4.1 Tags 编辑规则</h3><p>在界面 Tags 列中输入（英文逗号分隔）：</p>
+<figure class="highlight autohotkey"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs autohotkey"><span class="hljs-built_in">python,</span> onnx, AI模型<br></code></pre></td></tr></table></figure>
+
+<p>转换后自动变为：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">tags:</span> [<span class="hljs-string">&#x27;python&#x27;</span>,<span class="hljs-string">&#x27;onnx&#x27;</span>,<span class="hljs-string">&#x27;AI模型&#x27;</span>]<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>中英文均可</li>
+<li>逗号前后空格会被自动清理</li>
+<li>留空则不生成 tags</li>
+</ul>
+<h3 id="4-2-Categories-编辑规则"><a href="#4-2-Categories-编辑规则" class="headerlink" title="4.2 Categories 编辑规则"></a>4.2 Categories 编辑规则</h3><p>与 Tags 相同，逗号分隔。</p>
+<p><strong>默认值</strong>：程序会自动将文章所在的文件夹名（笔记本名）填入 Categories。</p>
+<hr>
+<h2 id="五、图片处理"><a href="#五、图片处理" class="headerlink" title="五、图片处理"></a>五、图片处理</h2><h3 id="5-1-路径修正"><a href="#5-1-路径修正" class="headerlink" title="5.1 路径修正"></a>5.1 路径修正</h3><p>程序自动识别并处理以下格式的图片引用：</p>
+<table>
+<thead>
+<tr>
+<th>转换前</th>
+<th>转换后</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>![描述](../_resources/abc.png)</code></td>
+<td><code>![描述](abc.png)</code></td>
+</tr>
+<tr>
+<td><code>![描述](../_resources/sub/abc.png)</code></td>
+<td><code>![描述](sub/abc.png)</code></td>
+</tr>
+</tbody></table>
+<p>只处理以 <code>../_resources/</code> 开头的相对路径，其他路径和网络图片（<code>http://</code>、<code>https://</code>）保持不变。</p>
+<h3 id="5-2-图片复制"><a href="#5-2-图片复制" class="headerlink" title="5.2 图片复制"></a>5.2 图片复制</h3><ul>
+<li>从 <code>导出目录/_resources/</code> 复制到 <code>_posts/文章标题/</code></li>
+<li>如果 <code>_resources</code> 中找不到对应的图片文件，在日志中显示警告但不会中断转换</li>
+<li>目标文件夹不存在时自动创建</li>
+</ul>
+<hr>
+<h2 id="六、日志与状态"><a href="#六、日志与状态" class="headerlink" title="六、日志与状态"></a>六、日志与状态</h2><p>底部日志区实时显示转换过程，不同颜色代表不同信息类型：</p>
+<table>
+<thead>
+<tr>
+<th>颜色</th>
+<th>含义</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>🟣 紫色</td>
+<td>阶段标题</td>
+<td><code>════ 批量转换开始 ════</code></td>
+</tr>
+<tr>
+<td>🔵 蓝色</td>
+<td>信息</td>
+<td><code>源目录: C:\app\blog\临时</code></td>
+</tr>
+<tr>
+<td>🟢 绿色</td>
+<td>成功</td>
+<td><code>[OK] 已写入: ONNX模型转换和使用.md</code></td>
+</tr>
+<tr>
+<td>🟡 黄色</td>
+<td>警告</td>
+<td><code>[WARN] 图片不存在: xyz.png</code></td>
+</tr>
+<tr>
+<td>🔴 红色</td>
+<td>错误</td>
+<td><code>[ERR] 转换失败 xxx.md</code></td>
+</tr>
+</tbody></table>
+<p>文章列表中每篇文章的状态列也会同步更新：</p>
+<ul>
+<li><strong>待转换</strong> → 尚未处理</li>
+<li><strong>已转换</strong> → 转换成功</li>
+<li><strong>失败</strong> → 转换出错，查看日志获取详情</li>
+</ul>
+<hr>
+<h2 id="七、配置文件"><a href="#七、配置文件" class="headerlink" title="七、配置文件"></a>七、配置文件</h2><p>程序运行后会在同目录下自动生成 <code>config.json</code>，内容类似：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>  <span class="hljs-attr">&quot;source_dir&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;C:\\app\\blog\\临时&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;posts_dir&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;C:\\app\\blog\\备份\\_posts&quot;</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure>
+
+<p>下次启动时会自动读取，无需重复设置路径。</p>
+<blockquote>
+<p>如果发给了别人或换了一台电脑，删除 <code>config.json</code> 即可恢复初始状态。</p>
+</blockquote>
+<hr>
+<h2 id="八、常见问题"><a href="#八、常见问题" class="headerlink" title="八、常见问题"></a>八、常见问题</h2><h3 id="Q-读取文章后列表为空？"><a href="#Q-读取文章后列表为空？" class="headerlink" title="Q: 读取文章后列表为空？"></a>Q: 读取文章后列表为空？</h3><ul>
+<li>确认 Joplin 导出格式为 <strong>MD - Markdown</strong></li>
+<li>确认导出目录下确实有 <code>.md</code> 文件</li>
+<li>检查路径中是否包含 <code>_resources</code> 文件夹（程序会自动跳过它）</li>
+</ul>
+<h3 id="Q-Tags-Categories-怎么编辑？"><a href="#Q-Tags-Categories-怎么编辑？" class="headerlink" title="Q: Tags / Categories 怎么编辑？"></a>Q: Tags / Categories 怎么编辑？</h3><ul>
+<li>在文章列表中 <strong>双击</strong> Tags 或 Categories 列的单元格</li>
+<li>输入内容后按 <strong>回车</strong> 保存，按 <strong>Esc</strong> 取消</li>
+</ul>
+<h3 id="Q-转换后图片不显示？"><a href="#Q-转换后图片不显示？" class="headerlink" title="Q: 转换后图片不显示？"></a>Q: 转换后图片不显示？</h3><ul>
+<li>确认导出目录下的 <code>_resources</code> 文件夹存在</li>
+<li>检查日志中是否有黄色警告提示图片缺失</li>
+<li>如果是网络图片（<code>http://</code>），程序不会复制，保持原链接</li>
+</ul>
+<h3 id="Q-转换后文件已存在怎么办？"><a href="#Q-转换后文件已存在怎么办？" class="headerlink" title="Q: 转换后文件已存在怎么办？"></a>Q: 转换后文件已存在怎么办？</h3><ul>
+<li>当前版本直接覆盖，请确保 <code>_posts</code> 中没有重要的同名文件</li>
+<li>建议转换前备份 <code>_posts</code> 目录</li>
+</ul>
+<h3 id="Q-程序卡住了？"><a href="#Q-程序卡住了？" class="headerlink" title="Q: 程序卡住了？"></a>Q: 程序卡住了？</h3><ul>
+<li>大量文章（50+ 篇）转换时需要一些时间，请耐心等待</li>
+<li>查看底部日志区确认进度，不要强制关闭</li>
+</ul>
+<hr>
+<h2 id="九、版本信息"><a href="#九、版本信息" class="headerlink" title="九、版本信息"></a>九、版本信息</h2><ul>
+<li><strong>当前版本</strong>：v1.0</li>
+<li><strong>运行环境</strong>：Windows（64 位）</li>
+<li><strong>Python 版本</strong>：3.9+（源码运行时需要）</li>
+<li><strong>外部依赖</strong>：无（exe 版本零依赖）</li>
+</ul>
+<hr>
+<h2 id="十、技术说明"><a href="#十、技术说明" class="headerlink" title="十、技术说明"></a>十、技术说明</h2><p>如果你需要从源码运行或二次开发：</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs vim">项目目录/<br>  ├── main.<span class="hljs-keyword">py</span>          ← Tkinter GUI 主程序<br>  ├── converter.<span class="hljs-keyword">py</span>     ← 核心转换逻辑<br>  ├── icon.ico         ← 软件图标<br>  ├── config.json      ← 自动生成<br>  └── dist/<br>      └── HexoBlogTool.<span class="hljs-keyword">exe</span>  ← 打包好的可执行文件<br></code></pre></td></tr></table></figure>
+
+<p>重新打包：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">pip install pyinstaller<br>pyinstaller --onefile --windowed --name HexoBlogTool --icon=icon.ico main.py<br></code></pre></td></tr></table></figure>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%BC%80%E5%8F%91/" class="category-chain-item">开发</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/hexo/">#hexo</a>
+      
+        <a href="/tags/blog/">#blog</a>
+      
+        <a href="/tags/vibe/">#vibe</a>
+      
+        <a href="/tags/%E5%B7%A5%E5%85%B7/">#工具</a>
+      
+        <a href="/tags/joplin/">#joplin</a>
+      
+        <a href="/tags/markdown/">#markdown</a>
+      
+        <a href="/tags/%E8%BD%AC%E6%8D%A2/">#转换</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>JoplinToHexo转换工具开发</div>
+      <div>http://kw1649190133.github.io/2026/06/08/JoplinToHexo转换工具开发/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Kwindy</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>June 8, 2026</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2026/07/02/Cesium%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%94%EF%BC%89AI%E8%AF%86%E5%88%AB%E6%A8%A1%E5%9D%97%E4%B8%8E%E5%90%8E%E7%BB%AD%E8%AE%A1%E5%88%92/" title="Cesium开发笔记（五）AI识别模块与后续计划">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Cesium开发笔记（五）AI识别模块与后续计划</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/06/04/%E5%BD%B1%E5%83%8F%E5%BF%AB%E9%80%9F%E6%8B%BC%E6%8E%A5%E7%AE%97%E6%B3%95/" title="影像快速拼接算法">
+                        <span class="hidden-mobile">影像快速拼接算法</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

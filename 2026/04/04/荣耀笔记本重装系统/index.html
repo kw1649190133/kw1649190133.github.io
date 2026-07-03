@@ -1,0 +1,700 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=dark>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Kwindy">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="笔记本的C盘爆满了，根本没法用，因为当初买的时候就默认设置的是500G固态的配置，分了120做系统盘，显然不够。这次准备直接重装系统，取消分区，直接搞500G的C盘。 系统激活命令行激活在激活系统时遇到一个问题。电脑本身是有家庭版的权限密钥的，这一权限跟随机器，重装系统也不会被覆盖，只要在激活页面选择自动检测就能激活。但我装了一个专业版的系统，这就需要新的激活，但网上买的激活码直接输入会报错，于是">
+<meta property="og:type" content="article">
+<meta property="og:title" content="荣耀笔记本重装系统">
+<meta property="og:url" content="http://kw1649190133.github.io/2026/04/04/%E8%8D%A3%E8%80%80%E7%AC%94%E8%AE%B0%E6%9C%AC%E9%87%8D%E8%A3%85%E7%B3%BB%E7%BB%9F/index.html">
+<meta property="og:site_name" content="kw&#39;s blog">
+<meta property="og:description" content="笔记本的C盘爆满了，根本没法用，因为当初买的时候就默认设置的是500G固态的配置，分了120做系统盘，显然不够。这次准备直接重装系统，取消分区，直接搞500G的C盘。 系统激活命令行激活在激活系统时遇到一个问题。电脑本身是有家庭版的权限密钥的，这一权限跟随机器，重装系统也不会被覆盖，只要在激活页面选择自动检测就能激活。但我装了一个专业版的系统，这就需要新的激活，但网上买的激活码直接输入会报错，于是">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/04/04/%E8%8D%A3%E8%80%80%E7%AC%94%E8%AE%B0%E6%9C%AC%E9%87%8D%E8%A3%85%E7%B3%BB%E7%BB%9F/a109a98c67e69e5e07c6a76036f68950.png">
+<meta property="article:published_time" content="2026-04-04T08:40:10.000Z">
+<meta property="article:modified_time" content="2026-05-15T09:22:13.422Z">
+<meta property="article:author" content="Kwindy">
+<meta property="article:tag" content="系统">
+<meta property="article:tag" content="window">
+<meta property="article:tag" content="重装">
+<meta property="article:tag" content="nimiconda">
+<meta property="article:tag" content="激活">
+<meta property="article:tag" content="驱动">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://kw1649190133.github.io/2026/04/04/%E8%8D%A3%E8%80%80%E7%AC%94%E8%AE%B0%E6%9C%AC%E9%87%8D%E8%A3%85%E7%B3%BB%E7%BB%9F/a109a98c67e69e5e07c6a76036f68950.png">
+  
+  
+  
+  <title>荣耀笔记本重装系统 - kw&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"kw1649190133.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>天际边缘 Edge of the sky </strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="荣耀笔记本重装系统"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-04-04 16:40" pubdate>
+          April 4, 2026 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          17 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">荣耀笔记本重装系统</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>笔记本的C盘爆满了，根本没法用，因为当初买的时候就默认设置的是500G固态的配置，分了120做系统盘，显然不够。这次准备直接重装系统，取消分区，直接搞500G的C盘。</p>
+<h1 id="系统激活"><a href="#系统激活" class="headerlink" title="系统激活"></a>系统激活</h1><h2 id="命令行激活"><a href="#命令行激活" class="headerlink" title="命令行激活"></a>命令行激活</h2><p>在激活系统时遇到一个问题。电脑本身是有家庭版的权限密钥的，这一权限跟随机器，重装系统也不会被覆盖，只要在激活页面选择自动检测就能激活。但我装了一个专业版的系统，这就需要新的激活，但网上买的激活码直接输入会报错，于是客服教我用命令行进行激活：</p>
+<p>右键开始菜单田字图标 找到powershell（ 管理员或者终端管理员）右键 以管理员身份运行</p>
+<ol>
+<li>复制粘贴以下命令：(xxx替换为密钥)<br><code>slmgr -ipk xxx</code><br>回车提示成功安装</li>
+<li>输入<code>slui 4</code>（4前面带空格）按回车<br>下一步，国家：中国（最后一个），把步骤2九组ID复制一下</li>
+</ol>
+<p>实际上没有遇到第二步，第一步就激活成功了。</p>
+<h2 id="关于便宜激活码的猫腻"><a href="#关于便宜激活码的猫腻" class="headerlink" title="关于便宜激活码的猫腻"></a>关于便宜激活码的猫腻</h2><p>系统界面的激活是更智能的，会自动检测用户输入的激活码版本与机器被授权的版本是否一致，避免用户的无效激活，也算是一种保护。<br><code>slmgr -ipk</code>是强力激活指令，它会跳过图形界面的诸多安全检测，即使密钥和系统版本不匹配，它也能成功“安装”进去。但这并不代表激活成功了。</p>
+<p>实际上零售版的系统是非常昂贵的（一千多一套），而淘宝密钥几块钱一个，显然有猫腻。最常见的是批量许可密钥 (VLK/MAK) 滥用，商家把批量许可进行拆分零售，但批量许可有使用限制，一旦超用就会激活失败，还可能被微软服务器列入黑名单。<br>参考AI提供的检测方法。果然是批量授权，否则不可能这么便宜。</p>
+<blockquote>
+<p>💡 如何验证您的密钥？<br>要确认密钥的真实身份，您可以执行以下操作：<br>以管理员身份打开命令提示符或 PowerShell。<br>输入命令 slmgr /dlv 并按回车。<br>在弹出的窗口中，查看 “Description” 或 “Name” 字段。<br>如果显示 RETAIL channel，说明是正规的零售版。<br>如果显示 VOLUME_KMSCLIENT 或 VOLUME_MAK，则说明是批量许可版，这正是您需要警惕的。</p>
+</blockquote>
+<h2 id="系统bug"><a href="#系统bug" class="headerlink" title="系统bug"></a>系统bug</h2><p>安装了系统之家的专业版系统后，遇到了一个非常难受的bug，就是显示器被核显绑死的，独立显卡找不到显示器，装了驱动也无法调用，甚至外接显示器也无法使用。一开始只是玩游戏无法更改分辨率，到后面发现浏览器看模型的时候非常卡顿，一直在用核显，最后忍无可忍再次换系统。<br>还好硬盘中有单独的系统还原分区，把原来的系统搞坏后，再次开机就能自动触发，直接还原成了正版的原装win11家庭版。</p>
+<h1 id="休眠模式"><a href="#休眠模式" class="headerlink" title="休眠模式"></a>休眠模式</h1><p>一开始很奇怪，电脑总是没电。明明电脑关上了盖子，但还是在运行，甚至屏幕都没有熄灭，怪不得一直没电。在网上问AI之后，发现除了修改电源设置之外，还有一个隐藏的休眠模式开关，需要通过命令行启动，一些精简版的系统会默认关闭。</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-attribute">powercfg</span> /hibernate <span class="hljs-literal">on</span><br></code></pre></td></tr></table></figure>
+<p>在命令行输入指令后，电脑关盖不休眠的问题解决了。</p>
+<h1 id="显卡驱动"><a href="#显卡驱动" class="headerlink" title="显卡驱动"></a>显卡驱动</h1><p>据说新的显卡驱动不一定更好，一些老显卡更适配老驱动，可以在大佬的网站下选择老驱动下载。<br><a target="_blank" rel="noopener" href="https://wonderful-kringle-1af5dd.netlify.app/">https://wonderful-kringle-1af5dd.netlify.app/</a></p>
+<h1 id="miniconda环境配置"><a href="#miniconda环境配置" class="headerlink" title="miniconda环境配置"></a>miniconda环境配置</h1><p>安装miniconda </p>
+<h2 id="配置系统变量"><a href="#配置系统变量" class="headerlink" title="配置系统变量"></a>配置系统变量</h2><p>配置环境变量，在系统变量path中添加：</p>
+<figure class="highlight avrasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs avrasm"><span class="hljs-symbol">C:</span>\Miniconda3<br><span class="hljs-symbol">C:</span>\Miniconda3\Scripts<br><span class="hljs-symbol">C:</span>\Miniconda3\Library\bin<br></code></pre></td></tr></table></figure>
+
+<p>开启CMD自动进入miniconda环境。在配置过系统变量后，就可以直接用指令设置CMD启动自动进入conda环境。</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs routeros"><span class="hljs-comment"># 开启自动环境</span><br>conda<span class="hljs-built_in"> config </span>--<span class="hljs-built_in">set</span> auto_activate <span class="hljs-literal">true</span><br><span class="hljs-comment"># 关闭</span><br>conda<span class="hljs-built_in"> config </span>--<span class="hljs-built_in">set</span> auto_activate <span class="hljs-literal">false</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="环境创建和包下载路径"><a href="#环境创建和包下载路径" class="headerlink" title="环境创建和包下载路径"></a>环境创建和包下载路径</h2><p>影响到路径的问题有两个，一个是权限设置，一个是路径设置。不修改也不影响使用，就是容易占用C盘空间，因为环境创建和包缓存都会搞到C盘用户目录里去。</p>
+<ol>
+<li>将miniconda3的安装路径开放给所有user，这样创建环境后就会默认创建在miniconda3的安装路径下了。<br><img src="/2026/04/04/%E8%8D%A3%E8%80%80%E7%AC%94%E8%AE%B0%E6%9C%AC%E9%87%8D%E8%A3%85%E7%B3%BB%E7%BB%9F/a109a98c67e69e5e07c6a76036f68950.png" srcset="/img/loading.gif" lazyload alt="a109a98c67e69e5e07c6a76036f68950.png"></li>
+<li>修改包缓存路径<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs mipsasm">添加包缓存路径，添加后的路径默认优先级最高<br>conda <span class="hljs-built_in">config</span> --<span class="hljs-keyword">add </span>pkgs_dirs C:\app\miniconda3<br><span class="hljs-comment"># 查看包路径</span><br>conda <span class="hljs-built_in">config</span> --<span class="hljs-keyword">show </span>pkgs_dirs<br></code></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="打印机驱动"><a href="#打印机驱动" class="headerlink" title="打印机驱动"></a>打印机驱动</h2><p>需要重新连上办公室的打印机才方便打发票</p>
+<ol>
+<li>连上打印机所在的WIFI网络</li>
+<li>下载好打印机的综合安装包Konica_Minolta_Universal_PCL_3.9.819.0</li>
+<li>选择引导安装，程序能自动搜索到局域网内的打印机，不需要手动安装驱动程序和输入IP</li>
+</ol>
+<h1 id="系统恢复"><a href="#系统恢复" class="headerlink" title="系统恢复"></a>系统恢复</h1><p>安装系统之家的破烂玩意给我电脑整崩了，用不了独立显卡用不了外接HDMI，最后不得不再次重装系统。好在意外发现硬盘内部单独留了最初的系统备份，自带正版家庭系统和激活密钥，只要原来的系统被破坏就可以触发修复。<br>这下不敢再瞎折腾了。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0/" class="category-chain-item">学习</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E7%B3%BB%E7%BB%9F/">#系统</a>
+      
+        <a href="/tags/window/">#window</a>
+      
+        <a href="/tags/%E9%87%8D%E8%A3%85/">#重装</a>
+      
+        <a href="/tags/nimiconda/">#nimiconda</a>
+      
+        <a href="/tags/%E6%BF%80%E6%B4%BB/">#激活</a>
+      
+        <a href="/tags/%E9%A9%B1%E5%8A%A8/">#驱动</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>荣耀笔记本重装系统</div>
+      <div>http://kw1649190133.github.io/2026/04/04/荣耀笔记本重装系统/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Kwindy</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>April 4, 2026</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2026/04/14/RTMP%E6%B5%81%E5%AA%92%E4%BD%93%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%8D%87%E7%BA%A7%E8%AE%A1%E5%88%92/" title="RTMP流媒体服务器升级计划">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">RTMP流媒体服务器升级计划</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/03/27/Arcgis%E6%95%B0%E6%8D%AE%E9%A9%B1%E5%8A%A8%E5%88%B6%E5%9B%BE/" title="Arcgis数据驱动制图">
+                        <span class="hidden-mobile">Arcgis数据驱动制图</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

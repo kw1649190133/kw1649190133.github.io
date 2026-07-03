@@ -1,0 +1,697 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=dark>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Kwindy">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="关于影像镶嵌的方法与注意事项在处理栅格数据成果时，经常遇到需要将几个部分的栅格拼接在一起形成一整块成果的情况。 可以使用的工具： Arcgis FME QGIS  ERDAS IMAGINE ENVI  其他工具： Arcgis Pro （要钱） GDAL （过于硬核）个人观点我个人主要用的是Arcgis（10.x版本）和FME（很厉害但比较难上手），一个是日常工作的常用工具，一个是压箱底的手段。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="关于影像镶嵌的方法与注意事项">
+<meta property="og:url" content="http://kw1649190133.github.io/2023/02/22/%E5%85%B3%E4%BA%8E%E5%BD%B1%E5%83%8F%E9%95%B6%E5%B5%8C%E7%9A%84%E6%96%B9%E6%B3%95%E4%B8%8E%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/index.html">
+<meta property="og:site_name" content="kw&#39;s blog">
+<meta property="og:description" content="关于影像镶嵌的方法与注意事项在处理栅格数据成果时，经常遇到需要将几个部分的栅格拼接在一起形成一整块成果的情况。 可以使用的工具： Arcgis FME QGIS  ERDAS IMAGINE ENVI  其他工具： Arcgis Pro （要钱） GDAL （过于硬核）个人观点我个人主要用的是Arcgis（10.x版本）和FME（很厉害但比较难上手），一个是日常工作的常用工具，一个是压箱底的手段。">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2023-02-22T05:39:54.000Z">
+<meta property="article:modified_time" content="2023-03-01T04:20:19.689Z">
+<meta property="article:author" content="Kwindy">
+<meta property="article:tag" content="ArcGIS">
+<meta property="article:tag" content="地理信息">
+<meta property="article:tag" content="影像镶嵌">
+<meta property="article:tag" content="FME">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>关于影像镶嵌的方法与注意事项 - kw&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"kw1649190133.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>天际边缘 Edge of the sky </strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="关于影像镶嵌的方法与注意事项"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-02-22 13:39" pubdate>
+          February 22, 2023 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.5k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          13 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">关于影像镶嵌的方法与注意事项</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="关于影像镶嵌的方法与注意事项"><a href="#关于影像镶嵌的方法与注意事项" class="headerlink" title="关于影像镶嵌的方法与注意事项"></a>关于影像镶嵌的方法与注意事项</h1><p>在处理栅格数据成果时，经常遇到需要将几个部分的栅格拼接在一起形成一整块成果的情况。</p>
+<h2 id="可以使用的工具："><a href="#可以使用的工具：" class="headerlink" title="可以使用的工具："></a><font color=LightSlateBlue>可以使用的工具：</font></h2><ul>
+<li>Arcgis</li>
+<li>FME</li>
+<li>QGIS </li>
+<li>ERDAS IMAGINE</li>
+<li>ENVI</li>
+</ul>
+<h2 id="其他工具："><a href="#其他工具：" class="headerlink" title="其他工具："></a><font color=LightSlateBlue>其他工具：</font></h2><ul>
+<li>Arcgis Pro （要钱）</li>
+<li>GDAL （过于硬核）<br><font color=LightSlateBlue></font><h2 id="个人观点"><a href="#个人观点" class="headerlink" title="个人观点"></a><font color=LightSlateBlue>个人观点</font></h2>我个人主要用的是Arcgis（10.x版本）和FME（很厉害但比较难上手），一个是日常工作的常用工具，一个是压箱底的手段。QGIS浅浅尝试了一下，貌似只能做单波段的栅格合成，也可能是因为我愚钝没整明白。ERDAS做栅格拼接时的接缝处理，包括接缝线绘制和周围羽化非常方便，自己没试过（Arcgis也有类似功能，叫构建接缝线，但我还没用过）。ENVI我也用的极少，基本就上学时用过。<br>FME的主要问题是它的许可破解程序和Arcgis有冲突，打开一个就不能用另一个，频繁的切换非常麻烦，或者干脆奢侈一点一台电脑用一种软件。所以有机会还是要多尝试后面两款软件。</li>
+</ul>
+<h2 id="栅格拼接的基本步骤："><a href="#栅格拼接的基本步骤：" class="headerlink" title="栅格拼接的基本步骤："></a><font color=LightSlateBlue>栅格拼接的基本步骤：</font></h2><ol>
+<li><p>拼接前确认栅格影像的切片能够衔接的上，观察拼接处的道路、房屋之类的地方有没有断裂开。一般而言衔接处的重叠区域有控制点的话，一般是不会有问题的，但也要小心有控制点误差大的情况。如果有问题那就要回到栅格处理上，要么重新生成，要么地理配准。</p>
+</li>
+<li><p>确认用来合并的栅格有没有问题，包括影像有没有扭曲，有问题要回到上一步去，换个软件重新生成或者用栅格修复打补丁。这些都是合并前数据源的准备工作，避免合完之后才发现问题，浪费时间，合一次要老久了，还占空间。</p>
+</li>
+<li><p>保证需要合并的栅格属性一致，包括像元大小（根据项目需求而定），NoData值，波段数（一般为RGB），像素深度（一般为8bit），压缩类型等。如果有不一致的地方可以处理一下。或许软件有自动处理的功能，但重采样肯定也要花费大量的时间。这一步非常关键，关系到合并时会不会报错。</p>
+</li>
+<li><p>合并时进行接缝处理，包括接缝线可以画在不显眼的地方，接缝线周围进行羽化处理等，这些是非必须的加分项，时间充足时最好做一下，有效提升成果质量。</p>
+</li>
+<li><p> 如果是处理大工程，合并时选择一下压缩类型，例如LZW，不然合出来的影像可能比原始文件大几倍。另外，确保电脑硬盘空间充足，包括缓存路径和存储路径。</p>
+</li>
+<li><p>合并出来的影像要重新生成金字塔，方便查看。</p>
+</li>
+</ol>
+<h2 id="踩过的坑："><a href="#踩过的坑：" class="headerlink" title="踩过的坑："></a><font color=LightSlateBlue>踩过的坑：</font></h2><ol>
+<li><p>一般影像用的都是RGB模型，但也有的时候莫名其妙多一个RGBA，这个Alpha就是透明度。若要去掉一个波段，比较简单的办法就是用Arcgis的影像导出功能，用渲染器强制渲染为RGB颜色。如果这个时候有像元大小和Nodata不一致，也可以顺便处理了，节省时间。</p>
+</li>
+<li><p>坐标系要一样是常识，但是坐标系的写法不一样也会导致FME报错，比如pix4d导出的数据和Arcgis的坐标系数值一样但名称上有差别，可以用定义投影的方式修改。</p>
+</li>
+<li><p>FME在处理时，在写入数据时要勾选BIGtiff属性为是，不然处理不了大型的数据。</p>
+</li>
+<li><p>FME的破解是个大麻烦，许可程序和Arcgis有冲突，并且用的Imtools许可控制程序，优先级还比ArcGIS的License Server Administrator优先级更高。折腾完之后Arcgis也得用Imtools启动许可了。</p>
+</li>
+<li><p>tif和GeoTiff的区别，前者就是个图片，需要外置的坐标文件才能用；后者内置了地理坐标，一个文件就能用。</p>
+</li>
+<li><p>电脑缓存空间和存储空间不足时，合并程序会数据溢出强制终止，所以合并前务必检查缓存路径和存储路径。尤其是缓存路径，经常默认为C盘的。</p>
+</li>
+</ol>
+<p>后面有时间再补充几种软件的具体操作，包括合并时会用到的常用工具、功能。</p>
+<p>——————–施工中———————–</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0/" class="category-chain-item">学习</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/ArcGIS/">#ArcGIS</a>
+      
+        <a href="/tags/%E5%9C%B0%E7%90%86%E4%BF%A1%E6%81%AF/">#地理信息</a>
+      
+        <a href="/tags/%E5%BD%B1%E5%83%8F%E9%95%B6%E5%B5%8C/">#影像镶嵌</a>
+      
+        <a href="/tags/FME/">#FME</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>关于影像镶嵌的方法与注意事项</div>
+      <div>http://kw1649190133.github.io/2023/02/22/关于影像镶嵌的方法与注意事项/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Kwindy</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>February 22, 2023</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/04/12/ArcGIS%E8%BF%9B%E8%A1%8C%E5%9B%BE%E6%96%91%E6%8E%92%E5%BA%8F%E7%9A%84%E6%96%B9%E6%B3%95/" title="ArcGIS进行图斑排序的方法">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">ArcGIS进行图斑排序的方法</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/02/10/Hexo%E5%8D%9A%E5%AE%A2%E7%9A%84%E8%BF%81%E7%A7%BB/" title="Hexo博客的迁移">
+                        <span class="hidden-mobile">Hexo博客的迁移</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

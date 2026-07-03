@@ -1,0 +1,732 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=dark>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Kwindy">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="构建主界面Clow启动开始暴力编程，搭建主界面:  二阶段开发，版本号v0.2 目标：以cesium为基础，做一个与AI结合的无人机控制和地理信息数据管理平台。可以参考大疆的司空，大势的低空云平台平台部分：多协议并行适配 MAVLink、WebRTC、WebSocket、RTMP整体界面设计主菜单，在左侧，可选择隐藏。  实时数据：做一个模拟的无人机远程控制界面，起飞、下降、返航，前后左右方向和左">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Cesium开发笔记（四）照片投影功能实现">
+<meta property="og:url" content="http://kw1649190133.github.io/2026/06/01/Cesium%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0%EF%BC%88%E5%9B%9B%EF%BC%89%E7%85%A7%E7%89%87%E6%8A%95%E5%BD%B1%E5%8A%9F%E8%83%BD%E5%AE%9E%E7%8E%B0/index.html">
+<meta property="og:site_name" content="kw&#39;s blog">
+<meta property="og:description" content="构建主界面Clow启动开始暴力编程，搭建主界面:  二阶段开发，版本号v0.2 目标：以cesium为基础，做一个与AI结合的无人机控制和地理信息数据管理平台。可以参考大疆的司空，大势的低空云平台平台部分：多协议并行适配 MAVLink、WebRTC、WebSocket、RTMP整体界面设计主菜单，在左侧，可选择隐藏。  实时数据：做一个模拟的无人机远程控制界面，起飞、下降、返航，前后左右方向和左">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/06/01/Cesium%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0%EF%BC%88%E5%9B%9B%EF%BC%89%E7%85%A7%E7%89%87%E6%8A%95%E5%BD%B1%E5%8A%9F%E8%83%BD%E5%AE%9E%E7%8E%B0/51166c398a177506545b212cdc4a5d50.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/06/01/Cesium%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0%EF%BC%88%E5%9B%9B%EF%BC%89%E7%85%A7%E7%89%87%E6%8A%95%E5%BD%B1%E5%8A%9F%E8%83%BD%E5%AE%9E%E7%8E%B0/21505b9e749715a771da6ce4486aac21.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/06/01/Cesium%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0%EF%BC%88%E5%9B%9B%EF%BC%89%E7%85%A7%E7%89%87%E6%8A%95%E5%BD%B1%E5%8A%9F%E8%83%BD%E5%AE%9E%E7%8E%B0/6231c65b78a0f7ee0ff3dc164b06ea3a.png">
+<meta property="article:published_time" content="2026-06-01T10:18:58.000Z">
+<meta property="article:modified_time" content="2026-06-01T10:21:19.969Z">
+<meta property="article:author" content="Kwindy">
+<meta property="article:tag" content="开发">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="Cesium">
+<meta property="article:tag" content="Node.js">
+<meta property="article:tag" content="json">
+<meta property="article:tag" content="架构">
+<meta property="article:tag" content="SRT">
+<meta property="article:tag" content="照片投影">
+<meta property="article:tag" content="MRK">
+<meta property="article:tag" content="SJON">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://kw1649190133.github.io/2026/06/01/Cesium%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0%EF%BC%88%E5%9B%9B%EF%BC%89%E7%85%A7%E7%89%87%E6%8A%95%E5%BD%B1%E5%8A%9F%E8%83%BD%E5%AE%9E%E7%8E%B0/51166c398a177506545b212cdc4a5d50.png">
+  
+  
+  
+  <title>Cesium开发笔记（四）照片投影功能实现 - kw&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"kw1649190133.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>天际边缘 Edge of the sky </strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Cesium开发笔记（四）照片投影功能实现"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-06-01 18:18" pubdate>
+          June 1, 2026 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          31k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          260 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Cesium开发笔记（四）照片投影功能实现</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="构建主界面"><a href="#构建主界面" class="headerlink" title="构建主界面"></a>构建主界面</h1><h2 id="Clow启动"><a href="#Clow启动" class="headerlink" title="Clow启动"></a>Clow启动</h2><p>开始暴力编程，搭建主界面:</p>
+<blockquote>
+<p>二阶段开发，版本号v0.2 目标：<br>以cesium为基础，做一个与AI结合的无人机控制和地理信息数据管理平台。可以参考大疆的司空，大势的低空云平台<br>平台部分：<br>多协议并行适配 MAVLink、WebRTC、WebSocket、RTMP<br>整体界面设计<br>主菜单，在左侧，可选择隐藏。</p>
+<ul>
+<li>实时数据：做一个模拟的无人机远程控制界面，起飞、下降、返航，前后左右方向和左右转向、镜头上下，缩放，实时的坐标、高度，飞行速度，方向，风速，电量等驾驶仪表。添加一个实时视频流窗口，提示等待视频信号。目前还没有做视频流服务器，可以先不做实际的连接无人机功能，但是要留好功能接口。</li>
+<li>无人机有摄像头和激光雷达，也需要预留一个显示激光雷达PCD点云数据的功能。无人机使用ROS系统，可以将激光雷达数据通过话题进行实时推送。</li>
+<li>数据管理：查看历史的航线数据</li>
+<li>加载数据：可以加载航线json，就是当前页面的这些功能。</li>
+<li>三维模型：Cesium支持加载3dtiles格式的模型，目前的新版本支持3D高斯模型。</li>
+<li>实时拼接：支持对影像的实时拼接功能，</li>
+<li>AI分析：加载视频文件或者视频推流画面，调用ONNX模型，进行视频抽帧识别，识别到目标则进行目标数量、大小的实时提示。<br>其他注意事项：</li>
+<li>主页面下的Cesium场景尽量不用动，功能通过浮动子面板的形式实现。</li>
+<li>对于目前难以实现的功能可以先做界面，不用实现功能。</li>
+<li>trajectory_shader是别人做的影像拼接程序的demo，采用的是前后端分离的模式，可以参考其中的代码。</li>
+</ul>
+</blockquote>
+<p><img src="/2026/06/01/Cesium%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0%EF%BC%88%E5%9B%9B%EF%BC%89%E7%85%A7%E7%89%87%E6%8A%95%E5%BD%B1%E5%8A%9F%E8%83%BD%E5%AE%9E%E7%8E%B0/51166c398a177506545b212cdc4a5d50.png" srcset="/img/loading.gif" lazyload alt="51166c398a177506545b212cdc4a5d50.png"></p>
+<p>为了稳妥起见，我在开头选择了先搭建界面，虽然里面的具体功能还没法使用，但之前有的功能都得到了很好的保留，一点没坏。而且这个界面其实做的也还可以。</p>
+<p>第一轮运行后的结果：<br><img src="/2026/06/01/Cesium%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0%EF%BC%88%E5%9B%9B%EF%BC%89%E7%85%A7%E7%89%87%E6%8A%95%E5%BD%B1%E5%8A%9F%E8%83%BD%E5%AE%9E%E7%8E%B0/21505b9e749715a771da6ce4486aac21.png" srcset="/img/loading.gif" lazyload alt="21505b9e749715a771da6ce4486aac21.png"></p>
+<p>AI神力，恐怖如斯。<br>接下来该处理各种杂七杂八的细节问题了</p>
+<h1 id="格式转换"><a href="#格式转换" class="headerlink" title="格式转换"></a>格式转换</h1><p>之前做过视频提取srt，再通过srt转json，来还原无人机的轨迹和镜头朝向。但是这需要同步做mp4的帧截取，而且合适的数据比较少，尤其是垂直与地面的镜头视角，不好做后面的影像拼接。</p>
+<h2 id="MRK文件解析"><a href="#MRK文件解析" class="headerlink" title="MRK文件解析"></a>MRK文件解析</h2><p>一行数据 313 367603.490667 [2408] 59,N 81,E 156,V 19.41054021,Lat 110.70078973,Lon 44.562,Ellh 0.002572, 0.002160, 0.007619 50,Q 为例：</p>
+<ul>
+<li>第1列 (313)：拍照点序号。代表本文件夹内存储照片记录信息的序列号，通常对应照片的文件名编号（如 DJI_0313.JPG）。</li>
+<li>第2列 (367603.490667)：GPS周内秒（TOW）。表示拍照时刻在 GPS 星期内的秒数。</li>
+<li>第3列 ([2408])：GPS周数。表示拍照时刻所在的 GPS 周。(注：部分多相机或特定版本格式中，此列可能为相机序号)。</li>
+<li>第4-6列 (59,N / 81,E / 164,V)：天线相位中心到相机 CMOS 传感器中心的杆臂补偿值（单位：毫米）。用于消除机身天线与镜头之间的物理距离误差。<br>59,N：北方向（N）偏差为 59mm（偏北为正）。<br>81,E：东方向（E）偏差为 81mm（偏东为正）。<br>164,V：垂直方向（V）偏差为 164mm（向下为正）。</li>
+<li>第7-9列 (19.41054021,Lat / 110.70078973,Lon / 44.562,Ellh)：曝光瞬间相机的精确空间坐标。这是经过上述杆臂补偿后的真实位置。<br>Lat：纬度（度）。<br>Lon：经度（度）。<br>Ellh：椭球高（大地高），默认基于 WGS84 椭球模型，注意这不是海拔正常高。</li>
+<li>第10-12列 (0.002572, 0.002160, 0.007619)：定位标准差（单位：米）。分别代表在北（N）、东（E）、高程（U/V）三个方向上的定位精度误差范围。数值越小，说明该点的定位越精准。</li>
+<li>第13列 (50,Q)：RTK 定位状态位（质量印章）。这是评估数据是否可用的核心指标。<br>50：代表 RTK 固定解（Fix），意味着达到了厘米级的高精度定位，数据完全可用。<br>(补充参考：若显示 34 则为浮点解/亚米级，16 为单点定位/米级，0 为无定位不可用)。</li>
+</ul>
+<p>其实MRK文件也是没有云台角度和航向信息的，尤其是云台角度似乎没有办法，但有一个天线相位中心到相机的距离修正值，其实可以计算出yaw。</p>
+<h2 id="转换程序"><a href="#转换程序" class="headerlink" title="转换程序"></a>转换程序</h2><p>代码：</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br><span class="line">305</span><br><span class="line">306</span><br><span class="line">307</span><br><span class="line">308</span><br><span class="line">309</span><br><span class="line">310</span><br><span class="line">311</span><br><span class="line">312</span><br><span class="line">313</span><br><span class="line">314</span><br><span class="line">315</span><br><span class="line">316</span><br><span class="line">317</span><br><span class="line">318</span><br><span class="line">319</span><br><span class="line">320</span><br><span class="line">321</span><br><span class="line">322</span><br><span class="line">323</span><br><span class="line">324</span><br><span class="line">325</span><br><span class="line">326</span><br><span class="line">327</span><br><span class="line">328</span><br><span class="line">329</span><br><span class="line">330</span><br><span class="line">331</span><br><span class="line">332</span><br><span class="line">333</span><br><span class="line">334</span><br><span class="line">335</span><br><span class="line">336</span><br><span class="line">337</span><br><span class="line">338</span><br><span class="line">339</span><br><span class="line">340</span><br><span class="line">341</span><br><span class="line">342</span><br><span class="line">343</span><br><span class="line">344</span><br><span class="line">345</span><br><span class="line">346</span><br><span class="line">347</span><br><span class="line">348</span><br><span class="line">349</span><br><span class="line">350</span><br><span class="line">351</span><br><span class="line">352</span><br><span class="line">353</span><br><span class="line">354</span><br><span class="line">355</span><br><span class="line">356</span><br><span class="line">357</span><br><span class="line">358</span><br><span class="line">359</span><br><span class="line">360</span><br><span class="line">361</span><br><span class="line">362</span><br><span class="line">363</span><br><span class="line">364</span><br><span class="line">365</span><br><span class="line">366</span><br><span class="line">367</span><br><span class="line">368</span><br><span class="line">369</span><br><span class="line">370</span><br><span class="line">371</span><br><span class="line">372</span><br><span class="line">373</span><br><span class="line">374</span><br><span class="line">375</span><br><span class="line">376</span><br><span class="line">377</span><br><span class="line">378</span><br><span class="line">379</span><br><span class="line">380</span><br><span class="line">381</span><br><span class="line">382</span><br><span class="line">383</span><br><span class="line">384</span><br><span class="line">385</span><br><span class="line">386</span><br><span class="line">387</span><br><span class="line">388</span><br><span class="line">389</span><br><span class="line">390</span><br><span class="line">391</span><br><span class="line">392</span><br><span class="line">393</span><br><span class="line">394</span><br><span class="line">395</span><br><span class="line">396</span><br><span class="line">397</span><br><span class="line">398</span><br><span class="line">399</span><br><span class="line">400</span><br><span class="line">401</span><br><span class="line">402</span><br><span class="line">403</span><br><span class="line">404</span><br><span class="line">405</span><br><span class="line">406</span><br><span class="line">407</span><br><span class="line">408</span><br><span class="line">409</span><br><span class="line">410</span><br><span class="line">411</span><br><span class="line">412</span><br><span class="line">413</span><br><span class="line">414</span><br><span class="line">415</span><br><span class="line">416</span><br><span class="line">417</span><br><span class="line">418</span><br><span class="line">419</span><br><span class="line">420</span><br><span class="line">421</span><br><span class="line">422</span><br><span class="line">423</span><br><span class="line">424</span><br><span class="line">425</span><br><span class="line">426</span><br><span class="line">427</span><br><span class="line">428</span><br><span class="line">429</span><br><span class="line">430</span><br><span class="line">431</span><br><span class="line">432</span><br><span class="line">433</span><br><span class="line">434</span><br><span class="line">435</span><br><span class="line">436</span><br><span class="line">437</span><br><span class="line">438</span><br><span class="line">439</span><br><span class="line">440</span><br><span class="line">441</span><br><span class="line">442</span><br><span class="line">443</span><br><span class="line">444</span><br><span class="line">445</span><br><span class="line">446</span><br><span class="line">447</span><br><span class="line">448</span><br><span class="line">449</span><br><span class="line">450</span><br><span class="line">451</span><br><span class="line">452</span><br><span class="line">453</span><br><span class="line">454</span><br><span class="line">455</span><br><span class="line">456</span><br><span class="line">457</span><br><span class="line">458</span><br><span class="line">459</span><br><span class="line">460</span><br><span class="line">461</span><br><span class="line">462</span><br><span class="line">463</span><br><span class="line">464</span><br><span class="line">465</span><br><span class="line">466</span><br><span class="line">467</span><br><span class="line">468</span><br><span class="line">469</span><br><span class="line">470</span><br><span class="line">471</span><br><span class="line">472</span><br><span class="line">473</span><br><span class="line">474</span><br><span class="line">475</span><br><span class="line">476</span><br><span class="line">477</span><br><span class="line">478</span><br><span class="line">479</span><br><span class="line">480</span><br><span class="line">481</span><br><span class="line">482</span><br><span class="line">483</span><br><span class="line">484</span><br><span class="line">485</span><br><span class="line">486</span><br><span class="line">487</span><br><span class="line">488</span><br><span class="line">489</span><br><span class="line">490</span><br><span class="line">491</span><br><span class="line">492</span><br><span class="line">493</span><br><span class="line">494</span><br><span class="line">495</span><br><span class="line">496</span><br><span class="line">497</span><br><span class="line">498</span><br><span class="line">499</span><br><span class="line">500</span><br><span class="line">501</span><br><span class="line">502</span><br><span class="line">503</span><br><span class="line">504</span><br><span class="line">505</span><br><span class="line">506</span><br><span class="line">507</span><br><span class="line">508</span><br><span class="line">509</span><br><span class="line">510</span><br><span class="line">511</span><br><span class="line">512</span><br><span class="line">513</span><br><span class="line">514</span><br><span class="line">515</span><br><span class="line">516</span><br><span class="line">517</span><br><span class="line">518</span><br><span class="line">519</span><br><span class="line">520</span><br><span class="line">521</span><br><span class="line">522</span><br><span class="line">523</span><br><span class="line">524</span><br><span class="line">525</span><br><span class="line">526</span><br><span class="line">527</span><br><span class="line">528</span><br><span class="line">529</span><br><span class="line">530</span><br><span class="line">531</span><br><span class="line">532</span><br><span class="line">533</span><br><span class="line">534</span><br><span class="line">535</span><br><span class="line">536</span><br><span class="line">537</span><br><span class="line">538</span><br><span class="line">539</span><br><span class="line">540</span><br><span class="line">541</span><br><span class="line">542</span><br><span class="line">543</span><br><span class="line">544</span><br><span class="line">545</span><br><span class="line">546</span><br><span class="line">547</span><br><span class="line">548</span><br><span class="line">549</span><br><span class="line">550</span><br><span class="line">551</span><br><span class="line">552</span><br><span class="line">553</span><br><span class="line">554</span><br><span class="line">555</span><br><span class="line">556</span><br><span class="line">557</span><br><span class="line">558</span><br><span class="line">559</span><br><span class="line">560</span><br><span class="line">561</span><br><span class="line">562</span><br><span class="line">563</span><br><span class="line">564</span><br><span class="line">565</span><br><span class="line">566</span><br><span class="line">567</span><br><span class="line">568</span><br><span class="line">569</span><br><span class="line">570</span><br><span class="line">571</span><br><span class="line">572</span><br><span class="line">573</span><br><span class="line">574</span><br><span class="line">575</span><br><span class="line">576</span><br><span class="line">577</span><br><span class="line">578</span><br><span class="line">579</span><br><span class="line">580</span><br><span class="line">581</span><br><span class="line">582</span><br><span class="line">583</span><br><span class="line">584</span><br><span class="line">585</span><br><span class="line">586</span><br><span class="line">587</span><br><span class="line">588</span><br><span class="line">589</span><br><span class="line">590</span><br><span class="line">591</span><br><span class="line">592</span><br><span class="line">593</span><br><span class="line">594</span><br><span class="line">595</span><br><span class="line">596</span><br><span class="line">597</span><br><span class="line">598</span><br><span class="line">599</span><br><span class="line">600</span><br><span class="line">601</span><br><span class="line">602</span><br><span class="line">603</span><br><span class="line">604</span><br><span class="line">605</span><br><span class="line">606</span><br><span class="line">607</span><br><span class="line">608</span><br><span class="line">609</span><br><span class="line">610</span><br><span class="line">611</span><br><span class="line">612</span><br><span class="line">613</span><br><span class="line">614</span><br><span class="line">615</span><br><span class="line">616</span><br><span class="line">617</span><br><span class="line">618</span><br><span class="line">619</span><br><span class="line">620</span><br><span class="line">621</span><br><span class="line">622</span><br><span class="line">623</span><br><span class="line">624</span><br><span class="line">625</span><br><span class="line">626</span><br><span class="line">627</span><br><span class="line">628</span><br><span class="line">629</span><br><span class="line">630</span><br><span class="line">631</span><br><span class="line">632</span><br><span class="line">633</span><br><span class="line">634</span><br><span class="line">635</span><br><span class="line">636</span><br><span class="line">637</span><br><span class="line">638</span><br><span class="line">639</span><br><span class="line">640</span><br><span class="line">641</span><br><span class="line">642</span><br><span class="line">643</span><br><span class="line">644</span><br><span class="line">645</span><br><span class="line">646</span><br><span class="line">647</span><br><span class="line">648</span><br><span class="line">649</span><br><span class="line">650</span><br><span class="line">651</span><br><span class="line">652</span><br><span class="line">653</span><br><span class="line">654</span><br><span class="line">655</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-comment">#!/usr/bin/env python3</span><br><span class="hljs-string">&quot;&quot;&quot;</span><br><span class="hljs-string">mrk_to_json.py - 将 DJI PPK MRK 格式轨迹文件转换为拼接程序可用的 JSON 格式</span><br><span class="hljs-string"></span><br><span class="hljs-string">MRK 文件格式（每行一条记录）：</span><br><span class="hljs-string">  事件ID  GPS周内秒  [周号]  N偏差mm  E偏差mm  V偏差mm  纬度,Lat  经度,Lon  高程,Ellh  精度...  卫星数,Q</span><br><span class="hljs-string"></span><br><span class="hljs-string">转换逻辑：</span><br><span class="hljs-string">  1. 逐行解析 MRK，提取 GPS 周内秒 → 转换为 UTC 可读时间戳</span><br><span class="hljs-string">  2. 用相机偏移参数 (N, E, V) 从天线位置推算镜头位置</span><br><span class="hljs-string">  3. 用相邻帧的天线位置差 + 偏移后镜头位置差计算 yaw 角</span><br><span class="hljs-string">  4. 将结果组织为与 trajectory_*.json 相同的结构输出</span><br><span class="hljs-string"></span><br><span class="hljs-string">使用方式：</span><br><span class="hljs-string">  python mrk_to_json.py                          # 交互式</span><br><span class="hljs-string">  python mrk_to_json.py -i data.mrk -o out.json  # 命令行</span><br><span class="hljs-string"></span><br><span class="hljs-string">作者：WorkBuddy 自动生成</span><br><span class="hljs-string">&quot;&quot;&quot;</span><br><br>import argparse<br>import json<br>import math<br>import os<br>import re<br>import sys<br>from datetime import datetime, timezone, timedelta<br><br><br><span class="hljs-comment"># ──────────────────────────────────────────────</span><br><span class="hljs-comment"># 常量</span><br><span class="hljs-comment"># ──────────────────────────────────────────────</span><br><br><span class="hljs-comment"># GPS 周起始时刻 (UTC)</span><br>GPS_EPOCH = datetime(<span class="hljs-number">1980</span>, <span class="hljs-number">1</span>, <span class="hljs-number">6</span>, tzinfo=timezone.utc)<br><span class="hljs-comment"># GPS 时间与 UTC 的固定偏移（截至 2026 年，无新闰秒公告）</span><br>GPS_LEAP_SECONDS = <span class="hljs-number">18</span><br><br><br><span class="hljs-comment"># ──────────────────────────────────────────────</span><br><span class="hljs-comment"># GPS 时间转换</span><br><span class="hljs-comment"># ──────────────────────────────────────────────</span><br><br>def gps_week_second_to_utc(week: int, second: float) -&gt; datetime:<br>    <span class="hljs-string">&quot;&quot;&quot;将 GPS 周号 + 周内秒转换为 UTC datetime。</span><br><span class="hljs-string"></span><br><span class="hljs-string">    Args:</span><br><span class="hljs-string">        week:   GPS 周号（如 2408）</span><br><span class="hljs-string">        second: 周内秒（如 367379.187550）</span><br><span class="hljs-string"></span><br><span class="hljs-string">    Returns:</span><br><span class="hljs-string">        UTC datetime 对象</span><br><span class="hljs-string">    &quot;&quot;&quot;</span><br>    <span class="hljs-comment"># GPS 周起始时刻</span><br>    epoch_seconds = (week * <span class="hljs-number">7</span> * <span class="hljs-number">86400</span>) + second<br>    <span class="hljs-comment"># GPS 时间 = UTC + leap_seconds，所以 UTC = GPS - leap_seconds</span><br>    utc_seconds = epoch_seconds - GPS_LEAP_SECONDS<br>    utc_dt = GPS_EPOCH + timedelta(seconds=utc_seconds)<br>    return utc_dt<br><br><br>def format_timestamp(dt: datetime) -&gt; str:<br>    <span class="hljs-string">&quot;&quot;&quot;将 datetime 格式化为类似 &#x27;20250811_131708_703&#x27; 的可读字符串。&quot;&quot;&quot;</span><br>    return dt.strftime(<span class="hljs-string">&quot;%Y%m%d_%H%M%S&quot;</span>) + f<span class="hljs-string">&quot;_&#123;dt.microsecond // 1000:03d&#125;&quot;</span><br><br><br><span class="hljs-comment"># ──────────────────────────────────────────────</span><br><span class="hljs-comment"># MRK 解析</span><br><br><br>def parse_mrk_line(line: str) -&gt; dict | None:<br>    <span class="hljs-string">&quot;&quot;&quot;解析 MRK 文件的一行，返回结构化字典或 None。</span><br><span class="hljs-string"></span><br><span class="hljs-string">    MRK 格式示例（Tab 分隔）：</span><br><span class="hljs-string">      1\\t367372.065140\\t[2408]\\t    69,N\\t   131,E\\t   102,V\\t19.40782301,Lat\\t110.69484725,Lon\\t44.834,Ellh\\t0.002502, 0.002094, 0.008196\\t50,Q</span><br><span class="hljs-string"></span><br><span class="hljs-string">    Returns:</span><br><span class="hljs-string">        &#123;</span><br><span class="hljs-string">            &#x27;event_id&#x27;: int,</span><br><span class="hljs-string">            &#x27;gps_second&#x27;: float,       # GPS 周内秒</span><br><span class="hljs-string">            &#x27;gps_week&#x27;: int,           # GPS 周号</span><br><span class="hljs-string">            &#x27;offset_n_mm&#x27;: float,      # 镜头-天线 N 偏差 (mm)</span><br><span class="hljs-string">            &#x27;offset_e_mm&#x27;: float,      # 镜头-天线 E 偏差 (mm)</span><br><span class="hljs-string">            &#x27;offset_v_mm&#x27;: float,      # 镜头-天线 V 偏差 (mm)</span><br><span class="hljs-string">            &#x27;antenna_lat&#x27;: float,      # 天线纬度</span><br><span class="hljs-string">            &#x27;antenna_lon&#x27;: float,      # 天线经度</span><br><span class="hljs-string">            &#x27;antenna_ellh&#x27;: float,     # 天线椭球高 (m)</span><br><span class="hljs-string">            &#x27;num_satellites&#x27;: int,     # 卫星数</span><br><span class="hljs-string">            &#x27;quality&#x27;: int,            # 定位质量</span><br><span class="hljs-string">        &#125;</span><br><span class="hljs-string">    &quot;&quot;&quot;</span><br>    parts = line.strip().split(<span class="hljs-string">&#x27;\t&#x27;</span>)<br>    <span class="hljs-keyword">if</span> len(parts) &lt; <span class="hljs-number">11</span>:<br>        return None<br><br>    try:<br>        event_id = int(parts[<span class="hljs-number">0</span>].strip())<br>        gps_second = float(parts[<span class="hljs-number">1</span>].strip())<br>        gps_week_str = parts[<span class="hljs-number">2</span>].strip()<br>        gps_week_match = re.match(<span class="hljs-string">r&#x27;\[(\d+)\]&#x27;</span>, gps_week_str)<br>        <span class="hljs-keyword">if</span> not gps_week_match:<br>            return None<br>        gps_week = int(gps_week_match.group(<span class="hljs-number">1</span>))<br><br>        <span class="hljs-comment"># 偏差字段: &quot;   69,N&quot; 或 &quot;  -101,N&quot; → 提取数字（可能为负）</span><br>        offset_n_mm = float(re.match(<span class="hljs-string">r&#x27;\s*(-?[\d.]+),N&#x27;</span>, parts[<span class="hljs-number">3</span>]).group(<span class="hljs-number">1</span>))<br>        offset_e_mm = float(re.match(<span class="hljs-string">r&#x27;\s*(-?[\d.]+),E&#x27;</span>, parts[<span class="hljs-number">4</span>]).group(<span class="hljs-number">1</span>))<br>        offset_v_mm = float(re.match(<span class="hljs-string">r&#x27;\s*(-?[\d.]+),V&#x27;</span>, parts[<span class="hljs-number">5</span>]).group(<span class="hljs-number">1</span>))<br><br>        <span class="hljs-comment"># 坐标字段: &quot;19.40782301,Lat&quot; → 提取数字</span><br>        antenna_lat = float(re.match(<span class="hljs-string">r&#x27;([\d.]+),Lat&#x27;</span>, parts[<span class="hljs-number">6</span>]).group(<span class="hljs-number">1</span>))<br>        antenna_lon = float(re.match(<span class="hljs-string">r&#x27;([\d.]+),Lon&#x27;</span>, parts[<span class="hljs-number">7</span>]).group(<span class="hljs-number">1</span>))<br>        antenna_ellh = float(re.match(<span class="hljs-string">r&#x27;([\d.]+),Ellh&#x27;</span>, parts[<span class="hljs-number">8</span>]).group(<span class="hljs-number">1</span>))<br><br>        <span class="hljs-comment"># 精度字段: &quot;0.002502, 0.002094, 0.008196&quot; → 跳过</span><br>        <span class="hljs-comment"># 卫星数和Q: &quot;50,Q&quot;</span><br>        sq_part = parts[<span class="hljs-number">11</span>].strip() <span class="hljs-keyword">if</span> len(parts) &gt; <span class="hljs-number">11</span> <span class="hljs-keyword">else</span> <span class="hljs-string">&#x27;&#x27;</span><br>        sq_match = re.match(<span class="hljs-string">r&#x27;(\d+),Q&#x27;</span>, sq_part)<br>        num_satellites = int(sq_match.group(<span class="hljs-number">1</span>)) <span class="hljs-keyword">if</span> sq_match <span class="hljs-keyword">else</span> <span class="hljs-number">0</span><br>        quality = <span class="hljs-number">0</span>  <span class="hljs-comment"># MRK 末尾可能没有单独的 Q 字段</span><br><br>        return &#123;<br>            <span class="hljs-string">&#x27;event_id&#x27;</span>:       event_id,<br>            <span class="hljs-string">&#x27;gps_second&#x27;</span>:     gps_second,<br>            <span class="hljs-string">&#x27;gps_week&#x27;</span>:       gps_week,<br>            <span class="hljs-string">&#x27;offset_n_mm&#x27;</span>:    offset_n_mm,<br>            <span class="hljs-string">&#x27;offset_e_mm&#x27;</span>:    offset_e_mm,<br>            <span class="hljs-string">&#x27;offset_v_mm&#x27;</span>:    offset_v_mm,<br>            <span class="hljs-string">&#x27;antenna_lat&#x27;</span>:    antenna_lat,<br>            <span class="hljs-string">&#x27;antenna_lon&#x27;</span>:    antenna_lon,<br>            <span class="hljs-string">&#x27;antenna_ellh&#x27;</span>:   antenna_ellh,<br>            <span class="hljs-string">&#x27;num_satellites&#x27;</span>: num_satellites,<br>            <span class="hljs-string">&#x27;quality&#x27;</span>:        quality,<br>        &#125;<br>    except (ValueError, AttributeError, IndexError):<br>        return None<br><br><br><span class="hljs-comment"># ──────────────────────────────────────────────</span><br><span class="hljs-comment"># 坐标偏移计算</span><br><span class="hljs-comment"># ──────────────────────────────────────────────</span><br><br>R_EARTH = <span class="hljs-number">6378137.0</span>  <span class="hljs-comment"># WGS-84 长半轴 (m)</span><br><br><br>def apply_camera_offset(<br>    lat: float, lon: float, ellh: float,<br>    offset_n_mm: float, offset_e_mm: float, offset_v_mm: float,<br>) -&gt; tuple[float, float, float]:<br>    <span class="hljs-string">&quot;&quot;&quot;根据镜头-天线偏差，从天线位置推算镜头位置。</span><br><span class="hljs-string"></span><br><span class="hljs-string">    偏差定义（天线为原点）：</span><br><span class="hljs-string">      N: 北方向偏差 (mm)，偏北为正</span><br><span class="hljs-string">      E: 东方向偏差 (mm)，偏东为正</span><br><span class="hljs-string">      V: 垂直方向偏差 (mm)，向下为正（即镜头在天线下方）</span><br><span class="hljs-string"></span><br><span class="hljs-string">    对于无人机垂直俯拍场景：</span><br><span class="hljs-string">      N=59mm 表示镜头在天线前方 59mm（沿飞行方向）</span><br><span class="hljs-string">      E=81mm 表示镜头偏东 81mm</span><br><span class="hljs-string">      V=164mm 表示镜头在天线下方 164mm</span><br><span class="hljs-string"></span><br><span class="hljs-string">    Args:</span><br><span class="hljs-string">        lat, lon, ellh:  天线位置（纬度、经度、椭球高，单位度/米）</span><br><span class="hljs-string">        offset_n_mm:     北方向偏差 (mm)</span><br><span class="hljs-string">        offset_e_mm:     东方向偏差 (mm)</span><br><span class="hljs-string">        offset_v_mm:     垂直偏差 (mm)，向下为正</span><br><span class="hljs-string"></span><br><span class="hljs-string">    Returns:</span><br><span class="hljs-string">        (camera_lat, camera_lon, camera_ellh)</span><br><span class="hljs-string">    &quot;&quot;&quot;</span><br>    <span class="hljs-comment"># mm → m</span><br>    dn = offset_n_mm / <span class="hljs-number">1000.0</span>  <span class="hljs-comment"># 北偏 (m)</span><br>    de = offset_e_mm / <span class="hljs-number">1000.0</span>  <span class="hljs-comment"># 东偏 (m)</span><br>    dv = offset_v_mm / <span class="hljs-number">1000.0</span>  <span class="hljs-comment"># 垂直向下偏 (m)</span><br><br>    <span class="hljs-comment"># 北/东偏差转换为经纬度偏移</span><br>    lat_rad = math.radians(lat)<br>    dlat = dn / R_EARTH                          <span class="hljs-comment"># 弧度</span><br>    dlon = de / (R_EARTH * math.cos(lat_rad))    <span class="hljs-comment"># 弧度</span><br><br>    camera_lat = lat + math.degrees(dlat)<br>    camera_lon = lon + math.degrees(dlon)<br>    <span class="hljs-comment"># 垂直向下偏差 → 椭球高减小</span><br>    camera_ellh = ellh - dv<br><br>    return camera_lat, camera_lon, camera_ellh<br><br><br><span class="hljs-comment"># ──────────────────────────────────────────────</span><br><span class="hljs-comment"># Yaw 角计算</span><br><span class="hljs-comment"># ──────────────────────────────────────────────</span><br><br>def compute_yaw_from_positions(<br>    lat1: float, lon1: float,<br>    lat2: float, lon2: float,<br>) -&gt; float:<br>    <span class="hljs-string">&quot;&quot;&quot;从两个连续的镜头位置计算 yaw 角。</span><br><span class="hljs-string"></span><br><span class="hljs-string">    定义（与拼接程序一致）：</span><br><span class="hljs-string">      yaw = 0° → 北（正北方向）</span><br><span class="hljs-string">      yaw 顺时针增大（东为 90°，南为 ±180°，西为 -90°）</span><br><span class="hljs-string"></span><br><span class="hljs-string">    Args:</span><br><span class="hljs-string">        lat1, lon1: 前一帧镜头位置</span><br><span class="hljs-string">        lat2, lon2: 当前帧镜头位置</span><br><span class="hljs-string"></span><br><span class="hljs-string">    Returns:</span><br><span class="hljs-string">        yaw 角（度），范围 [-180, 180]</span><br><span class="hljs-string">    &quot;&quot;&quot;</span><br>    lat_rad = math.radians(lat1)<br><br>    <span class="hljs-comment"># 平面近似偏移 (米)</span><br>    de = R_EARTH * math.cos(lat_rad) * math.radians(lon2 - lon1)<br>    dn = R_EARTH * math.radians(lat2 - lat1)<br><br>    <span class="hljs-comment"># atan2(东偏, 北偏) → 角度</span><br>    yaw = math.degrees(math.atan2(de, dn))<br><br>    return yaw<br><br><br><span class="hljs-comment"># ──────────────────────────────────────────────</span><br><span class="hljs-comment"># 文件名匹配</span><br><span class="hljs-comment"># ──────────────────────────────────────────────</span><br><br>def find_jpg_files(images_dir: str) -&gt; list[str]:<br>    <span class="hljs-string">&quot;&quot;&quot;在指定目录中查找所有 JPG 文件，按文件名排序。&quot;&quot;&quot;</span><br>    <span class="hljs-keyword">if</span> not os.path.isdir(images_dir):<br>        print(f<span class="hljs-string">&quot;警告：图像目录不存在: &#123;images_dir&#125;&quot;</span>)<br>        return []<br><br>    jpgs = sorted(<br>        f <span class="hljs-keyword">for</span> f <span class="hljs-keyword">in</span> os.listdir(images_dir)<br>        <span class="hljs-keyword">if</span> f.lower().endswith((<span class="hljs-string">&#x27;.jpg&#x27;</span>, <span class="hljs-string">&#x27;.jpeg&#x27;</span>))<br>    )<br>    return jpgs<br><br><br><span class="hljs-comment"># ──────────────────────────────────────────────</span><br><span class="hljs-comment"># 主转换逻辑</span><br><span class="hljs-comment"># ──────────────────────────────────────────────</span><br><br>def convert_mrk_to_json(<br>    mrk_file: str,<br>    output_json: str,<br>    images_dir: str | None = None,<br>    camera_offset_override: tuple[float, float, float] | None = None,<br>) -&gt; dict:<br>    <span class="hljs-string">&quot;&quot;&quot;将 MRK 文件转换为轨迹 JSON。</span><br><span class="hljs-string"></span><br><span class="hljs-string">    Args:</span><br><span class="hljs-string">        mrk_file:              MRK 文件路径</span><br><span class="hljs-string">        output_json:           输出 JSON 文件路径</span><br><span class="hljs-string">        images_dir:            图像目录（用于匹配文件名，可选）</span><br><span class="hljs-string">        camera_offset_override: 自定义相机偏差 (N_mm, E_mm, V_mm)，</span><br><span class="hljs-string">                               如果提供则忽略 MRK 中每行的偏差值</span><br><span class="hljs-string"></span><br><span class="hljs-string">    Returns:</span><br><span class="hljs-string">        转换后的 JSON 字典</span><br><span class="hljs-string">    &quot;&quot;&quot;</span><br>    print(f<span class="hljs-string">&quot;\n&#123;&#x27;=&#x27;*60&#125;&quot;</span>)<br>    print(f<span class="hljs-string">&quot;  MRK → JSON 转换工具&quot;</span>)<br>    print(f<span class="hljs-string">&quot;&#123;&#x27;=&#x27;*60&#125;&quot;</span>)<br>    print(f<span class="hljs-string">&quot;  MRK 文件  : &#123;mrk_file&#125;&quot;</span>)<br>    print(f<span class="hljs-string">&quot;  输出 JSON : &#123;output_json&#125;&quot;</span>)<br>    <span class="hljs-keyword">if</span> images_dir:<br>        print(f<span class="hljs-string">&quot;  图像目录  : &#123;images_dir&#125;&quot;</span>)<br>    print(f<span class="hljs-string">&quot;&#123;&#x27;=&#x27;*60&#125;\n&quot;</span>)<br><br>    <span class="hljs-comment"># ── 1. 读取 MRK 文件 ────────────────────────</span><br>    print(<span class="hljs-string">&quot;[步骤 1/4] 读取 MRK 文件...&quot;</span>)<br>    <span class="hljs-keyword">if</span> not os.path.isfile(mrk_file):<br>        print(f<span class="hljs-string">&quot;错误：MRK 文件不存在: &#123;mrk_file&#125;&quot;</span>)<br>        sys.<span class="hljs-keyword">exit</span>(<span class="hljs-number">1</span>)<br><br>    with open(mrk_file, <span class="hljs-string">&#x27;r&#x27;</span>, encoding=<span class="hljs-string">&#x27;utf-8-sig&#x27;</span>, errors=<span class="hljs-string">&#x27;replace&#x27;</span>) as f:<br>        lines = f.readlines()<br><br>    records = []<br>    skipped = <span class="hljs-number">0</span><br>    <span class="hljs-keyword">for</span> i, line <span class="hljs-keyword">in</span> enumerate(lines, <span class="hljs-number">1</span>):<br>        parsed = parse_mrk_line(line)<br>        <span class="hljs-keyword">if</span> parsed:<br>            records.append(parsed)<br>        <span class="hljs-keyword">else</span>:<br>            skipped += <span class="hljs-number">1</span><br><br>    print(f<span class="hljs-string">&quot;  总行数: &#123;len(lines)&#125;, 成功解析: &#123;len(records)&#125;, 跳过: &#123;skipped&#125;&quot;</span>)<br><br>    <span class="hljs-keyword">if</span> not records:<br>        print(<span class="hljs-string">&quot;错误：没有成功解析任何记录&quot;</span>)<br>        sys.<span class="hljs-keyword">exit</span>(<span class="hljs-number">1</span>)<br><br>    <span class="hljs-comment"># ── 2. 计算镜头位置 + 时间戳 ────────────────</span><br>    print(f<span class="hljs-string">&quot;\n[步骤 2/4] 计算镜头位置 + 转换时间戳...&quot;</span>)<br><br>    <span class="hljs-comment"># 判断是否使用自定义偏移</span><br>    <span class="hljs-keyword">if</span> camera_offset_override:<br>        custom_n, custom_e, custom_v = camera_offset_override<br>        print(f<span class="hljs-string">&quot;  使用自定义相机偏差: N=&#123;custom_n&#125;mm, E=&#123;custom_e&#125;mm, V=&#123;custom_v&#125;mm&quot;</span>)<br>    <span class="hljs-keyword">else</span>:<br>        <span class="hljs-comment"># PPK 每行的偏差值是解算结果，使用每行的值而非统一值</span><br>        print(f<span class="hljs-string">&quot;  使用 MRK 中每行的 PPK 解算偏差（逐行独立）&quot;</span>)<br>        <span class="hljs-comment"># 统计偏差范围</span><br>        n_vals = [r[<span class="hljs-string">&#x27;offset_n_mm&#x27;</span>] <span class="hljs-keyword">for</span> r <span class="hljs-keyword">in</span> records]<br>        e_vals = [r[<span class="hljs-string">&#x27;offset_e_mm&#x27;</span>] <span class="hljs-keyword">for</span> r <span class="hljs-keyword">in</span> records]<br>        v_vals = [r[<span class="hljs-string">&#x27;offset_v_mm&#x27;</span>] <span class="hljs-keyword">for</span> r <span class="hljs-keyword">in</span> records]<br>        print(f<span class="hljs-string">&quot;  N 偏差范围: &#123;min(n_vals):.0f&#125; ~ &#123;max(n_vals):.0f&#125; mm (均值 &#123;sum(n_vals)/len(n_vals):.1f&#125;)&quot;</span>)<br>        print(f<span class="hljs-string">&quot;  E 偏差范围: &#123;min(e_vals):.0f&#125; ~ &#123;max(e_vals):.0f&#125; mm (均值 &#123;sum(e_vals)/len(e_vals):.1f&#125;)&quot;</span>)<br>        print(f<span class="hljs-string">&quot;  V 偏差范围: &#123;min(v_vals):.0f&#125; ~ &#123;max(v_vals):.0f&#125; mm (均值 &#123;sum(v_vals)/len(v_vals):.1f&#125;)&quot;</span>)<br>        custom_n = custom_e = custom_v = None<br><br>    <span class="hljs-comment"># GPS 周号（取第一条记录的）</span><br>    gps_week = records[<span class="hljs-number">0</span>][<span class="hljs-string">&#x27;gps_week&#x27;</span>]<br><br>    <span class="hljs-comment"># 转换每条记录</span><br>    trajectory_points = []<br>    <span class="hljs-keyword">for</span> rec <span class="hljs-keyword">in</span> records:<br>        <span class="hljs-comment"># 用每行的 PPK 偏移（或自定义偏移）计算镜头位置</span><br>        <span class="hljs-keyword">if</span> camera_offset_override:<br>            n_mm, e_mm, v_mm = camera_offset_override<br>        <span class="hljs-keyword">else</span>:<br>            n_mm, e_mm, v_mm = rec[<span class="hljs-string">&#x27;offset_n_mm&#x27;</span>], rec[<span class="hljs-string">&#x27;offset_e_mm&#x27;</span>], rec[<span class="hljs-string">&#x27;offset_v_mm&#x27;</span>]<br><br>        cam_lat, cam_lon, cam_ellh = apply_camera_offset(<br>            rec[<span class="hljs-string">&#x27;antenna_lat&#x27;</span>], rec[<span class="hljs-string">&#x27;antenna_lon&#x27;</span>], rec[<span class="hljs-string">&#x27;antenna_ellh&#x27;</span>],<br>            n_mm, e_mm, v_mm,<br>        )<br><br>        <span class="hljs-comment"># 时间戳转换</span><br>        utc_dt = gps_week_second_to_utc(gps_week, rec[<span class="hljs-string">&#x27;gps_second&#x27;</span>])<br>        ts_str = format_timestamp(utc_dt)<br><br>        trajectory_points.append(&#123;<br>            <span class="hljs-string">&#x27;timestamp&#x27;</span>: ts_str,<br>            <span class="hljs-string">&#x27;utc_datetime&#x27;</span>: utc_dt.strftime(<span class="hljs-string">&quot;%Y-%m-%d %H:%M:%S.%f&quot;</span>)[:-<span class="hljs-number">3</span>],<br>            <span class="hljs-string">&#x27;position&#x27;</span>: &#123;<br>                <span class="hljs-string">&#x27;latitude&#x27;</span>:  round(cam_lat, <span class="hljs-number">8</span>),<br>                <span class="hljs-string">&#x27;longitude&#x27;</span>: round(cam_lon, <span class="hljs-number">8</span>),<br>                <span class="hljs-string">&#x27;altitude&#x27;</span>:  round(cam_ellh, <span class="hljs-number">4</span>),<br>            &#125;,<br>            <span class="hljs-string">&#x27;attitude&#x27;</span>: &#123;<br>                <span class="hljs-string">&#x27;heading&#x27;</span>: <span class="hljs-number">0.0</span>,      <span class="hljs-comment"># 后面会设为 yaw（与云台一致）</span><br>                <span class="hljs-string">&#x27;pitch&#x27;</span>:   <span class="hljs-number">0.0</span>,      <span class="hljs-comment"># 机身姿态：水平飞行</span><br>                <span class="hljs-string">&#x27;roll&#x27;</span>:    <span class="hljs-number">0.0</span>,<br>            &#125;,<br>            <span class="hljs-string">&#x27;gimbal_attitude&#x27;</span>: &#123;<br>                <span class="hljs-string">&#x27;pitch&#x27;</span>: -<span class="hljs-number">90.0</span>,     <span class="hljs-comment"># 云台：垂直俯拍</span><br>                <span class="hljs-string">&#x27;roll&#x27;</span>:   <span class="hljs-number">0.0</span>,<br>                <span class="hljs-string">&#x27;yaw&#x27;</span>:   <span class="hljs-number">0.0</span>,       <span class="hljs-comment"># 后面计算</span><br>            &#125;,<br>            <span class="hljs-string">&#x27;video_frame&#x27;</span>: <span class="hljs-string">&#x27;&#x27;</span>,      <span class="hljs-comment"># 后面匹配</span><br>            <span class="hljs-string">&#x27;_antenna_position&#x27;</span>: &#123;<br>                <span class="hljs-string">&#x27;latitude&#x27;</span>:  round(rec[<span class="hljs-string">&#x27;antenna_lat&#x27;</span>], <span class="hljs-number">8</span>),<br>                <span class="hljs-string">&#x27;longitude&#x27;</span>: round(rec[<span class="hljs-string">&#x27;antenna_lon&#x27;</span>], <span class="hljs-number">8</span>),<br>                <span class="hljs-string">&#x27;ellh&#x27;</span>:      round(rec[<span class="hljs-string">&#x27;antenna_ellh&#x27;</span>], <span class="hljs-number">4</span>),<br>            &#125;,<br>            <span class="hljs-string">&#x27;_raw&#x27;</span>: &#123;<br>                <span class="hljs-string">&#x27;event_id&#x27;</span>:   rec[<span class="hljs-string">&#x27;event_id&#x27;</span>],<br>                <span class="hljs-string">&#x27;gps_second&#x27;</span>: rec[<span class="hljs-string">&#x27;gps_second&#x27;</span>],<br>                <span class="hljs-string">&#x27;gps_week&#x27;</span>:   rec[<span class="hljs-string">&#x27;gps_week&#x27;</span>],<br>                <span class="hljs-string">&#x27;offset_n_mm&#x27;</span>: n_mm,<br>                <span class="hljs-string">&#x27;offset_e_mm&#x27;</span>: e_mm,<br>                <span class="hljs-string">&#x27;offset_v_mm&#x27;</span>: v_mm,<br>                <span class="hljs-string">&#x27;num_satellites&#x27;</span>: rec[<span class="hljs-string">&#x27;num_satellites&#x27;</span>],<br>                <span class="hljs-string">&#x27;quality&#x27;</span>: rec[<span class="hljs-string">&#x27;quality&#x27;</span>],<br>            &#125;,<br>        &#125;)<br><br>    print(f<span class="hljs-string">&quot;  转换完成: &#123;len(trajectory_points)&#125; 条记录&quot;</span>)<br>    print(f<span class="hljs-string">&quot;  时间范围: &#123;trajectory_points[0][&#x27;utc_datetime&#x27;]&#125;&quot;</span>)<br>    print(f<span class="hljs-string">&quot;           → &#123;trajectory_points[-1][&#x27;utc_datetime&#x27;]&#125;&quot;</span>)<br><br>    <span class="hljs-comment"># ── 3. 计算 Yaw 角 ──────────────────────────</span><br>    print(f<span class="hljs-string">&quot;\n[步骤 3/4] 计算 Yaw 角（基于镜头位置差分）...&quot;</span>)<br><br>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(len(trajectory_points)):<br>        <span class="hljs-keyword">if</span> i == <span class="hljs-number">0</span>:<br>            <span class="hljs-comment"># 第一帧：用第二帧的方向（如果没有第二帧则默认0）</span><br>            <span class="hljs-keyword">if</span> len(trajectory_points) &gt; <span class="hljs-number">1</span>:<br>                yaw = compute_yaw_from_positions(<br>                    trajectory_points[<span class="hljs-number">0</span>][<span class="hljs-string">&#x27;position&#x27;</span>][<span class="hljs-string">&#x27;latitude&#x27;</span>],<br>                    trajectory_points[<span class="hljs-number">0</span>][<span class="hljs-string">&#x27;position&#x27;</span>][<span class="hljs-string">&#x27;longitude&#x27;</span>],<br>                    trajectory_points[<span class="hljs-number">1</span>][<span class="hljs-string">&#x27;position&#x27;</span>][<span class="hljs-string">&#x27;latitude&#x27;</span>],<br>                    trajectory_points[<span class="hljs-number">1</span>][<span class="hljs-string">&#x27;position&#x27;</span>][<span class="hljs-string">&#x27;longitude&#x27;</span>],<br>                )<br>            <span class="hljs-keyword">else</span>:<br>                yaw = <span class="hljs-number">0.0</span><br>        <span class="hljs-keyword">else</span>:<br>            yaw = compute_yaw_from_positions(<br>                trajectory_points[i-<span class="hljs-number">1</span>][<span class="hljs-string">&#x27;position&#x27;</span>][<span class="hljs-string">&#x27;latitude&#x27;</span>],<br>                trajectory_points[i-<span class="hljs-number">1</span>][<span class="hljs-string">&#x27;position&#x27;</span>][<span class="hljs-string">&#x27;longitude&#x27;</span>],<br>                trajectory_points[i][<span class="hljs-string">&#x27;position&#x27;</span>][<span class="hljs-string">&#x27;latitude&#x27;</span>],<br>                trajectory_points[i][<span class="hljs-string">&#x27;position&#x27;</span>][<span class="hljs-string">&#x27;longitude&#x27;</span>],<br>            )<br><br>        <span class="hljs-comment"># 写入 attitude 和 gimbal_attitude</span><br>        <span class="hljs-comment"># attitude.heading = yaw（机身航向与云台偏航一致）</span><br>        <span class="hljs-comment"># attitude.pitch = 0, roll = 0（机身水平飞行）</span><br>        <span class="hljs-comment"># gimbal_attitude.yaw = yaw, pitch = -90（垂直俯拍）</span><br>        trajectory_points[i][<span class="hljs-string">&#x27;attitude&#x27;</span>][<span class="hljs-string">&#x27;heading&#x27;</span>] = round(yaw, <span class="hljs-number">4</span>)<br>        trajectory_points[i][<span class="hljs-string">&#x27;gimbal_attitude&#x27;</span>][<span class="hljs-string">&#x27;yaw&#x27;</span>] = round(yaw, <span class="hljs-number">4</span>)<br><br>    <span class="hljs-comment"># 打印 yaw 统计</span><br>    yaws = [tp[<span class="hljs-string">&#x27;gimbal_attitude&#x27;</span>][<span class="hljs-string">&#x27;yaw&#x27;</span>] <span class="hljs-keyword">for</span> tp <span class="hljs-keyword">in</span> trajectory_points]<br>    print(f<span class="hljs-string">&quot;  Yaw 范围: &#123;min(yaws):.1f&#125;° ~ &#123;max(yaws):.1f&#125;°&quot;</span>)<br>    print(f<span class="hljs-string">&quot;  Yaw 平均: &#123;sum(yaws)/len(yaws):.1f&#125;°&quot;</span>)<br>    <span class="hljs-comment"># 打印前几帧示例</span><br>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(min(<span class="hljs-number">5</span>, len(trajectory_points))):<br>        tp = trajectory_points[i]<br>        print(f<span class="hljs-string">&quot;  帧 &#123;i+1:3d&#125;: yaw=&#123;tp[&#x27;gimbal_attitude&#x27;][&#x27;yaw&#x27;]:7.2f&#125;°  &quot;</span><br>              f<span class="hljs-string">&quot;(&#123;tp[&#x27;position&#x27;][&#x27;latitude&#x27;]:.7f&#125;, &#123;tp[&#x27;position&#x27;][&#x27;longitude&#x27;]:.7f&#125;)  &quot;</span><br>              f<span class="hljs-string">&quot;alt=&#123;tp[&#x27;position&#x27;][&#x27;altitude&#x27;]:.1f&#125;m&quot;</span>)<br><br>    <span class="hljs-comment"># ── 4. 匹配图像文件名 ────────────────────────</span><br>    print(f<span class="hljs-string">&quot;\n[步骤 4/4] 匹配图像文件名...&quot;</span>)<br><br>    <span class="hljs-keyword">if</span> images_dir:<br>        jpg_files = find_jpg_files(images_dir)<br>        print(f<span class="hljs-string">&quot;  找到 &#123;len(jpg_files)&#125; 个 JPG 文件&quot;</span>)<br><br>        <span class="hljs-keyword">if</span> len(jpg_files) == len(trajectory_points):<br>            <span class="hljs-keyword">for</span> i, jpg <span class="hljs-keyword">in</span> enumerate(jpg_files):<br>                trajectory_points[i][<span class="hljs-string">&#x27;video_frame&#x27;</span>] = jpg<br>            print(f<span class="hljs-string">&quot;  按 ID 顺序一一对应，匹配完成&quot;</span>)<br>        <span class="hljs-keyword">else</span>:<br>            <span class="hljs-comment"># 数量不一致，尝试按时间戳匹配</span><br>            print(f<span class="hljs-string">&quot;  文件数量 (&#123;len(jpg_files)&#125;) != 记录数量 (&#123;len(trajectory_points)&#125;)&quot;</span>)<br>            print(f<span class="hljs-string">&quot;  尝试按文件名时间戳匹配...&quot;</span>)<br><br>            <span class="hljs-comment"># 从 JPG 文件名提取时间戳: DJI_20260305140234_0001_V.JPG</span><br>            jpg_ts_pattern = re.compile(<span class="hljs-string">r&#x27;^DJI_(\d&#123;14&#125;)_(\d+)_V\.JPG$&#x27;</span>)<br>            jpg_with_ts = []<br>            <span class="hljs-keyword">for</span> jpg <span class="hljs-keyword">in</span> jpg_files:<br>                m = jpg_ts_pattern.match(jpg)<br>                <span class="hljs-keyword">if</span> m:<br>                    jpg_with_ts.append((int(m.group(<span class="hljs-number">1</span>)), int(m.group(<span class="hljs-number">2</span>)), jpg))<br><br>            matched = <span class="hljs-number">0</span><br>            <span class="hljs-keyword">for</span> i, tp <span class="hljs-keyword">in</span> enumerate(trajectory_points):<br>                ts_num = int(tp[<span class="hljs-string">&#x27;timestamp&#x27;</span>].replace(<span class="hljs-string">&#x27;_&#x27;</span>, <span class="hljs-string">&#x27;&#x27;</span>)[:<span class="hljs-number">14</span>])<br>                <span class="hljs-comment"># 找最近的 JPG 时间戳</span><br>                best_jpg = None<br>                best_diff = float(<span class="hljs-string">&#x27;inf&#x27;</span>)<br>                <span class="hljs-keyword">for</span> jpg_ts, jpg_idx, jpg_name <span class="hljs-keyword">in</span> jpg_with_ts:<br>                    diff = abs(jpg_ts - ts_num) * <span class="hljs-number">1000</span> + abs(jpg_idx - (i + <span class="hljs-number">1</span>))<br>                    <span class="hljs-keyword">if</span> diff &lt; best_diff:<br>                        best_diff = diff<br>                        best_jpg = jpg_name<br>                <span class="hljs-keyword">if</span> best_jpg:<br>                    trajectory_points[i][<span class="hljs-string">&#x27;video_frame&#x27;</span>] = best_jpg<br>                    matched += <span class="hljs-number">1</span><br><br>            print(f<span class="hljs-string">&quot;  时间戳匹配完成: &#123;matched&#125;/&#123;len(trajectory_points)&#125;&quot;</span>)<br><br>            <span class="hljs-comment"># 如果还是匹配不上，就用序号作为 fallback</span><br>            unmatched = sum(<span class="hljs-number">1</span> <span class="hljs-keyword">for</span> tp <span class="hljs-keyword">in</span> trajectory_points <span class="hljs-keyword">if</span> not tp[<span class="hljs-string">&#x27;video_frame&#x27;</span>])<br>            <span class="hljs-keyword">if</span> unmatched &gt; <span class="hljs-number">0</span> and len(jpg_files) &gt;= len(trajectory_points):<br>                print(f<span class="hljs-string">&quot;  &#123;unmatched&#125; 条未匹配，使用序号对应...&quot;</span>)<br>                <span class="hljs-keyword">for</span> i, tp <span class="hljs-keyword">in</span> enumerate(trajectory_points):<br>                    <span class="hljs-keyword">if</span> not tp[<span class="hljs-string">&#x27;video_frame&#x27;</span>] and i &lt; len(jpg_files):<br>                        tp[<span class="hljs-string">&#x27;video_frame&#x27;</span>] = jpg_files[i]<br>    <span class="hljs-keyword">else</span>:<br>        print(<span class="hljs-string">&quot;  未指定图像目录，video_frame 字段留空&quot;</span>)<br><br>    <span class="hljs-comment"># 计算 flight_info 中的偏移摘要</span><br>    <span class="hljs-keyword">if</span> camera_offset_override:<br>        offset_summary = &#123;<span class="hljs-string">&#x27;N&#x27;</span>: camera_offset_override[<span class="hljs-number">0</span>], <span class="hljs-string">&#x27;E&#x27;</span>: camera_offset_override[<span class="hljs-number">1</span>], <span class="hljs-string">&#x27;V&#x27;</span>: camera_offset_override[<span class="hljs-number">2</span>]&#125;<br>    <span class="hljs-keyword">else</span>:<br>        n_vals = [r[<span class="hljs-string">&#x27;offset_n_mm&#x27;</span>] <span class="hljs-keyword">for</span> r <span class="hljs-keyword">in</span> records]<br>        e_vals = [r[<span class="hljs-string">&#x27;offset_e_mm&#x27;</span>] <span class="hljs-keyword">for</span> r <span class="hljs-keyword">in</span> records]<br>        v_vals = [r[<span class="hljs-string">&#x27;offset_v_mm&#x27;</span>] <span class="hljs-keyword">for</span> r <span class="hljs-keyword">in</span> records]<br>        offset_summary = &#123;<br>            <span class="hljs-string">&#x27;N&#x27;</span>: &#123;<span class="hljs-string">&#x27;mean&#x27;</span>: round(sum(n_vals)/len(n_vals), <span class="hljs-number">1</span>), <span class="hljs-string">&#x27;min&#x27;</span>: round(min(n_vals), <span class="hljs-number">1</span>), <span class="hljs-string">&#x27;max&#x27;</span>: round(max(n_vals), <span class="hljs-number">1</span>)&#125;,<br>            <span class="hljs-string">&#x27;E&#x27;</span>: &#123;<span class="hljs-string">&#x27;mean&#x27;</span>: round(sum(e_vals)/len(e_vals), <span class="hljs-number">1</span>), <span class="hljs-string">&#x27;min&#x27;</span>: round(min(e_vals), <span class="hljs-number">1</span>), <span class="hljs-string">&#x27;max&#x27;</span>: round(max(e_vals), <span class="hljs-number">1</span>)&#125;,<br>            <span class="hljs-string">&#x27;V&#x27;</span>: &#123;<span class="hljs-string">&#x27;mean&#x27;</span>: round(sum(v_vals)/len(v_vals), <span class="hljs-number">1</span>), <span class="hljs-string">&#x27;min&#x27;</span>: round(min(v_vals), <span class="hljs-number">1</span>), <span class="hljs-string">&#x27;max&#x27;</span>: round(max(v_vals), <span class="hljs-number">1</span>)&#125;,<br>        &#125;<br><br>    <span class="hljs-comment"># ── 构建最终 JSON ────────────────────────────</span><br>    final_points = []<br>    <span class="hljs-keyword">for</span> tp <span class="hljs-keyword">in</span> trajectory_points:<br>        point = &#123;<br>            <span class="hljs-string">&#x27;timestamp&#x27;</span>:      tp[<span class="hljs-string">&#x27;timestamp&#x27;</span>],<br>            <span class="hljs-string">&#x27;utc_datetime&#x27;</span>:   tp[<span class="hljs-string">&#x27;utc_datetime&#x27;</span>],<br>            <span class="hljs-string">&#x27;position&#x27;</span>: &#123;<br>                <span class="hljs-string">&#x27;latitude&#x27;</span>:  tp[<span class="hljs-string">&#x27;position&#x27;</span>][<span class="hljs-string">&#x27;latitude&#x27;</span>],<br>                <span class="hljs-string">&#x27;longitude&#x27;</span>: tp[<span class="hljs-string">&#x27;position&#x27;</span>][<span class="hljs-string">&#x27;longitude&#x27;</span>],<br>                <span class="hljs-string">&#x27;altitude&#x27;</span>:  tp[<span class="hljs-string">&#x27;position&#x27;</span>][<span class="hljs-string">&#x27;altitude&#x27;</span>],<br>            &#125;,<br>            <span class="hljs-string">&#x27;attitude&#x27;</span>:       tp[<span class="hljs-string">&#x27;attitude&#x27;</span>],<br>            <span class="hljs-string">&#x27;gimbal_attitude&#x27;</span>: tp[<span class="hljs-string">&#x27;gimbal_attitude&#x27;</span>],<br>            <span class="hljs-string">&#x27;video_frame&#x27;</span>:    tp[<span class="hljs-string">&#x27;video_frame&#x27;</span>],<br>        &#125;<br>        final_points.append(point)<br><br>    result = &#123;<br>        <span class="hljs-string">&#x27;flight_info&#x27;</span>: &#123;<br>            <span class="hljs-string">&#x27;device_sn&#x27;</span>: <span class="hljs-string">&#x27;&#x27;</span>,<br>            <span class="hljs-string">&#x27;flight_start_time&#x27;</span>: trajectory_points[<span class="hljs-number">0</span>][<span class="hljs-string">&#x27;timestamp&#x27;</span>][:<span class="hljs-number">15</span>],<br>            <span class="hljs-string">&#x27;flight_end_time&#x27;</span>:   trajectory_points[-<span class="hljs-number">1</span>][<span class="hljs-string">&#x27;timestamp&#x27;</span>][:<span class="hljs-number">15</span>],<br>            <span class="hljs-string">&#x27;total_points&#x27;</span>: len(final_points),<br>            <span class="hljs-string">&#x27;source_file&#x27;</span>: os.path.basename(mrk_file),<br>            <span class="hljs-string">&#x27;camera_offset_mm&#x27;</span>: offset_summary,<br>            <span class="hljs-string">&#x27;notes&#x27;</span>: <span class="hljs-string">&#x27;Generated by mrk_to_json.py from PPK MRK data. Yaw computed from lens position differential.&#x27;</span>,<br>        &#125;,<br>        <span class="hljs-string">&#x27;trajectory_points&#x27;</span>: final_points,<br>    &#125;<br><br>    <span class="hljs-comment"># 写入文件</span><br>    out_dir = os.path.dirname(output_json)<br>    <span class="hljs-keyword">if</span> out_dir and not os.path.exists(out_dir):<br>        os.makedirs(out_dir, exist_ok=True)<br><br>    with open(output_json, <span class="hljs-string">&#x27;w&#x27;</span>, encoding=<span class="hljs-string">&#x27;utf-8&#x27;</span>) as f:<br>        json.dump(result, f, indent=<span class="hljs-number">2</span>, ensure_ascii=False)<br><br>    file_size = os.path.getsize(output_json) / <span class="hljs-number">1024</span><br>    print(f<span class="hljs-string">&quot;\n&#123;&#x27;=&#x27;*60&#125;&quot;</span>)<br>    print(f<span class="hljs-string">&quot;  转换完成!&quot;</span>)<br>    print(f<span class="hljs-string">&quot;&#123;&#x27;=&#x27;*60&#125;&quot;</span>)<br>    print(f<span class="hljs-string">&quot;  输出文件: &#123;output_json&#125; (&#123;file_size:.0f&#125; KB)&quot;</span>)<br>    print(f<span class="hljs-string">&quot;  总记录数: &#123;len(final_points)&#125;&quot;</span>)<br>    print(f<span class="hljs-string">&quot;  时间范围: &#123;trajectory_points[0][&#x27;utc_datetime&#x27;]&#125;&quot;</span>)<br>    print(f<span class="hljs-string">&quot;           → &#123;trajectory_points[-1][&#x27;utc_datetime&#x27;]&#125;&quot;</span>)<br>    print(f<span class="hljs-string">&quot;  Yaw 范围: &#123;min(yaws):.1f&#125;° ~ &#123;max(yaws):.1f&#125;°&quot;</span>)<br>    print(f<span class="hljs-string">&quot;&#123;&#x27;=&#x27;*60&#125;&quot;</span>)<br><br>    return result<br><br><br><span class="hljs-comment"># ──────────────────────────────────────────────</span><br><span class="hljs-comment"># 交互式模式</span><br><span class="hljs-comment"># ──────────────────────────────────────────────</span><br><br>def interactive_mode() -&gt; dict:<br>    <span class="hljs-string">&quot;&quot;&quot;通过交互式问答收集参数。&quot;&quot;&quot;</span><br>    print(<span class="hljs-string">&quot;\n&quot;</span> + <span class="hljs-string">&quot;=&quot;</span>*<span class="hljs-number">60</span>)<br>    print(<span class="hljs-string">&quot;  MRK → JSON 转换工具（交互式）&quot;</span>)<br>    print(<span class="hljs-string">&quot;=&quot;</span>*<span class="hljs-number">60</span>)<br>    print()<br><br>    mrk_file = input(<span class="hljs-string">&quot;MRK 文件路径: &quot;</span>).strip()<br>    <span class="hljs-keyword">while</span> not os.path.isfile(mrk_file):<br>        print(f<span class="hljs-string">&quot;  文件不存在: &#123;mrk_file&#125;&quot;</span>)<br>        mrk_file = input(<span class="hljs-string">&quot;MRK 文件路径: &quot;</span>).strip()<br><br>    default_out = mrk_file.rsplit(<span class="hljs-string">&#x27;.&#x27;</span>, <span class="hljs-number">1</span>)[<span class="hljs-number">0</span>] + <span class="hljs-string">&#x27;_trajectory.json&#x27;</span><br>    output_json = input(f<span class="hljs-string">&quot;输出 JSON 路径 [&#123;default_out&#125;]: &quot;</span>).strip() or default_out<br><br>    images_dir = input(<span class="hljs-string">&quot;图像目录路径（可选，直接回车跳过）: &quot;</span>).strip()<br>    <span class="hljs-keyword">if</span> images_dir and not os.path.isdir(images_dir):<br>        print(f<span class="hljs-string">&quot;  目录不存在，将跳过图像匹配&quot;</span>)<br>        images_dir = <span class="hljs-string">&#x27;&#x27;</span><br><br>    print()<br>    print(<span class="hljs-string">&quot;── 相机偏差参数（天线为原点，镜头在前方）────&quot;</span>)<br>    print(<span class="hljs-string">&quot;  如果 MRK 中每行都有偏差值且一致，可以直接回车使用 MRK 内的值&quot;</span>)<br>    print(<span class="hljs-string">&quot;  如果需要覆盖，请输入自定义值&quot;</span>)<br>    print()<br><br>    use_custom = input(<span class="hljs-string">&quot;使用自定义相机偏差？(y/N): &quot;</span>).strip().lower()<br>    camera_offset = None<br>    <span class="hljs-keyword">if</span> use_custom == <span class="hljs-string">&#x27;y&#x27;</span>:<br>        n_mm = float(input(<span class="hljs-string">&quot;  N 偏差 (mm, 偏北为正) [59]: &quot;</span>) or <span class="hljs-string">&quot;59&quot;</span>)<br>        e_mm = float(input(<span class="hljs-string">&quot;  E 偏差 (mm, 偏东为正) [81]: &quot;</span>) or <span class="hljs-string">&quot;81&quot;</span>)<br>        v_mm = float(input(<span class="hljs-string">&quot;  V 偏差 (mm, 向下为正) [164]: &quot;</span>) or <span class="hljs-string">&quot;164&quot;</span>)<br>        camera_offset = (n_mm, e_mm, v_mm)<br><br>    return &#123;<br>        <span class="hljs-string">&#x27;mrk_file&#x27;</span>: mrk_file,<br>        <span class="hljs-string">&#x27;output_json&#x27;</span>: output_json,<br>        <span class="hljs-string">&#x27;images_dir&#x27;</span>: images_dir or None,<br>        <span class="hljs-string">&#x27;camera_offset_override&#x27;</span>: camera_offset,<br>    &#125;<br><br><br><span class="hljs-comment"># ──────────────────────────────────────────────</span><br><span class="hljs-comment"># 命令行参数</span><br><span class="hljs-comment"># ──────────────────────────────────────────────</span><br><br>def build_parser() -&gt; argparse.ArgumentParser:<br>    parser = argparse.ArgumentParser(<br>        prog=<span class="hljs-string">&quot;mrk_to_json.py&quot;</span>,<br>        description=<span class="hljs-string">&quot;将 DJI PPK MRK 格式轨迹文件转换为 JSON 格式（用于无人机影像拼接）&quot;</span>,<br>        formatter_class=argparse.RawDescriptionHelpFormatter,<br>        epilog=<span class="hljs-string">&quot;&quot;&quot;</span><br><span class="hljs-string">示例：</span><br><span class="hljs-string">  # 交互式</span><br><span class="hljs-string">  python mrk_to_json.py</span><br><span class="hljs-string"></span><br><span class="hljs-string">  # 命令行（基本用法）</span><br><span class="hljs-string">  python mrk_to_json.py -i data.MRK -o trajectory.json</span><br><span class="hljs-string"></span><br><span class="hljs-string">  # 命令行（带图像目录）</span><br><span class="hljs-string">  python mrk_to_json.py -i data.MRK -o trajectory.json --images ./photos</span><br><span class="hljs-string"></span><br><span class="hljs-string">  # 命令行（自定义相机偏差）</span><br><span class="hljs-string">  python mrk_to_json.py -i data.MRK -o trajectory.json --offset 59 81 164</span><br><span class="hljs-string">&quot;&quot;&quot;</span>,<br>    )<br><br>    parser.add_argument(<br>        <span class="hljs-string">&#x27;-i&#x27;</span>, <span class="hljs-string">&#x27;--input&#x27;</span>, dest=<span class="hljs-string">&#x27;mrk_file&#x27;</span>,<br>        help=<span class="hljs-string">&#x27;MRK 文件路径&#x27;</span>,<br>    )<br>    parser.add_argument(<br>        <span class="hljs-string">&#x27;-o&#x27;</span>, <span class="hljs-string">&#x27;--output&#x27;</span>, dest=<span class="hljs-string">&#x27;output_json&#x27;</span>,<br>        help=<span class="hljs-string">&#x27;输出 JSON 文件路径（默认：与 MRK 同目录，后缀 _trajectory.json）&#x27;</span>,<br>    )<br>    parser.add_argument(<br>        <span class="hljs-string">&#x27;--images&#x27;</span>, dest=<span class="hljs-string">&#x27;images_dir&#x27;</span>,<br>        help=<span class="hljs-string">&#x27;图像文件目录（用于匹配 video_frame 字段）&#x27;</span>,<br>    )<br>    parser.add_argument(<br>        <span class="hljs-string">&#x27;--offset&#x27;</span>, dest=<span class="hljs-string">&#x27;camera_offset&#x27;</span>, nargs=<span class="hljs-number">3</span>, type=float, metavar=(<span class="hljs-string">&#x27;N&#x27;</span>, <span class="hljs-string">&#x27;E&#x27;</span>, <span class="hljs-string">&#x27;V&#x27;</span>),<br>        help=<span class="hljs-string">&#x27;自定义相机偏差 (mm)：N(北) E(东) V(下)，如 --offset 59 81 164&#x27;</span>,<br>    )<br><br>    return parser<br><br><br><span class="hljs-comment"># ──────────────────────────────────────────────</span><br><span class="hljs-comment"># 入口</span><br><span class="hljs-comment"># ──────────────────────────────────────────────</span><br><br>def main():<br>    parser = build_parser()<br><br>    <span class="hljs-keyword">if</span> len(sys.argv) == <span class="hljs-number">1</span>:<br>        <span class="hljs-comment"># 交互式模式</span><br>        params = interactive_mode()<br>    <span class="hljs-keyword">else</span>:<br>        args = parser.parse_args()<br>        params = &#123;<br>            <span class="hljs-string">&#x27;mrk_file&#x27;</span>: args.mrk_file,<br>            <span class="hljs-string">&#x27;output_json&#x27;</span>: args.output_json,<br>            <span class="hljs-string">&#x27;images_dir&#x27;</span>: args.images_dir,<br>            <span class="hljs-string">&#x27;camera_offset_override&#x27;</span>: tuple(args.camera_offset) <span class="hljs-keyword">if</span> args.camera_offset <span class="hljs-keyword">else</span> None,<br>        &#125;<br><br>    <span class="hljs-comment"># 默认输出路径</span><br>    <span class="hljs-keyword">if</span> not params[<span class="hljs-string">&#x27;output_json&#x27;</span>]:<br>        params[<span class="hljs-string">&#x27;output_json&#x27;</span>] = params[<span class="hljs-string">&#x27;mrk_file&#x27;</span>].rsplit(<span class="hljs-string">&#x27;.&#x27;</span>, <span class="hljs-number">1</span>)[<span class="hljs-number">0</span>] + <span class="hljs-string">&#x27;_trajectory.json&#x27;</span><br><br>    convert_mrk_to_json(<br>        mrk_file=params[<span class="hljs-string">&#x27;mrk_file&#x27;</span>],<br>        output_json=params[<span class="hljs-string">&#x27;output_json&#x27;</span>],<br>        images_dir=params.get(<span class="hljs-string">&#x27;images_dir&#x27;</span>),<br>        camera_offset_override=params.get(<span class="hljs-string">&#x27;camera_offset_override&#x27;</span>),<br>    )<br><br><br><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&#x27;__main__&#x27;</span>:<br>    main()<br><br></code></pre></td></tr></table></figure>
+
+<h2 id="数据压缩"><a href="#数据压缩" class="headerlink" title="数据压缩"></a>数据压缩</h2><p>考虑到4K的照片可能直接显示对机器性能要求比较大，于是做了一个压缩程序，把照片压缩到1080或者720。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment">#!/usr/bin/env python3</span><br><span class="hljs-comment"># -*- coding: utf-8 -*-</span><br><span class="hljs-string">&quot;&quot;&quot;</span><br><span class="hljs-string">图片压缩子程序</span><br><span class="hljs-string">支持直接运行或通过其他Python程序调用</span><br><span class="hljs-string">功能：压缩图片至指定分辨率（1080P/720P），保留EXIF信息，同步复制其他文件</span><br><span class="hljs-string">&quot;&quot;&quot;</span><br><br><span class="hljs-keyword">import</span> os<br><span class="hljs-keyword">import</span> sys<br><span class="hljs-keyword">import</span> shutil<br><span class="hljs-keyword">import</span> argparse<br><span class="hljs-keyword">from</span> pathlib <span class="hljs-keyword">import</span> Path<br><span class="hljs-keyword">from</span> PIL <span class="hljs-keyword">import</span> Image<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">ImageCompressor</span>:<br>    <span class="hljs-string">&quot;&quot;&quot;图片压缩器类，可被其他Python程序调用&quot;&quot;&quot;</span><br>    <br>    <span class="hljs-comment"># 分辨率预设</span><br>    RESOLUTIONS = &#123;<br>        <span class="hljs-string">&#x27;1080&#x27;</span>: (<span class="hljs-number">1920</span>, <span class="hljs-number">1080</span>),<br>        <span class="hljs-string">&#x27;720&#x27;</span>: (<span class="hljs-number">1280</span>, <span class="hljs-number">720</span>)<br>    &#125;<br>    <br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, input_path, resolution=<span class="hljs-string">&#x27;720&#x27;</span>, output_suffix=<span class="hljs-string">&#x27;_compressed&#x27;</span></span>):<br>        <span class="hljs-string">&quot;&quot;&quot;</span><br><span class="hljs-string">        初始化压缩器</span><br><span class="hljs-string">        </span><br><span class="hljs-string">        参数:</span><br><span class="hljs-string">            input_path: 输入路径（文件或文件夹）</span><br><span class="hljs-string">            resolution: 目标分辨率 (&#x27;1080&#x27;, &#x27;720&#x27;)，默认&#x27;720&#x27;</span><br><span class="hljs-string">            output_suffix: 输出文件夹后缀，默认&#x27;_compressed&#x27;</span><br><span class="hljs-string">        &quot;&quot;&quot;</span><br>        self.input_path = Path(input_path)<br>        self.resolution = resolution<br>        self.output_suffix = output_suffix<br>        self.target_size = self.RESOLUTIONS.get(resolution, self.RESOLUTIONS[<span class="hljs-string">&#x27;720&#x27;</span>])<br>        self.output_path = <span class="hljs-literal">None</span><br>        self.stats = &#123;<br>            <span class="hljs-string">&#x27;images_compressed&#x27;</span>: <span class="hljs-number">0</span>,<br>            <span class="hljs-string">&#x27;files_copied&#x27;</span>: <span class="hljs-number">0</span>,<br>            <span class="hljs-string">&#x27;errors&#x27;</span>: []<br>        &#125;<br>    <br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">_create_output_dir</span>(<span class="hljs-params">self</span>):<br>        <span class="hljs-string">&quot;&quot;&quot;创建输出目录&quot;&quot;&quot;</span><br>        <span class="hljs-keyword">if</span> self.input_path.is_file():<br>            <span class="hljs-comment"># 如果是单个文件，输出到同目录的压缩文件夹</span><br>            parent_dir = self.input_path.parent<br>            self.output_path = parent_dir / <span class="hljs-string">f&quot;<span class="hljs-subst">&#123;parent_dir.name&#125;</span><span class="hljs-subst">&#123;self.output_suffix&#125;</span>&quot;</span><br>        <span class="hljs-keyword">else</span>:<br>            <span class="hljs-comment"># 如果是文件夹，输出到同目录的压缩文件夹</span><br>            self.output_path = self.input_path.parent / <span class="hljs-string">f&quot;<span class="hljs-subst">&#123;self.input_path.name&#125;</span><span class="hljs-subst">&#123;self.output_suffix&#125;</span>&quot;</span><br>        <br>        self.output_path.mkdir(exist_ok=<span class="hljs-literal">True</span>)<br>        <span class="hljs-keyword">return</span> self.output_path<br>    <br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">_compress_image</span>(<span class="hljs-params">self, image_path, output_path</span>):<br>        <span class="hljs-string">&quot;&quot;&quot;</span><br><span class="hljs-string">        压缩单张图片</span><br><span class="hljs-string">        </span><br><span class="hljs-string">        参数:</span><br><span class="hljs-string">            image_path: 输入图片路径</span><br><span class="hljs-string">            output_path: 输出图片路径</span><br><span class="hljs-string">        </span><br><span class="hljs-string">        返回:</span><br><span class="hljs-string">            bool: 成功返回True，失败返回False</span><br><span class="hljs-string">        &quot;&quot;&quot;</span><br>        <span class="hljs-keyword">try</span>:<br>            <span class="hljs-comment"># 打开原始图片</span><br>            img = Image.<span class="hljs-built_in">open</span>(image_path)<br>            <br>            <span class="hljs-comment"># 获取原始尺寸</span><br>            original_width, original_height = img.size<br>            <br>            <span class="hljs-comment"># 计算目标尺寸（保持宽高比）</span><br>            target_width, target_height = self.target_size<br>            <br>            <span class="hljs-comment"># 计算缩放比例</span><br>            width_ratio = target_width / original_width<br>            height_ratio = target_height / original_height<br>            scale_ratio = <span class="hljs-built_in">min</span>(width_ratio, height_ratio)<br>            <br>            <span class="hljs-comment"># 计算新尺寸</span><br>            new_width = <span class="hljs-built_in">int</span>(original_width * scale_ratio)<br>            new_height = <span class="hljs-built_in">int</span>(original_height * scale_ratio)<br>            <br>            <span class="hljs-comment"># 如果原始尺寸已经小于目标尺寸，跳过压缩</span><br>            <span class="hljs-keyword">if</span> scale_ratio &gt;= <span class="hljs-number">1</span>:<br>                <span class="hljs-comment"># 直接复制文件</span><br>                shutil.copy2(image_path, output_path)<br>                self.stats[<span class="hljs-string">&#x27;files_copied&#x27;</span>] += <span class="hljs-number">1</span><br>                <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span><br>            <br>            <span class="hljs-comment"># 压缩图片</span><br>            resized_img = img.resize((new_width, new_height), Image.Resampling.LANCZOS)<br>            <br>            <span class="hljs-comment"># 保存压缩后的图片（保留EXIF）</span><br>            <span class="hljs-keyword">if</span> <span class="hljs-string">&#x27;exif&#x27;</span> <span class="hljs-keyword">in</span> img.info:<br>                <span class="hljs-comment"># 如果有EXIF信息，保留它</span><br>                exif_data = img.info[<span class="hljs-string">&#x27;exif&#x27;</span>]<br>                resized_img.save(output_path, <span class="hljs-string">&#x27;JPEG&#x27;</span>, exif=exif_data, quality=<span class="hljs-number">85</span>)<br>            <span class="hljs-keyword">else</span>:<br>                <span class="hljs-comment"># 没有EXIF信息，直接保存</span><br>                resized_img.save(output_path, <span class="hljs-string">&#x27;JPEG&#x27;</span>, quality=<span class="hljs-number">85</span>)<br>            <br>            self.stats[<span class="hljs-string">&#x27;images_compressed&#x27;</span>] += <span class="hljs-number">1</span><br>            <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span><br>            <br>        <span class="hljs-keyword">except</span> Exception <span class="hljs-keyword">as</span> e:<br>            self.stats[<span class="hljs-string">&#x27;errors&#x27;</span>].append(<span class="hljs-string">f&quot;压缩失败 <span class="hljs-subst">&#123;image_path.name&#125;</span>: <span class="hljs-subst">&#123;<span class="hljs-built_in">str</span>(e)&#125;</span>&quot;</span>)<br>            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span><br>    <br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">_copy_file</span>(<span class="hljs-params">self, src_path, dst_path</span>):<br>        <span class="hljs-string">&quot;&quot;&quot;</span><br><span class="hljs-string">        复制文件（非图片文件）</span><br><span class="hljs-string">        </span><br><span class="hljs-string">        参数:</span><br><span class="hljs-string">            src_path: 源文件路径</span><br><span class="hljs-string">            dst_path: 目标文件路径</span><br><span class="hljs-string">        &quot;&quot;&quot;</span><br>        <span class="hljs-keyword">try</span>:<br>            shutil.copy2(src_path, dst_path)<br>            self.stats[<span class="hljs-string">&#x27;files_copied&#x27;</span>] += <span class="hljs-number">1</span><br>            <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span><br>        <span class="hljs-keyword">except</span> Exception <span class="hljs-keyword">as</span> e:<br>            self.stats[<span class="hljs-string">&#x27;errors&#x27;</span>].append(<span class="hljs-string">f&quot;复制失败 <span class="hljs-subst">&#123;src_path.name&#125;</span>: <span class="hljs-subst">&#123;<span class="hljs-built_in">str</span>(e)&#125;</span>&quot;</span>)<br>            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span><br>    <br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">process</span>(<span class="hljs-params">self</span>):<br>        <span class="hljs-string">&quot;&quot;&quot;</span><br><span class="hljs-string">        执行压缩处理</span><br><span class="hljs-string">        </span><br><span class="hljs-string">        返回:</span><br><span class="hljs-string">            dict: 处理统计信息</span><br><span class="hljs-string">        &quot;&quot;&quot;</span><br>        <span class="hljs-comment"># 创建输出目录</span><br>        self._create_output_dir()<br>        <br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;输出目录: <span class="hljs-subst">&#123;self.output_path&#125;</span>&quot;</span>)<br>        <br>        <span class="hljs-comment"># 判断输入是文件还是文件夹</span><br>        <span class="hljs-keyword">if</span> self.input_path.is_file():<br>            <span class="hljs-comment"># 处理单个文件</span><br>            <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;处理单个文件: <span class="hljs-subst">&#123;self.input_path.name&#125;</span>&quot;</span>)<br>            <span class="hljs-keyword">if</span> self._is_image(self.input_path):<br>                output_file = self.output_path / self.input_path.name<br>                self._compress_image(self.input_path, output_file)<br>            <span class="hljs-keyword">else</span>:<br>                output_file = self.output_path / self.input_path.name<br>                self._copy_file(self.input_path, output_file)<br>        <span class="hljs-keyword">else</span>:<br>            <span class="hljs-comment"># 处理文件夹</span><br>            <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;处理文件夹: <span class="hljs-subst">&#123;self.input_path&#125;</span>&quot;</span>)<br>            file_count = <span class="hljs-built_in">sum</span>(<span class="hljs-number">1</span> <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> self.input_path.iterdir() <span class="hljs-keyword">if</span> _.is_file())<br>            <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;共发现 <span class="hljs-subst">&#123;file_count&#125;</span> 个文件&quot;</span>)<br>            <br>            <span class="hljs-keyword">for</span> idx, item <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(self.input_path.iterdir(), <span class="hljs-number">1</span>):<br>                <span class="hljs-keyword">if</span> item.is_file():<br>                    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;[<span class="hljs-subst">&#123;idx&#125;</span>/<span class="hljs-subst">&#123;file_count&#125;</span>] 处理: <span class="hljs-subst">&#123;item.name&#125;</span>&quot;</span>)<br>                    output_file = self.output_path / item.name<br>                    <br>                    <span class="hljs-keyword">if</span> self._is_image(item):<br>                        <span class="hljs-comment"># 压缩图片</span><br>                        self._compress_image(item, output_file)<br>                    <span class="hljs-keyword">else</span>:<br>                        <span class="hljs-comment"># 复制其他文件</span><br>                        self._copy_file(item, output_file)<br>        <br>        <span class="hljs-keyword">return</span> self.stats<br>    <br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">_is_image</span>(<span class="hljs-params">self, file_path</span>):<br>        <span class="hljs-string">&quot;&quot;&quot;</span><br><span class="hljs-string">        判断文件是否为图片</span><br><span class="hljs-string">        </span><br><span class="hljs-string">        参数:</span><br><span class="hljs-string">            file_path: 文件路径</span><br><span class="hljs-string">        </span><br><span class="hljs-string">        返回:</span><br><span class="hljs-string">            bool: 是图片返回True</span><br><span class="hljs-string">        &quot;&quot;&quot;</span><br>        image_extensions = &#123;<span class="hljs-string">&#x27;.jpg&#x27;</span>, <span class="hljs-string">&#x27;.jpeg&#x27;</span>, <span class="hljs-string">&#x27;.png&#x27;</span>, <span class="hljs-string">&#x27;.bmp&#x27;</span>, <span class="hljs-string">&#x27;.tiff&#x27;</span>, <span class="hljs-string">&#x27;.tif&#x27;</span>, <span class="hljs-string">&#x27;.webp&#x27;</span>&#125;<br>        <span class="hljs-keyword">return</span> file_path.suffix.lower() <span class="hljs-keyword">in</span> image_extensions<br>    <br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">get_output_path</span>(<span class="hljs-params">self</span>):<br>        <span class="hljs-string">&quot;&quot;&quot;获取输出路径&quot;&quot;&quot;</span><br>        <span class="hljs-keyword">return</span> self.output_path<br><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">main</span>():<br>    <span class="hljs-string">&quot;&quot;&quot;命令行入口&quot;&quot;&quot;</span><br>    parser = argparse.ArgumentParser(<br>        description=<span class="hljs-string">&#x27;图片压缩工具 - 支持720P/1080P分辨率，保留EXIF信息&#x27;</span><br>    )<br>    parser.add_argument(<br>        <span class="hljs-string">&#x27;input_path&#x27;</span>,<br>        <span class="hljs-built_in">help</span>=<span class="hljs-string">&#x27;输入路径（图片文件或文件夹）&#x27;</span><br>    )<br>    parser.add_argument(<br>        <span class="hljs-string">&#x27;-r&#x27;</span>, <span class="hljs-string">&#x27;--resolution&#x27;</span>,<br>        choices=[<span class="hljs-string">&#x27;720&#x27;</span>, <span class="hljs-string">&#x27;1080&#x27;</span>],<br>        default=<span class="hljs-string">&#x27;720&#x27;</span>,<br>        <span class="hljs-built_in">help</span>=<span class="hljs-string">&#x27;目标分辨率：720 (1280x720) 或 1080 (1920x1080)，默认720&#x27;</span><br>    )<br>    parser.add_argument(<br>        <span class="hljs-string">&#x27;-o&#x27;</span>, <span class="hljs-string">&#x27;--output-suffix&#x27;</span>,<br>        default=<span class="hljs-string">&#x27;_compressed&#x27;</span>,<br>        <span class="hljs-built_in">help</span>=<span class="hljs-string">&#x27;输出文件夹后缀，默认&quot;_compressed&quot;&#x27;</span><br>    )<br>    <br>    args = parser.parse_args()<br>    <br>    <span class="hljs-comment"># 创建压缩器</span><br>    compressor = ImageCompressor(<br>        input_path=args.input_path,<br>        resolution=args.resolution,<br>        output_suffix=args.output_suffix<br>    )<br>    <br>    <span class="hljs-comment"># 执行压缩</span><br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;开始处理: <span class="hljs-subst">&#123;args.input_path&#125;</span>&quot;</span>)<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;目标分辨率: <span class="hljs-subst">&#123;args.resolution&#125;</span>P (<span class="hljs-subst">&#123;compressor.target_size[<span class="hljs-number">0</span>]&#125;</span>x<span class="hljs-subst">&#123;compressor.target_size[<span class="hljs-number">1</span>]&#125;</span>)&quot;</span>)<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;-&quot;</span> * <span class="hljs-number">50</span>)<br>    <br>    stats = compressor.process()<br>    <br>    <span class="hljs-comment"># 输出统计信息</span><br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;处理完成!&quot;</span>)<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;=&quot;</span> * <span class="hljs-number">50</span>)<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;输出路径: <span class="hljs-subst">&#123;compressor.get_output_path()&#125;</span>&quot;</span>)<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;图片压缩数量: <span class="hljs-subst">&#123;stats[<span class="hljs-string">&#x27;images_compressed&#x27;</span>]&#125;</span>&quot;</span>)<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;文件复制数量: <span class="hljs-subst">&#123;stats[<span class="hljs-string">&#x27;files_copied&#x27;</span>]&#125;</span>&quot;</span>)<br>    <br>    <span class="hljs-keyword">if</span> stats[<span class="hljs-string">&#x27;errors&#x27;</span>]:<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;错误数量: <span class="hljs-subst">&#123;<span class="hljs-built_in">len</span>(stats[<span class="hljs-string">&#x27;errors&#x27;</span>])&#125;</span>&quot;</span>)<br>        <span class="hljs-keyword">for</span> error <span class="hljs-keyword">in</span> stats[<span class="hljs-string">&#x27;errors&#x27;</span>]:<br>            <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;  - <span class="hljs-subst">&#123;error&#125;</span>&quot;</span>)<br>    <br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;=&quot;</span> * <span class="hljs-number">50</span>)<br><br><br><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&#x27;__main__&#x27;</span>:<br>    main()<br><br></code></pre></td></tr></table></figure>
+
+<h1 id="照片投射功能完善"><a href="#照片投射功能完善" class="headerlink" title="照片投射功能完善"></a>照片投射功能完善</h1><p>修复照片重影的问题，修正照片角度旋转的问题，修复进度条播放崩溃的问题。</p>
+<h2 id="成功运行"><a href="#成功运行" class="headerlink" title="成功运行"></a>成功运行</h2><p>最终效果：<br><img src="/2026/06/01/Cesium%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0%EF%BC%88%E5%9B%9B%EF%BC%89%E7%85%A7%E7%89%87%E6%8A%95%E5%BD%B1%E5%8A%9F%E8%83%BD%E5%AE%9E%E7%8E%B0/6231c65b78a0f7ee0ff3dc164b06ea3a.png" srcset="/img/loading.gif" lazyload alt="6231c65b78a0f7ee0ff3dc164b06ea3a.png"><br>照片终于可以正常投影了，进度条控件和播放暂停也没问题，修了一天太难得了。</p>
+<h2 id="当前目录结构"><a href="#当前目录结构" class="headerlink" title="当前目录结构"></a>当前目录结构</h2><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><code class="hljs awk">cesium-vueapp/<br>├── src/<br>│   ├── App.vue                          <span class="hljs-comment"># 根组件</span><br>│   ├── main.ts                          <span class="hljs-comment"># 入口文件</span><br>│   ├── style.css                        <span class="hljs-comment"># 全局样式</span><br>│   │<br>│   ├── assets<span class="hljs-regexp">/styles/</span><br>│   │   ├── variables.css                <span class="hljs-comment"># CSS 变量（科技风配色）</span><br>│   │   └── global.css                    <span class="hljs-comment"># 全局样式和工具类</span><br>│   │<br>│   ├── components/<br>│   │   ├── CesiumView.vue               <span class="hljs-comment"># Cesium 场景主组件</span><br>│   │   ├── FlightInfoPanel.vue          <span class="hljs-comment"># 飞行信息面板</span><br>│   │   ├── VideoWindow.vue              <span class="hljs-comment"># 视频窗口组件</span><br>│   │   ├── HelloWorld.vue               <span class="hljs-comment"># 示例组件</span><br>│   │   │<br>│   │   ├── layout/<br>│   │   │   ├── AppLayout.vue            <span class="hljs-comment"># 主布局（整合所有组件）</span><br>│   │   │   ├── SideMenu.vue             <span class="hljs-comment"># 可折叠侧边菜单</span><br>│   │   │   └── TopBar.vue               <span class="hljs-comment"># 顶部状态栏</span><br>│   │   │<br>│   │   └── panels/<br>│   │       ├── ControlPanel.vue         <span class="hljs-comment"># 驾驶控制面板</span><br>│   │       ├── DataManager.vue          <span class="hljs-comment"># 数据管理面板</span><br>│   │       ├── ModelLoader.vue          <span class="hljs-comment"># 3D 模型加载面板</span><br>│   │       ├── StitchingPanel.vue       <span class="hljs-comment"># 实时拼接面板</span><br>│   │       └── AIAnalysis.vue           <span class="hljs-comment"># AI 分析面板</span><br>│   │       └── PhotoPlaybackPanel.vue   <span class="hljs-comment"># 照片航点回放控制面板</span><br>│   │<br>│   ├── composables/<br>│   │   ├── useFlightPlayer.ts           <span class="hljs-comment"># 飞行回放逻辑</span><br>│   │   ├── usePhotoMissionPlayer.ts     <span class="hljs-comment"># 照片航点回放逻辑</span><br>│   │   └── useSideMenu.ts               <span class="hljs-comment"># 侧边菜单状态管理</span><br>│   │<br>│   ├── services/<br>│   │   ├── FlightDataParser.ts          <span class="hljs-comment"># 航线数据解析器</span><br>│   │   ├── PhotoMissionParser.ts        <span class="hljs-comment"># 照片任务 JSON 解析器</span><br>│   │   ├── PhotoMissionManager.ts       <span class="hljs-comment"># 照片任务 Cesium 场景管理器</span><br>│   │   ├── DroneEntityManager.ts        <span class="hljs-comment"># 无人机实体管理</span><br>│   │   ├── CameraTrackManager.ts        <span class="hljs-comment"># 相机轨迹管理</span><br>│   │   │<br>│   │   └── protocol/                    <span class="hljs-comment"># 协议适配器（策略模式）</span><br>│   │       ├── ProtocolAdapter.ts       <span class="hljs-comment"># 协议适配器基类</span><br>│   │       ├── MAVLinkAdapter.ts        <span class="hljs-comment"># MAVLink 适配器</span><br>│   │       ├── WebRTCAdapter.ts         <span class="hljs-comment"># WebRTC 适配器</span><br>│   │       ├── WebSocketAdapter.ts      <span class="hljs-comment"># WebSocket 适配器</span><br>│   │       ├── RTMPAdapter.ts           <span class="hljs-comment"># RTMP 适配器</span><br>│   │       └── index.ts                 <span class="hljs-comment"># ProtocolManager</span><br>│   │<br>│   ├── types/<br>│   │   ├── drone.ts                     <span class="hljs-comment"># 无人机数据接口</span><br>│   │   ├── photoMission.ts              <span class="hljs-comment"># 照片任务接口</span><br>│   │   └── protocol.ts                  <span class="hljs-comment"># 协议类型定义</span><br>│   │<br>│   └── archive/                          <span class="hljs-comment"># 历史版本（不参与编译）</span><br>│       ├── CesiumViewer_*.vue           <span class="hljs-comment"># 历代 Cesium 组件</span><br>│       ├── DroneVisualizer.ts           <span class="hljs-comment"># 旧版无人机可视化</span><br>│       └── FlightState.ts               <span class="hljs-comment"># 旧版飞行状态</span><br>│<br>├── public/                               <span class="hljs-comment"># 静态资源</span><br>├── trajectory_shader<span class="hljs-regexp">/                    # 参考项目/</span>数据<br>├── package.json<br>└── vite.config.ts<br></code></pre></td></tr></table></figure>
+
+<h1 id="下一阶段计划"><a href="#下一阶段计划" class="headerlink" title="下一阶段计划"></a>下一阶段计划</h1><h2 id="待完成功能-v0-4"><a href="#待完成功能-v0-4" class="headerlink" title="待完成功能 (v0.4+)"></a>待完成功能 (v0.4+)</h2><ol>
+<li><strong>影像拼接</strong> - 接入后端拼接结果，在三维场景中显示拼接后的正射影像</li>
+<li><strong>AI 识别</strong> - YOLO 检测结果的三维可视化（海洋/遥感影像）</li>
+<li><strong>实时数据</strong> - WebRTC/WebSocket 实时推流接入三维场景</li>
+<li><strong>协议对接</strong> - 实现 MAVLink/WebRTC 通信</li>
+<li><strong>视频流集成</strong> - RTMP/WebRTC 渲染到 VideoWindow</li>
+<li><strong>3D 模型加载</strong> - 3DTiles / GLB 模型加载完善</li>
+</ol>
+<h2 id="详细计划"><a href="#详细计划" class="headerlink" title="详细计划"></a>详细计划</h2><p>已完成：<br>视频srt提取和json转换<br>json数据显示<br>影像拼接算法初步运行</p>
+<p>待完成：<br>照片的json转换 ✔<br>制作一份自己的数据集，同时改进数据读取方法。 ✔<br>开发从视频提取json和照片的方法。<br>完善数据清洗机制<br>拼接算法的改进，采用SfM<br>后端程序调整<br>前端显示功能完善 ✔<br>前后端联通的拼接功能<br>AI识别</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0/" class="category-chain-item">学习</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E5%BC%80%E5%8F%91/">#开发</a>
+      
+        <a href="/tags/Python/">#Python</a>
+      
+        <a href="/tags/AI/">#AI</a>
+      
+        <a href="/tags/Cesium/">#Cesium</a>
+      
+        <a href="/tags/Node-js/">#Node.js</a>
+      
+        <a href="/tags/json/">#json</a>
+      
+        <a href="/tags/%E6%9E%B6%E6%9E%84/">#架构</a>
+      
+        <a href="/tags/SRT/">#SRT</a>
+      
+        <a href="/tags/%E7%85%A7%E7%89%87%E6%8A%95%E5%BD%B1/">#照片投影</a>
+      
+        <a href="/tags/MRK/">#MRK</a>
+      
+        <a href="/tags/SJON/">#SJON</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Cesium开发笔记（四）照片投影功能实现</div>
+      <div>http://kw1649190133.github.io/2026/06/01/Cesium开发笔记（四）照片投影功能实现/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Kwindy</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>June 1, 2026</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2026/06/04/ONNX%E6%A8%A1%E5%9E%8B%E8%BD%AC%E6%8D%A2%E5%92%8C%E4%BD%BF%E7%94%A8/" title="ONNX模型转换和使用">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">ONNX模型转换和使用</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/06/01/%E6%B0%B4%E4%B8%8B%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E6%8A%80%E6%9C%AF%E5%88%86%E6%9E%90/" title="水下三维重建技术分析">
+                        <span class="hidden-mobile">水下三维重建技术分析</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>
