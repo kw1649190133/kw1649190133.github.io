@@ -29,7 +29,7 @@
 <meta property="og:image" content="http://kw1649190133.github.io/2026/07/02/Git%E4%B8%8EGithub/14b42ced1fe4823a957d8de888cb1fba.png">
 <meta property="og:image" content="http://kw1649190133.github.io/2026/07/02/Git%E4%B8%8EGithub/c370bcc88a5137b85ae7bf8675a5b17e.png">
 <meta property="article:published_time" content="2026-07-02T09:45:16.000Z">
-<meta property="article:modified_time" content="2026-07-07T02:18:13.647Z">
+<meta property="article:modified_time" content="2026-07-07T02:34:24.869Z">
 <meta property="article:author" content="Kwindy">
 <meta property="article:tag" content="开发">
 <meta property="article:tag" content="git">
@@ -228,7 +228,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          3.9k words
+          5.1k words
         
       </span>
     
@@ -239,7 +239,7 @@
         
         
         
-          33 mins
+          43 mins
         
       </span>
     
@@ -343,6 +343,25 @@ git clone https://github.com/你的用户名/仓库名.git
 # 登录界面切换token登录，粘贴 token
 </code></pre>
 <p>如果想在GitHub网站上看到私有化仓库，就需要添加对方为协作者（Collaborator），这也是更规范的协作方式，token只能支持git操作，无法在云端查看代码。</p>
+<h1 id="多人协作开发"><a href="#多人协作开发" class="headerlink" title="多人协作开发"></a>多人协作开发</h1><p>在此之前我没有用过github的多人协作，也并非软件开发专业，但根据我使用Arcgis+Oracle协作模式的经验，能大概猜到是创建分支，修改、同步、提交这一套。有一些不同，但大体逻辑是相似的。<br>由协作者创建自己的分支进行开发，完成后通过 Pull Request（拉取请求）合并到主分支。这种方式能有效避免代码冲突、保证主分支稳定，并支持代码审查。以下是具体操作细节：</p>
+<h2 id="1-仓库所有者操作"><a href="#1-仓库所有者操作" class="headerlink" title="1. 仓库所有者操作"></a>1. 仓库所有者操作</h2><ul>
+<li>邀请协作者：进入仓库的 Settings → Collaborators → Add people，输入协作者的 GitHub 用户名或邮箱，发送邀请。协作者接受后即可获得写入权限。</li>
+<li>设置分支保护规则：在 Settings → Branches 中为 master/main 分支添加保护规则，例如：</li>
+<li>要求 Pull Request 合并前必须通过至少一人审核；</li>
+<li>禁止直接推送（Force Push）到主分支；</li>
+<li>要求状态检查（如 CI/CD 测试）通过后方可合并。</li>
+<li>管理合并流程：作为仓库所有者，你负责审查所有 Pull Request，确认代码质量后手动合并，确保主分支始终处于可发布状态。<h2 id="2-协作者操作流程"><a href="#2-协作者操作流程" class="headerlink" title="2. 协作者操作流程"></a>2. 协作者操作流程</h2></li>
+<li>克隆仓库：协作者接受邀请后，使用 git clone &lt;仓库URL&gt; 将项目克隆到本地。</li>
+<li>创建功能分支：在本地创建独立分支进行开发，例如：git checkout -b feature/user-login。切勿直接在 master/main 分支上修改代码。</li>
+<li>提交与推送：完成开发后，提交更改并推送到远程仓库的对应分支：git push origin feature/user-login。<br>发起 Pull Request：在 GitHub 页面上，从你的功能分支向主分支发起 Pull Request，填写清晰的标题和描述，说明修改内容和目的。</li>
+<li>响应审查意见：仓库所有者或其他协作者可能会在 PR 中提出修改建议。你需要根据反馈在本地修改代码，再次提交并推送，PR 会自动更新。</li>
+<li>等待合并：当所有审查意见被解决且 CI 测试通过后，仓库所有者会合并你的 PR。合并后，你可以删除本地的功能分支以保持整洁。<h2 id="3-关键注意事项"><a href="#3-关键注意事项" class="headerlink" title="3. 关键注意事项"></a>3. 关键注意事项</h2></li>
+<li>分支命名规范：建议使用有意义的分支名，如 feature/xxx、bugfix/xxx、hotfix/xxx，便于团队识别和管理。</li>
+<li>频繁同步主分支：在开发过程中，定期执行 git pull origin main 将主分支的最新变更合并到你的功能分支，减少最终合并时的冲突。</li>
+<li>小步提交：每次提交应聚焦于一个明确的功能点或修复，避免一次提交包含过多无关更改，便于审查和回滚。</li>
+<li>沟通先行：在开始大型功能开发前，最好先在 Issues 或与团队沟通，避免重复劳动或方向偏差。</li>
+</ul>
+<p>这种“分支 + Pull Request”的工作流是 GitHub 协作的核心，它不仅能保障代码质量，还能促进团队成员之间的知识共享和代码评审文化。</p>
 
                 
               </div>
@@ -436,6 +455,12 @@ git clone https://github.com/你的用户名/仓库名.git
                 <div class="post-prevnext my-3">
                   <article class="post-prev col-6">
                     
+                    
+                      <a href="/2026/07/07/ros_monitor%E7%88%86%E6%94%B9%E7%BD%91%E7%BB%9C%E7%AB%AF%EF%BC%88%E4%B8%80%EF%BC%89/" title="ros_monitor爆改网络端（一）">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">ros_monitor爆改网络端（一）</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
                     
                   </article>
                   <article class="post-next col-6">
