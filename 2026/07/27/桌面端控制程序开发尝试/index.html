@@ -1,0 +1,755 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=dark>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Kwindy">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="前言工作原因需要做一下地面站控制程序的开发，虽然感觉希望渺茫，但失败的尝试也是重要的经验积累过程，也能让我重新梳理一下现在比较新的开发框架。现在的程序开发路径五花八门，新技术层出不穷，需要持续的学习，更新自己的知识。最早接触C语言开发时，我还记得使用的是官方环境Visual C（也叫VC，MSVC），学习的时候我们喜欢用Dev C，在界面美观和错误诊断方面会更友好一点。大型的C#开发，需要重型的开">
+<meta property="og:type" content="article">
+<meta property="og:title" content="桌面端控制程序开发尝试">
+<meta property="og:url" content="http://kw1649190133.github.io/2026/07/27/%E6%A1%8C%E9%9D%A2%E7%AB%AF%E6%8E%A7%E5%88%B6%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91%E5%B0%9D%E8%AF%95/index.html">
+<meta property="og:site_name" content="kw&#39;s blog">
+<meta property="og:description" content="前言工作原因需要做一下地面站控制程序的开发，虽然感觉希望渺茫，但失败的尝试也是重要的经验积累过程，也能让我重新梳理一下现在比较新的开发框架。现在的程序开发路径五花八门，新技术层出不穷，需要持续的学习，更新自己的知识。最早接触C语言开发时，我还记得使用的是官方环境Visual C（也叫VC，MSVC），学习的时候我们喜欢用Dev C，在界面美观和错误诊断方面会更友好一点。大型的C#开发，需要重型的开">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/07/27/%E6%A1%8C%E9%9D%A2%E7%AB%AF%E6%8E%A7%E5%88%B6%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91%E5%B0%9D%E8%AF%95/707ed57b752f3a61d1619d2e602b7ba8.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/07/27/%E6%A1%8C%E9%9D%A2%E7%AB%AF%E6%8E%A7%E5%88%B6%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91%E5%B0%9D%E8%AF%95/%E5%9C%B0%E9%9D%A2%E7%AB%99%E5%88%86%E5%B1%82%E6%9E%B6%E6%9E%84.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/07/27/%E6%A1%8C%E9%9D%A2%E7%AB%AF%E6%8E%A7%E5%88%B6%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91%E5%B0%9D%E8%AF%95/%E4%B8%80%E5%A5%97%E4%BB%A3%E7%A0%81%E5%8F%8C%E7%AB%AF%E5%A4%8D%E7%94%A8%E6%9E%B6%E6%9E%84.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/07/27/%E6%A1%8C%E9%9D%A2%E7%AB%AF%E6%8E%A7%E5%88%B6%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91%E5%B0%9D%E8%AF%95/MAVLink%E8%BF%9E%E6%8E%A5%E6%8F%A1%E6%89%8B%E6%97%B6%E5%BA%8F.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/07/27/%E6%A1%8C%E9%9D%A2%E7%AB%AF%E6%8E%A7%E5%88%B6%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91%E5%B0%9D%E8%AF%95/%E5%85%8D%E8%B4%B9UI%E6%96%B9%E6%A1%88%E5%AF%B9%E6%AF%94.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/07/27/%E6%A1%8C%E9%9D%A2%E7%AB%AF%E6%8E%A7%E5%88%B6%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91%E5%B0%9D%E8%AF%95/3b69d6c9410119251665659b4b12ce35.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/07/27/%E6%A1%8C%E9%9D%A2%E7%AB%AF%E6%8E%A7%E5%88%B6%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91%E5%B0%9D%E8%AF%95/f465f9eb8caed1a9d758993419b5dd26.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/07/27/%E6%A1%8C%E9%9D%A2%E7%AB%AF%E6%8E%A7%E5%88%B6%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91%E5%B0%9D%E8%AF%95/6772c7cb35f337453bd8fe4985457dca.png">
+<meta property="article:published_time" content="2026-07-27T02:51:33.000Z">
+<meta property="article:modified_time" content="2026-07-27T02:51:33.942Z">
+<meta property="article:author" content="Kwindy">
+<meta property="article:tag" content="C++">
+<meta property="article:tag" content="QGC">
+<meta property="article:tag" content="桌面端">
+<meta property="article:tag" content="软件开发">
+<meta property="article:tag" content="Mavlink">
+<meta property="article:tag" content="协议">
+<meta property="article:tag" content="gcc">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://kw1649190133.github.io/2026/07/27/%E6%A1%8C%E9%9D%A2%E7%AB%AF%E6%8E%A7%E5%88%B6%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91%E5%B0%9D%E8%AF%95/707ed57b752f3a61d1619d2e602b7ba8.png">
+  
+  
+  
+  <title>桌面端控制程序开发尝试 - kw&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"kw1649190133.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>天际边缘 Edge of the sky </strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="桌面端控制程序开发尝试"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-07-27 10:51" pubdate>
+          July 27, 2026 am
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          5.2k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          44 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">桌面端控制程序开发尝试</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>工作原因需要做一下地面站控制程序的开发，虽然感觉希望渺茫，但失败的尝试也是重要的经验积累过程，也能让我重新梳理一下现在比较新的开发框架。<br>现在的程序开发路径五花八门，新技术层出不穷，需要持续的学习，更新自己的知识。<br>最早接触C语言开发时，我还记得使用的是官方环境Visual C（也叫VC，MSVC），学习的时候我们喜欢用Dev C，在界面美观和错误诊断方面会更友好一点。<br>大型的C#开发，需要重型的开发环境Visual Studio，可视化的界面开发确实强大，但也是真的臃肿，牵一发而动全身，必须要做好周密的设计。<br>虽然现在有了AI辅助，一些简单的程序做起来已经比较容易，需要排半天BUG的代码，现在喝杯水的功夫就已经解决了。但是涉及到大型和多边协作的项目，依然需要许多的辅助和限制，已经多轮修改。<br>到真正碰到问题的时候，还得靠人的思考和判断，来分析和解决。大胆假设，小心求证，虚心学习，是通往成功的途径，成功是偶然，失败才是常态。</p>
+<h2 id="当前的痛点"><a href="#当前的痛点" class="headerlink" title="当前的痛点"></a>当前的痛点</h2><p>当前无人机和水下机器人主要用的是QGC改的控制程序，QGC虽然强大，但也存在一些问题。</p>
+<table>
+<thead>
+<tr>
+<th>痛点</th>
+<th>设计对策</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1. GPL协议 没法闭源</td>
+<td>不 fork QGC;协议内核用 Apache2.0 的 MAVSDK 或 MIT 的生成代码;UI 用 Qt 商业授权/WPF;视频库走动态链接。全链路无 GPL 传染。</td>
+</tr>
+<tr>
+<td>2. 追不上 QGC 版本</td>
+<td>自己的内核不跟 QGC 版本走,只跟 MAVLink 协议版本走(而 MAVLink 协议极稳定,常用消息十年没变)。协议升级只需重新生成消息定义,业务代码不动。</td>
+</tr>
+<tr>
+<td>3. 功能臃肿、自检冗余、有些功能不适配</td>
+<td>插件化 + 按需加载。用”载具抽象层”把无人机/船/潜航器做成三个插件,共用协议内核;自检、mission、参数校准这些都做成可插拔模块,涉密精简版直接不编译进去。</td>
+</tr>
+</tbody></table>
+<p>关于云端连接的问题：之前设计平台的时候，设计的是飞机可以直接联网，而水下机器人使用的是转发设计，只要地面站运行一个转发程序就行了，ROS2上运行的程序不变。这样做的好处是，不需要修改地面站程序。如果需要做自己的地面站程序，那也是先做好其他实际功能就可以，联网的功能什么时候都可以加入。</p>
+<h1 id="规划"><a href="#规划" class="headerlink" title="规划"></a>规划</h1><h2 id="支持闭源的协议"><a href="#支持闭源的协议" class="headerlink" title="支持闭源的协议"></a>支持闭源的协议</h2><p>其实MAVSDK和MAVlink都是支持开放的协议，可以做闭源，只是QGC这个软件使用GPL协议，<br><img src="/2026/07/27/%E6%A1%8C%E9%9D%A2%E7%AB%AF%E6%8E%A7%E5%88%B6%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91%E5%B0%9D%E8%AF%95/707ed57b752f3a61d1619d2e602b7ba8.png" srcset="/img/loading.gif" lazyload alt="707ed57b752f3a61d1619d2e602b7ba8.png"></p>
+<h2 id="分层架构设计"><a href="#分层架构设计" class="headerlink" title="分层架构设计"></a>分层架构设计</h2><p><img src="/2026/07/27/%E6%A1%8C%E9%9D%A2%E7%AB%AF%E6%8E%A7%E5%88%B6%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91%E5%B0%9D%E8%AF%95/%E5%9C%B0%E9%9D%A2%E7%AB%99%E5%88%86%E5%B1%82%E6%9E%B6%E6%9E%84.png" srcset="/img/loading.gif" lazyload alt="地面站分层架构.png"><br>（这个图里还写错了，应该是RTSP/RTMP）</p>
+<p>参考QGC的双端实现逻辑：<br><img src="/2026/07/27/%E6%A1%8C%E9%9D%A2%E7%AB%AF%E6%8E%A7%E5%88%B6%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91%E5%B0%9D%E8%AF%95/%E4%B8%80%E5%A5%97%E4%BB%A3%E7%A0%81%E5%8F%8C%E7%AB%AF%E5%A4%8D%E7%94%A8%E6%9E%B6%E6%9E%84.png" srcset="/img/loading.gif" lazyload alt="一套代码双端复用架构.png"></p>
+<h2 id="Mavlink"><a href="#Mavlink" class="headerlink" title="Mavlink"></a>Mavlink</h2><p>MAVLink 通信说穿了就是收发一堆结构化消息。做最小控制,你只需要处理下面这十几条消息(PX4/APM 的 common 消息集通用):</p>
+<p>必须接收(下行遥测):</p>
+<ul>
+<li>HEARTBEAT — 心跳,判断连接是否存活、飞控类型、当前飞行模式、是否解锁</li>
+<li>SYS_STATUS — 电压/电流/电量</li>
+<li>ATTITUDE — 姿态(横滚/俯仰/偏航)</li>
+<li>GLOBAL_POSITION_INT / GPS_RAW_INT — 位置、高度、GPS 状态</li>
+<li>STATUSTEXT — 飞控文字告警(自检失败原因都在这里)</li>
+</ul>
+<p>必须发送(上行控制):</p>
+<ul>
+<li>HEARTBEAT — 地面站也要每秒发一次,否则飞控可能进入失控保护</li>
+<li>COMMAND_LONG — 万能指令:解锁/上锁- (MAV_CMD_COMPONENT_ARM_DISARM)、起飞、降落、返航</li>
+<li>SET_MODE / COMMAND_LONG(DO_SET_MODE) — 切换飞行模式</li>
+<li>MANUAL_CONTROL — 手柄摇杆控制(最适合船/潜航器,直接给 x/y/z/r 四轴量)</li>
+<li>SET_POSITION_TARGET_LOCAL_NED — Guided/Offboard 模式下的位置/速度控制</li>
+<li>PARAM_REQUEST_LIST / PARAM_SET — 参数读写(可以后期再做)<br><img src="/2026/07/27/%E6%A1%8C%E9%9D%A2%E7%AB%AF%E6%8E%A7%E5%88%B6%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91%E5%B0%9D%E8%AF%95/MAVLink%E8%BF%9E%E6%8E%A5%E6%8F%A1%E6%89%8B%E6%97%B6%E5%BA%8F.png" srcset="/img/loading.gif" lazyload alt="MAVLink连接握手时序.png"></li>
+</ul>
+<h2 id="前端选择"><a href="#前端选择" class="headerlink" title="前端选择"></a>前端选择</h2><p>QGC为了实现多端运行，使用的是Qt路线，并且版本还不同，一开始使用的是Qt5，后来升级到Qt6。Qt6有三种授权模式，可以开源，可以小团队闭源，商业版也可以完全闭源。但是这Qt for Android和Visual Studio 这两套开发环境相当沉重，而且，没有必要再做一个QGC。<br>所以这里我选择了用Electron框架+Web UI的方式，构建程序界面，</p>
+<p><img src="/2026/07/27/%E6%A1%8C%E9%9D%A2%E7%AB%AF%E6%8E%A7%E5%88%B6%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91%E5%B0%9D%E8%AF%95/%E5%85%8D%E8%B4%B9UI%E6%96%B9%E6%A1%88%E5%AF%B9%E6%AF%94.png" srcset="/img/loading.gif" lazyload alt="免费UI方案对比.png"></p>
+<h2 id="GCC"><a href="#GCC" class="headerlink" title="GCC"></a>GCC</h2><p>GNU Compiler Collection（GNU 编译器套件），实际上就是一个编译器，将文本的代码编译成可以被执行的文件。GCC的初衷是为GNU操作系统专门编写的一款编译器，这个系统早就凉了，被Linux内核取代，但后来扩展到linux、MacOC、Win，语言也从C扩展到C++、Fortran、Pascal、Objective -C、Java、Ada、Go等。<br>GCC是没有界面的，纯命令行，想要集成开发环境IDE，得自己去找。<br>使用示例。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 编辑</span><br>vim demo.c<br><span class="hljs-comment"># 编译</span><br>gcc demo.c -o demo.exe<br><span class="hljs-comment"># 运行</span><br>./demo.exe<br></code></pre></td></tr></table></figure>
+
+<h2 id="MinGW-W64"><a href="#MinGW-W64" class="headerlink" title="MinGW-W64"></a>MinGW-W64</h2><p>MinGW，全称为 Minimalist GNU for Windows，是一个开发环境，旨在将 GNU 工具和库的强大功能带入 Windows 平台。它提供了一套轻便但功能齐全的工具，使开发者能够使用熟悉的类 Unix 开发流程编译并运行原生 Windows 应用程序。MinGW 在需要极简方法且不承担更复杂开发环境负担的程序员中尤其受欢迎。<br>因为一些原因MinGW已经不再维护了，而替代它的就是MinGW-W64。而还有一些类似的编译器LLVM-MinGW，是基于LLVM Clang的，不是GCC，也非常不错。去官网还能找到很多类似的东西。</p>
+<p>官网【<a target="_blank" rel="noopener" href="https://www.mingw-w64.org/">https://www.mingw-w64.org</a> 】<br>仓库【<a target="_blank" rel="noopener" href="https://github.com/niXman/mingw-builds-binaries/releases">https://github.com/niXman/mingw-builds-binaries/releases</a> 】</p>
+<h3 id="下载和安装"><a href="#下载和安装" class="headerlink" title="下载和安装"></a>下载和安装</h3><p>在Github的下载页可以看到很多个包，选择下面x86-64的，就表示支持编译64位的程序；中间夹着win32，表示是win系统的。</p>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs txt"># 老系统选择<br>x86_64-16.1.0-release-win32-seh-msvcrt-rt_v14-rev1.7z<br><br># win10 /win11选择<br>x86_64-16.1.0-release-win32-seh-ucrt-rt_v14-rev1.7z<br></code></pre></td></tr></table></figure>
+
+<p>系统变量名 ： <code>WinGW_HOME</code><br>系统变量值 ： <code>C:\app\tool\WinGW\mingw64</code></p>
+<p>path新增 ： <code>%WinGW_HOME%\bin</code><br>或者直接写绝对地址： <code>C:\app\tool\WinGW\mingw64</code></p>
+<p>配置完成后输入<code>gcc -v</code>可以看到输出，则证明安装顺利。</p>
+<p>同时支持64位和32位的兼容项目：【<a target="_blank" rel="noopener" href="https://sourceforge.net/projects/mingw-w64/files/Toolchains%20targetting%20Win64/Personal%20Builds/mingw-builds/8.1.0/threads-win32/sjlj/">https://sourceforge.net/projects/mingw-w64/files/Toolchains%20targetting%20Win64/Personal%20Builds/mingw-builds/8.1.0/threads-win32/sjlj/</a> 】也是一样解压复制粘贴、添加</p>
+<h2 id="Electron-框架"><a href="#Electron-框架" class="headerlink" title="Electron 框架"></a>Electron 框架</h2><p>一句话概括就是跨平台框架，做前端界面的，并且专注于桌面应用，而不是Web服务器。<br>Electron是由OpenJS Foundation与开发者社区基于Atom Shell框架开发的<strong>跨平台桌面应用开发框架</strong>，该框架通过整合Chromium内核和Node.js运行时环境，允许开发者使用JavaScript、HTML及CSS构建兼容Windows、macOS与Linux系统的桌面应用，架构采用主进程处理系统级交互、渲染进程依托Chromium展示界面及IPC通信机制。<br>它相当于一个浏览器的外壳，可以把网页程序嵌入到壳里面，可以把网页打包成一个在桌面运行的程序，通俗来说就是软件。<br>大名鼎鼎的VS code 就是Electron做的，初次之外还有QQ、网易音乐等。</p>
+<p>一个 Electron 应用有且只有一个主进程。并且创建窗口等所有系统事件都要在主进程中进行。<br>在正常的浏览器中，网页通常运行在沙盒封装化的环境中，并且不允许访问本机资源。然而，Electron 用户有权在网页中使用 Node.js 的 API，从而允许较低级别的操作系统交互。</p>
+<h2 id="Node-js"><a href="#Node-js" class="headerlink" title="Node.js"></a>Node.js</h2><p>Javascript运行环境。浏览器的Javascript依赖浏览器环境，而Node.js可以让Javascript脱离浏览器，做后端服务。Javascript是车，Node.js是路，高速路是V8，赛车道是bun。<br><img src="/2026/07/27/%E6%A1%8C%E9%9D%A2%E7%AB%AF%E6%8E%A7%E5%88%B6%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91%E5%B0%9D%E8%AF%95/3b69d6c9410119251665659b4b12ce35.png" srcset="/img/loading.gif" lazyload alt="3b69d6c9410119251665659b4b12ce35.png"></p>
+<h1 id="初版开发"><a href="#初版开发" class="headerlink" title="初版开发"></a>初版开发</h1><p>使用web架构的好处就是随时看结果随时改，并且开发框架相当轻量化，对AI也更为友好（相对而言）。</p>
+<h2 id="技术架构"><a href="#技术架构" class="headerlink" title="技术架构"></a>技术架构</h2><figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs x86asm">Electron (桌面 UI)<br>  ├── MapLibre GL <span class="hljs-keyword">JS</span> (<span class="hljs-number">2D</span>/倾斜<span class="hljs-number">3D</span> 地图)<br>  ├── Cesium <span class="hljs-keyword">JS</span> (真<span class="hljs-number">3D</span> 地球，按需加载)<br>  ├── Canvas (姿态地平仪)<br>  └── JSON stdin/stdout IPC<br>        ↕<br>Node<span class="hljs-number">.</span><span class="hljs-keyword">js</span> 后端 (子进程)<br>  ├── serialport (串口连接飞控)<br>  ├── dgram (UDP MAVLink)<br>  ├── 自研 MAVLink v2 编解码器 (mavlink<span class="hljs-number">.</span><span class="hljs-keyword">js</span>)<br>  └── HTTP :<span class="hljs-number">19876</span> (Cesium 静态文件服务)<br>        ↕<br>飞控 (APM / PX4)<br></code></pre></td></tr></table></figure>
+
+<h2 id="工程结构"><a href="#工程结构" class="headerlink" title="工程结构"></a>工程结构</h2><figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs crmsh">fgc-gcs/<br>├── backend-<span class="hljs-keyword">node</span><span class="hljs-title">/          # Node</span>.js 后端<br>│   ├── index.js           <span class="hljs-comment"># 主逻辑: MAVLink + HTTP</span><br>│   ├── mavlink.js         <span class="hljs-comment"># 自研 MAVLink 协议</span><br>│   └── package.json<br>├── frontend/              <span class="hljs-comment"># Electron 前端</span><br>│   ├── main.js            <span class="hljs-comment"># Electron 主进程</span><br>│   ├── preload.js         <span class="hljs-comment"># IPC 桥接</span><br>│   └── renderer/          <span class="hljs-comment"># 渲染层</span><br>│       ├── index.html     <span class="hljs-comment"># 主界面</span><br>│       ├── style.css      <span class="hljs-comment"># 样式</span><br>│       ├── app.js         <span class="hljs-comment"># UI 逻辑 + 地图</span><br>│       ├── maplibre-gl.js <span class="hljs-comment"># MapLibre (745KB)</span><br>│       ├── maplibre-gl.css<br>│       └── cesium/        <span class="hljs-comment"># Cesium (392 文件, ~15MB)</span><br>├── <span class="hljs-literal">start</span>.bat              <span class="hljs-comment"># 启动脚本</span><br>└── api-keys.json          <span class="hljs-comment"># API Key 备份</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="启动方式"><a href="#启动方式" class="headerlink" title="启动方式"></a>启动方式</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs batch">cd C:\app\create\FGC\fgc-gcs<br>start.bat<br></code></pre></td></tr></table></figure>
+
+<h2 id="过程的问题"><a href="#过程的问题" class="headerlink" title="过程的问题"></a>过程的问题</h2><p>实际上用AI开发时，遇到了大量问题，地图时好时坏，Cesium死活加载不出来，加载出来尺寸又不对，改了几十轮。软件工程还真是没有那么简单，对于客观现实和自己的能力要有清晰的认知，虚心学习。<br><img src="/2026/07/27/%E6%A1%8C%E9%9D%A2%E7%AB%AF%E6%8E%A7%E5%88%B6%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91%E5%B0%9D%E8%AF%95/f465f9eb8caed1a9d758993419b5dd26.png" srcset="/img/loading.gif" lazyload alt="f465f9eb8caed1a9d758993419b5dd26.png"></p>
+<h3 id="2D-地图瓦片-卫星与矢量图层覆盖冲突"><a href="#2D-地图瓦片-卫星与矢量图层覆盖冲突" class="headerlink" title="2D 地图瓦片:卫星与矢量图层覆盖冲突"></a>2D 地图瓦片:卫星与矢量图层覆盖冲突</h3><p>2D地图始终无法正常显示，不是加载不出来，就是矢量图始终盖在影像图上面，就算要求去掉矢量图，只保留影像图，也做不到，仿佛一个幽灵调用始终存在，却查不到，非常诡异，按理说以AI的搜索能力，不应该出现这种小问题。</p>
+<p>排查过程:<br>初始用 map.setStyle() 双样式切换——切换到卫星时旧矢量图层残留<br>改为 4 层 visibility toggle——竞态条件导致图层全部隐藏<br>改为 remove+add 源/图层——source ID 复用导致缓存串扰<br>删掉所有矢量代码,只保留卫星——仍有类似矢量的标注覆盖<br>确认为 style=9 标注层(sat-ann)的橙色道路+地名被误判为矢量——加上 curl 验证后其实卫星底图是正常的<br>最后还是没解决。</p>
+<h3 id="Cesium加载的问题"><a href="#Cesium加载的问题" class="headerlink" title="Cesium加载的问题"></a>Cesium加载的问题</h3><p>Electron框架做Cesium界面，也出现了一些不兼容的问题，按钮全部乱掉了，最后只能删掉处理，界面显示尺寸也不对，最后勉强改出来一个能看的版本。</p>
+<ul>
+<li>Cesium 容器尺寸<br>Cesium Viewer 初始化时容器尺寸不准确,导致 canvas 渲染在错误尺寸。</li>
+</ul>
+<p>**解决:**通过 position: absolute; inset: 0; + JavaScript forceCesiumResize() 多次 resize 解决。</p>
+<ul>
+<li>Cesium Widget 布局<br>Cesium 自带 UI(widget 工具栏、sceneModePicker)布局异常,跑到窗口底部。</li>
+</ul>
+<p>**解决:**隐藏所有 Cesium UI,计划用自定义控件替换。</p>
+<h2 id="阶段性成果"><a href="#阶段性成果" class="headerlink" title="阶段性成果"></a>阶段性成果</h2><p>目前这一阶段，能把基础界面做好，显示出个大概来，就已经非常不容易。光是改地图显示和界面，就折腾了一下午。并且有相当多的情况，是反复修改之后依然报错，脱离了熟悉的开发框架，AI在查找问题的能力就骤然降低，仿佛一个刚学程序的萌新，根本找不到问题在哪。<br>为了解决地图显示的问题，甚至最关键的飞控连接都没时间做，也是够无奈的。<br><img src="/2026/07/27/%E6%A1%8C%E9%9D%A2%E7%AB%AF%E6%8E%A7%E5%88%B6%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91%E5%B0%9D%E8%AF%95/6772c7cb35f337453bd8fe4985457dca.png" srcset="/img/loading.gif" lazyload alt="6772c7cb35f337453bd8fe4985457dca.png"></p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>以这次的实践结果看来，要想做好软件工程，吃透代码逻辑与底层架构，依然需要软件工程师的努力，否则有些疑难杂症根本无法解决。虽然使用的是DeepseekV4，但应该跟模型关系不是特别大，就算花了GPT、Gimini、KIMI K3之类的模型，也不保能解决，最后可能钱花了，还是一地鸡毛。<br>之前用AI搞python和HTML就非常容易，而一旦涉及到C、C++、就比较困难了。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Cesium%E5%BC%80%E5%8F%91/" class="category-chain-item">Cesium开发</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/C/">#C++</a>
+      
+        <a href="/tags/QGC/">#QGC</a>
+      
+        <a href="/tags/%E6%A1%8C%E9%9D%A2%E7%AB%AF/">#桌面端</a>
+      
+        <a href="/tags/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/">#软件开发</a>
+      
+        <a href="/tags/Mavlink/">#Mavlink</a>
+      
+        <a href="/tags/%E5%8D%8F%E8%AE%AE/">#协议</a>
+      
+        <a href="/tags/gcc/">#gcc</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>桌面端控制程序开发尝试</div>
+      <div>http://kw1649190133.github.io/2026/07/27/桌面端控制程序开发尝试/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Kwindy</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>July 27, 2026</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2026/08/03/Cesium%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0%EF%BC%88%E5%85%AD%EF%BC%89%E5%AE%9E%E6%9C%BA%E8%BF%9E%E6%8E%A5%E6%A8%A1%E5%9D%97/" title="Cesium开发笔记（六）实机连接模块">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Cesium开发笔记（六）实机连接模块</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/07/14/Orangepi%E8%93%9D%E7%89%99%E7%BD%91%E7%BB%9C%E8%BF%9E%E6%8E%A5%E5%B7%A5%E5%85%B7/" title="Orangepi蓝牙网络连接工具">
+                        <span class="hidden-mobile">Orangepi蓝牙网络连接工具</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>
