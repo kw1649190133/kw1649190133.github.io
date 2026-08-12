@@ -1,0 +1,659 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=dark>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Kwindy">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="登录测试链路的地址http:&#x2F;&#x2F;192.168.2.2:8088&#x2F;，可以免密码登录到系统命令行。用户名pi，密码0314 当前情况汇总树莓派3B封装在机器内，只有网线与外部连接，使用固定IP，使用ssh与window电脑连接，没法单独上网，所以安装程序与环境不太方便，尝试过window电脑网络共享，但未成功。开发板上还有个蓝牙模块，或许可以利用。如果能成功联网的话，可以通过安装ROS2环境和相关组">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ROV600修复">
+<meta property="og:url" content="http://kw1649190133.github.io/2026/08/12/ROV600%E4%BF%AE%E5%A4%8D/index.html">
+<meta property="og:site_name" content="kw&#39;s blog">
+<meta property="og:description" content="登录测试链路的地址http:&#x2F;&#x2F;192.168.2.2:8088&#x2F;，可以免密码登录到系统命令行。用户名pi，密码0314 当前情况汇总树莓派3B封装在机器内，只有网线与外部连接，使用固定IP，使用ssh与window电脑连接，没法单独上网，所以安装程序与环境不太方便，尝试过window电脑网络共享，但未成功。开发板上还有个蓝牙模块，或许可以利用。如果能成功联网的话，可以通过安装ROS2环境和相关组">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/08/12/ROV600%E4%BF%AE%E5%A4%8D/snap_0121.jpg">
+<meta property="article:published_time" content="2026-08-12T08:34:05.000Z">
+<meta property="article:modified_time" content="2026-08-12T08:34:05.986Z">
+<meta property="article:author" content="Kwindy">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://kw1649190133.github.io/2026/08/12/ROV600%E4%BF%AE%E5%A4%8D/snap_0121.jpg">
+  
+  
+  
+  <title>ROV600修复 - kw&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"kw1649190133.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>天际边缘 Edge of the sky </strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="ROV600修复"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-08-12 16:34" pubdate>
+          August 12, 2026 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          15k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          123 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">ROV600修复</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="登录"><a href="#登录" class="headerlink" title="登录"></a>登录</h2><p>测试链路的地址<code>http://192.168.2.2:8088/</code>，可以免密码登录到系统命令行。用户名pi，密码0314</p>
+<h2 id="当前情况汇总"><a href="#当前情况汇总" class="headerlink" title="当前情况汇总"></a>当前情况汇总</h2><p>树莓派3B封装在机器内，只有网线与外部连接，使用固定IP，使用ssh与window电脑连接，没法单独上网，所以安装程序与环境不太方便，尝试过window电脑网络共享，但未成功。开发板上还有个蓝牙模块，或许可以利用。<br>如果能成功联网的话，可以通过安装ROS2环境和相关组建解决画面问题，但树莓派3的CPU比较差，编译可能会很慢而且不通过。</p>
+<p>内置mavlink可以正常与QGC通信，机器控制没问题，但目前问题是摄像头画面没搞定。摄像头是USB摄像头，分辨率是720P。<br>TCP协议会遇到画面卡顿和拖影的问题，对于需要实时操控的设备来说不可用，原来的UDP H264协议数据包好像无法解码原因还有待排查（可能是 type 27错误）。<br>拍照功能的报错<code>MAV_CMD_DO_DIGICAM_CONTROL</code> 命令不支持。大概因为USB摄像头不是接入飞控的，所以如果硬要连接，就需要做中间的消息转发程序。原来的视频画面好像是通过GStreamer 做的推送，但是版本比较老。</p>
+<p>摄像头画面能推送到QGC，QGC中内置的拍照功能也正常使用，才算是真正解决问题，尤其是先解决画面推送问题。</p>
+<p>参考思路：<br>1、检查现有的摄像头程序，或许可以进行升级？<br>2、若是修复网络功能，通过蓝牙联网，然后安装什么插件都很方便了，测试也会更方便。</p>
+<h2 id="画面传输"><a href="#画面传输" class="headerlink" title="画面传输"></a>画面传输</h2><p>目前可以通过QGC看到画面了，要选择UPD H264协议，地址0.0.0.0:5600<br>但是感觉目前的画面有点卡顿，大概有半秒钟的延迟。</p>
+<h2 id="网络共享ICS服务"><a href="#网络共享ICS服务" class="headerlink" title="网络共享ICS服务"></a>网络共享ICS服务</h2><p>可以将网络通过共享的方式，让没有独立联网的设备上网。</p>
+<p>控制面板——网络和internet——网络连接，可以看到当前所有网络适配器的情况。<br>找到WLAN，右键属性，选择共享标签页，选上允许其他用户通过此计算机网络，就能将网络通过WIFI共享到网线连接的设备了，理论上。<br>但网络共享默认使用的是192.168.137.0的网段，如果连接的设备支持改IP和自动分配IP还好，如果不支持就只能改ICS默认网段了，这个要在注册表里改。</p>
+<h3 id="修改-Windows-ICS-默认网段方法"><a href="#修改-Windows-ICS-默认网段方法" class="headerlink" title="修改 Windows ICS 默认网段方法"></a>修改 Windows ICS 默认网段方法</h3><ol>
+<li>启动注册表编辑器，找到 <code>HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters</code>，修改 ScopeAddress 和 ScopeAddressBackup 的值为 192.168.2.1 和 192.168.2.0</li>
+<li>打开服务界面，找到并重启 Internet Connection Sharing (ICS) 服务。</li>
+</ol>
+<h2 id="树莓派CPU监控"><a href="#树莓派CPU监控" class="headerlink" title="树莓派CPU监控"></a>树莓派CPU监控</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment">#!/usr/bin/env python</span><br><span class="hljs-comment"># -*- coding: utf-8 -*-</span><br><span class="hljs-string">&quot;&quot;&quot;</span><br><span class="hljs-string">cpu_monitor.py — ROV 树莓派全屏 CPU 监控 (htop 风格)</span><br><span class="hljs-string">用法:</span><br><span class="hljs-string">    python cpu_monitor.py           # 全屏监控，按 q 退出</span><br><span class="hljs-string">    python cpu_monitor.py -d 1      # 刷新间隔秒数（默认1s）</span><br><span class="hljs-string">依赖: python-curses (树莓派默认自带)</span><br><span class="hljs-string">&quot;&quot;&quot;</span><br><span class="hljs-keyword">import</span> sys<br><span class="hljs-keyword">import</span> time<br><span class="hljs-keyword">import</span> curses<br><span class="hljs-keyword">import</span> os<br><br>REFRESH = <span class="hljs-number">1.0</span><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">parse_args</span>():<br>    <span class="hljs-keyword">global</span> REFRESH<br>    args = sys.argv[<span class="hljs-number">1</span>:]<br>    <span class="hljs-keyword">while</span> args:<br>        <span class="hljs-keyword">if</span> args[<span class="hljs-number">0</span>] <span class="hljs-keyword">in</span> (<span class="hljs-string">&#x27;-d&#x27;</span>, <span class="hljs-string">&#x27;--delay&#x27;</span>) <span class="hljs-keyword">and</span> <span class="hljs-built_in">len</span>(args) &gt; <span class="hljs-number">1</span>:<br>            REFRESH = <span class="hljs-built_in">float</span>(args[<span class="hljs-number">1</span>])<br>            args = args[<span class="hljs-number">2</span>:]<br>        <span class="hljs-keyword">elif</span> args[<span class="hljs-number">0</span>] <span class="hljs-keyword">in</span> (<span class="hljs-string">&#x27;-h&#x27;</span>, <span class="hljs-string">&#x27;--help&#x27;</span>):<br>            <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;usage: python cpu_monitor.py [-d seconds]&quot;</span>)<br>            sys.exit(<span class="hljs-number">0</span>)<br>        <span class="hljs-keyword">else</span>:<br>            args = args[<span class="hljs-number">1</span>:]<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">read_cpu</span>():<br>    <span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(<span class="hljs-string">&#x27;/proc/stat&#x27;</span>) <span class="hljs-keyword">as</span> f:<br>        lines = f.readlines()<br>    cpus = &#123;&#125;<br>    <span class="hljs-keyword">for</span> line <span class="hljs-keyword">in</span> lines:<br>        parts = line.split()<br>        <span class="hljs-keyword">if</span> parts[<span class="hljs-number">0</span>].startswith(<span class="hljs-string">&#x27;cpu&#x27;</span>):<br>            cpus[parts[<span class="hljs-number">0</span>]] = [<span class="hljs-built_in">int</span>(x) <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> parts[<span class="hljs-number">1</span>:]]<br>    <span class="hljs-keyword">return</span> cpus<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">calc_usage</span>(<span class="hljs-params">prev, curr</span>):<br>    result = &#123;&#125;<br>    <span class="hljs-keyword">for</span> key <span class="hljs-keyword">in</span> curr:<br>        <span class="hljs-keyword">if</span> key <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> prev:<br>            <span class="hljs-keyword">continue</span><br>        p, c = prev[key], curr[key]<br>        total_delta = <span class="hljs-built_in">sum</span>(c) - <span class="hljs-built_in">sum</span>(p)<br>        idle_delta = (c[<span class="hljs-number">3</span>] + c[<span class="hljs-number">4</span>]) - (p[<span class="hljs-number">3</span>] + p[<span class="hljs-number">4</span>])<br>        result[key] = <span class="hljs-number">100.0</span> * (total_delta - idle_delta) / total_delta <span class="hljs-keyword">if</span> total_delta <span class="hljs-keyword">else</span> <span class="hljs-number">0.0</span><br>    <span class="hljs-keyword">return</span> result<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">read_mem</span>():<br>    mem = &#123;&#125;<br>    <span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(<span class="hljs-string">&#x27;/proc/meminfo&#x27;</span>) <span class="hljs-keyword">as</span> f:<br>        <span class="hljs-keyword">for</span> line <span class="hljs-keyword">in</span> f:<br>            parts = line.split(<span class="hljs-string">&#x27;:&#x27;</span>)<br>            <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(parts) == <span class="hljs-number">2</span>:<br>                <span class="hljs-keyword">try</span>:<br>                    mem[parts[<span class="hljs-number">0</span>]] = <span class="hljs-built_in">int</span>(parts[<span class="hljs-number">1</span>].strip().split()[<span class="hljs-number">0</span>]) / <span class="hljs-number">1024.0</span><br>                <span class="hljs-keyword">except</span> (ValueError, IndexError):<br>                    <span class="hljs-keyword">pass</span><br>    total = mem.get(<span class="hljs-string">&#x27;MemTotal&#x27;</span>, <span class="hljs-number">0</span>)<br>    free = mem.get(<span class="hljs-string">&#x27;MemFree&#x27;</span>, <span class="hljs-number">0</span>)<br>    cached = mem.get(<span class="hljs-string">&#x27;Cached&#x27;</span>, <span class="hljs-number">0</span>)<br>    used = total - free - cached<br>    <span class="hljs-keyword">return</span> total, used, free + cached<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">get_temp</span>():<br>    <span class="hljs-keyword">try</span>:<br>        <span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(<span class="hljs-string">&#x27;/sys/class/thermal/thermal_zone0/temp&#x27;</span>) <span class="hljs-keyword">as</span> f:<br>            <span class="hljs-keyword">return</span> <span class="hljs-built_in">float</span>(f.read().strip()) / <span class="hljs-number">1000.0</span><br>    <span class="hljs-keyword">except</span> Exception:<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">get_load</span>():<br>    <span class="hljs-keyword">try</span>:<br>        <span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(<span class="hljs-string">&#x27;/proc/loadavg&#x27;</span>) <span class="hljs-keyword">as</span> f:<br>            parts = f.read().split()<br>        <span class="hljs-keyword">return</span> parts[<span class="hljs-number">0</span>], parts[<span class="hljs-number">1</span>], parts[<span class="hljs-number">2</span>]<br>    <span class="hljs-keyword">except</span> Exception:<br>        <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;?&#x27;</span>, <span class="hljs-string">&#x27;?&#x27;</span>, <span class="hljs-string">&#x27;?&#x27;</span><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">get_uptime</span>():<br>    <span class="hljs-keyword">try</span>:<br>        <span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(<span class="hljs-string">&#x27;/proc/uptime&#x27;</span>) <span class="hljs-keyword">as</span> f:<br>            secs = <span class="hljs-built_in">int</span>(<span class="hljs-built_in">float</span>(f.read().split()[<span class="hljs-number">0</span>]))<br>        h, m = <span class="hljs-built_in">divmod</span>(secs // <span class="hljs-number">60</span>, <span class="hljs-number">60</span>)<br>        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;&#123;&#125;h &#123;:02d&#125;m&quot;</span>.<span class="hljs-built_in">format</span>(h, m)<br>    <span class="hljs-keyword">except</span> Exception:<br>        <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;?&#x27;</span><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">get_processes</span>():<br>    <span class="hljs-keyword">try</span>:<br>        out = os.popen(<span class="hljs-string">&#x27;ps aux --sort=-%cpu&#x27;</span>).read()<br>        lines = out.strip().split(<span class="hljs-string">&#x27;\n&#x27;</span>)[<span class="hljs-number">1</span>:]<br>        procs = []<br>        <span class="hljs-keyword">for</span> line <span class="hljs-keyword">in</span> lines[:<span class="hljs-number">12</span>]:<br>            parts = line.split(<span class="hljs-literal">None</span>, <span class="hljs-number">10</span>)<br>            <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(parts) &gt;= <span class="hljs-number">11</span>:<br>                procs.append(&#123;<br>                    <span class="hljs-string">&#x27;user&#x27;</span>: parts[<span class="hljs-number">0</span>],<br>                    <span class="hljs-string">&#x27;pid&#x27;</span>: parts[<span class="hljs-number">1</span>],<br>                    <span class="hljs-string">&#x27;cpu&#x27;</span>: parts[<span class="hljs-number">2</span>],<br>                    <span class="hljs-string">&#x27;mem&#x27;</span>: parts[<span class="hljs-number">3</span>],<br>                    <span class="hljs-string">&#x27;cmd&#x27;</span>: parts[<span class="hljs-number">10</span>][:<span class="hljs-number">45</span>],<br>                &#125;)<br>        <span class="hljs-keyword">return</span> procs<br>    <span class="hljs-keyword">except</span> Exception:<br>        <span class="hljs-keyword">return</span> []<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">draw_bar</span>(<span class="hljs-params">win, y, x, width, percent, label</span>):<br>    win.addstr(y, x, label)<br>    filled = <span class="hljs-built_in">int</span>(percent / <span class="hljs-number">100.0</span> * width)<br>    bar = <span class="hljs-string">&#x27;[&#x27;</span> + <span class="hljs-string">&#x27;#&#x27;</span> * filled + <span class="hljs-string">&#x27;-&#x27;</span> * (width - filled) + <span class="hljs-string">&#x27;]&#x27;</span><br>    win.addstr(y, x + <span class="hljs-built_in">len</span>(label) + <span class="hljs-number">1</span>, bar)<br>    win.addstr(y, x + <span class="hljs-built_in">len</span>(label) + <span class="hljs-number">1</span> + width + <span class="hljs-number">2</span>, <span class="hljs-string">&quot;&#123;:5.1f&#125;%&quot;</span>.<span class="hljs-built_in">format</span>(percent))<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">main_loop</span>(<span class="hljs-params">stdscr</span>):<br>    <span class="hljs-keyword">global</span> REFRESH<br>    curses.curs_set(<span class="hljs-number">0</span>)<br>    stdscr.nodelay(<span class="hljs-number">0</span>)<br>    stdscr.timeout(<span class="hljs-number">500</span>)<br>    <span class="hljs-keyword">try</span>:<br>        curses.start_color()<br>        curses.use_default_colors()<br>        curses.init_pair(<span class="hljs-number">1</span>, curses.COLOR_GREEN, -<span class="hljs-number">1</span>)<br>        curses.init_pair(<span class="hljs-number">2</span>, curses.COLOR_YELLOW, -<span class="hljs-number">1</span>)<br>        curses.init_pair(<span class="hljs-number">3</span>, curses.COLOR_RED, -<span class="hljs-number">1</span>)<br>        curses.init_pair(<span class="hljs-number">4</span>, curses.COLOR_CYAN, -<span class="hljs-number">1</span>)<br>        COLOR_OK = curses.color_pair(<span class="hljs-number">1</span>)<br>        COLOR_WARN = curses.color_pair(<span class="hljs-number">2</span>)<br>        COLOR_HOT = curses.color_pair(<span class="hljs-number">3</span>)<br>        COLOR_CYC = curses.color_pair(<span class="hljs-number">4</span>)<br>    <span class="hljs-keyword">except</span> Exception:<br>        COLOR_OK = COLOR_WARN = COLOR_HOT = COLOR_CYC = curses.A_NORMAL<br><br>    prev = read_cpu()<br>    time.sleep(<span class="hljs-number">0.2</span>)<br><br>    <span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:<br>        <span class="hljs-keyword">try</span>:<br>            curr = read_cpu()<br>            usage = calc_usage(prev, curr)<br>            prev = curr<br>            stdscr.erase()<br><br>            h, w = stdscr.getmaxyx()<br><br>            <span class="hljs-comment"># Title</span><br>            title = <span class="hljs-string">&quot; ROV CPU Monitor &quot;</span><br>            stdscr.addstr(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, title, curses.A_BOLD)<br>            stdscr.addstr(<span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(title), <span class="hljs-string">&quot;  (q to quit, +/- speed)&quot;</span>)<br>            stdscr.addstr(<span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-string">&quot;-&quot;</span> * <span class="hljs-built_in">min</span>(w - <span class="hljs-number">1</span>, <span class="hljs-number">60</span>))<br><br>            y = <span class="hljs-number">2</span><br>            <span class="hljs-comment"># Total CPU</span><br>            total = usage.get(<span class="hljs-string">&#x27;cpu&#x27;</span>, <span class="hljs-number">0.0</span>)<br>            <span class="hljs-keyword">if</span> total &gt; <span class="hljs-number">80</span>:<br>                color = COLOR_HOT<br>            <span class="hljs-keyword">elif</span> total &gt; <span class="hljs-number">50</span>:<br>                color = COLOR_WARN<br>            <span class="hljs-keyword">else</span>:<br>                color = COLOR_OK<br>            draw_bar(stdscr, y, <span class="hljs-number">0</span>, <span class="hljs-number">30</span>, total, <span class="hljs-string">&#x27;Total&#x27;</span>)<br>            stdscr.addstr(y, <span class="hljs-number">46</span>, <span class="hljs-string">&quot;temp &#123;&#125;&quot;</span>.<span class="hljs-built_in">format</span>(<br>                (<span class="hljs-string">&#x27;%.1fC&#x27;</span> % get_temp()) <span class="hljs-keyword">if</span> get_temp() <span class="hljs-keyword">else</span> <span class="hljs-string">&#x27;N/A&#x27;</span>), color)<br>            y += <span class="hljs-number">1</span><br><br>            <span class="hljs-comment"># Per-core</span><br>            cores = <span class="hljs-built_in">sorted</span>([k <span class="hljs-keyword">for</span> k <span class="hljs-keyword">in</span> usage <span class="hljs-keyword">if</span> k.startswith(<span class="hljs-string">&#x27;cpu&#x27;</span>) <span class="hljs-keyword">and</span> k != <span class="hljs-string">&#x27;cpu&#x27;</span>])<br>            <span class="hljs-keyword">for</span> idx <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(cores), <span class="hljs-number">2</span>):<br>                line_y = y<br>                <span class="hljs-keyword">for</span> ci <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">2</span>):<br>                    <span class="hljs-keyword">if</span> idx + ci &lt; <span class="hljs-built_in">len</span>(cores):<br>                        ckey = cores[idx + ci]<br>                        draw_bar(stdscr, line_y, (ci * <span class="hljs-number">32</span>), <span class="hljs-number">12</span>, usage[ckey],<br>                                 <span class="hljs-string">&#x27;CPU&#123;&#125;&#x27;</span>.<span class="hljs-built_in">format</span>(ckey[-<span class="hljs-number">1</span>]))<br>                y += <span class="hljs-number">1</span><br><br>            y += <span class="hljs-number">1</span><br>            <span class="hljs-comment"># Load + uptime</span><br>            l1, l5, l15 = get_load()<br>            stdscr.addstr(y, <span class="hljs-number">0</span>, <span class="hljs-string">&quot;load: &#123;&#125; &#123;&#125; &#123;&#125;   uptime: &#123;&#125;&quot;</span>.<span class="hljs-built_in">format</span>(<br>                l1, l5, l15, get_uptime()), COLOR_CYC)<br>            y += <span class="hljs-number">1</span><br><br>            <span class="hljs-comment"># Memory</span><br>            total, used, freec = read_mem()<br>            mem_pct = <span class="hljs-number">100.0</span> * used / total <span class="hljs-keyword">if</span> total <span class="hljs-keyword">else</span> <span class="hljs-number">0</span><br>            stdscr.addstr(y, <span class="hljs-number">0</span>, <span class="hljs-string">&quot;mem:  &quot;</span>, COLOR_CYC)<br>            draw_bar(stdscr, y, <span class="hljs-number">5</span>, <span class="hljs-number">30</span>, mem_pct, <span class="hljs-string">&#x27;&#x27;</span>)<br>            stdscr.addstr(y, <span class="hljs-number">46</span>, <span class="hljs-string">&quot;&#123;:.0f&#125;M used / &#123;:.0f&#125;M free&quot;</span>.<span class="hljs-built_in">format</span>(used, freec))<br>            y += <span class="hljs-number">2</span><br><br>            <span class="hljs-comment"># Process table header</span><br>            stdscr.addstr(y, <span class="hljs-number">0</span>, <span class="hljs-string">&quot;PID    USER       CPU%  MEM%  CMD&quot;</span>, curses.A_BOLD)<br>            y += <span class="hljs-number">1</span><br>            <span class="hljs-keyword">for</span> p <span class="hljs-keyword">in</span> get_processes():<br>                <span class="hljs-keyword">try</span>:<br>                    <span class="hljs-keyword">if</span> y &gt;= h - <span class="hljs-number">1</span>:<br>                        <span class="hljs-keyword">break</span><br>                    stdscr.addstr(y, <span class="hljs-number">0</span>, <span class="hljs-string">&quot;&#123;:&lt;7&#125;&#123;:&lt;12&#125;&#123;:&lt;6&#125;&#123;:&lt;6&#125;&#123;&#125;&quot;</span>.<span class="hljs-built_in">format</span>(<br>                        p[<span class="hljs-string">&#x27;pid&#x27;</span>], p[<span class="hljs-string">&#x27;user&#x27;</span>][:<span class="hljs-number">10</span>], p[<span class="hljs-string">&#x27;cpu&#x27;</span>], p[<span class="hljs-string">&#x27;mem&#x27;</span>], p[<span class="hljs-string">&#x27;cmd&#x27;</span>]))<br>                    y += <span class="hljs-number">1</span><br>                <span class="hljs-keyword">except</span> curses.error:<br>                    <span class="hljs-keyword">break</span><br><br>            stdscr.addstr(h - <span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-string">&quot;refresh &#123;:.1f&#125;s | q quit | +/- adjust&quot;</span>.<span class="hljs-built_in">format</span>(REFRESH))<br>            stdscr.refresh()<br><br>            <span class="hljs-comment"># handle keys</span><br>            key = stdscr.getch()<br>            <span class="hljs-keyword">if</span> key <span class="hljs-keyword">in</span> (<span class="hljs-built_in">ord</span>(<span class="hljs-string">&#x27;q&#x27;</span>), <span class="hljs-built_in">ord</span>(<span class="hljs-string">&#x27;Q&#x27;</span>)):<br>                <span class="hljs-keyword">break</span><br>            <span class="hljs-keyword">elif</span> key == <span class="hljs-built_in">ord</span>(<span class="hljs-string">&#x27;+&#x27;</span>):<br>                REFRESH = <span class="hljs-built_in">max</span>(<span class="hljs-number">0.1</span>, REFRESH - <span class="hljs-number">0.2</span>)<br>            <span class="hljs-keyword">elif</span> key == <span class="hljs-built_in">ord</span>(<span class="hljs-string">&#x27;-&#x27;</span>):<br>                REFRESH = <span class="hljs-built_in">min</span>(<span class="hljs-number">5.0</span>, REFRESH + <span class="hljs-number">0.2</span>)<br><br>            time.sleep(REFRESH)<br><br>        <span class="hljs-keyword">except</span> KeyboardInterrupt:<br>            <span class="hljs-keyword">break</span><br>        <span class="hljs-keyword">except</span> curses.error:<br>            <span class="hljs-keyword">pass</span><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">main</span>():<br>    parse_args()<br>    curses.wrapper(main_loop)<br><br><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&#x27;__main__&#x27;</span>:<br>    main()<br><br></code></pre></td></tr></table></figure>
+
+<p>运行后发现，占用CPU最多的程序是mavproxy，大概是负责整个mavlink连接的程序，里面应该是所有通信数据的消息池，可能有不必要的消息混进去了。</p>
+<h2 id="自动拍照程序"><a href="#自动拍照程序" class="headerlink" title="自动拍照程序"></a>自动拍照程序</h2><p>实现按键拍照、定时拍照和轨迹记录。不过目前的轨迹记录因为没有比较靠谱的IMU和惯性里程计，基本上没法用，只能先用拍照功能，后面再考虑升级。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br><span class="line">305</span><br><span class="line">306</span><br><span class="line">307</span><br><span class="line">308</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment">#!/usr/bin/env python</span><br><span class="hljs-comment"># -*- coding: utf-8 -*-</span><br><span class="hljs-string">&quot;&quot;&quot;</span><br><span class="hljs-string">ROV Camera Control v4</span><br><span class="hljs-string">按键拍照 + 定时拍照 + xyz 轨迹（IMU 加速度积分 + EKF 高度校准）</span><br><span class="hljs-string"></span><br><span class="hljs-string">xyz 计算方法:</span><br><span class="hljs-string">  - 从 SCALED_IMU 读加速度 (mG) → 转换 m/s^2</span><br><span class="hljs-string">  - 用 ATTITUDE (roll/pitch) 补偿重力 + 转世界坐标</span><br><span class="hljs-string">  - 积分得到速度/位移</span><br><span class="hljs-string">  - z = VFR_HUD.alt（飞控 EKF 高度校准）</span><br><span class="hljs-string">  起点初始化为 (0,0,0)，按 r 重置原点</span><br><span class="hljs-string"></span><br><span class="hljs-string">位置来源: mavlink2rest HTTP API (127.0.0.1:4777)</span><br><span class="hljs-string">&quot;&quot;&quot;</span><br><span class="hljs-keyword">import</span> sys, os, time, select, json, math, threading<br><span class="hljs-keyword">from</span> datetime <span class="hljs-keyword">import</span> datetime<br><br><span class="hljs-comment"># ---- 配置 ----</span><br>PHOTO_DIR = <span class="hljs-string">&quot;/home/pi/Camera/photos&quot;</span><br>SNAP_TOOL = <span class="hljs-string">&quot;/home/pi/Camera/cam_snap&quot;</span><br>SNAP_DEVICE = <span class="hljs-string">&quot;/dev/video0&quot;</span><br>REST_URL = <span class="hljs-string">&quot;http://127.0.0.1:4777/mavlink&quot;</span><br>TRACK_INTERVAL = <span class="hljs-number">0.2</span>  <span class="hljs-comment"># 轨迹更新间隔秒</span><br><br><span class="hljs-keyword">try</span>:<br>    <span class="hljs-keyword">import</span> urllib.request <span class="hljs-keyword">as</span> urllib<br><span class="hljs-keyword">except</span> ImportError:<br>    <span class="hljs-keyword">import</span> urllib2 <span class="hljs-keyword">as</span> urllib<br><br><span class="hljs-comment"># ---- 状态 ----</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">State</span>(<span class="hljs-title class_ inherited__">object</span>):<br>    <span class="hljs-keyword">pass</span><br><br>s = State()<br>s.auto = <span class="hljs-literal">False</span><br>s.interval = <span class="hljs-number">2.0</span><br>s.running = <span class="hljs-literal">True</span><br>s.session_dir = <span class="hljs-string">&quot;&quot;</span><br>s.csv_file = <span class="hljs-string">&quot;&quot;</span><br>s.count = <span class="hljs-number">0</span><br><span class="hljs-comment"># 轨迹积分</span><br>s.x = <span class="hljs-number">0.0</span><br>s.y = <span class="hljs-number">0.0</span><br>s.z = <span class="hljs-number">0.0</span><br>s.vx = <span class="hljs-number">0.0</span>  <span class="hljs-comment"># 速度分量</span><br>s.vy = <span class="hljs-number">0.0</span><br>s.yaw = <span class="hljs-number">0.0</span><br>s.pressure = <span class="hljs-number">0.0</span><br>s.last_time = <span class="hljs-literal">None</span><br>s.lock = threading.Lock()<br>s.tracking = <span class="hljs-literal">False</span><br>s.track_count = <span class="hljs-number">0</span><br>s.calib = &#123;<span class="hljs-string">&#x27;bx&#x27;</span>: <span class="hljs-number">0.0</span>, <span class="hljs-string">&#x27;by&#x27;</span>: <span class="hljs-number">0.0</span>, <span class="hljs-string">&#x27;count&#x27;</span>: <span class="hljs-number">0</span>&#125;  <span class="hljs-comment"># 偏置校准</span><br><br><span class="hljs-comment"># ---- 工具 ----</span><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">ensure_dir</span>(<span class="hljs-params">path</span>):<br>    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> os.path.exists(path):<br>        os.makedirs(path)<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">get_key</span>():<br>    <span class="hljs-keyword">if</span> select.select([sys.stdin], [], [], <span class="hljs-number">0</span>)[<span class="hljs-number">0</span>]:<br>        <span class="hljs-keyword">return</span> sys.stdin.read(<span class="hljs-number">1</span>)<br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">rest_get</span>(<span class="hljs-params">path</span>):<br>    <span class="hljs-keyword">try</span>:<br>        req = urllib.Request(REST_URL + path)<br>        req.add_header(<span class="hljs-string">&#x27;Accept&#x27;</span>, <span class="hljs-string">&#x27;application/json&#x27;</span>)<br>        resp = urllib.urlopen(req, timeout=<span class="hljs-number">1</span>)<br>        data = resp.read()<br>        resp.close()<br>        <span class="hljs-keyword">if</span> data:<br>            <span class="hljs-keyword">return</span> json.loads(data)<br>    <span class="hljs-keyword">except</span> Exception:<br>        <span class="hljs-keyword">pass</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">calibrate_imu</span>():<br>    <span class="hljs-string">&quot;&quot;&quot;静止采样 3 秒，计算加速度偏置&quot;&quot;&quot;</span><br>    N = <span class="hljs-number">20</span><br>    sx = sy = <span class="hljs-number">0.0</span><br>    ok = <span class="hljs-number">0</span><br>    <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(N):<br>        imu = rest_get(<span class="hljs-string">&quot;/RAW_IMU&quot;</span>)<br>        <span class="hljs-keyword">if</span> imu <span class="hljs-keyword">and</span> <span class="hljs-string">&#x27;xacc&#x27;</span> <span class="hljs-keyword">in</span> imu:<br>            SCALE = <span class="hljs-number">1000.0</span><br>            sx += imu[<span class="hljs-string">&#x27;xacc&#x27;</span>] * <span class="hljs-number">9.81</span> / SCALE<br>            sy += imu[<span class="hljs-string">&#x27;yacc&#x27;</span>] * <span class="hljs-number">9.81</span> / SCALE<br>            ok += <span class="hljs-number">1</span><br>        time.sleep(<span class="hljs-number">0.15</span>)<br>    <span class="hljs-keyword">if</span> ok &gt; <span class="hljs-number">0</span>:<br>        <span class="hljs-keyword">with</span> s.lock:<br>            s.calib[<span class="hljs-string">&#x27;bx&#x27;</span>] = sx / ok<br>            s.calib[<span class="hljs-string">&#x27;by&#x27;</span>] = sy / ok<br>            s.calib[<span class="hljs-string">&#x27;count&#x27;</span>] = ok<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">tracking_thread</span>():<br>    <span class="hljs-string">&quot;&quot;&quot;RAW_IMU 加速度 → 减偏置 → 补偿重力 → 转世界坐标 → 积分&quot;&quot;&quot;</span><br>    <span class="hljs-keyword">while</span> s.running:<br>        <span class="hljs-keyword">try</span>:<br>            t0 = time.time()<br>            imu = rest_get(<span class="hljs-string">&quot;/RAW_IMU&quot;</span>)<br>            att = rest_get(<span class="hljs-string">&quot;/ATTITUDE&quot;</span>)<br>            vfr = rest_get(<span class="hljs-string">&quot;/VFR_HUD&quot;</span>)<br>            pres = rest_get(<span class="hljs-string">&quot;/SCALED_PRESSURE&quot;</span>)<br><br>            <span class="hljs-keyword">if</span> att <span class="hljs-keyword">and</span> <span class="hljs-string">&#x27;yaw&#x27;</span> <span class="hljs-keyword">in</span> att:<br>                roll = att[<span class="hljs-string">&#x27;roll&#x27;</span>]<br>                pitch = att[<span class="hljs-string">&#x27;pitch&#x27;</span>]<br>                yaw = att[<span class="hljs-string">&#x27;yaw&#x27;</span>]<br>                <span class="hljs-keyword">with</span> s.lock:<br>                    s.yaw = yaw<br><br>            <span class="hljs-keyword">if</span> vfr <span class="hljs-keyword">and</span> <span class="hljs-string">&#x27;alt&#x27;</span> <span class="hljs-keyword">in</span> vfr:<br>                <span class="hljs-keyword">with</span> s.lock:<br>                    s.z = vfr[<span class="hljs-string">&#x27;alt&#x27;</span>]<br><br>            <span class="hljs-keyword">if</span> pres <span class="hljs-keyword">and</span> <span class="hljs-string">&#x27;press_abs&#x27;</span> <span class="hljs-keyword">in</span> pres:<br>                <span class="hljs-keyword">with</span> s.lock:<br>                    s.pressure = pres[<span class="hljs-string">&#x27;press_abs&#x27;</span>]<br><br>            <span class="hljs-keyword">if</span> imu <span class="hljs-keyword">and</span> <span class="hljs-string">&#x27;xacc&#x27;</span> <span class="hljs-keyword">in</span> imu <span class="hljs-keyword">and</span> att <span class="hljs-keyword">and</span> <span class="hljs-string">&#x27;yaw&#x27;</span> <span class="hljs-keyword">in</span> att:<br>                <span class="hljs-comment"># RAW_IMU: raw ADC (~1000 = 1G), 减偏置校准</span><br>                G = <span class="hljs-number">9.81</span><br>                SCALE = <span class="hljs-number">1000.0</span><br>                ax_raw = imu[<span class="hljs-string">&#x27;xacc&#x27;</span>] * G / SCALE<br>                ay_raw = imu[<span class="hljs-string">&#x27;yacc&#x27;</span>] * G / SCALE<br><br>                <span class="hljs-comment"># 减去静止偏置（校准值）</span><br>                <span class="hljs-keyword">with</span> s.lock:<br>                    bx = s.calib[<span class="hljs-string">&#x27;bx&#x27;</span>]<br>                    by = s.calib[<span class="hljs-string">&#x27;by&#x27;</span>]<br><br>                <span class="hljs-comment"># 重力补偿（机体坐标系）</span><br>                sp = math.sin(pitch)<br>                cp = math.cos(pitch)<br>                sr = math.sin(roll)<br>                ax_c = (ax_raw - bx) - G * sp<br>                ay_c = (ay_raw - by) + G * sr * cp<br>                ay_c = ay_raw + G * sr * cp<br><br>                <span class="hljs-comment"># 旋转到世界坐标（水平面）</span><br>                cy = math.cos(yaw)<br>                sy = math.sin(yaw)<br>                ax_w = ax_c * cy - ay_c * sy<br>                ay_w = ax_c * sy + ay_c * cy<br><br>                <span class="hljs-keyword">with</span> s.lock:<br>                    <span class="hljs-keyword">if</span> s.last_time <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span>:<br>                        dt = t0 - s.last_time<br>                        <span class="hljs-keyword">if</span> <span class="hljs-number">0</span> &lt; dt &lt; <span class="hljs-number">2.0</span>:<br>                            <span class="hljs-comment"># 速度积分</span><br>                            s.vx += ax_w * dt<br>                            s.vy += ay_w * dt<br>                            <span class="hljs-comment"># 位移积分</span><br>                            s.x += s.vx * dt<br>                            s.y += s.vy * dt<br>                            s.tracking = <span class="hljs-literal">True</span><br>                            s.track_count += <span class="hljs-number">1</span><br>                    s.last_time = t0<br><br>        <span class="hljs-keyword">except</span> Exception:<br>            <span class="hljs-keyword">pass</span><br>        time.sleep(TRACK_INTERVAL)<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">fetch_full_position</span>():<br>    <span class="hljs-string">&quot;&quot;&quot;读取实时位置 + 积分轨迹&quot;&quot;&quot;</span><br>    <span class="hljs-keyword">with</span> s.lock:<br>        pos = &#123;<br>            <span class="hljs-string">&#x27;x&#x27;</span>: s.x, <span class="hljs-string">&#x27;y&#x27;</span>: s.y, <span class="hljs-string">&#x27;z&#x27;</span>: s.z,<br>            <span class="hljs-string">&#x27;yaw&#x27;</span>: s.yaw,<br>            <span class="hljs-string">&#x27;pressure&#x27;</span>: s.pressure,<br>            <span class="hljs-string">&#x27;tracking&#x27;</span>: s.tracking,<br>        &#125;<br>    <span class="hljs-keyword">return</span> pos<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">take_photo</span>():<br>    fn = <span class="hljs-string">&quot;snap_&#123;:04d&#125;.jpg&quot;</span>.<span class="hljs-built_in">format</span>(s.count + <span class="hljs-number">1</span>)<br>    path = os.path.join(s.session_dir, fn)<br><br>    pos = fetch_full_position()<br><br>    ret = os.system(<span class="hljs-string">&quot;%s %s %s 2&gt;/dev/null&quot;</span> % (SNAP_TOOL, SNAP_DEVICE, path))<br>    <span class="hljs-keyword">if</span> ret != <span class="hljs-number">0</span> <span class="hljs-keyword">or</span> <span class="hljs-keyword">not</span> os.path.exists(path):<br>        <span class="hljs-built_in">print</span> <span class="hljs-string">&quot;  [FAIL] save failed&quot;</span><br>        <span class="hljs-keyword">return</span><br><br>    s.count += <span class="hljs-number">1</span><br>    size = os.path.getsize(path)<br>    ts = datetime.now().strftime(<span class="hljs-string">&quot;%H:%M:%S&quot;</span>)<br>    mode = <span class="hljs-string">&quot;auto&quot;</span> <span class="hljs-keyword">if</span> s.auto <span class="hljs-keyword">else</span> <span class="hljs-string">&quot;manual&quot;</span><br><br>    x, y, z = pos[<span class="hljs-string">&#x27;x&#x27;</span>], pos[<span class="hljs-string">&#x27;y&#x27;</span>], pos[<span class="hljs-string">&#x27;z&#x27;</span>]<br>    yaw_deg = pos[<span class="hljs-string">&#x27;yaw&#x27;</span>] * <span class="hljs-number">180.0</span> / <span class="hljs-number">3.14159</span><br>    pres = pos[<span class="hljs-string">&#x27;pressure&#x27;</span>]<br><br>    pos_str = <span class="hljs-string">&quot;x=%.2f y=%.2f z=%.2f yaw=%.0f pres=%.0f&quot;</span> % (x, y, z, yaw_deg, pres)<br><br>    <span class="hljs-keyword">try</span>:<br>        <span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(s.csv_file, <span class="hljs-string">&#x27;a&#x27;</span>) <span class="hljs-keyword">as</span> f:<br>            f.write(<span class="hljs-string">&quot;%s,%s,%d,%s,%.2f,%.2f,%.2f,%.2f,%.1f,%d\n&quot;</span> % (<br>                ts, fn.split(<span class="hljs-string">&#x27;.&#x27;</span>)[<span class="hljs-number">0</span>], s.count, mode,<br>                x, y, z, yaw_deg, pres, <span class="hljs-built_in">int</span>(time.time())))<br>    <span class="hljs-keyword">except</span> Exception:<br>        <span class="hljs-keyword">pass</span><br><br>    <span class="hljs-built_in">print</span> <span class="hljs-string">&quot;  [OK] #%d %s  %dKB  %s  %s&quot;</span> % (s.count, fn, size/<span class="hljs-number">1024</span>, mode, pos_str)<br><br><span class="hljs-comment"># ---- 主函数 ----</span><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">main</span>():<br>    <span class="hljs-keyword">import</span> argparse<br>    parser = argparse.ArgumentParser()<br>    parser.add_argument(<span class="hljs-string">&#x27;-i&#x27;</span>, <span class="hljs-string">&#x27;--interval&#x27;</span>, <span class="hljs-built_in">type</span>=<span class="hljs-built_in">float</span>, default=<span class="hljs-number">2.0</span>, <span class="hljs-built_in">help</span>=<span class="hljs-string">&#x27;auto interval (s)&#x27;</span>)<br>    args = parser.parse_args()<br>    s.interval = args.interval<br><br>    sn = datetime.now().strftime(<span class="hljs-string">&quot;%Y%m%d_%H%M%S&quot;</span>)<br>    s.session_dir = os.path.join(PHOTO_DIR, sn)<br>    ensure_dir(s.session_dir)<br>    s.csv_file = os.path.join(s.session_dir, <span class="hljs-string">&quot;locations.csv&quot;</span>)<br><br>    <span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(s.csv_file, <span class="hljs-string">&#x27;w&#x27;</span>) <span class="hljs-keyword">as</span> f:<br>        f.write(<span class="hljs-string">&quot;time,name,seq,mode,x(m),y(m),z(m),yaw(deg),pressure(hPa),ts\n&quot;</span>)<br><br>    <span class="hljs-built_in">print</span> <span class="hljs-string">&quot;=&quot;</span> * <span class="hljs-number">60</span><br>    <span class="hljs-built_in">print</span> <span class="hljs-string">&quot; ROV Camera Control v4 (IMU integration)&quot;</span><br>    <span class="hljs-built_in">print</span> <span class="hljs-string">&quot;=&quot;</span> * <span class="hljs-number">60</span><br>    <span class="hljs-built_in">print</span> <span class="hljs-string">&quot; photos: %s&quot;</span> % s.session_dir<br>    <span class="hljs-built_in">print</span> <span class="hljs-string">&quot; auto:   %.1fs interval&quot;</span> % s.interval<br>    <span class="hljs-built_in">print</span> <span class="hljs-string">&quot; pos:    mavlink2rest HTTP (IMU accel + EKF alt)&quot;</span><br>    <span class="hljs-built_in">print</span> <span class="hljs-string">&quot; keys:   [s] snap  [a] auto  [+/-] interval  [r] reset  [c] calibrate  [q] quit&quot;</span><br>    <span class="hljs-built_in">print</span> <span class="hljs-string">&quot;=&quot;</span> * <span class="hljs-number">60</span><br><br>    <span class="hljs-comment"># 启动轨迹线程</span><br>    track = threading.Thread(target=tracking_thread)<br>    track.daemon = <span class="hljs-literal">True</span><br>    track.start()<br><br>    <span class="hljs-comment"># 静止标定</span><br>    <span class="hljs-built_in">print</span> <span class="hljs-string">&quot;calibrating IMU bias (hold still for 3s)...&quot;</span><br>    <span class="hljs-keyword">if</span> calibrate_imu():<br>        <span class="hljs-keyword">with</span> s.lock:<br>            bx, by = s.calib[<span class="hljs-string">&#x27;bx&#x27;</span>], s.calib[<span class="hljs-string">&#x27;by&#x27;</span>]<br>        <span class="hljs-built_in">print</span> <span class="hljs-string">&quot;  calib: bx=%.4f  by=%.4f  m/s^2 (%d samples)&quot;</span> % (bx, by, s.calib[<span class="hljs-string">&#x27;count&#x27;</span>])<br>    <span class="hljs-keyword">else</span>:<br>        <span class="hljs-built_in">print</span> <span class="hljs-string">&quot;  calib FAILED, using zero bias&quot;</span><br><br>    <span class="hljs-comment"># 等轨迹就绪</span><br>    <span class="hljs-built_in">print</span> <span class="hljs-string">&quot;initializing IMU tracking...&quot;</span><br>    <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">15</span>):<br>        <span class="hljs-keyword">with</span> s.lock:<br>            <span class="hljs-keyword">if</span> s.tracking:<br>                <span class="hljs-built_in">print</span> <span class="hljs-string">&quot;  ready: x=%.2f y=%.2f z=%.2f (samples=%d)&quot;</span> % (s.x, s.y, s.z, s.track_count)<br>                <span class="hljs-keyword">break</span><br>        time.sleep(<span class="hljs-number">0.2</span>)<br>    <span class="hljs-keyword">else</span>:<br>        <span class="hljs-built_in">print</span> <span class="hljs-string">&quot;  WARNING: no IMU data, xyz will be zero&quot;</span><br><br>    last_auto = time.time()<br>    <span class="hljs-keyword">while</span> s.running:<br>        <span class="hljs-keyword">try</span>:<br>            ch = get_key()<br>            <span class="hljs-keyword">if</span> ch:<br>                <span class="hljs-keyword">if</span> ch == <span class="hljs-string">&#x27;s&#x27;</span>:<br>                    <span class="hljs-built_in">print</span> <span class="hljs-string">&quot;&gt; [SNAP] manual&quot;</span><br>                    take_photo()<br>                <span class="hljs-keyword">elif</span> ch == <span class="hljs-string">&#x27;a&#x27;</span>:<br>                    s.auto = <span class="hljs-keyword">not</span> s.auto<br>                    <span class="hljs-built_in">print</span> <span class="hljs-string">&quot;&gt; [AUTO] %s&quot;</span> % (<span class="hljs-string">&quot;ON&quot;</span> <span class="hljs-keyword">if</span> s.auto <span class="hljs-keyword">else</span> <span class="hljs-string">&quot;OFF&quot;</span>)<br>                <span class="hljs-keyword">elif</span> ch == <span class="hljs-string">&#x27;+&#x27;</span>:<br>                    s.interval = <span class="hljs-built_in">min</span>(<span class="hljs-number">60</span>, s.interval + <span class="hljs-number">1</span>)<br>                    <span class="hljs-built_in">print</span> <span class="hljs-string">&quot;&gt; [INTERVAL] %.0fs&quot;</span> % s.interval<br>                <span class="hljs-keyword">elif</span> ch == <span class="hljs-string">&#x27;-&#x27;</span>:<br>                    s.interval = <span class="hljs-built_in">max</span>(<span class="hljs-number">1</span>, s.interval - <span class="hljs-number">1</span>)<br>                    <span class="hljs-built_in">print</span> <span class="hljs-string">&quot;&gt; [INTERVAL] %.0fs&quot;</span> % s.interval<br>                <span class="hljs-keyword">elif</span> ch == <span class="hljs-string">&#x27;r&#x27;</span>:<br>                    <span class="hljs-comment"># 重置轨迹原点</span><br>                    <span class="hljs-keyword">with</span> s.lock:<br>                        s.x = <span class="hljs-number">0</span>; s.y = <span class="hljs-number">0</span>; s.z = <span class="hljs-number">0</span><br>                        s.vx = <span class="hljs-number">0</span>; s.vy = <span class="hljs-number">0</span><br>                    <span class="hljs-built_in">print</span> <span class="hljs-string">&quot;&gt; [RESET] origin (0,0,0)&quot;</span><br>                <span class="hljs-keyword">elif</span> ch == <span class="hljs-string">&#x27;c&#x27;</span>:<br>                    <span class="hljs-built_in">print</span> <span class="hljs-string">&quot;&gt; [CALIB] hold still...&quot;</span><br>                    <span class="hljs-keyword">if</span> calibrate_imu():<br>                        <span class="hljs-built_in">print</span> <span class="hljs-string">&quot;  calib: bx=%.4f  by=%.4f m/s^2&quot;</span> % (s.calib[<span class="hljs-string">&#x27;bx&#x27;</span>], s.calib[<span class="hljs-string">&#x27;by&#x27;</span>])<br>                    <span class="hljs-keyword">else</span>:<br>                        <span class="hljs-built_in">print</span> <span class="hljs-string">&quot;  calib FAILED&quot;</span><br>                <span class="hljs-keyword">elif</span> ch <span class="hljs-keyword">in</span> (<span class="hljs-string">&#x27;q&#x27;</span>, <span class="hljs-string">&#x27;Q&#x27;</span>):<br>                    s.running = <span class="hljs-literal">False</span><br>                    <span class="hljs-built_in">print</span> <span class="hljs-string">&quot;&gt; [QUIT]&quot;</span><br><br>            <span class="hljs-keyword">if</span> s.auto <span class="hljs-keyword">and</span> time.time() - last_auto &gt;= s.interval:<br>                take_photo()<br>                last_auto = time.time()<br><br>            time.sleep(<span class="hljs-number">0.05</span>)<br><br>        <span class="hljs-keyword">except</span> KeyboardInterrupt:<br>            s.running = <span class="hljs-literal">False</span><br>            <span class="hljs-keyword">break</span><br><br>    <span class="hljs-built_in">print</span> <span class="hljs-string">&quot;done: %d photos saved&quot;</span> % s.count<br><br><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&#x27;__main__&#x27;</span>:<br>    main()<br></code></pre></td></tr></table></figure>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>实测后，发现600的画面还是太糊了，感觉要建模还是比较困难，后面还是换另一台水下机器人试试吧。这个光晕也是有点夸张，镜头的光路还是应该好好设计，才能达到更好的效果。<br><img src="/2026/08/12/ROV600%E4%BF%AE%E5%A4%8D/snap_0121.jpg" srcset="/img/loading.gif" lazyload alt="snap_0121.jpg"></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Cesium%E5%BC%80%E5%8F%91/" class="category-chain-item">Cesium开发</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>ROV600修复</div>
+      <div>http://kw1649190133.github.io/2026/08/12/ROV600修复/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Kwindy</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>August 12, 2026</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2026/08/12/%E6%97%A0%E4%BA%BA%E6%9C%BA%E6%96%B0%E8%A7%84%E5%88%86%E6%9E%90/" title="无人机新规分析">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">无人机新规分析</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/08/03/Cesium%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0%EF%BC%88%E5%85%AD%EF%BC%89%E5%AE%9E%E6%9C%BA%E8%BF%9E%E6%8E%A5%E6%A8%A1%E5%9D%97/" title="Cesium开发笔记（六）实机连接模块">
+                        <span class="hidden-mobile">Cesium开发笔记（六）实机连接模块</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

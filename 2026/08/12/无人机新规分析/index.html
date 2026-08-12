@@ -1,0 +1,908 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=dark>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Kwindy">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="前言无人机行业关于规范管理方面，又多了两项新国标，GB 46750-2025和GB 46761-2025，都是2025年就已经发布的，不过2026年才实施。 协议对照   GB 46750-2025(无人机广播) GB 46761-2025 (UOM对接)    全称 民用无人驾驶航空器系统运行识别规范 民用无人驾驶航空器实名登记和激活要求   管什么 飞行中”我是谁、在哪、飞多快” 起飞前”有没">
+<meta property="og:type" content="article">
+<meta property="og:title" content="无人机新规分析">
+<meta property="og:url" content="http://kw1649190133.github.io/2026/08/12/%E6%97%A0%E4%BA%BA%E6%9C%BA%E6%96%B0%E8%A7%84%E5%88%86%E6%9E%90/index.html">
+<meta property="og:site_name" content="kw&#39;s blog">
+<meta property="og:description" content="前言无人机行业关于规范管理方面，又多了两项新国标，GB 46750-2025和GB 46761-2025，都是2025年就已经发布的，不过2026年才实施。 协议对照   GB 46750-2025(无人机广播) GB 46761-2025 (UOM对接)    全称 民用无人驾驶航空器系统运行识别规范 民用无人驾驶航空器实名登记和激活要求   管什么 飞行中”我是谁、在哪、飞多快” 起飞前”有没">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2026-08-12T08:34:06.000Z">
+<meta property="article:modified_time" content="2026-08-12T08:34:06.037Z">
+<meta property="article:author" content="Kwindy">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>无人机新规分析 - kw&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"kw1649190133.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>天际边缘 Edge of the sky </strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="无人机新规分析"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-08-12 16:34" pubdate>
+          August 12, 2026 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4.2k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          36 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">无人机新规分析</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>无人机行业关于规范管理方面，又多了两项新国标，GB 46750-2025和GB 46761-2025，都是2025年就已经发布的，不过2026年才实施。</p>
+<h2 id="协议对照"><a href="#协议对照" class="headerlink" title="协议对照"></a>协议对照</h2><table>
+<thead>
+<tr>
+<th>GB</th>
+<th>46750-2025(无人机广播)</th>
+<th>GB 46761-2025 (UOM对接)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>全称</td>
+<td>民用无人驾驶航空器系统运行识别规范</td>
+<td>民用无人驾驶航空器实名登记和激活要求</td>
+</tr>
+<tr>
+<td>管什么</td>
+<td>飞行中”我是谁、在哪、飞多快”</td>
+<td>起飞前”有没有登记、有没有激活”</td>
+</tr>
+<tr>
+<td>通信对象</td>
+<td>广播给附近所有人 + 网络报送监管平台</td>
+<td>HTTPS 直接跟 UOM 平台对话</td>
+</tr>
+<tr>
+<td>通信协议</td>
+<td>蓝牙/WiFi 广播 + 4G/5G/卫星网络</td>
+<td>RESTful API (POST JSON)</td>
+</tr>
+<tr>
+<td>加密方式</td>
+<td>无加密（公开广播）</td>
+<td>SM4/CBC 加密（国密算法）</td>
+</tr>
+<tr>
+<td>触发时机</td>
+<td>靠自身动力移动全过程持续发送</td>
+<td>实名登记/激活/注销时按次请求</td>
+</tr>
+<tr>
+<td>发送间隔</td>
+<td>≤1秒    相同参数</td>
+<td>≤1分钟/次</td>
+</tr>
+<tr>
+<td>是否可以关闭</td>
+<td>不可以，一旦起飞必须持续发</td>
+<td>按需调用</td>
+</tr>
+<tr>
+<td>核心数据</td>
+<td>21个运行参数（位置、速度、高度、状态…）</td>
+<td>3个接口（验证实名、上报激活、注销）</td>
+</tr>
+</tbody></table>
+<h2 id="与现有飞控、地面站的关联"><a href="#与现有飞控、地面站的关联" class="headerlink" title="与现有飞控、地面站的关联"></a>与现有飞控、地面站的关联</h2><figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs txt">FlyerLink/QGC 新增模块架构:<br>│                 无人机地面站/飞控 <br>│  【GB 46761 模块 - 起飞前门禁】                     <br>│  ┌──────────────────<br>│  │ UOMClient (HTTP + SM4加密)      │              <br>│  │ ├─ verifyRegister(UPIC_MSN)     │  ← 新写      <br>│  │ ├─ reportActive(UPIC_MSN, 1/2)  │  ← 新写      <br>│  │ └─ cancelRegister(token, type)  │  ← 新写      <br>│  │ 集成点: App启动/解锁前判断       │              <br>│  └───────────────────<br>│  【GB 46750 模块 - 飞行中持续发送】                  <br>│  ┌──────────────────<br>│  │ OIDTransmitter (蓝牙+WiFi+4G)    │              <br>│  │ ├─ 从MAVLink提取21项数据         │  ← 新写      <br>│  │ ├─ 按表3编码打包                 │  ← 新写      <br>│  │ └─ 广播+网络发送                 │  ← 新写      <br>│  │ 集成点: 飞行状态change时启动     │              <br>│  └──────────────<br>│  【已有功能不受影响】                               <br>│  ┌──────────────────<br>│  │ 图传、3D模型、多设备管理...       │  ← 存量迁移  <br>│  └─────────────────<br></code></pre></td></tr></table></figure>
+
+<h2 id="举例对比"><a href="#举例对比" class="headerlink" title="举例对比"></a>举例对比</h2><h3 id="场景1：一架新出厂的四轴飞行器第一次飞"><a href="#场景1：一架新出厂的四轴飞行器第一次飞" class="headerlink" title="场景1：一架新出厂的四轴飞行器第一次飞"></a>场景1：一架新出厂的四轴飞行器第一次飞</h3><ul>
+<li><p>GB 46761 的流程（起飞前）:<br>工厂 → UOM: 上报激活状态 = “激活”<br>App  → UOM: 验证实名状态 → 返回”正常”<br>App 检查激活+实名都OK → 允许电机解锁</p>
+</li>
+<li><p>GB 46750 的流程（飞行中）:<br>无人机 → 蓝牙广播: [0xFF,0xED,0xFE] 001=SNX123 008=22.5,113.9…<br>无人机 → 4G网络上报: 同样数据发到监管平台<br>地面接收系统: 解析”这台飞机在22.5°N,113.9°E, 高120m, 速度15m/s”</p>
+<h3 id="场景2：飞机转让给新主人"><a href="#场景2：飞机转让给新主人" class="headerlink" title="场景2：飞机转让给新主人"></a>场景2：飞机转让给新主人</h3></li>
+<li><p>GB 46761:<br>旧主人App → UOM: 注销登记(TYPE=3所有权变更, token=xxx)<br>新主人App → UOM: 验证实名 → 正常<br>新主人App → UOM: 上报激活 = “激活”</p>
+</li>
+<li><p>GB 46750:<br>（全程不受影响，飞机飞起来该广播什么还是广播什么）</p>
+</li>
+</ul>
+<h1 id="飞行报文"><a href="#飞行报文" class="headerlink" title="飞行报文"></a>飞行报文</h1><p>关于GB 46750规定的飞行报文，在文件中有详细说明，这里仅提取了报文的关键数据部分的说明，完整的报文实际上还包含数据类型、标识、长度等等报文相关的头字符。</p>
+<table>
+<thead>
+<tr>
+<th align="center">序号</th>
+<th align="center">名称</th>
+<th align="center">描述</th>
+<th align="center">长度(byte)</th>
+<th align="center">取值要求</th>
+<th align="center">是否必选</th>
+<th align="center">获取条件</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">001</td>
+<td align="center">唯一产品识别码</td>
+<td align="center">用于唯一标识民用无人驾驶航空器整机产品身份的代码</td>
+<td align="center">20</td>
+<td align="center">大端序表示，符合GB/T41300的要求，以ASCII码进行编码。      对2024年1月1日前生产的民用无人驾驶航空器，若不具备唯一产品识别码，则发送民用无人驾驶航空器序列号，高位以空字符(NULL)填充</td>
+<td align="center">M   (必选)</td>
+<td align="center">生产商编码</td>
+</tr>
+<tr>
+<td align="center">002</td>
+<td align="center">实名登记标志</td>
+<td align="center">在民用无人驾驶航空器综合管理平台实名登记系统按要求正确填报实名登记标志后获取的实名登记号码中后8位字符</td>
+<td align="center">8</td>
+<td align="center">大端序表示，以ASCII码进行编码，未填写时以空字符(NULL)填充</td>
+<td align="center">M   (必选)</td>
+<td align="center">平台登记</td>
+</tr>
+<tr>
+<td align="center">003</td>
+<td align="center">民用无人驾驶航空器系统运行类别</td>
+<td align="center">民用无人驾驶航空器系统的运行类别，包括审定类、特定类、开放类与未定义</td>
+<td align="center">1</td>
+<td align="center">取值范围:      0: 未定义      1: 开放类      2: 特定类      3: 审定类      4~15: 预留</td>
+<td align="center">O   (可选)</td>
+<td align="center">平台登记</td>
+</tr>
+<tr>
+<td align="center">004</td>
+<td align="center">民用无人驾驶航空器分类</td>
+<td align="center">民用无人驾驶航空器系统的分类，包括微型、轻型、小型、中型、大型</td>
+<td align="center">1</td>
+<td align="center">取值范围:      0: 微型无人驾驶航空器      1: 轻型无人驾驶航空器      2: 小型无人驾驶航空器      3: 中型无人驾驶航空器      4: 大型无人驾驶航空器      5~15: 预留</td>
+<td align="center">M   (必选)</td>
+<td align="center">按平台分类，根据实际类型填</td>
+</tr>
+<tr>
+<td align="center">005</td>
+<td align="center">民用无人驾驶航空器遥控站位置类型</td>
+<td align="center">民用无人驾驶航空器遥控站位置类型，包括起飞点位置、遥控站位置</td>
+<td align="center">1</td>
+<td align="center">取值范围:      0: 起飞点位置      1: 遥控站位置      2~15: 预留</td>
+<td align="center">M   (必选)</td>
+<td align="center">获取遥控、飞机的GPS定位</td>
+</tr>
+<tr>
+<td align="center">006</td>
+<td align="center">民用无人驾驶航空器遥控站位置</td>
+<td align="center">民用无人驾驶航空器遥控站位置的经度与纬度</td>
+<td align="center">8</td>
+<td align="center">小端序表示，编码值为实际值x10^7，32位经度|32位纬度。西经、南纬以负值表示。未知或不可用时取FFFFFFFF</td>
+<td align="center">M   (必选)</td>
+<td align="center">获取遥控、飞机的GPS定位</td>
+</tr>
+<tr>
+<td align="center">007</td>
+<td align="center">民用无人驾驶航空器遥控站高度</td>
+<td align="center">民用无人驾驶航空器遥控站基于当前坐标系的大地高度</td>
+<td align="center">2</td>
+<td align="center">小端序表示，编码值为(实际值+1000)x2，分辨率0.5m。未知或不可用时编码值取0</td>
+<td align="center">M   (必选)</td>
+<td align="center">获取遥控、飞机的GPS定位</td>
+</tr>
+<tr>
+<td align="center">008</td>
+<td align="center">民用无人驾驶航空器位置</td>
+<td align="center">民用无人驾驶航空器位置的经度与纬度</td>
+<td align="center">8</td>
+<td align="center">小端序表示，编码值为实际值x10^7，32位经度|32位纬度。西经、南纬以负值表示。未知或不可用时取FFFFFFFF</td>
+<td align="center">M   (必选)</td>
+<td align="center">获取遥控、飞机的GPS定位</td>
+</tr>
+<tr>
+<td align="center">009</td>
+<td align="center">航迹角</td>
+<td align="center">从真北顺时针测量的航迹角</td>
+<td align="center">2</td>
+<td align="center">小端序表示，取值为实际值x10，有效值0~3599，向下取整，分辨率0.1度。未知或不可用时编码值取FFFF</td>
+<td align="center">M   (必选)</td>
+<td align="center">指南针得到（飞控、GPS中应该有）</td>
+</tr>
+<tr>
+<td align="center">010</td>
+<td align="center">地速</td>
+<td align="center">民用无人驾驶航空器与地面的相对速度</td>
+<td align="center">2</td>
+<td align="center">小端序表示，取值为实际值x10，向下取整，分辨率0.1m/s。未知或不可用时编码值取FFFF</td>
+<td align="center">M   (必选)</td>
+<td align="center">飞控、IMU、GPS获取和计算</td>
+</tr>
+<tr>
+<td align="center">011</td>
+<td align="center">相对高度</td>
+<td align="center">民用无人驾驶航空器基于起飞地的高度</td>
+<td align="center">2</td>
+<td align="center">小端序表示，编码值为(实际值+9000)x2，分辨率0.5m。未知或不可用时编码值取0</td>
+<td align="center">O   (可选)</td>
+<td align="center">飞控、IMU、GPS获取和计算</td>
+</tr>
+<tr>
+<td align="center">012</td>
+<td align="center">垂直速度</td>
+<td align="center">民用无人驾驶航空器基于当前坐标系的上升或下降速度</td>
+<td align="center">1</td>
+<td align="center">第1位为标志位，0=上升，1=下降。编码值为(实际值x2)，分辨率0.5m/s。未知或不可用时编码值取FF</td>
+<td align="center">O   (可选)</td>
+<td align="center">飞控、IMU、GPS获取和计算</td>
+</tr>
+<tr>
+<td align="center">013</td>
+<td align="center">大地高度</td>
+<td align="center">民用无人驾驶航空器基于当前坐标系的大地高度</td>
+<td align="center">2</td>
+<td align="center">小端序表示，编码值为(实际值+1000)x2，分辨率0.5m。未知或不可用时编码值取0</td>
+<td align="center">M   (必选)</td>
+<td align="center">飞控、IMU、GPS获取和计算</td>
+</tr>
+<tr>
+<td align="center">014</td>
+<td align="center">气压高度</td>
+<td align="center">民用无人驾驶航空器基于以101.325kPa为参考面的标准气压高度</td>
+<td align="center">2</td>
+<td align="center">小端序表示，编码值为(实际值+1000)x2，分辨率0.5m。未知或不可用时编码值取0</td>
+<td align="center">O   (可选)</td>
+<td align="center">气压计，飞控内应该有</td>
+</tr>
+<tr>
+<td align="center">015</td>
+<td align="center">运行状态</td>
+<td align="center">民用无人驾驶航空器运行状态</td>
+<td align="center">1</td>
+<td align="center">取值范围:      0: 未报告      1: 地面      2: 空中      3: 民用无人驾驶航空器为紧急状态      4: 运行识别发送功能失效(非紧急状态)      5: 运行识别发送功能失效(紧急状态)      6~15: 预留      注: 紧急状态包含动力系统失效、导航系统异常、通信链路中断等技术故障</td>
+<td align="center">M   (必选)</td>
+<td align="center">平台许可状态</td>
+</tr>
+<tr>
+<td align="center">016</td>
+<td align="center">坐标系类型</td>
+<td align="center">运行识别功能使用的坐标系类型</td>
+<td align="center">1</td>
+<td align="center">取值范围:      0: WGS-84      1: CGCS2000      2~15: 预留</td>
+<td align="center">M   (必选)</td>
+<td align="center">根据实际类型填</td>
+</tr>
+<tr>
+<td align="center">017</td>
+<td align="center">水平精度</td>
+<td align="center">水平位置精度(置信度95%),   基于GNSS导航的NACp取值</td>
+<td align="center">1</td>
+<td align="center">取值范围:      0: &gt;=18.52km(10NM)或未知      1: &lt;18.52km(10NM)      2: &lt;7.41km(4NM)      3: &lt;3.70km(2NM)      4: &lt;1852m(1NM)      5: &lt;926m(0.5NM)      6: &lt;556m(0.3NM)      7: &lt;185m(0.1NM)      8: &lt;92.6m(0.05NM)      9: &lt;30m      10: &lt;10m      11: &lt;3m      12: &lt;1m      13~15: 预留</td>
+<td align="center">M   (必选)</td>
+<td align="center">根据实际情况计算</td>
+</tr>
+<tr>
+<td align="center">018</td>
+<td align="center">垂直精度</td>
+<td align="center">垂直位置精度(置信度95%),   基于GNSS导航的GVA取值</td>
+<td align="center">1</td>
+<td align="center">取值范围:      0: &gt;=150m或未知      1: &lt;150m      2: &lt;45m      3: &lt;25m      4: &lt;10m      5: &lt;3m      6: &lt;1m      7~15: 预留</td>
+<td align="center">M   (必选)</td>
+<td align="center">根据实际情况计算</td>
+</tr>
+<tr>
+<td align="center">019</td>
+<td align="center">速度精度</td>
+<td align="center">速度精度(置信度95%),   基于GNSS导航的NACv取值</td>
+<td align="center">1</td>
+<td align="center">取值范围:      0: &gt;=10m/s或未知      1: &lt;10m/s      2: &lt;3m/s      3: &lt;1m/s      4: &lt;0.3m/s      5~15: 预留</td>
+<td align="center">M   (必选)</td>
+<td align="center">根据实际情况计算</td>
+</tr>
+<tr>
+<td align="center">020</td>
+<td align="center">时间戳</td>
+<td align="center">使用Unix时间,   单位为毫秒(ms)</td>
+<td align="center">6</td>
+<td align="center">小端序表示，未知或不可用时编码值取0</td>
+<td align="center">M   (必选)</td>
+<td align="center">由时钟得到</td>
+</tr>
+<tr>
+<td align="center">021</td>
+<td align="center">时间戳精度</td>
+<td align="center">编入时间戳的时刻与真实时刻的精度范围，包括授时精度与授时信号编入信息的时间</td>
+<td align="center">1</td>
+<td align="center">取值范围:      0: &gt;0.5s或未知      1: &lt;=0.5s      2: &lt;=0.4s      3: &lt;=0.3s      4: &lt;=0.2s      5: &lt;=0.1s      6: &lt;=50ms      7: &lt;=20ms      8: &lt;=10ms      9~15: 预留</td>
+<td align="center">M   (必选)</td>
+<td align="center">根据实际情况计算</td>
+</tr>
+</tbody></table>
+<h2 id="飞行器的报文程序逻辑"><a href="#飞行器的报文程序逻辑" class="headerlink" title="飞行器的报文程序逻辑"></a>飞行器的报文程序逻辑</h2><ul>
+<li>报文程序：<br>前置设置，配置WIFI、蓝牙、4G，还有推送的地址等、<br>程序启动，检测WiFi、蓝牙、4G是否可用。<br>开始从飞控获取数据，获取遥控器位置，生成报文，检测报文内容是否正常，内录到机身内。<br>开始广播，广播正常后，允许飞控起飞。</li>
+<li>监听程序：<br>期间如果全部广播挂了，或者报文程序挂了，得给飞控指令悬停和返航。<br>4G模块的断联不影响飞机的正常飞行，只需要将广播内容搜集起来，等连上之后再一块发。</li>
+</ul>
+<p>考虑到实际情况，感觉报文程序记录的信息还是有点少，像飞机本身其实也应该具备一个“黑匣子”，启动后就开始记录飞机的全部状态，包括报文里不需要的电池电量等信息。如果是已经有黑匣子的飞机，那报文程序就可以直接从黑匣子读数据。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>GB 46761 管”能不能飞”（实名+激活门禁），GB 46750 管”飞的时候报什么”（持续运行识别广播）。两者互不替代、缺一不可，且 GB 46761 的激活状态应该是 GB 46750 报文里 运行状态(015) 字段的前置条件之一。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Cesium%E5%BC%80%E5%8F%91/" class="category-chain-item">Cesium开发</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>无人机新规分析</div>
+      <div>http://kw1649190133.github.io/2026/08/12/无人机新规分析/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Kwindy</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>August 12, 2026</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/08/12/ROV600%E4%BF%AE%E5%A4%8D/" title="ROV600修复">
+                        <span class="hidden-mobile">ROV600修复</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

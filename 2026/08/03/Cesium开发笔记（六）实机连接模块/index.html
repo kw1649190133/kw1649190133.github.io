@@ -27,7 +27,7 @@
 <meta property="og:image" content="http://kw1649190133.github.io/2026/08/03/Cesium%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0%EF%BC%88%E5%85%AD%EF%BC%89%E5%AE%9E%E6%9C%BA%E8%BF%9E%E6%8E%A5%E6%A8%A1%E5%9D%97/32342f7261c809a1a500bf778a75d719.png">
 <meta property="og:image" content="http://kw1649190133.github.io/2026/08/03/Cesium%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0%EF%BC%88%E5%85%AD%EF%BC%89%E5%AE%9E%E6%9C%BA%E8%BF%9E%E6%8E%A5%E6%A8%A1%E5%9D%97/daffcbfc1e95a84ef21fcf4196713da2.png">
 <meta property="article:published_time" content="2026-08-03T09:42:30.000Z">
-<meta property="article:modified_time" content="2026-08-03T09:42:30.159Z">
+<meta property="article:modified_time" content="2026-08-12T08:23:11.794Z">
 <meta property="article:author" content="Kwindy">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="http://kw1649190133.github.io/2026/08/03/Cesium%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0%EF%BC%88%E5%85%AD%EF%BC%89%E5%AE%9E%E6%9C%BA%E8%BF%9E%E6%8E%A5%E6%A8%A1%E5%9D%97/2833d705d91f79fff971e232efd0f4d8.png">
@@ -223,7 +223,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          5.9k words
+          6.2k words
         
       </span>
     
@@ -234,7 +234,7 @@
         
         
         
-          50 mins
+          52 mins
         
       </span>
     
@@ -419,6 +419,8 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs bash">ffmpeg -f v4l2 -input_format mjpeg -video_size 1280x720 -framerate 15 \<br>  -i /dev/video0 \<br>  -c:v libx264 -preset ultrafast -tune zerolatency \<br>  -g 15 -bf 0 -pix_fmt yuv420p \<br>  -b:v 2000k -an \<br>  -f flv rtmp://43.136.76.169:1935/live/kwindy<br></code></pre></td></tr></table></figure>
 
 <h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>程序的基本功能虽然实现起来不困难，但修BUG真是修到疲惫。各种小问题层出不穷。使用AI开发的过程，虽然一开始感觉好像很流畅，无所不能，可是一旦聚焦到具体的问题上，依然是反复测试反复修改，陷入重复工作的泥潭，而且如果开发者不亲自去分析问题和思考解决方案，AI要么越走越偏，要么开始铤而走险剑走偏锋，使用一些所谓的“终极方案”绕过问题。<br>在使用AI开发的时候，容易陷入过度工程化的问题。真正的工程克制（砍组件、砍模式、砍 PoC）只能由人来做——而有的项目缺的就是这个。所以：AI 可以把架构”做全”，但人才能把架构”做少”。<br>这也是我依然在写文档的原因，还是要继续学习，变得更强。</p>
+<p>PS：写一个平台的介绍<br>面向无人机与机器人的云端智能数据平台，主要作用是为现有设备提供云端服务。基于 Cesium 三维地球实现设备实时定位、遥测数据与高清视频同步显示与记录，支持 AI 目标识别、VLM 大模型分析、摄影测量、任务和数据管理等，提供多设备并发接入能力，目前还在开发中，未来可应用于巡检、测绘与科研场景。</p>
+<p>（地址在这：<a target="_blank" rel="noopener" href="http://43.136.76.169:809/">http://43.136.76.169:809/</a> 目前可以用的功能大概有：三维模型显示、航线轨迹加载、正射照片投影、模拟的设备接入、视频信号接入、模拟的激光雷达，真实飞机的接入要等达威回来调试，剩下AI识别等功能因为小服务器没有GPU无法运行。）</p>
 
                 
               </div>
@@ -501,6 +503,12 @@
                 <div class="post-prevnext my-3">
                   <article class="post-prev col-6">
                     
+                    
+                      <a href="/2026/08/12/ROV600%E4%BF%AE%E5%A4%8D/" title="ROV600修复">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">ROV600修复</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
                     
                   </article>
                   <article class="post-next col-6">
