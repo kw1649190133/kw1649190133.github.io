@@ -1,0 +1,770 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=dark>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Kwindy">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="time :20260814 pm17:00kwindy write 一、QGC 平台已有的能力   功能域 已有能力    飞行控制 实时遥测、飞行模式切换、航线执行、遥控器校准、参数调参   任务规划 航点规划、区域测绘、结构扫描、地理围栏、任务上传下载   地图显示 在线&#x2F;离线地图、卫星影像、地形数据、多机位置标注   视频图传 单路视频接收、拍照录像、热成像、画面叠加显示   3D 可视化">
+<meta property="og:type" content="article">
+<meta property="og:title" content="FlyerLink开发计划和功能设计">
+<meta property="og:url" content="http://kw1649190133.github.io/2026/08/20/FlyerLink%E7%BB%93%E6%9E%84/index.html">
+<meta property="og:site_name" content="kw&#39;s blog">
+<meta property="og:description" content="time :20260814 pm17:00kwindy write 一、QGC 平台已有的能力   功能域 已有能力    飞行控制 实时遥测、飞行模式切换、航线执行、遥控器校准、参数调参   任务规划 航点规划、区域测绘、结构扫描、地理围栏、任务上传下载   地图显示 在线&#x2F;离线地图、卫星影像、地形数据、多机位置标注   视频图传 单路视频接收、拍照录像、热成像、画面叠加显示   3D 可视化">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/08/20/FlyerLink%E7%BB%93%E6%9E%84/1ea01f699d1f003f35173cb8c1dc8b54.png">
+<meta property="article:published_time" content="2026-08-20T02:15:44.000Z">
+<meta property="article:modified_time" content="2026-08-20T02:16:16.520Z">
+<meta property="article:author" content="Kwindy">
+<meta property="article:tag" content="开发">
+<meta property="article:tag" content="软件">
+<meta property="article:tag" content="C++">
+<meta property="article:tag" content="QGC">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://kw1649190133.github.io/2026/08/20/FlyerLink%E7%BB%93%E6%9E%84/1ea01f699d1f003f35173cb8c1dc8b54.png">
+  
+  
+  
+  <title>FlyerLink开发计划和功能设计 - kw&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"kw1649190133.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>天际边缘 Edge of the sky </strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="FlyerLink开发计划和功能设计"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-08-20 10:15" pubdate>
+          August 20, 2026 am
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.2k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          19 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">FlyerLink开发计划和功能设计</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>time :20260814 pm17:00<br>kwindy write</p>
+<h2 id="一、QGC-平台已有的能力"><a href="#一、QGC-平台已有的能力" class="headerlink" title="一、QGC 平台已有的能力"></a>一、QGC 平台已有的能力</h2><table>
+<thead>
+<tr>
+<th>功能域</th>
+<th>已有能力</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>飞行控制</td>
+<td>实时遥测、飞行模式切换、航线执行、遥控器校准、参数调参</td>
+</tr>
+<tr>
+<td>任务规划</td>
+<td>航点规划、区域测绘、结构扫描、地理围栏、任务上传下载</td>
+</tr>
+<tr>
+<td>地图显示</td>
+<td>在线/离线地图、卫星影像、地形数据、多机位置标注</td>
+</tr>
+<tr>
+<td>视频图传</td>
+<td>单路视频接收、拍照录像、热成像、画面叠加显示</td>
+</tr>
+<tr>
+<td>3D 可视化</td>
+<td>三维地球、城市建筑、地形起伏、无人机三维模型</td>
+</tr>
+<tr>
+<td>安全相关</td>
+<td>ADS-B 空中交通感知、避障、地理围栏、自动返航</td>
+</tr>
+<tr>
+<td>通信链路</td>
+<td>串口、TCP、UDP、蓝牙、RTK 差分 GPS</td>
+</tr>
+<tr>
+<td>系统框架</td>
+<td>参数设置、日志分析、遥控摇杆、云台控制、跟随模式</td>
+</tr>
+</tbody></table>
+<h2 id="二、迁移和规划的功能"><a href="#二、迁移和规划的功能" class="headerlink" title="二、迁移和规划的功能"></a>二、迁移和规划的功能</h2><h3 id="1-多路视频图传（改动较大）"><a href="#1-多路视频图传（改动较大）" class="headerlink" title="1. 多路视频图传（改动较大）"></a>1. 多路视频图传（改动较大）</h3><ul>
+<li>12 路视频的独立管理，每路可以单独配置流地址、单独启停；</li>
+<li>支持 RTSP、UDP、TCP、HTTP 四种拉流方式；</li>
+<li>断流后自动重连，切换视频源不崩溃；</li>
+<li>通道配置支持批量导入导出。</li>
+</ul>
+<h3 id="2-水下机器人三维模型显示"><a href="#2-水下机器人三维模型显示" class="headerlink" title="2. 水下机器人三维模型显示"></a>2. 水下机器人三维模型显示</h3><p>给潜水器（ROV）做了三维模型显示，模型姿态跟传感器实时数据联动（横滚、俯仰、航向），连上设备后自动显示。支持自定义模型文件、调整颜色和角度。</p>
+<h3 id="3-侧边栏快捷入口"><a href="#3-侧边栏快捷入口" class="headerlink" title="3. 侧边栏快捷入口"></a>3. 侧边栏快捷入口</h3><p>在飞行界面左侧加了一个可收起的侧边栏，放了 8 个功能入口（声呐、3D 模型、深度图、视频、罗盘、虚拟手柄、相机、遥测）。单击开关功能，长按进入设置。主要是为了操作方便，把常用功能集中到一处。</p>
+<h3 id="4-自定义载具图标"><a href="#4-自定义载具图标" class="headerlink" title="4. 自定义载具图标"></a>4. 自定义载具图标</h3><p>针对无人船、无人车、垂直起降、固定翼、潜水器这几类机型，做了专属图标，地图上按机型类型自动匹配，方便一眼区分。</p>
+<h3 id="5-产品化包装"><a href="#5-产品化包装" class="headerlink" title="5. 产品化包装"></a>5. 产品化包装</h3><p>应用名改为 FlyerLink，加了品牌 Logo，界面做了中文化，新做了几个自定义控件。</p>
+<h3 id="6-局部空间场景组件"><a href="#6-局部空间场景组件" class="headerlink" title="6. 局部空间场景组件"></a>6. 局部空间场景组件</h3><p>QGC 自带的 Viewer3D 是”地球尺度”的——3D 地球、地形、城市建筑、无人机模型，用来在大地图上浏览。<br>显示周围近距离信息的做法是新建一个独立的 SpatialScene（局部空间场景）模块，专门处理机器人周边的局部三维显示和目标指定。声呐扇区、DVL、激光点云、LIVO2 网格、障碍物等显示。</p>
+<table>
+<thead>
+<tr>
+<th>功能</th>
+<th>对应产品</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>声呐 / DVL 显示</td>
+<td>水下机器人</td>
+<td>声呐扇区图、多普勒测速显示</td>
+</tr>
+<tr>
+<td>深度图</td>
+<td>水下机器人</td>
+<td>水深测量图谱</td>
+</tr>
+<tr>
+<td>激光雷达点云</td>
+<td>带激光雷达的飞机</td>
+<td>机载端跑 LIO2 算法，点云回传地面站实时显示</td>
+</tr>
+<tr>
+<td>LIVO2 视觉融合</td>
+<td>远期机型</td>
+<td>激光 + 视觉融合，带纹理的三维重建</td>
+</tr>
+<tr>
+<td>三维空间交互</td>
+<td>水下 + 空中通用</td>
+<td>声呐、点云、模型在同一三维场景里叠加显示，支持旋转缩放测量</td>
+</tr>
+</tbody></table>
+<p>目前的激光雷达点云数据是通过局域网传输，通过其他浏览器或RVIZ等工具进行显示。尚未集成到QGC中。<br>激光点云数据量较大，类似于视频信号走UDP等单独的协议，不走mavlink。<br><img src="/2026/08/20/FlyerLink%E7%BB%93%E6%9E%84/1ea01f699d1f003f35173cb8c1dc8b54.png" srcset="/img/loading.gif" lazyload alt="1ea01f699d1f003f35173cb8c1dc8b54.png"><br>实现步骤：</p>
+<ul>
+<li>阶段一 集成激光点云的实时显示和区域点云建模结果、当前位置。</li>
+<li>阶段二 实现空间指令交互，在3D场景中指定目标位置，飞机就能够自动到达；启动探索模式，可以在电子围栏内自动探索未知区域。避障和路径规划算法以及建模算法在无人机中运行，控制端只需要做好用户交互，未来也可能拓展地面端进行进一步精细处理的成果输出模式。</li>
+<li>阶段三 完善逻辑和修复bug，达到稳定可靠的工程标准。</li>
+</ul>
+<p>⚠️二三阶段属于非常前沿的内容，实现难度相当大。<br>⚠️水下声呐和DVL目前没有设备，先预留接口和界面配置。</p>
+<h2 id="三、国标合规改造（硬性要求）"><a href="#三、国标合规改造（硬性要求）" class="headerlink" title="三、国标合规改造（硬性要求）"></a>三、国标合规改造（硬性要求）</h2><ul>
+<li><strong>GB 46750-2025《运行识别规范》</strong>：要求无人机飞行中持续广播身份、位置、状态信息（通过蓝牙、WiFi 或网络），且不允许关闭。我们需要运行识别广播模块。该标准 2026 年 5 月已实施。</li>
+<li><strong>GB 46761-2025《实名登记和激活要求》</strong>：要求起飞前完成实名登记验证和激活上报，对接民航 UOM 平台，数据用国密算法加密。未实名、未激活的无人机不能起飞。</li>
+</ul>
+<h2 id="四、文件路径"><a href="#四、文件路径" class="headerlink" title="四、文件路径"></a>四、文件路径</h2><p>FlyerLink/（开发库根目录）<br>src/VideoManager/MultiVideo/<br>多视频子系统（12路多协议）：Manager/Session/Factory 6文件<br>src/Settings/MultiVideoSettings.*<br>多视频配置层（12通道URL+开关Fact）+ SettingsGroup.json<br>src/FlyView/Sidebar.qml<br>侧边栏 8 图标入口（声呐/3D/深度图/视频/罗盘/手柄/相机/遥测）<br>src/FlyView/View3DModel.qml<br>ROV 3D模型渲染 + Setting3DModel.qml 个性化设置<br>src/FlightMap/Images/custom*.png<br>自定义载具图标（船/车/VTOL/固定翼/潜水器）<br>src/QGCApplication.cc（品牌）<br>应用名 FlyerLink + FirmwarePlugin 载具图标路由</p>
+<p>以下为占位 / 规划中</p>
+<ul>
+<li>（声呐/DVL — 尚无独立目录） Sidebar 有图标，url=”” 无实现</li>
+<li>（深度图 — 尚无独立目录）</li>
+<li>（点云/LIO2/LIVO2 — 未启动）<br>规划：</li>
+<li>src/PointCloud/ + src/Sonar/ + src/SpatialScene/</li>
+<li>SensorDataGateway / SpatialScene 统一传感器输入格式，独立目录</li>
+</ul>
+<p>注意事项：</p>
+<ol>
+<li>注意组件之间的风险隔离，针对单个组件的修改要尽量避免对其他功能的影响，尤其是用AI做的部分。</li>
+<li>修改源码的过程要做好开发文档记录，使流程可追溯，可复现。不必事无巨细，但需要把握关键步骤和细节。</li>
+<li>做好2-3个功能后，可以组织实机测试，实际上测试和调试或许会比开发更费时间，发现问题可以及时反馈。</li>
+<li>版本管理，测试过没有问题的版本可以保存备份。</li>
+</ol>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Cesium%E5%BC%80%E5%8F%91/" class="category-chain-item">Cesium开发</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E5%BC%80%E5%8F%91/">#开发</a>
+      
+        <a href="/tags/%E8%BD%AF%E4%BB%B6/">#软件</a>
+      
+        <a href="/tags/C/">#C++</a>
+      
+        <a href="/tags/QGC/">#QGC</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>FlyerLink开发计划和功能设计</div>
+      <div>http://kw1649190133.github.io/2026/08/20/FlyerLink结构/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Kwindy</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>August 20, 2026</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2026/08/21/DOM%E8%BD%AC%E8%A7%86%E9%A2%91%E7%94%9F%E6%88%90%E5%B7%A5%E5%85%B7/" title="DOM转视频生成工具">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">DOM转视频生成工具</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/08/12/ROV600%E4%BF%AE%E5%A4%8D/" title="ROV600修复">
+                        <span class="hidden-mobile">ROV600修复</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

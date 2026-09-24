@@ -1,0 +1,758 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=dark>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Kwindy">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="简介仓库地址：【https:&#x2F;&#x2F;github.com&#x2F;kw1649190133&#x2F;DOMtoVideo 】 拿已有的重建正射影像（DOM）+ 一条 QGIS 画的航线，反向”演”出一段无人机第一视角巡检视频。 这是个逆向生成工具。正常流程是「飞机拍照 → 重建出 DOM」，这里反着来：「已有 DOM + 假想航线 → 生成模拟实机画面」。 为什么要这么干：平台侧的视频贴地投影、实时扫描特效这类功能需">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DOM转视频生成工具">
+<meta property="og:url" content="http://kw1649190133.github.io/2026/08/21/DOM%E8%BD%AC%E8%A7%86%E9%A2%91%E7%94%9F%E6%88%90%E5%B7%A5%E5%85%B7/index.html">
+<meta property="og:site_name" content="kw&#39;s blog">
+<meta property="og:description" content="简介仓库地址：【https:&#x2F;&#x2F;github.com&#x2F;kw1649190133&#x2F;DOMtoVideo 】 拿已有的重建正射影像（DOM）+ 一条 QGIS 画的航线，反向”演”出一段无人机第一视角巡检视频。 这是个逆向生成工具。正常流程是「飞机拍照 → 重建出 DOM」，这里反着来：「已有 DOM + 假想航线 → 生成模拟实机画面」。 为什么要这么干：平台侧的视频贴地投影、实时扫描特效这类功能需">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/08/21/DOM%E8%BD%AC%E8%A7%86%E9%A2%91%E7%94%9F%E6%88%90%E5%B7%A5%E5%85%B7/cc5e92d09841b47be2e592f33ddb4c2c.png">
+<meta property="article:published_time" content="2026-08-21T09:14:10.000Z">
+<meta property="article:modified_time" content="2026-08-21T09:14:10.011Z">
+<meta property="article:author" content="Kwindy">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="数据处理">
+<meta property="article:tag" content="视频">
+<meta property="article:tag" content="GDAL">
+<meta property="article:tag" content="转换">
+<meta property="article:tag" content="DOM">
+<meta property="article:tag" content="生成">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://kw1649190133.github.io/2026/08/21/DOM%E8%BD%AC%E8%A7%86%E9%A2%91%E7%94%9F%E6%88%90%E5%B7%A5%E5%85%B7/cc5e92d09841b47be2e592f33ddb4c2c.png">
+  
+  
+  
+  <title>DOM转视频生成工具 - kw&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"kw1649190133.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>天际边缘 Edge of the sky </strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="DOM转视频生成工具"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-08-21 17:14" pubdate>
+          August 21, 2026 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.3k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          20 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">DOM转视频生成工具</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>仓库地址：【<a target="_blank" rel="noopener" href="https://github.com/kw1649190133/DOMtoVideo">https://github.com/kw1649190133/DOMtoVideo</a> 】</p>
+<p>拿已有的重建正射影像（DOM）+ 一条 QGIS 画的航线，反向”演”出一段无人机第一视角巡检视频。</p>
+<p>这是个<strong>逆向生成</strong>工具。正常流程是「飞机拍照 → 重建出 DOM」，这里反着来：「已有 DOM + 假想航线 → 生成模拟实机画面」。</p>
+<p><strong>为什么要这么干</strong>：平台侧的视频贴地投影、实时扫描特效这类功能需要真实感的视频素材做联调和演示，但等一次真实航飞的成本太高。有 DOM 就能凭空造出任意航线、任意速度、任意帧率的视频，而且每一帧的经纬度、航向、时间戳都是<strong>已知真值</strong>——这对做投影校验反而比真实视频更好用。</p>
+<p><img src="/2026/08/21/DOM%E8%BD%AC%E8%A7%86%E9%A2%91%E7%94%9F%E6%88%90%E5%B7%A5%E5%85%B7/cc5e92d09841b47be2e592f33ddb4c2c.png" srcset="/img/loading.gif" lazyload alt="cc5e92d09841b47be2e592f33ddb4c2c.png"></p>
+<h1 id="内容"><a href="#内容" class="headerlink" title="内容"></a>内容</h1><h2 id="文件结构"><a href="#文件结构" class="headerlink" title="文件结构"></a>文件结构</h2><figure class="highlight tap"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs tap">video_synth/<br>├── run_mission.py           <span class="hljs-number"> 267 </span>行  ★ 主程序：一键编排 + 进度 + 分段 + 断点续传<br>├── make_test_tif.py          <span class="hljs-number"> 50 </span>行    造测试 DOM（渐变+经纬网格+中心十字）<br>├── run.bat                             gdal 环境快捷入口<br>├── mission.example.json                配置模板（30fps 全量 + 分段 500）<br>├── new.json                            实际在用的配置（80m 高度 / 90×60m 视场）<br>└── video_synth/                        ← 核心包，可独立复用<br>    ├── __init__.py            <span class="hljs-number"> 3 </span>行    版本号 0.1.0<br>    ├── __main__.py            <span class="hljs-number"> 7 </span>行    python -m video_synth 入口<br>    ├── cli.py               <span class="hljs-number"> 129 </span>行   <span class="hljs-number"> 4 </span>个子命令的 argparse 装配<br>    ├── trajectory.py        <span class="hljs-number"> 219 </span>行  ★ 轨迹解析 + 插帧 + 航向平滑<br>    ├── clip.py              <span class="hljs-number"> 524 </span>行  ★ 核心：栅格采样 + 转正渲染 + 矢量导出<br>    └── video.py             <span class="hljs-number"> 121 </span>行    ffmpeg 定位 + 编码 + 段拼接<br></code></pre></td></tr></table></figure>
+
+<h2 id="模块职责"><a href="#模块职责" class="headerlink" title="模块职责"></a>模块职责</h2><table>
+<thead>
+<tr>
+<th>模块</th>
+<th>职责</th>
+<th>关键类/函数</th>
+<th>对外依赖</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>trajectory.py</code></td>
+<td>KML/KMZ 折线 → 等距航点序列</td>
+<td><code>interpolate_to_file</code> / <code>smooth_headings</code> / <code>bearing_deg</code></td>
+<td>仅 stdlib + numpy</td>
+</tr>
+<tr>
+<td><code>clip.py</code></td>
+<td>航点位姿 → 从 DOM 裁出”转正”画面</td>
+<td><code>RasterSampler</code> / <code>VectorExporter</code> / <code>clip_mission</code></td>
+<td>GDAL、numpy、cv2</td>
+</tr>
+<tr>
+<td><code>video.py</code></td>
+<td>帧序列 → mp4</td>
+<td><code>find_ffmpeg</code> / <code>make_video</code> / <code>concat_videos</code></td>
+<td>ffmpeg 二进制</td>
+</tr>
+<tr>
+<td><code>cli.py</code></td>
+<td>分步调试入口</td>
+<td><code>interpolate</code> / <code>clip</code> / <code>make-video</code> / <code>export-vectors</code></td>
+<td>上述三者</td>
+</tr>
+<tr>
+<td><code>run_mission.py</code></td>
+<td>一键编排 + 工程化外壳</td>
+<td><code>main</code> / <code>load_config</code> / <code>rm_tree</code></td>
+<td>上述全部</td>
+</tr>
+</tbody></table>
+<h1 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h1><h2 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h2><p>【json文件应该是不允许有注记的，实际使用要删掉】</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>  <span class="hljs-attr">&quot;kml&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;.\\巡检轨迹.kmz&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;tif&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;..\\..\\data\\image\\锦山镇2025年10月\\文昌市0.1米正射影像图分割GCGS2000.tif&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;height&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">80</span><span class="hljs-punctuation">,</span>        <span class="hljs-comment">// 飞行高度（米）</span><br>  <span class="hljs-attr">&quot;speed&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">10</span><span class="hljs-punctuation">,</span>         <span class="hljs-comment">// 速度 m/s</span><br>  <span class="hljs-attr">&quot;fps&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">30</span><span class="hljs-punctuation">,</span>           <span class="hljs-comment">// 插帧帧率</span><br>  <span class="hljs-attr">&quot;width&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">90</span><span class="hljs-punctuation">,</span>         <span class="hljs-comment">// 地面视场横向（米）</span><br>  <span class="hljs-attr">&quot;length&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">60</span><span class="hljs-punctuation">,</span>        <span class="hljs-comment">// 地面视场纵向（米，沿航向）</span><br>  <span class="hljs-attr">&quot;size&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;1920x1080&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-comment">// 分辨率</span><br>  <span class="hljs-attr">&quot;start&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;2025-10-10 15:00:00&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;outdir&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;output&quot;</span><span class="hljs-punctuation">,</span>  <span class="hljs-comment">// 输出路径</span><br>  <span class="hljs-attr">&quot;every&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1</span><span class="hljs-punctuation">,</span>          <span class="hljs-comment">// 1=全量</span><br>  <span class="hljs-attr">&quot;smooth&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">15</span><span class="hljs-punctuation">,</span>        <span class="hljs-comment">// 航向平滑窗口（帧）</span><br>  <span class="hljs-attr">&quot;segment&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">500</span><span class="hljs-punctuation">,</span>      <span class="hljs-comment">// 分段大小</span><br>  <span class="hljs-attr">&quot;skip_existing&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="通过配置文件启动"><a href="#通过配置文件启动" class="headerlink" title="通过配置文件启动"></a>通过配置文件启动</h3><figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bat">python.exe run_mission.py --config new.json<br></code></pre></td></tr></table></figure>
+
+<h3 id="通过命令行启动"><a href="#通过命令行启动" class="headerlink" title="通过命令行启动"></a>通过命令行启动</h3><p>命令行优先级高于配置文件，参数会覆盖配置文件的参数</p>
+<figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bat">python run_mission.py --config new.json --every <span class="hljs-number">30</span> --outdir preview<br></code></pre></td></tr></table></figure>
+
+<h3 id="分步运行模型"><a href="#分步运行模型" class="headerlink" title="分步运行模型"></a>分步运行模型</h3><table>
+<thead>
+<tr>
+<th>–mode</th>
+<th>执行步骤</th>
+<th>耗时</th>
+<th>用在什么时候</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>full（默认）</td>
+<td>插帧 → 矢量 → 截帧 → 合成</td>
+<td>小时级</td>
+<td>首次生成</td>
+</tr>
+<tr>
+<td>vectors</td>
+<td>插帧 → 矢量</td>
+<td>秒级</td>
+<td>只要拍摄点/覆盖范围，或先备好航点</td>
+</tr>
+<tr>
+<td>video</td>
+<td>复用 waypoints → 矢量 → 截帧 → 合成</td>
+<td>小时级</td>
+<td>换影像 / 调视场参数重出片</td>
+</tr>
+</tbody></table>
+<p>插帧只花几秒但截帧要几小时，换一张影像重跑没必要重新插帧。而矢量（拍摄点、覆盖范围）跟影像完全无关，可以在渲染还没开始时就先拿到手扔进 QGIS 检查航线合不合理——<strong>发现航线画错了能省下几小时的白跑</strong>。</p>
+<figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bat">:: 先秒级出矢量，去 QGIS 核对覆盖范围<br>python run_mission.py --config new.json --<span class="hljs-built_in">mode</span> vectors<br><br>:: 核对没问题，换影像出另一版（不再插帧）<br>python run_mission.py --config new.json --<span class="hljs-built_in">mode</span> video --tif 影像B.tif --outdir outB --video-name 影像B版.mp4<br></code></pre></td></tr></table></figure>
+
+<h1 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h1><ol>
+<li> 开始做影像前可以先生成矢量试试看，避免生成错误的照片，占用过长时间。</li>
+<li> 截取范围超过了DOM的像素范围，会截取到黑边。</li>
+<li>可适当调整截取范围的长宽、分辨率， 避免黑边和重叠率过高。</li>
+<li>重复执行指令，会覆盖原有文件，记得妥善保存数据。</li>
+</ol>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0/" class="category-chain-item">学习</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/python/">#python</a>
+      
+        <a href="/tags/%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/">#数据处理</a>
+      
+        <a href="/tags/%E8%A7%86%E9%A2%91/">#视频</a>
+      
+        <a href="/tags/GDAL/">#GDAL</a>
+      
+        <a href="/tags/%E8%BD%AC%E6%8D%A2/">#转换</a>
+      
+        <a href="/tags/DOM/">#DOM</a>
+      
+        <a href="/tags/%E7%94%9F%E6%88%90/">#生成</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>DOM转视频生成工具</div>
+      <div>http://kw1649190133.github.io/2026/08/21/DOM转视频生成工具/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Kwindy</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>August 21, 2026</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2026/09/21/Cesium%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%83%EF%BC%89%E6%BC%94%E7%A4%BA%E5%8A%9F%E8%83%BD%E5%BC%80%E5%8F%91%E4%B8%8E%E5%A4%96%E5%8C%85/" title="Cesium开发笔记（七）演示功能开发与外包">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Cesium开发笔记（七）演示功能开发与外包</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/08/20/FlyerLink%E7%BB%93%E6%9E%84/" title="FlyerLink开发计划和功能设计">
+                        <span class="hidden-mobile">FlyerLink开发计划和功能设计</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

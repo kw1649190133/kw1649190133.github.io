@@ -1,0 +1,788 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=dark>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Kwindy">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="前言目前的平台虽然有一点演示功能，计划添加一点数据处理相关的功能。 纯演计划 补充数据，之前应该有多次飞行的数据。 飞机模型考虑做个优化。之前做过一个，但模型太大，细节太多，可以压缩简化，并且颜色材质丢失。 原始的数据大部分都是照片，没有直接的视频可用。可以根据重建后的影像，与无人机轨迹和画面投射的范围，反向生成实机画面的视频，这样做视频流的投影、实时扫描特效，就更加简单了。需要分析实现流程，用什">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Cesium开发笔记（七）演示功能开发与外包">
+<meta property="og:url" content="http://kw1649190133.github.io/2026/09/21/Cesium%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%83%EF%BC%89%E6%BC%94%E7%A4%BA%E5%8A%9F%E8%83%BD%E5%BC%80%E5%8F%91%E4%B8%8E%E5%A4%96%E5%8C%85/index.html">
+<meta property="og:site_name" content="kw&#39;s blog">
+<meta property="og:description" content="前言目前的平台虽然有一点演示功能，计划添加一点数据处理相关的功能。 纯演计划 补充数据，之前应该有多次飞行的数据。 飞机模型考虑做个优化。之前做过一个，但模型太大，细节太多，可以压缩简化，并且颜色材质丢失。 原始的数据大部分都是照片，没有直接的视频可用。可以根据重建后的影像，与无人机轨迹和画面投射的范围，反向生成实机画面的视频，这样做视频流的投影、实时扫描特效，就更加简单了。需要分析实现流程，用什">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/09/21/Cesium%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%83%EF%BC%89%E6%BC%94%E7%A4%BA%E5%8A%9F%E8%83%BD%E5%BC%80%E5%8F%91%E4%B8%8E%E5%A4%96%E5%8C%85/ea6dd078bcefca7d972caeff7c2330de.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/09/21/Cesium%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%83%EF%BC%89%E6%BC%94%E7%A4%BA%E5%8A%9F%E8%83%BD%E5%BC%80%E5%8F%91%E4%B8%8E%E5%A4%96%E5%8C%85/5ed0668d45c6b0f52c006519bd5ed898.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/09/21/Cesium%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%83%EF%BC%89%E6%BC%94%E7%A4%BA%E5%8A%9F%E8%83%BD%E5%BC%80%E5%8F%91%E4%B8%8E%E5%A4%96%E5%8C%85/82ebe4f03edbec36519bac1670f48931.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/09/21/Cesium%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%83%EF%BC%89%E6%BC%94%E7%A4%BA%E5%8A%9F%E8%83%BD%E5%BC%80%E5%8F%91%E4%B8%8E%E5%A4%96%E5%8C%85/%E7%B3%BB%E7%BB%9F%E7%BB%93%E6%9E%84%E8%AE%BE%E8%AE%A1-%E5%88%86%E5%B1%82%E8%A7%A3%E8%80%A6.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/09/21/Cesium%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%83%EF%BC%89%E6%BC%94%E7%A4%BA%E5%8A%9F%E8%83%BD%E5%BC%80%E5%8F%91%E4%B8%8E%E5%A4%96%E5%8C%85/%E7%B3%BB%E7%BB%9F%E7%BB%93%E6%9E%84-DJI%E6%8E%A5%E5%85%A5%E9%80%82%E9%85%8D%E5%B1%82.png">
+<meta property="og:image" content="http://kw1649190133.github.io/2026/09/21/Cesium%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%83%EF%BC%89%E6%BC%94%E7%A4%BA%E5%8A%9F%E8%83%BD%E5%BC%80%E5%8F%91%E4%B8%8E%E5%A4%96%E5%8C%85/%E5%BC%80%E5%8F%91%E6%8A%A5%E4%BB%B7.png">
+<meta property="article:published_time" content="2026-09-21T01:34:53.000Z">
+<meta property="article:modified_time" content="2026-09-21T03:28:18.112Z">
+<meta property="article:author" content="Kwindy">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="Cesium">
+<meta property="article:tag" content="git">
+<meta property="article:tag" content="视频">
+<meta property="article:tag" content="服务器">
+<meta property="article:tag" content="无人机">
+<meta property="article:tag" content="程序开发">
+<meta property="article:tag" content="演示">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://kw1649190133.github.io/2026/09/21/Cesium%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%83%EF%BC%89%E6%BC%94%E7%A4%BA%E5%8A%9F%E8%83%BD%E5%BC%80%E5%8F%91%E4%B8%8E%E5%A4%96%E5%8C%85/ea6dd078bcefca7d972caeff7c2330de.png">
+  
+  
+  
+  <title>Cesium开发笔记（七）演示功能开发与外包 - kw&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"kw1649190133.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>天际边缘 Edge of the sky </strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Cesium开发笔记（七）演示功能开发与外包"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-09-21 09:34" pubdate>
+          September 21, 2026 am
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4.8k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          41 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Cesium开发笔记（七）演示功能开发与外包</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>目前的平台虽然有一点演示功能，计划添加一点数据处理相关的功能。</p>
+<h2 id="纯演计划"><a href="#纯演计划" class="headerlink" title="纯演计划"></a>纯演计划</h2><ol>
+<li>补充数据，之前应该有多次飞行的数据。</li>
+<li>飞机模型考虑做个优化。之前做过一个，但模型太大，细节太多，可以压缩简化，并且颜色材质丢失。</li>
+<li>原始的数据大部分都是照片，没有直接的视频可用。可以根据重建后的影像，与无人机轨迹和画面投射的范围，反向生成实机画面的视频，这样做视频流的投影、实时扫描特效，就更加简单了。需要分析实现流程，用什么组件，大概需要单独做生成工具。使用不同的影像，航线一条就够，按照轨迹重新录制成视频。</li>
+<li>提前绘制好管道矢量和影像对比结果，展示最终效果。也避免了ONNX识别的卡顿情况。利用精致的矢量来做热力图，效果应该不错。</li>
+<li>两期影像对比，使用生成的视频在两个框里播放，顺便标记变化矢量，</li>
+<li>制作循环播放开关。一键播放演示效果。</li>
+<li>消息弹窗，报告实时的识别统计结果。</li>
+</ol>
+<p>之前影像合并失败，可能是投影范围超限？不能使用111投影，而使用109投影</p>
+<p>冯家湾的影像只有一期的。风车海岸应该是有两期以上。</p>
+<h1 id="影像反向生成视频"><a href="#影像反向生成视频" class="headerlink" title="影像反向生成视频"></a>影像反向生成视频</h1><h2 id="实现路径"><a href="#实现路径" class="headerlink" title="实现路径"></a>实现路径</h2><p>按照我的设想，从GADL和QGIS都可以实现，不过QGIS做的话，应该就没法打包成单独的工具了。</p>
+<table>
+<thead>
+<tr>
+<th>路线</th>
+<th>技术</th>
+<th>真实感</th>
+<th>依赖</th>
+<th>集成难度</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>A. GDAL + OpenCV</td>
+<td>单应矩阵透视变换</td>
+<td>平坦地面近似</td>
+<td>轻，纯 Python，可打包 exe</td>
+<td>⭐ 最易</td>
+</tr>
+<tr>
+<td>B. QGIS Qgs3D</td>
+<td>真实 3D 离屏渲染</td>
+<td>高（有高程/阴影）</td>
+<td>需完整 QGIS + PyQGIS</td>
+<td>⭐⭐⭐ 难</td>
+</tr>
+<tr>
+<td>C. Open3D / PyVista</td>
+<td>textured mesh 光栅化</td>
+<td>高（有 DSM 遮挡）</td>
+<td>中，纯 Python</td>
+<td>⭐⭐ 中</td>
+</tr>
+</tbody></table>
+<h2 id="几个必须提前想清楚的坑"><a href="#几个必须提前想清楚的坑" class="headerlink" title="几个必须提前想清楚的坑"></a>几个必须提前想清楚的坑</h2><ol>
+<li>坐标系：TIF 是投影坐标（UTM），轨迹是经纬度，必须用 pyproj 统一，否则整条航线会偏</li>
+<li>倾斜视角缺侧面信息：DOM 是正射（垂直向下），大倾角时侧面拍不到真实内容，平坦地面假设会失真——所以第一版适合正射/小倾角航线，扫描特效完全够用</li>
+<li>内参与分辨率绑定：fx = focalLength / pixelSize，你得先定”模拟相机”的画面分辨率（如 1920×1080），内参才能算对</li>
+<li>帧率与轨迹密度：轨迹点间隔 vs 视频帧率不一致时要插值，否则画面一顿一顿</li>
+<li>⚠对于海浪变化，在影像里是没法直观体现的，容易露馅。</li>
+</ol>
+<h2 id="执行步骤"><a href="#执行步骤" class="headerlink" title="执行步骤"></a>执行步骤</h2><ol>
+<li>确定航线。<del>原始MRK转shp ? 包括点和线两种输出，表示原始的拍照点和航线，再把数据写进字段里。</del> 或者不用MRK转换，重叠率太高，直接绘制shp，进行插帧，直接输入高度和投影范围，锁定参数；</li>
+<li>插帧，增加点密度，确定拍摄位置，生成时间戳，至少按照30帧来进行设置，起始时间可以自己输入。飞行速度可以自己设置，比如放慢点按10m/s来，一般无人机好像是飞10-15m/s；(补充：其实应该在拐角处做圆滑处理，否则生成的画面截取框转弯会比较生硬)</li>
+<li>计算投影图片，截取画面，拍摄中心点确定，自己指定投影到地面的长宽就可以了；（生成截取的矢量，再批量进行影像裁剪就可以实现了。需要注意可能会截取到影像范围外，以及当截取范围是有角度的，需要注意截取后修正角度，最后合成视频应该是正的。）</li>
+<li>合成视频。（需要注意让视频的时间戳与航线的播放速度一致，这样才能保证后续预览的同步。）</li>
+</ol>
+<h2 id="遇到的坑"><a href="#遇到的坑" class="headerlink" title="遇到的坑"></a>遇到的坑</h2><p>把所有画面全部截取完再进行合并，会占用非常多的存储空间，必须要分段处理，五百张一段，压缩成视频后体积会大幅减小，然后可以删掉帧图片。</p>
+<h2 id="程序实现"><a href="#程序实现" class="headerlink" title="程序实现"></a>程序实现</h2><p>理论完成，实践可行，具体的代码不贴在这，可以单独写一篇文档。现在程序可以自己插帧，生成拍摄节点、航线、截取范围的矢量，然后自己完成画面截取、视频生成。<br>考虑到有需要一个矢量去裁剪多个影像的情况，做多期影像对比，需要在主程序中做分步控制的参数，把矢量生成、视频生成的步骤分开做。<br><img src="/2026/09/21/Cesium%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%83%EF%BC%89%E6%BC%94%E7%A4%BA%E5%8A%9F%E8%83%BD%E5%BC%80%E5%8F%91%E4%B8%8E%E5%A4%96%E5%8C%85/ea6dd078bcefca7d972caeff7c2330de.png" srcset="/img/loading.gif" lazyload alt="ea6dd078bcefca7d972caeff7c2330de.png"></p>
+<h1 id="前端改造"><a href="#前端改造" class="headerlink" title="前端改造"></a>前端改造</h1><p>视频生成没问题之后，接下来就是前端的界面和功能了。</p>
+<ol>
+<li>同一条航线对不同的影像，制作两期对比，同时在画面中播放。（或者是合成视频的时候直接给编辑到一起去，播放的时候给它留一个长一点的框就行，具体看同时播放是否方便实现。）</li>
+<li>制作矢量标签，每个影像单独的标签、对比的标签。</li>
+<li>画面与矢量的联动调试，矢量能够随着画面的显示而出现。</li>
+<li>目前的设计都是基于二维影像的，后面可以考虑升级三维的方案，镜头画面可以有一定的倾斜角度。</li>
+</ol>
+<h2 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a>遇到的问题</h2><p>影像显示功能还需要调试和优化，目前影像属于图片直接加载，没有分级处理。一开始想尝试tif的加载，做瓦片分级处理，但后来发现并没有那么简单。jpg和png可以直接当成图片贴在场景中，但tif如果很大，需要做瓦皮切分、地图服务，光靠AI很难一键搞定。最后综合成本考虑，先选择tif转换压缩成png，一步加载的方案。重点是把总路线走通，这种细节只能等有机会再优化了。</p>
+<p>我做了GDAL的专属环境C:\app\miniconda3\envs\gdal，可以在里面做GDAL相关内容。独立工具做在C:\app\create\cesium_kwindy\flyerPlatform-cesium\flask-tools路径下，</p>
+<p>现在数据准备得差不多了，开始下一阶段的开发。可以在主菜单中添加新功能，暂时叫变化分析吧，然后参考任务管理的航线播放功能和画面投影功能，不过这次可以播放视频了。设置一个预览开关，打开之后显示一个小窗，可以同时播放不同时期影像的画面对比，并且与场景中的飞机位置同步。目前只准备了两期，后面可能增加。<br>数据在C:\app\create\cesium_kwindy\flyerPlatform-cesium\data\comparison<br>我后面还准备加入变化区域的显示，不过矢量还没做好，先完成视频的同步。</p>
+<p>实现对比影像的播放、航线同步、进度条绑定、一键循环。<br><img src="/2026/09/21/Cesium%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%83%EF%BC%89%E6%BC%94%E7%A4%BA%E5%8A%9F%E8%83%BD%E5%BC%80%E5%8F%91%E4%B8%8E%E5%A4%96%E5%8C%85/5ed0668d45c6b0f52c006519bd5ed898.png" srcset="/img/loading.gif" lazyload alt="添加对比视频播放、航线播放、循环功能"></p>
+<p>接下来是设计分析对比矢量。提前绘制好目标管道和变化区域的矢量，等待播放框扫描到的时候显示出来。再做一个统计分析面板、区域缩略图。</p>
+<p>20260821<br>已经实现双视频同步和地面的动态投影，但是有时候播放会突然卡住，还需要进行稳定性的调试。<br>制作标记矢量。</p>
+<p><img src="/2026/09/21/Cesium%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%83%EF%BC%89%E6%BC%94%E7%A4%BA%E5%8A%9F%E8%83%BD%E5%BC%80%E5%8F%91%E4%B8%8E%E5%A4%96%E5%8C%85/82ebe4f03edbec36519bac1670f48931.png" srcset="/img/loading.gif" lazyload alt="82ebe4f03edbec36519bac1670f48931.png"></p>
+<p>目前状态：</p>
+<ol>
+<li>双视频同步循环播放和地面投影基本已经稳定了</li>
+<li>矢量的投影还是有点问题，显示矢量不难，但是要想模拟出目标识别的效果，还是有点难度。要限制矢量显示的范围，只显示投影框附近的矢量。</li>
+<li>备选方案：不如直接调用onnx来识别，但原本使用的就是图片，而换成视频后，要考虑如何输入才能保持流畅度。</li>
+<li>统计分析功能还需要增加一些信息量，缩略图，图表之类的。</li>
+</ol>
+<p>感觉开发陷入泥潭，别人很难提供帮助，自己虽然知道模糊的方向，但资源有限，困难重重。虽然AI提供了很大帮助，但太过依赖AI的话，当陷入AI也无法解决的问题时，非常容易束手无策。本来应该让自己不断学习和提高的，过度依赖AI的话，结果反而变成token耗尽就无法展开工作了。<br>或许自己应该停下来，花点精力去学习新的知识了。</p>
+<p>做小型的程序比较容易验证结果，但修改大型的项目，有时候就很难发现问题。</p>
+<h1 id="设计"><a href="#设计" class="headerlink" title="设计"></a>设计</h1><p>现在继续折腾设备连接功能，之前用AI做的连接程序虽然可以使用，但总是有各种各样的BUG，连接不稳定，时而出现时而消失，经常断联。数据库并非我擅长的领域，看来这部分得重新设计一下，初步的设想是将它独立出去，单独做一个组件，负责接收和推送实时数据，这样三维平台就只需要从服务器拉取数据就可以了。设想很美好，实现起来依然有点头大，涉及到许多的细节需要考虑。</p>
+<h2 id="前情提要"><a href="#前情提要" class="headerlink" title="前情提要"></a>前情提要</h2><p>我需要做一个运行在服务器的云服务程序。<br>给无人船、水下机器人、无人机联网提供云服务。这些设备都是通过地面上的遥控器或者桌面端程序联网的，在遥控器输入账号和服务器地址，就可以连接到服务器。（需要显示连接情况，计算延迟等小功能）飞机和无人船也可以通过4g模块单独联网，上面有挂载linux系统，可开发的自由度还是比价高的。</p>
+<p>关于实机连接的开发计划：</p>
+<ol>
+<li>把实机连接的功能进行拆分（目前已经是分离的，本地的程序也可以连接云端服务器的设备管理），单独做云端设备信息的管理，需要重新梳理代码，拆分模块，还需要完善很多功能。</li>
+<li>控制实时流量，避免数据通道阻塞， 优先保障设备基本状态的信息通畅。点云数据和相机画面还是有优化空间，用延迟换压缩率，提高网络带宽的利用效率。涉及到视频数据压缩、点云数据压缩的问题。</li>
+<li>数据发送端的适配，先做独立程序，再考虑结合进控制软件，一键启动云端连接。其中的关键在于确定数据对接格式，解耦发送端与接收端</li>
+<li>设备云端服务：<br>用户管理、飞行管理、密钥管理、实时云播、历史回放、统计数据、任务推送、消息推送。<br>设备直接联网或遥控器控制端联网后，发送位置和姿态信息。<br>云端也可以给遥控器发送消息。<br>标点和位置共享，<br>用户管理设计，唯一超级管理员、管理员、用户、游客，这样应该比较合理。为了节约开发资源，先不考虑多层级组织与精细化权限体系。</li>
+</ol>
+<p>云端需要暴露标准化api，前端组件化架构</p>
+<p>设备接入协议：MQTT<br>消息总线与异步通信：采用 RabbitMQ 处理异步任务和事件；<br>实时数据推送：采用 WebSocket 全双工通信<br>视频流媒体服务：基于浏览器原生的 WebRTC 技术，实现多路高清视频的免插件、低延迟（毫秒级）回传与NAT穿透。</p>
+<p>对象存储：采用 MinIO 或 S3，用于存储结构化日志、多媒体文件及离线回放数据</p>
+<p>安全防护体系：构建双向防火墙、端到端加密（TLS/SSL）、细粒度权限（RBAC）与操作审计，保障无人系统免受恶意网络攻击</p>
+<p>只能趁着开会去要资源了。</p>
+<p><img src="/2026/09/21/Cesium%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%83%EF%BC%89%E6%BC%94%E7%A4%BA%E5%8A%9F%E8%83%BD%E5%BC%80%E5%8F%91%E4%B8%8E%E5%A4%96%E5%8C%85/%E7%B3%BB%E7%BB%9F%E7%BB%93%E6%9E%84%E8%AE%BE%E8%AE%A1-%E5%88%86%E5%B1%82%E8%A7%A3%E8%80%A6.png" srcset="/img/loading.gif" lazyload alt="系统结构设计-分层解耦.png"></p>
+<p>之前也考虑过大疆无人机的接入，官方提供两种方式，一种是使用大疆的SDK，开发自己的APP，然后就可以自定义通信协议；还有一种是通过大疆上云API，只需要使用大疆的Pilot 2作为网关，做相关的适配，然后接入设备管理，然后就可以和自研设备一样了。<br><img src="/2026/09/21/Cesium%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%83%EF%BC%89%E6%BC%94%E7%A4%BA%E5%8A%9F%E8%83%BD%E5%BC%80%E5%8F%91%E4%B8%8E%E5%A4%96%E5%8C%85/%E7%B3%BB%E7%BB%9F%E7%BB%93%E6%9E%84-DJI%E6%8E%A5%E5%85%A5%E9%80%82%E9%85%8D%E5%B1%82.png" srcset="/img/loading.gif" lazyload alt="系统结构-DJI接入适配层.png"></p>
+<h1 id="外包设备连接层的开发"><a href="#外包设备连接层的开发" class="headerlink" title="外包设备连接层的开发"></a>外包设备连接层的开发</h1><p>之前也尝试过设备连接部分的开发，但是效果一般般，这个方面纯靠AI编程恐怕有点难搞定。或许用前沿的超级大模型+xcode，也并非不能实现，自己做要思考的东西还是挺多的，而且也没把握在短时间内做好，尤其是一些数据库之类的，我也不是非常了解。</p>
+<h2 id="当前目标"><a href="#当前目标" class="headerlink" title="当前目标"></a>当前目标</h2><p>单套服务端+ 浏览器管理界面（二维地图、视频播放、后台管理），最多支持 4 台设备同时在线、2路实时画面、1路激光雷达点云；对外提供查询 / 实时订阅 / 文件拉取接口</p>
+<h2 id="实现功能"><a href="#实现功能" class="headerlink" title="实现功能"></a>实现功能</h2><ul>
+<li>设备连接后，能够看到型号、时间、位置、姿态等数据（由推送端提供），用二维地图简单表示。当设备端开启画面推送后，可以看到实时画面。推送端会主动压缩画质、限制分辨率（720p 480p），确保流畅度。需要优先确保连接的稳定性、流程度、以及断联、重连、下线等机制。</li>
+<li>设备连接记录管理，可以保存历史数据，可查询、选择、删除。</li>
+<li>暴露接口，其他电脑或服务器可以拉取到实时的设备数据和画面，以便其他的开发。</li>
+<li>需要确定统一规范、可拓展的数据格式。（之前有尝试做过，可以参考）</li>
+<li>基础的用户登录和设备登录、密钥管理，不涉及组织。</li>
+<li>大疆的设备通过上云API后，也可获取到位置等数据和视频画面，拉取信息的接口与其他设备一致。</li>
+</ul>
+<h2 id="限制"><a href="#限制" class="headerlink" title="限制"></a>限制</h2><p>本项目边界：只做云端的设备连接 + 基础数据 + 接口暴露 + 视频转发录制，以及基础的登录管理，不做复杂的数据应用和分析和设备端的程序；<br>设备端限制：设备端主动做传输压缩处理，视频只推压缩码流、点云只推抽稀帧、影像只推压缩代理图——原始数据一律不上传，避免挤占通道。</p>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><p>当前服务器规格：2C 2G  4Mbps  ，有两台。<br>考虑到可能性能不够用，追加到4C 8G 30Mbps 应该完全足够了。</p>
+<h2 id="需要成果"><a href="#需要成果" class="headerlink" title="需要成果"></a>需要成果</h2><p>1、直接部署服务<br>2、源码和使用说明。</p>
+<h1 id="外包报价"><a href="#外包报价" class="headerlink" title="外包报价"></a>外包报价</h1><h2 id="1W级别"><a href="#1W级别" class="headerlink" title="1W级别"></a>1W级别</h2><p>只有口头沟通，报价6000-7000，具体实施还需要聊细节。以最小化功能实现为主。</p>
+<h2 id="10W级别"><a href="#10W级别" class="headerlink" title="10W级别"></a>10W级别</h2><p>报价8W，这个模块有拆分，有分阶段的实现设计，还提到需要与设备端进行联调。<br><img src="/2026/09/21/Cesium%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%83%EF%BC%89%E6%BC%94%E7%A4%BA%E5%8A%9F%E8%83%BD%E5%BC%80%E5%8F%91%E4%B8%8E%E5%A4%96%E5%8C%85/%E5%BC%80%E5%8F%91%E6%8A%A5%E4%BB%B7.png" srcset="/img/loading.gif" lazyload alt="开发报价"></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ol>
+<li>找外包的临时开发，价格大概在1W-10W，效果各有不同，可以通过完善细节和指标要求，获得更精确的价格。而真正的商业成熟软件，应该远不止这个数。</li>
+<li>选择购买服务，也依然需要一定的沟通成本，多次的联调不可避免。</li>
+<li>也不能完全外包，还是需要自己把握关键部分的程序。</li>
+</ol>
+<p>现在剩下的就是继续跟进开发那边的进度了，</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Cesium%E5%BC%80%E5%8F%91/" class="category-chain-item">Cesium开发</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Python/">#Python</a>
+      
+        <a href="/tags/Cesium/">#Cesium</a>
+      
+        <a href="/tags/git/">#git</a>
+      
+        <a href="/tags/%E8%A7%86%E9%A2%91/">#视频</a>
+      
+        <a href="/tags/%E6%9C%8D%E5%8A%A1%E5%99%A8/">#服务器</a>
+      
+        <a href="/tags/%E6%97%A0%E4%BA%BA%E6%9C%BA/">#无人机</a>
+      
+        <a href="/tags/%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91/">#程序开发</a>
+      
+        <a href="/tags/%E6%BC%94%E7%A4%BA/">#演示</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Cesium开发笔记（七）演示功能开发与外包</div>
+      <div>http://kw1649190133.github.io/2026/09/21/Cesium开发笔记（七）演示功能开发与外包/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Kwindy</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>September 21, 2026</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/08/21/DOM%E8%BD%AC%E8%A7%86%E9%A2%91%E7%94%9F%E6%88%90%E5%B7%A5%E5%85%B7/" title="DOM转视频生成工具">
+                        <span class="hidden-mobile">DOM转视频生成工具</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

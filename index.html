@@ -224,15 +224,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2026/08/12/%E6%97%A0%E4%BA%BA%E6%9C%BA%E6%96%B0%E8%A7%84%E5%88%86%E6%9E%90/" target="_self">
-          无人机新规分析
+        <a href="/2026/09/21/Cesium%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%83%EF%BC%89%E6%BC%94%E7%A4%BA%E5%8A%9F%E8%83%BD%E5%BC%80%E5%8F%91%E4%B8%8E%E5%A4%96%E5%8C%85/" target="_self">
+          Cesium开发笔记（七）演示功能开发与外包
         </a>
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2026/08/12/%E6%97%A0%E4%BA%BA%E6%9C%BA%E6%96%B0%E8%A7%84%E5%88%86%E6%9E%90/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2026/09/21/Cesium%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%83%EF%BC%89%E6%BC%94%E7%A4%BA%E5%8A%9F%E8%83%BD%E5%BC%80%E5%8F%91%E4%B8%8E%E5%A4%96%E5%8C%85/" target="_self">
         <div>
-          前言无人机行业关于规范管理方面，又多了两项新国标，GB 46750-2025和GB 46761-2025，都是2025年就已经发布的，不过2026年才实施。 协议对照   GB 46750-2025(无人机广播) GB 46761-2025 (UOM对接)    全称 民用无人驾驶航空器系统运行识别规范 民用无人驾驶航空器实名登记和激活要求   管什么 飞行中”我是谁、在哪、飞多快” 起飞前”有没
+          前言目前的平台虽然有一点演示功能，计划添加一点数据处理相关的功能。 纯演计划 补充数据，之前应该有多次飞行的数据。 飞机模型考虑做个优化。之前做过一个，但模型太大，细节太多，可以压缩简化，并且颜色材质丢失。 原始的数据大部分都是照片，没有直接的视频可用。可以根据重建后的影像，与无人机轨迹和画面投射的范围，反向生成实机画面的视频，这样做视频流的投影、实时扫描特效，就更加简单了。需要分析实现流程，用什
         </div>
       </a>
 
@@ -240,8 +240,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2026-08-12 16:34" pubdate>
-              2026-08-12
+            <time datetime="2026-09-21 09:34" pubdate>
+              2026-09-21
             </time>
           </div>
         
@@ -267,6 +267,167 @@
 
           </div>
         
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Python/">#Python</a>
+            
+              <a href="/tags/Cesium/">#Cesium</a>
+            
+              <a href="/tags/git/">#git</a>
+            
+              <a href="/tags/%E8%A7%86%E9%A2%91/">#视频</a>
+            
+              <a href="/tags/%E6%9C%8D%E5%8A%A1%E5%99%A8/">#服务器</a>
+            
+              <a href="/tags/%E6%97%A0%E4%BA%BA%E6%9C%BA/">#无人机</a>
+            
+              <a href="/tags/%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91/">#程序开发</a>
+            
+              <a href="/tags/%E6%BC%94%E7%A4%BA/">#演示</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2026/08/21/DOM%E8%BD%AC%E8%A7%86%E9%A2%91%E7%94%9F%E6%88%90%E5%B7%A5%E5%85%B7/" target="_self">
+          DOM转视频生成工具
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2026/08/21/DOM%E8%BD%AC%E8%A7%86%E9%A2%91%E7%94%9F%E6%88%90%E5%B7%A5%E5%85%B7/" target="_self">
+        <div>
+          简介仓库地址：【https://github.com/kw1649190133/DOMtoVideo 】 拿已有的重建正射影像（DOM）+ 一条 QGIS 画的航线，反向”演”出一段无人机第一视角巡检视频。 这是个逆向生成工具。正常流程是「飞机拍照 → 重建出 DOM」，这里反着来：「已有 DOM + 假想航线 → 生成模拟实机画面」。 为什么要这么干：平台侧的视频贴地投影、实时扫描特效这类功能需
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2026-08-21 17:14" pubdate>
+              2026-08-21
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0/" class="category-chain-item">学习</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/python/">#python</a>
+            
+              <a href="/tags/%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/">#数据处理</a>
+            
+              <a href="/tags/%E8%A7%86%E9%A2%91/">#视频</a>
+            
+              <a href="/tags/GDAL/">#GDAL</a>
+            
+              <a href="/tags/%E8%BD%AC%E6%8D%A2/">#转换</a>
+            
+              <a href="/tags/DOM/">#DOM</a>
+            
+              <a href="/tags/%E7%94%9F%E6%88%90/">#生成</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2026/08/20/FlyerLink%E7%BB%93%E6%9E%84/" target="_self">
+          FlyerLink开发计划和功能设计
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2026/08/20/FlyerLink%E7%BB%93%E6%9E%84/" target="_self">
+        <div>
+          time :20260814 pm17:00kwindy write 一、QGC 平台已有的能力   功能域 已有能力    飞行控制 实时遥测、飞行模式切换、航线执行、遥控器校准、参数调参   任务规划 航点规划、区域测绘、结构扫描、地理围栏、任务上传下载   地图显示 在线/离线地图、卫星影像、地形数据、多机位置标注   视频图传 单路视频接收、拍照录像、热成像、画面叠加显示   3D 可视化
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2026-08-20 10:15" pubdate>
+              2026-08-20
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Cesium%E5%BC%80%E5%8F%91/" class="category-chain-item">Cesium开发</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E5%BC%80%E5%8F%91/">#开发</a>
+            
+              <a href="/tags/%E8%BD%AF%E4%BB%B6/">#软件</a>
+            
+              <a href="/tags/C/">#C++</a>
+            
+              <a href="/tags/QGC/">#QGC</a>
+            
+          </div>
         
       </div>
     </article>
@@ -310,7 +471,7 @@
     
       <span class="category-chain">
         
-  <a href="/categories/Cesium%E5%BC%80%E5%8F%91/" class="category-chain-item">Cesium开发</a>
+  <a href="/categories/%E5%B7%A5%E4%BD%9C/" class="category-chain-item">工作</a>
   
   
 
@@ -321,6 +482,80 @@
 
           </div>
         
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%B0%B4%E4%B8%8B%E6%9C%BA%E5%99%A8%E4%BA%BA/">#水下机器人</a>
+            
+              <a href="/tags/%E6%A0%91%E8%8E%93%E6%B4%BE/">#树莓派</a>
+            
+              <a href="/tags/ROV/">#ROV</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2026/08/07/%E6%97%A0%E4%BA%BA%E6%9C%BA%E6%96%B0%E8%A7%84%E5%88%86%E6%9E%90/" target="_self">
+          无人机新规分析
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2026/08/07/%E6%97%A0%E4%BA%BA%E6%9C%BA%E6%96%B0%E8%A7%84%E5%88%86%E6%9E%90/" target="_self">
+        <div>
+          前言无人机行业关于规范管理方面，又多了两项新国标，GB 46750-2025和GB 46761-2025，都是2025年就已经发布的，不过2026年才实施。 国标协议协议对照   GB 46750-2025(无人机广播) GB 46761-2025 (UOM对接)    全称 民用无人驾驶航空器系统运行识别规范 民用无人驾驶航空器实名登记和激活要求   管什么 飞行中”我是谁、在哪、飞多快” 起飞
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2026-08-07 16:34" pubdate>
+              2026-08-07
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0/" class="category-chain-item">学习</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%97%A0%E4%BA%BA%E6%9C%BA/">#无人机</a>
+            
+              <a href="/tags/%E5%9B%BD%E6%A0%87/">#国标</a>
+            
+          </div>
         
       </div>
     </article>
@@ -376,6 +611,23 @@
           </div>
         
         
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Python/">#Python</a>
+            
+              <a href="/tags/Cesium/">#Cesium</a>
+            
+              <a href="/tags/git/">#git</a>
+            
+              <a href="/tags/%E6%9C%8D%E5%8A%A1%E5%99%A8/">#服务器</a>
+            
+              <a href="/tags/%E6%97%A0%E4%BA%BA%E6%9C%BA/">#无人机</a>
+            
+              <a href="/tags/SRS/">#SRS</a>
+            
+          </div>
+        
       </div>
     </article>
   </div>
@@ -418,7 +670,7 @@
     
       <span class="category-chain">
         
-  <a href="/categories/Cesium%E5%BC%80%E5%8F%91/" class="category-chain-item">Cesium开发</a>
+  <a href="/categories/%E5%AD%A6%E4%B9%A0/" class="category-chain-item">学习</a>
   
   
 
@@ -659,211 +911,6 @@
               <a href="/tags/%E7%82%B9%E4%BA%91/">#点云</a>
             
               <a href="/tags/websocket/">#websocket</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2026/07/02/Git%E4%B8%8EGithub/" target="_self">
-          Git与Github
-        </a>
-      </h1>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2026/07/02/Git%E4%B8%8EGithub/" target="_self">
-        <div>
-          前言git本身就是一个进行版本管理的工具，它的作用在于：当我们对文档和代码的修改进行备份时，不再需要备份整个文件，而是只需要记录改动的部分，这样就极大的减少了冗余，降低了信息复杂度，让迭代更新变得更加简洁高效。一般通过命令行来就比较方便。它也有简单的图形界面，安装完git之后，选择git gui启动图像界面。而github是与git衔接的网络仓库，二者并不是一个东西，只是互为配套工具。我们比较熟悉
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2026-07-02 17:45" pubdate>
-              2026-07-02
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E5%AD%A6%E4%B9%A0/" class="category-chain-item">学习</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E5%BC%80%E5%8F%91/">#开发</a>
-            
-              <a href="/tags/git/">#git</a>
-            
-              <a href="/tags/github/">#github</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2026/07/02/Cesium%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%94%EF%BC%89AI%E8%AF%86%E5%88%AB%E6%A8%A1%E5%9D%97%E4%B8%8E%E5%90%8E%E7%BB%AD%E8%AE%A1%E5%88%92/" target="_self">
-          Cesium开发笔记（五）AI识别模块与后续计划
-        </a>
-      </h1>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2026/07/02/Cesium%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%94%EF%BC%89AI%E8%AF%86%E5%88%AB%E6%A8%A1%E5%9D%97%E4%B8%8E%E5%90%8E%E7%BB%AD%E8%AE%A1%E5%88%92/" target="_self">
-        <div>
-          当前版本号V1.0 任务拆分 ONNX模型运转的单独验证 识别结果的投影实现 连续识别和结果去重 结果导出KML  投影后的识别效果 同时开启AI识别、识别结果记录、照片记录、航线播放，识别结果已经做了去重处理，咋一看还挺像回事的。 V0.9 新增了热力图功能，增加了KML导出功能 版本更新至V0.9现在平台的基本显示功能已经没有问题了，视频和轨迹同步的功能以后再做，现在完善数据转换工具和压缩工具
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2026-07-02 17:30" pubdate>
-              2026-07-02
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E5%AD%A6%E4%B9%A0/" class="category-chain-item">学习</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/Python/">#Python</a>
-            
-              <a href="/tags/AI/">#AI</a>
-            
-              <a href="/tags/Cesium/">#Cesium</a>
-            
-              <a href="/tags/git/">#git</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2026/06/08/JoplinToHexo%E8%BD%AC%E6%8D%A2%E5%B7%A5%E5%85%B7%E5%BC%80%E5%8F%91/" target="_self">
-          JoplinToHexo转换工具开发
-        </a>
-      </h1>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2026/06/08/JoplinToHexo%E8%BD%AC%E6%8D%A2%E5%B7%A5%E5%85%B7%E5%BC%80%E5%8F%91/" target="_self">
-        <div>
-          前言我一直保持着用hexo博客记录开发和实验过程的习惯，但是每次用joplin打字，再转到vscode中处理，最后在命令行打包更新的流程实在是有点繁琐了。一直想给自己做一套工具，但苦于没有能力，也没有时间。但现在不一样了，大模型即将主宰一切。 需求描述我一般使用joplin来写文档，用hexo发布，但是期间的格式转换和数据迁移过程实在是太麻烦了。使用joplin导出MD文档后，每次我还需要在hex
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2026-06-08 17:37" pubdate>
-              2026-06-08
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E5%BC%80%E5%8F%91/" class="category-chain-item">开发</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/hexo/">#hexo</a>
-            
-              <a href="/tags/blog/">#blog</a>
-            
-              <a href="/tags/vibe/">#vibe</a>
-            
-              <a href="/tags/%E5%B7%A5%E5%85%B7/">#工具</a>
-            
-              <a href="/tags/joplin/">#joplin</a>
-            
-              <a href="/tags/markdown/">#markdown</a>
-            
-              <a href="/tags/%E8%BD%AC%E6%8D%A2/">#转换</a>
             
           </div>
         
